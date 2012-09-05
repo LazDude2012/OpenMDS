@@ -1,0 +1,107 @@
+package chb.mods.mffs.client;
+
+import net.minecraft.src.FontRenderer;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.TileEntitySpecialRenderer;
+
+import org.lwjgl.opengl.GL11;
+
+import chb.mods.mffs.common.TileEntityGenerator;
+
+public class TileEntityGeneratorRenderer extends TileEntitySpecialRenderer {
+	@Override
+	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float f) {
+        if(tileEntity instanceof TileEntityGenerator)
+        {
+        	TileEntityGenerator topview = (TileEntityGenerator)tileEntity;
+            GL11.glPushMatrix();
+            GL11.glPolygonOffset( -10, -10 );
+            GL11.glEnable ( GL11.GL_POLYGON_OFFSET_FILL );
+            int side = topview.getOrientation();
+            float dx = 1F/16;
+            float dz = 1F/16;
+            float displayWidth = 1 - 2F/16;
+            float displayHeight = 1 - 2F/16;
+            GL11.glTranslatef((float)x, (float)y, (float)z);
+            switch (side)
+            {
+                case 1:
+
+                    break;
+                case 0:
+                    GL11.glTranslatef(1, 1, 0);
+                    GL11.glRotatef(180, 1, 0, 0);
+                    GL11.glRotatef(180, 0, 1, 0);
+
+                    break;
+                case 3:
+                    GL11.glTranslatef(0, 1, 0);
+                    GL11.glRotatef(0, 0, 1, 0);
+                    GL11.glRotatef(90, 1, 0, 0);
+
+                    break;
+                case 2:
+                    GL11.glTranslatef(1, 1, 1);
+                    GL11.glRotatef(180, 0, 1, 0);
+                    GL11.glRotatef(90, 1, 0, 0);
+
+                    break;
+                case 5:
+                    GL11.glTranslatef(0, 1, 1);
+                    GL11.glRotatef(90, 0, 1, 0);
+                    GL11.glRotatef(90, 1, 0, 0);
+
+                    break;
+                case 4:
+                    GL11.glTranslatef(1, 1, 0);
+                    GL11.glRotatef(-90, 0, 1, 0);
+                    GL11.glRotatef(90, 1, 0, 0);
+
+                    break;
+            }
+            GL11.glTranslatef(dx+displayWidth/2, 1F, dz+displayHeight/2);
+            GL11.glRotatef(-90, 1, 0, 0);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            FontRenderer fontRenderer = this.getFontRenderer();
+            int maxWidth = 1;
+            String header = "MFFS Generatior V2";
+            maxWidth = Math.max(fontRenderer.getStringWidth(header), maxWidth);
+            maxWidth+=4;
+            int lineHeight = fontRenderer.FONT_HEIGHT + 2;
+            int requiredHeight = lineHeight * 1;
+            float scaleX = displayWidth/maxWidth;
+            float scaleY = displayHeight/requiredHeight;
+            float scale = Math.min(scaleX, scaleY);
+            GL11.glScalef(scale, -scale, scale);
+            GL11.glDepthMask(false);
+            int offsetX;
+            int offsetY;
+            int realHeight = (int)Math.floor(displayHeight/scale);
+            int realWidth = (int)Math.floor(displayWidth/scale);
+
+            if(scaleX < scaleY)
+            {
+                offsetX = 2;
+                offsetY = (realHeight - requiredHeight) / 2;
+            }
+            else
+            {
+                offsetX = (realWidth - maxWidth) / 2 + 2;
+                offsetY = 0;
+            }
+            GL11.glDisable(GL11.GL_LIGHTING);
+            fontRenderer.drawString(header, offsetX-realWidth/2, 1+offsetY-realHeight/2 + -3 * lineHeight, 1);
+            fontRenderer.drawString("capacity: ", offsetX-realWidth/2, 1+offsetY-realHeight/2 + -1 * lineHeight, 1);
+            fontRenderer.drawString(String.valueOf(topview.getcapacity()).concat(" % "), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf((topview.getForcepower()*100)/topview.getMaxforcepower()).concat(" % ")), offsetY - realHeight/2-1*lineHeight, 1);
+            fontRenderer.drawString("range: ", offsetX-realWidth/2, 1+offsetY-realHeight/2 + 0 * lineHeight, 1);
+            fontRenderer.drawString(String.valueOf(topview.getTransmitrange()), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf(topview.getTransmitrange())), offsetY - realHeight/2+0*lineHeight, 1);
+            fontRenderer.drawString("linked device: ", offsetX-realWidth/2, 1+offsetY-realHeight/2 + 1 * lineHeight, 1);
+            fontRenderer.drawString(String.valueOf(topview.getLinketprojektor()), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf(topview.getLinketprojektor())), offsetY - realHeight/2+1*lineHeight, 1);
+            GL11.glEnable(GL11.GL_LIGHTING);
+            GL11.glDepthMask(true);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL );
+            GL11.glPopMatrix();
+        }
+	}
+}
