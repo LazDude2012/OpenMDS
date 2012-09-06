@@ -14,8 +14,7 @@ public class ItemSwitch extends ItemMultitool {
 
 	@Override
 	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-		if(!world.isRemote)
-		{
+
 		TileEntity tileentity =  world
 				.getBlockTileEntity(x,y,z);
 
@@ -29,6 +28,7 @@ public class ItemSwitch extends ItemMultitool {
 		if(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getGenerator().get(((TileEntityProjector)tileentity).getLinkGenerator_ID()).getSecStation_ID()) != null)
 		{
 			if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getGenerator().get(((TileEntityProjector)tileentity).getLinkGenerator_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+				if(world.isRemote)
 				Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 				return false;
 			}
@@ -43,14 +43,15 @@ public class ItemSwitch extends ItemMultitool {
 				ElectricItem.use(itemstack, 1000, entityplayer);
 
 				NetworkHandler.fireTileEntityEvent(tileentity,2);
+				
 				return true;
 				}else{
-					if(!world.isRemote)
+					if(world.isRemote)
 					Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: not enough EU please charge");
 					return false;
 				}
 			}else{
-				if(!world.isRemote)
+				if(world.isRemote)
 				Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: Wrong Mode");
 				return false;
 			}
@@ -62,6 +63,7 @@ public class ItemSwitch extends ItemMultitool {
 			if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityGenerator)tileentity).getSecStation_ID()) != null)
 			{
 				if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityGenerator)tileentity).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+					if(world.isRemote)
 					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 					return false;
 				}
@@ -76,17 +78,17 @@ public class ItemSwitch extends ItemMultitool {
 
 				return true;
 				}else{
-					if(!world.isRemote)
+					if(world.isRemote)
 					Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: not enough EU please charge");
 					return false;
 				}
 			}else{
-				if(!world.isRemote)
+				if(world.isRemote)
 				Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: component in wrong mode");
 				return false;
 			}
 		}
-		}
+		
 		return false;
 }
 

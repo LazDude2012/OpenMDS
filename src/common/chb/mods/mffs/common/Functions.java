@@ -3,6 +3,7 @@ package chb.mods.mffs.common;
 import java.util.ArrayList;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
@@ -18,6 +19,8 @@ public class Functions {
 		return Block.blocksList[world.getBlockId(x,y,z)];
 	}
 
+
+	
 	public static ArrayList<ItemStack> getItemStackFromBlock(World world,
 			int i, int j, int k) {
 		Block block = Block.blocksList[world.getBlockId(i, j, k)];
@@ -34,63 +37,6 @@ public class Functions {
       return FMLClientHandler.instance().getClient().theWorld;
 }
 
-	public static String getValuefor(String key,String category, Object defvalue)
-	{
-		if (ModularForceFieldSystem.MFFSconfig == null) {
-	//		return String.valueOf(defvalue);
-		}
-
-		try {
-		if(defvalue instanceof String)
-		{
-			String value = ModularForceFieldSystem.MFFSconfig.getOrCreateProperty(key, category, defvalue.toString()).value;
-//			System.out.println(defvalue+"->"+value);
-			return value;
-		}
-
-		if(defvalue instanceof Integer)
-		{
-			String value = ModularForceFieldSystem.MFFSconfig.getOrCreateIntProperty(key, category, (Integer) defvalue).value;
-	//		System.out.println(defvalue+"->"+value);
-			return value;
-		}
-
-	    if(defvalue instanceof Boolean)
-		{
-			String value = ModularForceFieldSystem.MFFSconfig.getOrCreateBooleanProperty(key, category,  (Boolean) defvalue).value;
-	//		System.out.println(defvalue+"->"+value);
-			return value;
-		}
-		} catch (Exception exception) {
-			System.out.println(exception.getMessage());
-		}
-
-	    return String.valueOf(defvalue);
-	}
-
-	public static int getConfigIdFor(String s, int i, int typ) {
-		if (ModularForceFieldSystem.MFFSconfig == null) {
-			return i;
-		}
-
-		try {
-			switch(typ)
-			{
-			case 1: // Block int
-				return new Integer(ModularForceFieldSystem.MFFSconfig.getOrCreateIntProperty(s, "block", i).value);
-			case 2: // general items
-				return new Integer(ModularForceFieldSystem.MFFSconfig.getOrCreateIntProperty(s, "general", i).value);
-			case 3: // Items int
-				return new Integer(ModularForceFieldSystem.MFFSconfig.getOrCreateIntProperty(s, "item", i).value);
-			}
-		} catch (Exception exception) {
-			System.out
-					.println((new StringBuilder())
-							.append("[ModularForceFieldSystem V2.0] Error while trying to access ID-List, config wasn't loaded properly!")
-							.toString());
-		}
-		return i;
-	}
 
 	public static void ChattoPlayer(EntityPlayer player, String Message) {
 		player.addChatMessage(Message);

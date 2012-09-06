@@ -17,8 +17,7 @@ public class ItemWrench extends ItemMultitool  {
 	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player,
 			World world, int x, int y, int z, int side, float hitX, float hitY,
 			float hitZ) {
-		if(!world.isRemote)
-		{
+
 		TileEntity tileentity =  world.getBlockTileEntity(x,y,z);
 
 		if(tileentity instanceof IWrenchtool)
@@ -50,9 +49,12 @@ public class ItemWrench extends ItemMultitool  {
 					{
 
 						world.setBlockWithNotify(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord, 0);
+						
+						if(!world.isRemote)
 						world.spawnEntityInWorld(new EntityItem(world,
 								(float) tileentity.xCoord, (float) tileentity.yCoord,
 								(float) tileentity.zCoord, new ItemStack(((IWrenchtool)tileentity).getBlocktoDrop())));
+						
 						ElectricItem.use(stack, 500,player);
 						return true;
 					}
@@ -61,11 +63,11 @@ public class ItemWrench extends ItemMultitool  {
 				}
 			}
 			}else{
-				 if(!world.isRemote)
+				 if(world.isRemote)
 				Functions.ChattoPlayer(player,"[MultiTool] Fail: not enough EU please charge");
 			}
 		}
-		}
+		
 
 		return false;
 	}

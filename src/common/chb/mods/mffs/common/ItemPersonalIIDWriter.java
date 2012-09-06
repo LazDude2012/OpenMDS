@@ -34,26 +34,26 @@ public class ItemPersonalIIDWriter extends ItemMultitool{
 					if (slot.getStack().getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
 						if(ElectricItem.canUse(itemstack, 1000))
 						{
+                      
 							ElectricItem.use(itemstack, 1000, entityplayer);
-
-							ItemStack IDCard= new ItemStack(ModularForceFieldSystem.MFFSItemIDCard, 1);
-							ItemCardPersonalID.setOwner(IDCard, entityplayer);
-							ItemCardPersonalID.setSeclevel(IDCard, 1);
-						    slot.putStack(IDCard);
-
-	                        if(!world.isRemote)
+                            ItemStack IDCard= new ItemStack(ModularForceFieldSystem.MFFSItemIDCard, 1);
+                            ItemCardPersonalID.setOwner(IDCard, entityplayer.username);
+                            ItemCardPersonalID.setSeclevel(IDCard, 1);
+		                    slot.putStack(IDCard);
+							
+	                        if(world.isRemote)
 							Functions.ChattoPlayer(entityplayer,"[MultiTool] Success: ID-Card create");
 
 							return itemstack;
 						}else{
-							 if(!world.isRemote)
+							 if(world.isRemote)
 							Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: not enough EU please charge");
 							return itemstack;
 						}
 					}
 				}
 			}
-			if(!world.isRemote)
+			if(world.isRemote)
 			Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: need MFFS Card <blank> in  Inventory");
 
 		return itemstack;

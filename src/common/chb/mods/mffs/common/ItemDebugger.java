@@ -17,28 +17,7 @@ public class ItemDebugger extends  ItemMultitool  {
 	public boolean onItemUseFirst(ItemStack stack, EntityPlayer entityplayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
 		TileEntity tileEntity = world.getBlockTileEntity(x,y,z);
 
-		if (!world.isRemote) {
 
-			if (tileEntity instanceof TileEntityGenerator) {
-				info.setLength(0);
-				info.append("Orientation_S: ").append(
-						((TileEntityGenerator) tileEntity).getOrientation());
-				info.append("Spannerwork_S: ").append(
-						((TileEntityGenerator) tileEntity).getWrenchcanwork());
-
-				Functions.ChattoPlayer(entityplayer, info.toString());
-			}
-		}else{
-			if (tileEntity instanceof TileEntityGenerator) {
-				info.setLength(0);
-				info.append("Orientation_C: ").append(
-						((TileEntityGenerator) tileEntity).getOrientation());
-				info.append("Spannerwork_S: ").append(
-						((TileEntityGenerator) tileEntity).getWrenchcanwork());
-
-				Functions.ChattoPlayer(entityplayer, info.toString());
-			}
-		}
 
 		return false;
 	}

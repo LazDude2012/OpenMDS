@@ -2,10 +2,12 @@ package chb.mods.mffs.common;
 
 import java.util.List;
 
-import net.minecraft.src.EntityPlayer;
+
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
+
+
 
 public class ItemCardPersonalID extends Item {
 	public ItemCardPersonalID(int i) {
@@ -29,13 +31,15 @@ public class ItemCardPersonalID extends Item {
 	return true;
 	}
 
-    public static void setOwner(ItemStack itemStack, EntityPlayer entityplayer)
+    public static  void setOwner(ItemStack itemStack, String username)
     {
-        NBTTagCompound nbtTagCompound = Functions.getTAGfromItemstack(itemStack);
-        nbtTagCompound.setString("name", entityplayer.username);
+       
+       NBTTagCompound nbtTagCompound = Functions.getTAGfromItemstack(itemStack);
+       nbtTagCompound.setString("name", username);
+
     }
 
-    public static void setSeclevel(ItemStack itemStack,int SecLevel)
+    public  static void setSeclevel(ItemStack itemStack,int SecLevel)
     {
         NBTTagCompound nbtTagCompound = Functions.getTAGfromItemstack(itemStack);
         nbtTagCompound.setInteger("SecLevel", SecLevel);
