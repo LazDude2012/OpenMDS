@@ -30,24 +30,26 @@ public class ItemCardPersonalID extends Item {
 	{
 	return true;
 	}
+	
+	
 
     public static  void setOwner(ItemStack itemStack, String username)
     {
        
-       NBTTagCompound nbtTagCompound = Functions.getTAGfromItemstack(itemStack);
+       NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
        nbtTagCompound.setString("name", username);
 
     }
 
     public  static void setSeclevel(ItemStack itemStack,int SecLevel)
     {
-        NBTTagCompound nbtTagCompound = Functions.getTAGfromItemstack(itemStack);
+        NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
         nbtTagCompound.setInteger("SecLevel", SecLevel);
     }
 
     public static int getSecLevel(ItemStack itemStack)
     {
-    	NBTTagCompound nbtTagCompound = Functions.getTAGfromItemstack(itemStack);
+    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
     	if(nbtTagCompound != null)
     	{
     		return nbtTagCompound.getInteger("SecLevel");
@@ -58,10 +60,10 @@ public class ItemCardPersonalID extends Item {
     @Override
     public void addInformation(ItemStack itemStack, List info)
     {
-            String tooltip = String.format( "Owner: %s ", Functions.getTAGfromItemstack(itemStack).getString("name") );
+            String tooltip = String.format( "Owner: %s ", NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getString("name") );
             info.add(tooltip);
 
-            int SecLevel = Functions.getTAGfromItemstack(itemStack).getInteger("SecLevel");
+            int SecLevel = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getInteger("SecLevel");
             String SecLeveldesc ="";
 
             switch(SecLevel)

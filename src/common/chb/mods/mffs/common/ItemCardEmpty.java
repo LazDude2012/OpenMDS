@@ -38,7 +38,7 @@ public class ItemCardEmpty extends Item {
 				}
 
 				ItemStack newcard =  new ItemStack(ModularForceFieldSystem.MFFSitemfc);
-				Functions.getTAGfromItemstack(newcard).setInteger("Generator_ID", ((TileEntityGenerator)tileEntity).getGenerator_ID());
+				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Generator_ID", ((TileEntityGenerator)tileEntity).getGenerator_ID());
 				entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
 				Functions.ChattoPlayer(entityplayer, "[Generator] Success: <Power-Link> Card create");
 				return true;
@@ -50,7 +50,7 @@ public class ItemCardEmpty extends Item {
 				}
 
 				ItemStack newcard =   new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
-				Functions.getTAGfromItemstack(newcard).setInteger("Secstation_ID", ((TileEntitySecurityStation)tileEntity).getSecurtyStation_ID());
+				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Secstation_ID", ((TileEntitySecurityStation)tileEntity).getSecurtyStation_ID());
 				entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
 				Functions.ChattoPlayer(entityplayer, "[Security Station] Success: <Security Station Link>  Card create");
 				return true;

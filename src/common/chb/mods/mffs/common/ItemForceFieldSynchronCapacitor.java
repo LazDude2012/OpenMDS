@@ -52,7 +52,7 @@ public class ItemForceFieldSynchronCapacitor extends Item implements IElectricIt
 
 	public static boolean canuseBatpack(ItemStack itemStack)
 	{
-    	NBTTagCompound nbtTagCompound = Functions.getTAGfromItemstack(itemStack);
+    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
     	if(nbtTagCompound != null)
     	{
     		return nbtTagCompound.getBoolean("Batpack");
@@ -65,7 +65,7 @@ public class ItemForceFieldSynchronCapacitor extends Item implements IElectricIt
 			EntityPlayer entityplayer) {
 	if(!world.isRemote)
 	{
-    	NBTTagCompound nbtTagCompound = Functions.getTAGfromItemstack(itemstack);
+    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
     	if(nbtTagCompound != null)
     	{
     		if(nbtTagCompound.getBoolean("Batpack"))

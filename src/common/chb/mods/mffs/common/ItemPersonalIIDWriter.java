@@ -1,15 +1,15 @@
 package chb.mods.mffs.common;
 
+
 import java.util.List;
 
-import net.minecraft.src.CreativeTabs;
+import ic2.api.ElectricItem;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 import net.minecraft.src.World;
-import ic2.api.ElectricItem;
-import ic2.api.IElectricItem;
+
+
 
 public class ItemPersonalIIDWriter extends ItemMultitool{
 	public ItemPersonalIIDWriter(int i) {

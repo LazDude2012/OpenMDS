@@ -192,7 +192,7 @@ ISidedInventory, INetworkHandlerListener {
 	public void checkslots() {
 		if (getStackInSlot(1) != null) {
 			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSItemIDCard) {
-				this.setMainUser(Functions.getTAGfromItemstack(getStackInSlot(1))
+				this.setMainUser(NBTTagCompoundHelper.getTAGfromItemstack(getStackInSlot(1))
 						.getString("name"));
 
 				ItemCardPersonalID Card = (ItemCardPersonalID) getStackInSlot(1).getItem();
@@ -289,12 +289,12 @@ ISidedInventory, INetworkHandlerListener {
 			for (int a = ((IInventory) inventory).getSizeInventory() - 1; a >= 0; a--) {
 				if (((IInventory) inventory).getStackInSlot(a) != null) {
 					if (((IInventory) inventory).getStackInSlot(a).getItem() == ModularForceFieldSystem.MFFSItemIDCard) {
-						String username_invtory = Functions
+						String username_invtory = NBTTagCompoundHelper
 								.getTAGfromItemstack(
 										((IInventory) inventory)
 												.getStackInSlot(a)).getString(
 										"name");
-						int SecLevel = Functions
+						int SecLevel = NBTTagCompoundHelper
 								.getTAGfromItemstack(
 										((IInventory) inventory)
 												.getStackInSlot(a)).getInteger(

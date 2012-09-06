@@ -3,7 +3,6 @@ package chb.mods.mffs.common;
 import java.util.ArrayList;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
@@ -12,6 +11,8 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+
+
 
 public class Functions {
 	public static Block getBlock(int x,int y,int z,World world)
@@ -42,17 +43,6 @@ public class Functions {
 		player.addChatMessage(Message);
 	}
 
-	public static NBTTagCompound getTAGfromItemstack(ItemStack itemStack) {
-		if (itemStack != null) {
-			NBTTagCompound tag = itemStack.getTagCompound();
-			if (tag == null) {
-				tag = new NBTTagCompound();
-				itemStack.setTagCompound(tag);
-			}
-			return tag;
-		}
-		return null;
-	}
 
 	public static IInventory searchinventory(TileEntityMaschines tileEntity, World worldObj,boolean faceinginventory) {
 		int facing = tileEntity.getOrientation();

@@ -199,9 +199,9 @@ ISidedInventory, INetworkHandlerListener {
 	public void checkslots() {
 		if (getStackInSlot(0) != null) {
 			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemfc) {
-				if (getLinkGenerator_ID() != Functions.getTAGfromItemstack(
+				if (getLinkGenerator_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
 						getStackInSlot(0)).getInteger("Generator_ID")) {
-					setLinkGenerator_ID(Functions.getTAGfromItemstack(
+					setLinkGenerator_ID(NBTTagCompoundHelper.getTAGfromItemstack(
 							getStackInSlot(0)).getInteger("Generator_ID"));
 					}
 
@@ -240,9 +240,9 @@ ISidedInventory, INetworkHandlerListener {
 
 		if (getStackInSlot(1) != null) {
 			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSItemSecLinkCard) {
-				if (getSecStation_ID() != Functions.getTAGfromItemstack(
+				if (getSecStation_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
 						getStackInSlot(1)).getInteger("Secstation_ID")) {
-					setSecStation_ID(Functions.getTAGfromItemstack(
+					setSecStation_ID(NBTTagCompoundHelper.getTAGfromItemstack(
 							getStackInSlot(1)).getInteger("Secstation_ID"));
 				}
 				if (getSecStation_ID() == 0) {

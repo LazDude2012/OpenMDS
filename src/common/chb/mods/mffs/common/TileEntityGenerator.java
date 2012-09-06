@@ -187,9 +187,9 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 
 		if (getStackInSlot(4) != null) {
 			if (getStackInSlot(4).getItem() == ModularForceFieldSystem.MFFSItemSecLinkCard) {
-				if (SecStation_ID != Functions.getTAGfromItemstack(
+				if (SecStation_ID != NBTTagCompoundHelper.getTAGfromItemstack(
 						getStackInSlot(4)).getInteger("Secstation_ID")) {
-					SecStation_ID = Functions.getTAGfromItemstack(
+					SecStation_ID = NBTTagCompoundHelper.getTAGfromItemstack(
 							getStackInSlot(4)).getInteger("Secstation_ID");
 				}
 				if (SecStation_ID == 0) {
