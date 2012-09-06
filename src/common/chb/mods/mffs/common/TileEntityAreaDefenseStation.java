@@ -366,11 +366,11 @@ ISidedInventory, INetworkHandlerListener {
 				}
 			}
 
-			if (isActive() && getSpannerwork()) {
-				setSpannerwork(false);
+			if (isActive() && getWrenchcanwork()) {
+				setWrenchcanwork(false);
 			}
-			if (!isActive() && !getSpannerwork()) {
-				setSpannerwork(true);
+			if (!isActive() && !getWrenchcanwork()) {
+				setWrenchcanwork(true);
 			}
 
 			if (this.getTicker() == 20) {
@@ -488,7 +488,7 @@ ISidedInventory, INetworkHandlerListener {
 		NetworkedFields.add("linkSecStation");
 		NetworkedFields.add("active");
 		NetworkedFields.add("Orientation");
-		NetworkedFields.add("Spannerwork");
+		NetworkedFields.add("Wrenchcanwork");
 
 		return NetworkedFields;
 	}

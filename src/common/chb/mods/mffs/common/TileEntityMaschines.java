@@ -12,10 +12,10 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
 
-public abstract class TileEntityMaschines extends TileEntity implements ISpanner{
+public abstract class TileEntityMaschines extends TileEntity implements IWrenchtool{
 	private boolean active;
 	private int Orientation;
-	private boolean Spannerwork;
+	private boolean Wrenchcanwork;
 	private short ticker;
 
 	public TileEntityMaschines()
@@ -23,7 +23,7 @@ public abstract class TileEntityMaschines extends TileEntity implements ISpanner
 	{
 		active = false;
 		Orientation = -1;
-		Spannerwork = true;
+		Wrenchcanwork = true;
 		ticker = 0;
 	}
 
@@ -58,17 +58,17 @@ public abstract class TileEntityMaschines extends TileEntity implements ISpanner
 		super.readFromNBT(nbttagcompound);
 		Orientation = nbttagcompound.getInteger("Orientation");
 		active = nbttagcompound.getBoolean("active");
-		Spannerwork = nbttagcompound.getBoolean("Spannerwork");
+		Wrenchcanwork = nbttagcompound.getBoolean("Wrenchcanwork");
 	}
 
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		nbttagcompound.setInteger("Orientation", Orientation);
 		nbttagcompound.setBoolean("active", active);
-		nbttagcompound.setBoolean("Spannerwork", Spannerwork);
+		nbttagcompound.setBoolean("Wrenchcanwork", Wrenchcanwork);
 	}
 	@Override
-	public boolean SpannerCanSetOrientation(EntityPlayer entityPlayer, int side) {
+	public boolean WrenchCanSetOrientation(EntityPlayer entityPlayer, int side) {
 		
 		   if(this instanceof TileEntityProjector)
 		   {
@@ -118,7 +118,7 @@ public abstract class TileEntityMaschines extends TileEntity implements ISpanner
 			   return false;
 		   }
 		
-		if (!getSpannerwork()) {
+		if (!getWrenchcanwork()) {
 			return false;
 		}
 
@@ -151,12 +151,12 @@ public abstract class TileEntityMaschines extends TileEntity implements ISpanner
 		return Orientation;
 	}
 	@Override
-	public void setSpannerwork(boolean b) {
-		Spannerwork = b;
-		NetworkHandler.updateTileEntityField(this, "Spannerwork");
+	public void setWrenchcanwork(boolean b) {
+		Wrenchcanwork = b;
+		NetworkHandler.updateTileEntityField(this, "Wrenchcanwork");
 	}
 	@Override
-	public boolean SpannerCanRemove(EntityPlayer entityPlayer) {
+	public boolean WrenchCanRemoveBlock(EntityPlayer entityPlayer) {
 	   if(this instanceof TileEntityGenerator)
 	   {
 		 if(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityGenerator)this).getSecStation_ID()) != null)
@@ -209,15 +209,15 @@ public abstract class TileEntityMaschines extends TileEntity implements ISpanner
 			}
 	   }
 
-		if (!getSpannerwork()) {
+		if (!getWrenchcanwork()) {
 			return false;
 		}
 		return true;
 	}
 	
 	@Override
-	public boolean getSpannerwork() {
-		return  Spannerwork;
+	public boolean getWrenchcanwork() {
+		return  Wrenchcanwork;
 	}
 
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
@@ -228,4 +228,7 @@ public abstract class TileEntityMaschines extends TileEntity implements ISpanner
 					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
 		}
 	}
+	
+	
 }
+

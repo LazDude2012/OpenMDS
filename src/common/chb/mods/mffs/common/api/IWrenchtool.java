@@ -4,9 +4,9 @@ import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.TileEntity;
 
-public interface ISpanner {
+public interface IWrenchtool {
 
-	boolean SpannerCanSetOrientation(EntityPlayer entityPlayer, int side);
+	boolean WrenchCanSetOrientation(EntityPlayer entityPlayer, int side);
 	
 
 	int getOrientation();
@@ -15,12 +15,14 @@ public interface ISpanner {
 	void setOrientation(int side);
 	
 
-	boolean SpannerCanRemove(EntityPlayer entityPlayer);
+	boolean WrenchCanRemoveBlock(EntityPlayer entityPlayer);
 	
 
-	boolean getSpannerwork();
+	boolean getWrenchcanwork();
 	
-	void setSpannerwork(boolean b);
+	
+	void setWrenchcanwork(boolean b);
+	
 	
 	Block getBlocktoDrop();
 

@@ -1041,11 +1041,11 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 				}
 			}
 
-			if (isActive() && getSpannerwork()) {
-				setSpannerwork(false);
+			if (isActive() && getWrenchcanwork()) {
+				setWrenchcanwork(false);
 			}
-			if (!isActive() && !getSpannerwork()) {
-				setSpannerwork(true);
+			if (!isActive() && !getWrenchcanwork()) {
+				setWrenchcanwork(true);
 			}
 
 			if (this.getTicker() == 20) {
@@ -1864,7 +1864,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 		NetworkedFields.add("ProjektorTyp");
 		NetworkedFields.add("active");
 		NetworkedFields.add("Orientation");
-		NetworkedFields.add("Spannerwork");
+		NetworkedFields.add("Wrenchcanwork");
 		NetworkedFields.add("burnout");
 		NetworkedFields.add("camoflage");
 		NetworkedFields.add("accesstyp");
@@ -1877,7 +1877,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 	@Override
 	public void onNetworkHandlerUpdate(String field){
 		
-		if (field.equals("facing")) {
+		if (field.equals("Orientation")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("active")) {
@@ -1952,5 +1952,6 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 		
 		return ModularForceFieldSystem.MFFSProjector;
 	}
+
 
 }

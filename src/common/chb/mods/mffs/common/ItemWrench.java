@@ -21,13 +21,13 @@ public class ItemWrench extends ItemMultitool  {
 		{
 		TileEntity tileentity =  world.getBlockTileEntity(x,y,z);
 
-		if(tileentity instanceof ISpanner)
+		if(tileentity instanceof IWrenchtool)
 		{
 			
 			if(ElectricItem.canUse(stack, 500))
 			{
 			
-			if(((ISpanner)tileentity).SpannerCanSetOrientation(player, side))
+			if(((IWrenchtool)tileentity).WrenchCanSetOrientation(player, side))
 			{
 				
 				
@@ -38,21 +38,21 @@ public class ItemWrench extends ItemMultitool  {
 					return false;
 				}
 				
-				if(((ISpanner)tileentity).getOrientation() != side )
+				if(((IWrenchtool)tileentity).getOrientation() != side )
 				{
 
-					((ISpanner)tileentity).setOrientation(side);
+					((IWrenchtool)tileentity).setOrientation(side);
 					ElectricItem.use(stack, 500,player);
 					return true;
 				}else{
 					
-					if(((ISpanner)tileentity).SpannerCanRemove(player))
+					if(((IWrenchtool)tileentity).WrenchCanRemoveBlock(player))
 					{
 
 						world.setBlockWithNotify(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord, 0);
 						world.spawnEntityInWorld(new EntityItem(world,
 								(float) tileentity.xCoord, (float) tileentity.yCoord,
-								(float) tileentity.zCoord, new ItemStack(((ISpanner)tileentity).getBlocktoDrop())));
+								(float) tileentity.zCoord, new ItemStack(((IWrenchtool)tileentity).getBlocktoDrop())));
 						ElectricItem.use(stack, 500,player);
 						return true;
 					}

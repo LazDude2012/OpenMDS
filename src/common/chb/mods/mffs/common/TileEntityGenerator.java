@@ -345,11 +345,11 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 			}
 			this.setTicker((short) (this.getTicker() + 1));
 
-			if (isActive() && getSpannerwork()) {
-				setSpannerwork(false);
+			if (isActive() && getWrenchcanwork()) {
+				setWrenchcanwork(false);
 			}
-			if (!isActive() && !getSpannerwork()) {
-				setSpannerwork(true);
+			if (!isActive() && !getWrenchcanwork()) {
+				setWrenchcanwork(true);
 			}
 
 			if (!addedToEnergyNet) {
@@ -460,7 +460,7 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 
 		NetworkedFields.add("active");
 		NetworkedFields.add("Orientation");
-		NetworkedFields.add("Spannerwork");
+		NetworkedFields.add("Wrenchcanwork");
 		NetworkedFields.add("SwitchTyp");
 		NetworkedFields.add("linketprojektor");
 		NetworkedFields.add("transmitrange");

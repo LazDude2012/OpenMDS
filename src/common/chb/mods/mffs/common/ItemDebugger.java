@@ -24,7 +24,7 @@ public class ItemDebugger extends  ItemMultitool  {
 				info.append("Orientation_S: ").append(
 						((TileEntityGenerator) tileEntity).getOrientation());
 				info.append("Spannerwork_S: ").append(
-						((TileEntityGenerator) tileEntity).getSpannerwork());
+						((TileEntityGenerator) tileEntity).getWrenchcanwork());
 
 				Functions.ChattoPlayer(entityplayer, info.toString());
 			}
@@ -34,7 +34,7 @@ public class ItemDebugger extends  ItemMultitool  {
 				info.append("Orientation_C: ").append(
 						((TileEntityGenerator) tileEntity).getOrientation());
 				info.append("Spannerwork_S: ").append(
-						((TileEntityGenerator) tileEntity).getSpannerwork());
+						((TileEntityGenerator) tileEntity).getWrenchcanwork());
 
 				Functions.ChattoPlayer(entityplayer, info.toString());
 			}
