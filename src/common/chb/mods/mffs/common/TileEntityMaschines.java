@@ -91,6 +91,12 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencha
 	@Override
 	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
 		
+		   if(side == facing)
+		   {
+			   return false;
+		   }
+		
+		
 		   if(this instanceof TileEntityProjector)
 		   {
 				  if(((TileEntityProjector)this).getaccesstyp()==2)

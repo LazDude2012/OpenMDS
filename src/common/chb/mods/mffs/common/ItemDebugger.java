@@ -20,6 +20,7 @@
 
 package chb.mods.mffs.common;
 
+import ic2.api.IWrenchable;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
@@ -36,8 +37,39 @@ public class ItemDebugger extends  ItemMultitool  {
 	@Override
 	public boolean onItemUseFirst(ItemStack stack, EntityPlayer entityplayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
 		TileEntity tileEntity = world.getBlockTileEntity(x,y,z);
-
-
+		
+		if (!world.isRemote) {
+			
+			
+			if (tileEntity instanceof IWrenchable) {
+				info.setLength(0);
+				info.append("WrenchDropRate: ").append(
+						((IWrenchable) tileEntity).getWrenchDropRate());
+				info.append("Facing: ").append(
+						((IWrenchable) tileEntity).getFacing());
+				info.append("wrenchCanRemove: ").append(
+						((IWrenchable) tileEntity).wrenchCanRemove(entityplayer));
+				info.append("wrenchCanSetFacing: ").append(
+						((IWrenchable) tileEntity).wrenchCanSetFacing(entityplayer,side));
+				Functions.ChattoPlayer(entityplayer, info.toString());
+			}
+		}else{
+			
+			if (tileEntity instanceof IWrenchable) {
+				info.setLength(0);
+				info.append("WrenchDropRate: ").append(
+						((IWrenchable) tileEntity).getWrenchDropRate());
+				info.append("Facing: ").append(
+						((IWrenchable) tileEntity).getFacing());
+				info.append("wrenchCanRemove: ").append(
+						((IWrenchable) tileEntity).wrenchCanRemove(entityplayer));
+				info.append("wrenchCanSetFacing: ").append(
+						((IWrenchable) tileEntity).wrenchCanSetFacing(entityplayer,side));
+				
+				Functions.ChattoPlayer(entityplayer, info.toString());
+			
+			}
+		}
 
 		return false;
 	}
