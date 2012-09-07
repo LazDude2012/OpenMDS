@@ -71,9 +71,13 @@ public class BlockForceField extends BlockContainer{
 	        	{
 	        		return 1;
 	        	}
+	        	else
+	        	{
+	        		return 0;
+	        	}
 	        }
 	     }
-		return 0;
+		return 1;
 	}
 
     @Override

@@ -24,13 +24,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 import chb.mods.mffs.common.api.*;
-import chb.mods.mffs.common.network.INetworkHandlerEventListener;
-import chb.mods.mffs.common.network.INetworkHandlerListener;
-import chb.mods.mffs.common.network.NetworkHandler;
 
 import ic2.api.Direction;
 import ic2.api.EnergyNet;
 import ic2.api.IEnergySink;
+import ic2.api.INetworkClientTileEntityEventListener;
+import ic2.api.INetworkDataProvider;
+import ic2.api.INetworkTileEntityEventListener;
+import ic2.api.INetworkUpdateListener;
+import ic2.api.NetworkHelper;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.Container;
@@ -44,7 +46,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntityGenerator extends TileEntityMaschines implements
-ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListener{
+ISidedInventory, IEnergySink,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEntityEventListener{
 	private ItemStack inventory[];
 	private int forcepower;
 	private int maxforcepower;
@@ -91,7 +93,7 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 
 	public void setswitchtyp(int a) {
 	   this.SwitchTyp = a;
-	   NetworkHandler.updateTileEntityField(this, "SwitchTyp");
+	   NetworkHelper.updateTileEntityField(this, "SwitchTyp");
 	}
 
 	public int getcapacity(){
@@ -100,7 +102,7 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 
 	public void setCapacity(int capacity){
 		this.capacity = capacity;
-		NetworkHandler.updateTileEntityField(this, "capacity");
+		NetworkHelper.updateTileEntityField(this, "capacity");
 	}
 
 	public Container getContainer(InventoryPlayer inventoryplayer) {
@@ -129,7 +131,7 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 
 	public void setLinketprojektor(Short linketprojektor) {
 		this.linketprojektor = linketprojektor;
-		NetworkHandler.updateTileEntityField(this, "linketprojektor");
+		NetworkHelper.updateTileEntityField(this, "linketprojektor");
 	}
 
 	public int getForcepower() {
@@ -146,7 +148,7 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 
 	public void setTransmitrange(short transmitrange) {
 		this.transmitrange = transmitrange;
-		NetworkHandler.updateTileEntityField(this, "transmitrange");
+		NetworkHelper.updateTileEntityField(this, "transmitrange");
 	}
 
 	public int getTransmitrange() {
@@ -378,7 +380,7 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 			}
 		} else {
 			if (create) {
-				NetworkHandler.requestInitialData(this);
+				NetworkHelper.requestInitialData(this);
 				create = false;
 			}
 		}
@@ -474,7 +476,7 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 	}
 	
 	@Override
-	public List<String> geFieldsforUpdate() {
+	public List<String> getNetworkedFields() {
 		List<String> NetworkedFields = new LinkedList<String>();
 		NetworkedFields.clear();
 
@@ -492,7 +494,7 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 
 	
 	@Override
-	public void onNetworkHandlerUpdate(String field) {
+	public void onNetworkUpdate(String field) {
 		if (field.equals("facing")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
@@ -531,7 +533,7 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 	}
 
 	@Override
-	public void onNetworkHandlerEvent(int event) {
+	public void onNetworkEvent(EntityPlayer player,int event) {
 		switch(event)
 		{
 		case 0:
@@ -553,6 +555,8 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 		break;
 		}
 	}
+
+
 	
 
 

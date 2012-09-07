@@ -20,19 +20,20 @@
 
 package chb.mods.mffs.common;
 
+import ic2.api.INetworkDataProvider;
+import ic2.api.INetworkUpdateListener;
+import ic2.api.NetworkHelper;
+
 import java.util.LinkedList;
 import java.util.List;
 
-import chb.mods.mffs.common.network.INetworkHandlerEventListener;
-import chb.mods.mffs.common.network.INetworkHandlerListener;
-import chb.mods.mffs.common.network.NetworkHandler;
 
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 
 
-public class TileEntityForceField extends TileEntity implements INetworkHandlerListener {
+public class TileEntityForceField extends TileEntity implements INetworkDataProvider,INetworkUpdateListener {
 private int[] texturid = {180,180,180,180,180,180};
 private boolean init = true;
 
@@ -52,7 +53,7 @@ private boolean init = true;
 	public void  setTexturid(int[] texturid )
 	{
 		this.texturid = texturid;
-		NetworkHandler.updateTileEntityField(this, "texturid");
+		NetworkHelper.updateTileEntityField(this, "texturid");
 	}
 
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -77,7 +78,7 @@ private boolean init = true;
 		}else{
 			if(init)
 			{
-				NetworkHandler.requestInitialData(this);
+				NetworkHelper.requestInitialData(this);
 			   init = false;
 			}
 		}
@@ -105,7 +106,7 @@ private boolean init = true;
 	}
 
 	@Override
-	public List<String> geFieldsforUpdate() {
+	public List<String> getNetworkedFields() {
 		List<String> NetworkedFields = new LinkedList<String>();
 		NetworkedFields.clear();
 
@@ -115,7 +116,7 @@ private boolean init = true;
 	}
 
 	@Override
-	public void onNetworkHandlerUpdate(String field) {
+	public void onNetworkUpdate(String field) {
 		if (field.equals("texturid")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}

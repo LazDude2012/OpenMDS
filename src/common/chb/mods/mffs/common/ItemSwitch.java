@@ -20,8 +20,9 @@
 
 package chb.mods.mffs.common;
 
-import chb.mods.mffs.common.network.NetworkHandler;
+
 import ic2.api.ElectricItem;
+import ic2.api.NetworkHelper;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
@@ -62,7 +63,7 @@ public class ItemSwitch extends ItemMultitool {
 				{
 				ElectricItem.use(itemstack, 1000, entityplayer);
 
-				NetworkHandler.fireTileEntityEvent(tileentity,2);
+				NetworkHelper.initiateClientTileEntityEvent(tileentity,2);
 				
 				return true;
 				}else{
@@ -94,7 +95,7 @@ public class ItemSwitch extends ItemMultitool {
 				if(ElectricItem.canUse(itemstack, 1000))
 				{
 				ElectricItem.use(itemstack, 1000, entityplayer);
-				NetworkHandler.fireTileEntityEvent(tileentity,1);
+				NetworkHelper.initiateClientTileEntityEvent(tileentity,1);
 
 				return true;
 				}else{

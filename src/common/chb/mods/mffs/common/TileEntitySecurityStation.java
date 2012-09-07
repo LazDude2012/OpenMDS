@@ -20,11 +20,12 @@
 
 package chb.mods.mffs.common;
 
+import ic2.api.INetworkDataProvider;
+import ic2.api.INetworkUpdateListener;
+import ic2.api.NetworkHelper;
+
 import java.util.LinkedList;
 import java.util.List;
-
-import chb.mods.mffs.common.network.INetworkHandlerListener;
-import chb.mods.mffs.common.network.NetworkHandler;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.Container;
@@ -40,7 +41,7 @@ import net.minecraftforge.common.ISidedInventory;
 
 
 public class TileEntitySecurityStation extends TileEntityMaschines implements
-ISidedInventory, INetworkHandlerListener {
+ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
 	private boolean Multiusermod;
 	private String MainUser;
 	private boolean create;
@@ -67,7 +68,7 @@ ISidedInventory, INetworkHandlerListener {
 
 	public void setMultiusermod(boolean multiusermod) {
 		Multiusermod = multiusermod;
-		NetworkHandler.updateTileEntityField(this, "Multiusermod");
+		NetworkHelper.updateTileEntityField(this, "Multiusermod");
 	}
 
 	public boolean isCreate() {
@@ -84,7 +85,7 @@ ISidedInventory, INetworkHandlerListener {
 
 	public void setMainUser(String s) {
 		this.MainUser = s;
-		NetworkHandler.updateTileEntityField(this, "MainUser");
+		NetworkHelper.updateTileEntityField(this, "MainUser");
 	}
 
 	public int getSecurtyStation_ID() {
@@ -204,7 +205,7 @@ ISidedInventory, INetworkHandlerListener {
 			this.setTicker((short) (this.getTicker() + 1));
 		} else {
 			if (this.isCreate()) {
-				NetworkHandler.requestInitialData(this);
+				NetworkHelper.requestInitialData(this);
 				this.setCreate(false);
 			}
 		}
@@ -363,7 +364,7 @@ ISidedInventory, INetworkHandlerListener {
 	}
 
 	@Override
-	public List<String> geFieldsforUpdate() {
+	public List<String> getNetworkedFields() {
 		List<String> NetworkedFields = new LinkedList<String>();
 		NetworkedFields.clear();
 
@@ -377,7 +378,7 @@ ISidedInventory, INetworkHandlerListener {
 	}
 
 	@Override
-	public void onNetworkHandlerUpdate(String field) {
+	public void onNetworkUpdate(String field) {
 		if (field.equals("facing")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}

@@ -20,13 +20,13 @@
 
 package chb.mods.mffs.common;
 
+import ic2.api.INetworkDataProvider;
+import ic2.api.INetworkUpdateListener;
+import ic2.api.NetworkHelper;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
-import chb.mods.mffs.common.api.*;
-import chb.mods.mffs.common.network.INetworkHandlerListener;
-import chb.mods.mffs.common.network.NetworkHandler;
 
 
 import net.minecraft.src.Block;
@@ -40,7 +40,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntityAreaDefenseStation extends TileEntityMaschines implements
-ISidedInventory, INetworkHandlerListener {
+ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 	private ItemStack ProjektorItemStacks[];
 	private int Defstation_ID;
 	private int linkGenerator_ID;
@@ -141,7 +141,7 @@ ISidedInventory, INetworkHandlerListener {
 
 	public void setlinkSecStation(boolean b) {
 		this.linkSecStation = b;
-		NetworkHandler.updateTileEntityField(this, "linkSecStation");
+		NetworkHelper.updateTileEntityField(this, "linkSecStation");
 	}
 
 	public int getLinkPower() {
@@ -409,7 +409,7 @@ ISidedInventory, INetworkHandlerListener {
 			this.setTicker((short) (this.getTicker() + 1));
 		} else {
 			if (create) {
-				NetworkHandler.requestInitialData(this);
+				NetworkHelper.requestInitialData(this);
 				create = false;
 			}
 		}
@@ -502,7 +502,7 @@ ISidedInventory, INetworkHandlerListener {
 	}
 
 	@Override
-	public List<String> geFieldsforUpdate() {
+	public List<String> getNetworkedFields() {
 		List<String> NetworkedFields = new LinkedList<String>();
 		NetworkedFields.clear();
 
@@ -515,7 +515,7 @@ ISidedInventory, INetworkHandlerListener {
 	}
 
 	@Override
-	public void onNetworkHandlerUpdate(String field) {
+	public void onNetworkUpdate(String field) {
 		if (field.equals("active")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}

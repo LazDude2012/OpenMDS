@@ -21,8 +21,7 @@
 package chb.mods.mffs.common;
 
 import ic2.api.IWrenchable;
-import chb.mods.mffs.common.api.*;
-import chb.mods.mffs.common.network.NetworkHandler;
+import ic2.api.NetworkHelper;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
@@ -162,7 +161,7 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencha
 	@Override
 	public void setFacing(short i) {
 		facing = i;
-		NetworkHandler.updateTileEntityField(this, "facing");
+		NetworkHelper.updateTileEntityField(this, "facing");
 	}
 
 	public boolean isActive() {
@@ -171,7 +170,7 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencha
 
 	public void setActive(boolean flag) {
 		active = flag;
-		NetworkHandler.updateTileEntityField(this, "active");
+		NetworkHelper.updateTileEntityField(this, "active");
 	}
 	
 	@Override
@@ -182,7 +181,7 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencha
 	
 	public void setWrenchRate(float i) {
 		wrenchRate = i;
-		NetworkHandler.updateTileEntityField(this, "wrenchRate");
+		NetworkHelper.updateTileEntityField(this, "wrenchRate");
 	}
 	
 	@Override

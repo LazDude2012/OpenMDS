@@ -21,6 +21,8 @@
 package chb.mods.mffs.client;
 
 
+import ic2.api.NetworkHelper;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.src.EntityPlayer;
@@ -28,7 +30,7 @@ import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
 import chb.mods.mffs.common.ContainerGenerator;
 import chb.mods.mffs.common.TileEntityGenerator;
-import chb.mods.mffs.common.network.NetworkHandler;
+
 
 public class GuiGenerator extends GuiContainer {
 	private TileEntityGenerator Core;
@@ -71,7 +73,7 @@ public class GuiGenerator extends GuiContainer {
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandler.fireTileEntityEvent(Core, guibutton.id);
+		NetworkHelper.initiateClientTileEntityEvent(Core, guibutton.id);
 	}
 
 	public void initGui() {

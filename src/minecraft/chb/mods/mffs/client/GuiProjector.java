@@ -21,6 +21,7 @@
 package chb.mods.mffs.client;
 
 
+import ic2.api.NetworkHelper;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
@@ -29,7 +30,7 @@ import org.lwjgl.opengl.GL11;
 
 import chb.mods.mffs.common.ContainerProjektor;
 import chb.mods.mffs.common.TileEntityProjector;
-import chb.mods.mffs.common.network.NetworkHandler;
+
 
 public class GuiProjector extends GuiContainer {
 	private TileEntityProjector projector;
@@ -80,7 +81,7 @@ public class GuiProjector extends GuiContainer {
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandler.fireTileEntityEvent(projector, guibutton.id);
+		NetworkHelper.initiateClientTileEntityEvent(projector, guibutton.id);
 	}
 
 	public void initGui() {

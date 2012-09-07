@@ -20,16 +20,18 @@
 
 package chb.mods.mffs.common;
 
+import ic2.api.INetworkClientTileEntityEventListener;
+import ic2.api.INetworkDataProvider;
+import ic2.api.INetworkTileEntityEventListener;
+import ic2.api.INetworkUpdateListener;
+import ic2.api.NetworkHelper;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
-
-import chb.mods.mffs.common.network.INetworkHandlerEventListener;
-import chb.mods.mffs.common.network.INetworkHandlerListener;
-import chb.mods.mffs.common.network.NetworkHandler;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.Container;
@@ -45,7 +47,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntityProjector extends TileEntityMaschines implements
-ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
+ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEntityEventListener{
 	private ItemStack ProjektorItemStacks[];
 
 	private boolean[] projektoroption = { false, false, false, false, false,false,false,true,false,false,false,false,false};
@@ -114,7 +116,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 	public void setswitchtyp(int a) {
 	   this.SwitchTyp = a;
 
-	   NetworkHandler.updateTileEntityField(this, "SwitchTyp");
+	   NetworkHelper.updateTileEntityField(this, "SwitchTyp");
 	}
 
 	public boolean isLinkedSecStation() {
@@ -136,7 +138,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 	public void setaccesstyp(int accesstyp) {
 		this.accesstyp = accesstyp;
 
-		NetworkHandler.updateTileEntityField(this, "accesstyp");
+		NetworkHelper.updateTileEntityField(this, "accesstyp");
 	}
 
 	public int getForcefieldtextur_id(int l) {
@@ -190,7 +192,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 	public void setProjektor_Typ(int ProjektorTyp) {
 		this.ProjektorTyp = ProjektorTyp;
 
-		NetworkHandler.updateTileEntityField(this, "ProjektorTyp");
+		NetworkHelper.updateTileEntityField(this, "ProjektorTyp");
 	}
 
 	public int getForceField_strength() {
@@ -335,7 +337,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 	public void setBurnout(boolean b) {
 		burnout = b;
 
-		NetworkHandler.updateTileEntityField(this, "burnout");
+		NetworkHelper.updateTileEntityField(this, "burnout");
 	}
 
 	public boolean isJammeractive() {
@@ -392,7 +394,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 	public void setOptioncamouflage(boolean b) {
 		camoflage = b;
 
-		NetworkHandler.updateTileEntityField(this, "camoflage");
+		NetworkHelper.updateTileEntityField(this, "camoflage");
 	}
 
 	// End Getter AND Setter
@@ -1086,7 +1088,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 			this.setTicker((short) (this.getTicker() + 1));
 		} else {
 			if (this.isCreate()) {
-				NetworkHandler.requestInitialData(this);
+				NetworkHelper.requestInitialData(this);
 				this.setCreate(false);
 			}
 		}
@@ -1877,7 +1879,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 
 
 	@Override
-	public List<String> geFieldsforUpdate() {
+	public List<String> getNetworkedFields() {
 		
 		List<String> NetworkedFields = new LinkedList<String>();
 		NetworkedFields.clear();
@@ -1896,7 +1898,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 
 
 	@Override
-	public void onNetworkHandlerUpdate(String field){
+	public void onNetworkUpdate(String field){
 		
 		if (field.equals("facing")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
@@ -1911,7 +1913,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 	}
 
 	@Override
-	public void onNetworkHandlerEvent(int event) {
+	public void onNetworkEvent(EntityPlayer player,int event) {
 		
 		
 	   switch(event)
