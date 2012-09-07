@@ -102,4 +102,11 @@ public class CommonProxy implements IGuiHandler {
 	public World getClientWorld() {
 		return null;
 	}
+	
+	public boolean isClient()
+	{
+		return false;
+	}
+	
+	
 }

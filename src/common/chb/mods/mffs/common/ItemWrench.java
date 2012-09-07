@@ -22,6 +22,7 @@ package chb.mods.mffs.common;
 
 import chb.mods.mffs.common.api.*;
 import ic2.api.ElectricItem;
+import ic2.api.IWrenchable;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
@@ -40,13 +41,13 @@ public class ItemWrench extends ItemMultitool  {
 
 		TileEntity tileentity =  world.getBlockTileEntity(x,y,z);
 
-		if(tileentity instanceof IWrenchtool)
+		if(tileentity instanceof IWrenchable)
 		{
 			
 			if(ElectricItem.canUse(stack, 500))
 			{
 			
-			if(((IWrenchtool)tileentity).WrenchCanSetOrientation(player, side))
+			if(((IWrenchable)tileentity).wrenchCanSetFacing(player, side))
 			{
 				
 				
@@ -57,30 +58,14 @@ public class ItemWrench extends ItemMultitool  {
 					return false;
 				}
 				
-				if(((IWrenchtool)tileentity).getOrientation() != side )
+				if(((IWrenchable)tileentity).getFacing() != side )
 				{
 
-					((IWrenchtool)tileentity).setOrientation(side);
+					((IWrenchable)tileentity).setFacing((short) side);
 					ElectricItem.use(stack, 500,player);
 					return true;
-				}else{
-					
-					if(((IWrenchtool)tileentity).WrenchCanRemoveBlock(player))
-					{
-
-						world.setBlockWithNotify(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord, 0);
-						
-						if(!world.isRemote)
-						world.spawnEntityInWorld(new EntityItem(world,
-								(float) tileentity.xCoord, (float) tileentity.yCoord,
-								(float) tileentity.zCoord, new ItemStack(((IWrenchtool)tileentity).getBlocktoDrop())));
-						
-						ElectricItem.use(stack, 500,player);
-						return true;
-					}
-					
-					
 				}
+
 			}
 			}else{
 				 if(world.isRemote)

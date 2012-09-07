@@ -126,7 +126,7 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		TileEntity tileentity = iblockaccess.getBlockTileEntity(i, j, k);
 
 		int facing = (tileentity instanceof TileEntityMaschines) ? ((TileEntityMaschines) tileentity)
-				.getOrientation() : 1;
+				.getFacing() : 1;
 		int typ = (tileentity instanceof TileEntityProjector) ? ((TileEntityProjector) tileentity)
 				.getProjektor_Typ() : 0;
 

@@ -51,17 +51,17 @@ public class BlockSecurtyStation extends BlockMFFSBase {
 				.floor_double((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 		int i1 = Math.round(entityliving.rotationPitch);
 		if (i1 >= 65) {
-			tileentityblock.setOrientation(1);
+			tileentityblock.setFacing((short) 1);
 		} else if (i1 <= -65) {
-			tileentityblock.setOrientation(0);
+			tileentityblock.setFacing((short) 0);
 		} else if (l == 0) {
-			tileentityblock.setOrientation(2);
+			tileentityblock.setFacing((short) 2);
 		} else if (l == 1) {
-			tileentityblock.setOrientation(5);
+			tileentityblock.setFacing((short) 5);
 		} else if (l == 2) {
-			tileentityblock.setOrientation(3);
+			tileentityblock.setFacing((short) 3);
 		} else if (l == 3) {
-			tileentityblock.setOrientation(4);
+			tileentityblock.setFacing((short) 4);
 		}
 	}
 

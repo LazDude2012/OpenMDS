@@ -39,7 +39,7 @@ public class TileEntityGeneratorRenderer extends TileEntitySpecialRenderer {
             GL11.glPushMatrix();
             GL11.glPolygonOffset( -10, -10 );
             GL11.glEnable ( GL11.GL_POLYGON_OFFSET_FILL );
-            int side = topview.getOrientation();
+            int side = topview.getFacing();
             float dx = 1F/16;
             float dz = 1F/16;
             float displayWidth = 1 - 2F/16;

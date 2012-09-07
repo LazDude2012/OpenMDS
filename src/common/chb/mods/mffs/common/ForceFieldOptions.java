@@ -49,7 +49,7 @@ public final class ForceFieldOptions {
 
 			if(projector.getProjektor_Typ() == 7)
 			{
-				switch(projector.getOrientation())
+				switch(projector.getFacing())
 				{
 				case 0:
 					ymax = projector.yCoord +1;
@@ -125,7 +125,7 @@ public final class ForceFieldOptions {
 
 			if(projector.getProjektor_Typ()==7 && projector.isOptionFieldcut())
 			{
-				switch(projector.getOrientation())
+				switch(projector.getFacing())
 				{
 				case 0:
 					if(entityLiving.posY > projector.yCoord+2 )
@@ -331,7 +331,7 @@ public final class ForceFieldOptions {
 				break;
 				case 7:
 
-					switch(tileentity.getOrientation())
+					switch(tileentity.getFacing())
 					{
 					case 0:
 						ymax = tileentity.yCoord +1;
@@ -425,7 +425,7 @@ public final class ForceFieldOptions {
 					int zmin2=tileentity.zCoord;
 					int zmax2=tileentity.zCoord;
 
-                          switch(tileentity.getOrientation())
+                          switch(tileentity.getFacing())
                           {
                           case 0:
                           case 1:
@@ -464,7 +464,7 @@ public final class ForceFieldOptions {
 
   						if(tileentity.isOptionFieldcut())
 						{
-                            switch(tileentity.getOrientation())
+                            switch(tileentity.getFacing())
                             {
                             case 1:
                             	ymin2 = tileentity.yCoord;

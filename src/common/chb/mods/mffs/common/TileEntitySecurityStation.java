@@ -189,12 +189,13 @@ ISidedInventory, INetworkHandlerListener {
 				}
 			}
 
-			if (isActive() && getWrenchcanwork()) {
-				setWrenchcanwork(false);
+			if (isActive() && getWrenchDropRate() <= 1) {
+				setWrenchRate(0);
 			}
-			if (!isActive() && !getWrenchcanwork()) {
-				setWrenchcanwork(true);
+			if (!isActive() && getWrenchDropRate() >= 0) {
+				setWrenchRate(1);
 			}
+
 
 			if (this.getTicker() == 10) {
 				checkslots();
@@ -369,8 +370,8 @@ ISidedInventory, INetworkHandlerListener {
 		NetworkedFields.add("MainUser");
 		NetworkedFields.add("Multiusermod");
 		NetworkedFields.add("active");
-		NetworkedFields.add("Orientation");
-		NetworkedFields.add("Wrenchcanwork");
+		NetworkedFields.add("facing");
+		NetworkedFields.add("wrenchRate");
 
 		return NetworkedFields;
 	}
@@ -402,10 +403,6 @@ ISidedInventory, INetworkHandlerListener {
 		return 0;
 	}
 	
-	@Override
-	public Block getBlocktoDrop() {
-		
-		return ModularForceFieldSystem.MFFSSecurtyStation;
-	}
+
 
 }

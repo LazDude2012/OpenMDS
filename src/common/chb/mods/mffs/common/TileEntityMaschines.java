@@ -20,6 +20,7 @@
 
 package chb.mods.mffs.common;
 
+import ic2.api.IWrenchable;
 import chb.mods.mffs.common.api.*;
 import chb.mods.mffs.common.network.NetworkHandler;
 import net.minecraft.src.Container;
@@ -32,25 +33,23 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
 
-public abstract class TileEntityMaschines extends TileEntity implements IWrenchtool{
+public abstract class TileEntityMaschines extends TileEntity implements IWrenchable{
+	
 	private boolean active;
-	private int Orientation;
-	private boolean Wrenchcanwork;
+	private short facing;
+	private float wrenchRate;
 	private short ticker;
 
 	public TileEntityMaschines()
 
 	{
 		active = false;
-		Orientation = -1;
-		Wrenchcanwork = true;
+		facing = -1;
+		wrenchRate = 1;
 		ticker = 0;
 	}
 
 
-	
-	
-	
 	public  void dropplugins(int slot ,IInventory inventory ) {
 		if (inventory.getStackInSlot(slot) != null) {
 			if(inventory.getStackInSlot(slot).getItem() instanceof ItemCardSecurityLink
@@ -75,20 +74,22 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencht
 	public abstract Container getContainer(InventoryPlayer inventoryplayer);
 
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
+
 		super.readFromNBT(nbttagcompound);
-		Orientation = nbttagcompound.getInteger("Orientation");
+		facing = nbttagcompound.getShort("facing");
 		active = nbttagcompound.getBoolean("active");
-		Wrenchcanwork = nbttagcompound.getBoolean("Wrenchcanwork");
+		wrenchRate = nbttagcompound.getFloat("wrenchRate");
 	}
 
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setInteger("Orientation", Orientation);
+		nbttagcompound.setShort("facing", facing);
 		nbttagcompound.setBoolean("active", active);
-		nbttagcompound.setBoolean("Wrenchcanwork", Wrenchcanwork);
+		nbttagcompound.setFloat("wrenchRate", wrenchRate);
 	}
+	
 	@Override
-	public boolean WrenchCanSetOrientation(EntityPlayer entityPlayer, int side) {
+	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
 		
 		   if(this instanceof TileEntityProjector)
 		   {
@@ -138,7 +139,7 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencht
 			   return false;
 		   }
 		
-		if (!getWrenchcanwork()) {
+		if (getWrenchDropRate() <= 0) {
 			return false;
 		}
 
@@ -153,9 +154,9 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencht
 		this.ticker = ticker;
 	}
 	@Override
-	public void setOrientation(int i) {
-		Orientation = i;
-		NetworkHandler.updateTileEntityField(this, "Orientation");
+	public void setFacing(short i) {
+		facing = i;
+		NetworkHandler.updateTileEntityField(this, "facing");
 	}
 
 	public boolean isActive() {
@@ -166,17 +167,29 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencht
 		active = flag;
 		NetworkHandler.updateTileEntityField(this, "active");
 	}
+	
 	@Override
-	public int getOrientation() {
-		return Orientation;
+	public short getFacing() {
+		return facing;
 	}
-	@Override
-	public void setWrenchcanwork(boolean b) {
-		Wrenchcanwork = b;
-		NetworkHandler.updateTileEntityField(this, "Wrenchcanwork");
+	
+	
+	public void setWrenchRate(float i) {
+		wrenchRate = i;
+		NetworkHandler.updateTileEntityField(this, "wrenchRate");
 	}
+	
 	@Override
-	public boolean WrenchCanRemoveBlock(EntityPlayer entityPlayer) {
+	public float getWrenchDropRate() {
+		return wrenchRate;
+	}
+	
+	
+	@Override
+	public boolean wrenchCanRemove(EntityPlayer entityPlayer) {
+		
+		
+		
 	   if(this instanceof TileEntityGenerator)
 	   {
 		 if(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityGenerator)this).getSecStation_ID()) != null)
@@ -229,16 +242,12 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencht
 			}
 	   }
 
-		if (!getWrenchcanwork()) {
+		if (getWrenchDropRate() <= 0) {
 			return false;
 		}
 		return true;
 	}
 	
-	@Override
-	public boolean getWrenchcanwork() {
-		return  Wrenchcanwork;
-	}
 
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {

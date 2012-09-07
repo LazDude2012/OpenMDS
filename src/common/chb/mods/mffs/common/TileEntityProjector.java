@@ -1061,12 +1061,13 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 				}
 			}
 
-			if (isActive() && getWrenchcanwork()) {
-				setWrenchcanwork(false);
+			if (isActive() && getWrenchDropRate() <= 1) {
+				setWrenchRate(0);
 			}
-			if (!isActive() && !getWrenchcanwork()) {
-				setWrenchcanwork(true);
+			if (!isActive() && getWrenchDropRate() >= 0) {
+				setWrenchRate(1);
 			}
+
 
 			if (this.getTicker() == 20) {
 				checkslots(false);
@@ -1122,48 +1123,48 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 			for (int x1 = 0 - getFocusleft(); x1 < getFocusright() + 1; x1++) {
 				for (int z1 = 0 - getFocusdown(); z1 < getFocusup() + 1; z1++) {
 					for (int y1 = 1; y1 < getForceField_strength() + 1; y1++) {
-						if (this.getOrientation() == 0) {
+						if (this.getFacing() == 0) {
 							tpy = y1 - y1 - y1 - getForceField_distance();
 							tpx = x1;
 							tpz = z1 - z1 - z1;
 						}
 
-						if (this.getOrientation() == 1) {
+						if (this.getFacing() == 1) {
 							tpy = y1 + getForceField_distance();
 							tpx = x1;
 							tpz = z1 - z1 - z1;
 						}
 
-						if (this.getOrientation() == 2) {
+						if (this.getFacing() == 2) {
 							tpz = y1 - y1 - y1 - getForceField_distance();
 							tpx = x1 - x1 - x1;
 							tpy = z1;
 						}
 
-						if (this.getOrientation() == 3) {
+						if (this.getFacing() == 3) {
 							tpz = y1 + getForceField_distance();
 							tpx = x1;
 							tpy = z1;
 						}
 
-						if (this.getOrientation() == 4) {
+						if (this.getFacing() == 4) {
 							tpx = y1 - y1 - y1 - getForceField_distance();
 							tpz = x1;
 							tpy = z1;
 						}
-						if (this.getOrientation() == 5) {
+						if (this.getFacing() == 5) {
 							tpx = y1 + getForceField_distance();
 							tpz = x1 - x1 - x1;
 							tpy = z1;
 						}
 
-						if ((this.getOrientation() == 0 || this.getOrientation() == 1)
+						if ((this.getFacing() == 0 || this.getFacing() == 1)
 								&& ((tpx == 0 && tpz != 0)
 										|| (tpz == 0 && tpx != 0) || (tpz == 0 && tpx == 0))
-								|| (this.getOrientation() == 2 || this.getOrientation() == 3)
+								|| (this.getFacing() == 2 || this.getFacing() == 3)
 								&& ((tpx == 0 && tpy != 0)
 										|| (tpy == 0 && tpx != 0) || (tpy == 0 && tpx == 0))
-								|| (this.getOrientation() == 4 || this.getOrientation() == 5)
+								|| (this.getFacing() == 4 || this.getFacing() == 5)
 								&& ((tpz == 0 && tpy != 0)
 										|| (tpy == 0 && tpz != 0) || (tpy == 0 && tpz == 0)))
 
@@ -1179,36 +1180,36 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 
 			for (int x1 = 0 - getFocusleft(); x1 < getFocusright() + 1; x1++) {
 				for (int z1 = 0 - getFocusup(); z1 < getFocusdown() + 1; z1++) {
-					if (this.getOrientation() == 0) {
+					if (this.getFacing() == 0) {
 						tpy = 0 - getForceField_distance() - 1;
 						tpx = x1;
 						tpz = z1;
 					}
 
-					if (this.getOrientation() == 1) {
+					if (this.getFacing() == 1) {
 						tpy = 0 + getForceField_distance() + 1;
 						tpx = x1;
 						tpz = z1;
 					}
 
-					if (this.getOrientation() == 2) {
+					if (this.getFacing() == 2) {
 						tpz = 0 - getForceField_distance() - 1;
 						tpy = z1 - z1 - z1;
 						tpx = x1 - x1 - x1;
 					}
 
-					if (this.getOrientation() == 3) {
+					if (this.getFacing() == 3) {
 						tpz = 0 + getForceField_distance() + 1;
 						tpy = z1 - z1 - z1;
 						tpx = x1;
 					}
 
-					if (this.getOrientation() == 4) {
+					if (this.getFacing() == 4) {
 						tpx = 0 - getForceField_distance() - 1;
 						tpy = z1 - z1 - z1;
 						tpz = x1;
 					}
-					if (this.getOrientation() == 5) {
+					if (this.getFacing() == 5) {
 						tpx = 0 + getForceField_distance() + 1;
 						tpy = z1 - z1 - z1;
 						tpz = x1 - x1 - x1;
@@ -1221,48 +1222,48 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 			break;
 		case 3: // Tube
 
-			if (this.getOrientation() == 0 || this.getOrientation() == 1) {
+			if (this.getFacing() == 0 || this.getFacing() == 1) {
 				tpy = getForceField_strength();
 				tpx = getForceField_distance();
 				tpz = getForceField_distance();
 
 				y_offset_s = getForceField_strength() - getForceField_strength();
 				if (this.isOptionFieldcut()) {
-					if (this.getOrientation() == 0) {
+					if (this.getFacing() == 0) {
 						y_offset_e = getForceField_strength();
 					}
-					if (this.getOrientation() == 1) {
+					if (this.getFacing() == 1) {
 						y_offset_s = getForceField_strength();
 					}
 				}
 			}
 
-			if (this.getOrientation() == 2 || this.getOrientation() == 3) {
+			if (this.getFacing() == 2 || this.getFacing() == 3) {
 				tpy = getForceField_distance();
 				tpz = getForceField_strength();
 				tpx = getForceField_distance();
 
 				z_offset_s = getForceField_strength() - getForceField_strength();
 				if (this.isOptionFieldcut()) {
-					if (this.getOrientation() == 2) {
+					if (this.getFacing() == 2) {
 						z_offset_e = getForceField_strength();
 					}
-					if (this.getOrientation() == 3) {
+					if (this.getFacing() == 3) {
 						z_offset_s = getForceField_strength();
 					}
 				}
 			}
-			if (this.getOrientation() == 4 || this.getOrientation() == 5) {
+			if (this.getFacing() == 4 || this.getFacing() == 5) {
 				tpy = getForceField_distance();
 				tpz = getForceField_distance();
 				tpx = getForceField_strength();
 
 				x_offset_s = getForceField_strength() - getForceField_strength();
 				if (this.isOptionFieldcut()) {
-					if (this.getOrientation() == 4) {
+					if (this.getFacing() == 4) {
 						x_offset_e = getForceField_strength();
 					}
-					if (this.getOrientation() == 5) {
+					if (this.getFacing() == 5) {
 						x_offset_s = getForceField_strength();
 					}
 				}
@@ -1276,15 +1277,15 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 						int tpz_temp = tpz;
 
 						if (tpx == getForceField_strength()
-								&& (this.getOrientation() == 4 || this.getOrientation() == 5)) {
+								&& (this.getFacing() == 4 || this.getFacing() == 5)) {
 							tpx_temp += 1;
 						}
 						if (tpy == getForceField_strength()
-								&& (this.getOrientation() == 0 || this.getOrientation() == 1)) {
+								&& (this.getFacing() == 0 || this.getFacing() == 1)) {
 							tpy_temp += 1;
 						}
 						if (tpz == getForceField_strength()
-								&& (this.getOrientation() == 2 || this.getOrientation() == 3)) {
+								&& (this.getFacing() == 2 || this.getFacing() == 3)) {
 							tpz_temp += 1;
 						}
 
@@ -1388,7 +1389,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 			for (int y1 = 0; y1 <= getForceField_strength(); y1++) {
 				for (int x1 = 0 - getFocusleft(); x1 < getFocusright() + 1; x1++) {
 			    	for (int z1 = 0 - getFocusup(); z1 < getFocusdown() + 1; z1++) {
-						if (this.getOrientation() == 0) {
+						if (this.getFacing() == 0) {
 							if(this.ProjektorTyp==6)
 							{
 								tpy = y1 - y1 - y1 - getForceField_distance()-1;
@@ -1399,7 +1400,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 							tpz = z1;
 						}
 
-						if (this.getOrientation() == 1) {
+						if (this.getFacing() == 1) {
 							if(this.ProjektorTyp==6)
 							{
 								tpy = y1 + getForceField_distance()+1;
@@ -1410,7 +1411,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 							tpz = z1;
 						}
 
-						if (this.getOrientation() == 2) {
+						if (this.getFacing() == 2) {
 							if(this.ProjektorTyp==6)
 							{
 								tpz = y1 - y1 - y1 - getForceField_distance()-1;
@@ -1422,7 +1423,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 							tpx = x1 - x1 - x1;
 						}
 
-						if (this.getOrientation() == 3) {
+						if (this.getFacing() == 3) {
 							if(this.ProjektorTyp==6)
 							{
 								tpz = y1 + getForceField_distance()+1;
@@ -1434,7 +1435,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 							tpx = x1;
 						}
 
-						if (this.getOrientation() == 4) {
+						if (this.getFacing() == 4) {
 							if(this.ProjektorTyp==6)
 							{
 								tpx = y1 - y1 - y1 - getForceField_distance()-1;
@@ -1445,7 +1446,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 							tpy = z1 - z1 - z1;
 							tpz = x1;
 						}
-						if (this.getOrientation() == 5) {
+						if (this.getFacing() == 5) {
 							if(this.ProjektorTyp==6)
 							{
 								tpx = y1 + getForceField_distance()+1;
@@ -1460,7 +1461,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 						{
 							if(this.isOptionFieldcut() && this.getProjektor_Typ() == 7)
 	                        {
-								switch(this.getOrientation())
+								switch(this.getFacing())
 								{
 									case 0:
 										if((yCoord + tpy) > this.yCoord )
@@ -1883,8 +1884,8 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 
 		NetworkedFields.add("ProjektorTyp");
 		NetworkedFields.add("active");
-		NetworkedFields.add("Orientation");
-		NetworkedFields.add("Wrenchcanwork");
+		NetworkedFields.add("facing");
+		NetworkedFields.add("wrenchRate");
 		NetworkedFields.add("burnout");
 		NetworkedFields.add("camoflage");
 		NetworkedFields.add("accesstyp");
@@ -1897,7 +1898,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 	@Override
 	public void onNetworkHandlerUpdate(String field){
 		
-		if (field.equals("Orientation")) {
+		if (field.equals("facing")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("active")) {
@@ -1967,11 +1968,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener {
 		return 1;
 	}
 	
-	@Override
-	public Block getBlocktoDrop() {
-		
-		return ModularForceFieldSystem.MFFSProjector;
-	}
+
 
 
 }

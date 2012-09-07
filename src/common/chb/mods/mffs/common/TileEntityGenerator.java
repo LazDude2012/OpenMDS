@@ -365,11 +365,11 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 			}
 			this.setTicker((short) (this.getTicker() + 1));
 
-			if (isActive() && getWrenchcanwork()) {
-				setWrenchcanwork(false);
+			if (isActive() && getWrenchDropRate() <= 1) {
+				setWrenchRate(0);
 			}
-			if (!isActive() && !getWrenchcanwork()) {
-				setWrenchcanwork(true);
+			if (!isActive() && getWrenchDropRate() >= 0) {
+				setWrenchRate(1);
 			}
 
 			if (!addedToEnergyNet) {
@@ -479,8 +479,8 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 		NetworkedFields.clear();
 
 		NetworkedFields.add("active");
-		NetworkedFields.add("Orientation");
-		NetworkedFields.add("Wrenchcanwork");
+		NetworkedFields.add("facing");
+		NetworkedFields.add("wrenchRate");
 		NetworkedFields.add("SwitchTyp");
 		NetworkedFields.add("linketprojektor");
 		NetworkedFields.add("transmitrange");
@@ -493,7 +493,7 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 	
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
-		if (field.equals("Orientation")) {
+		if (field.equals("facing")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("active")) {
@@ -554,10 +554,6 @@ ISidedInventory, IEnergySink,INetworkHandlerListener,INetworkHandlerEventListene
 		}
 	}
 	
-	@Override
-	public Block getBlocktoDrop() {
-		
-		return ModularForceFieldSystem.MFFSGenerator;
-	}
+
 
 }
