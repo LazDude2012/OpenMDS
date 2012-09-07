@@ -1,2 +1,0 @@
-
-classExists(){try{class.forName(); return true;}catch{return false;}} 
