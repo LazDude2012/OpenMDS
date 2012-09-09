@@ -22,6 +22,8 @@ package chb.mods.mffs.common;
 
 import java.util.List;
 
+import chb.mods.mffs.common.api.IPersonalIDCrad;
+
 
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
@@ -29,7 +31,8 @@ import net.minecraft.src.NBTTagCompound;
 
 
 
-public class ItemCardPersonalID extends Item {
+public class ItemCardPersonalID extends Item implements IPersonalIDCrad{
+	
 	public ItemCardPersonalID(int i) {
 		super(i);
 		setIconIndex(18);
@@ -67,14 +70,26 @@ public class ItemCardPersonalID extends Item {
         nbtTagCompound.setInteger("SecLevel", SecLevel);
     }
 
-    public static int getSecLevel(ItemStack itemStack)
+    public int getSecLevel(ItemStack itemstack)
     {
-    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
+   
+    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
     	if(nbtTagCompound != null)
     	{
     		return nbtTagCompound.getInteger("SecLevel");
     	}
        return 0;
+    }
+    
+    public String getUsername(ItemStack itemstack)
+    {
+    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
+    	if(nbtTagCompound != null)
+    	{
+    		return nbtTagCompound.getString("name") ;
+    	}
+       return "nobody";
+    	
     }
 
     @Override

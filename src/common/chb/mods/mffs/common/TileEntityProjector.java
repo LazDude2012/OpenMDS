@@ -33,6 +33,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
 
+import chb.mods.mffs.common.api.IModularProjector;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
@@ -46,7 +48,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
-public class TileEntityProjector extends TileEntityMaschines implements
+public class TileEntityProjector extends TileEntityMaschines implements IModularProjector,
 ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEntityEventListener{
 	private ItemStack ProjektorItemStacks[];
 

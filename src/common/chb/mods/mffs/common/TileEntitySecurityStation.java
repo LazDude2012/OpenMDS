@@ -214,11 +214,16 @@ ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
 	public void checkslots() {
 		if (getStackInSlot(1) != null) {
 			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSItemIDCard) {
-				this.setMainUser(NBTTagCompoundHelper.getTAGfromItemstack(getStackInSlot(1))
-						.getString("name"));
-
 				ItemCardPersonalID Card = (ItemCardPersonalID) getStackInSlot(1).getItem();
-				if(ItemCardPersonalID.getSecLevel(getStackInSlot(1)) != ModularForceFieldSystem.PERSONALID_FULLACCESS)
+				
+				String name = Card.getUsername(getStackInSlot(1));
+				
+				if(!getMainUser().equals(name))
+				{
+				setMainUser(name);
+				}
+				
+				if(Card.getSecLevel(getStackInSlot(1)) != ModularForceFieldSystem.PERSONALID_FULLACCESS)
 				{
 					Card.setSeclevel(getStackInSlot(1), ModularForceFieldSystem.PERSONALID_FULLACCESS);
 				}
@@ -233,7 +238,7 @@ ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
 		if (getStackInSlot(2) != null) {
 			if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSItemIDCard) {
 				ItemCardPersonalID Card = (ItemCardPersonalID) getStackInSlot(2).getItem();
-				if(ItemCardPersonalID.getSecLevel(getStackInSlot(2)) != ModularForceFieldSystem.PERSONALID_FULLACCESS)
+				if(Card.getSecLevel(getStackInSlot(2)) != ModularForceFieldSystem.PERSONALID_FULLACCESS)
 				{
 					Card.setSeclevel(getStackInSlot(2),ModularForceFieldSystem.PERSONALID_FULLACCESS);
 				}
