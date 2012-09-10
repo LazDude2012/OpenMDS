@@ -10,6 +10,7 @@ import ic2.api.INetworkDataProvider;
 import ic2.api.INetworkUpdateListener;
 import ic2.api.NetworkHelper;
 import net.minecraft.src.Container;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
@@ -26,17 +27,115 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 	private boolean addedToEnergyNet;
 	private boolean create;
 	private int Extractor_ID;
-		
+	private int WorkEnergy;
+	private int MaxWorkEnergy;
+	private int ForceEnergybuffer;
+	private int MaxForceEnergyBuffer;
+	private int WorkCylce;
+	
+	
 	public TileEntityExtractor() {
 		
 		inventory = new ItemStack[1];
 		create = true;
 		addedToEnergyNet = false;
 		Extractor_ID = 0;
+		WorkEnergy = 0;
+		MaxWorkEnergy = 2048;
+		ForceEnergybuffer = 0;
+		MaxForceEnergyBuffer = 1000000;
+		WorkCylce = 0;
+	}
+	
+	public void setWorkCylce(int i)
+	{
+		this.WorkCylce = i;
+	}
+	
+	public int getWorkCylce(){
+		return WorkCylce;
+	}
+	
+	public int getWorkEnergy() {
+		return WorkEnergy;
+	}
+
+	public void setWorkEnergy(int workEnergy) {
+		WorkEnergy = workEnergy;
+	}
+
+	public int getMaxWorkEnergy() {
+		return MaxWorkEnergy;
+	}
+
+
+	public void setMaxWorkEnergy(int maxWorkEnergy) {
+		MaxWorkEnergy = maxWorkEnergy;
+	}
+
+	private boolean hasPowertoConvert()
+	{
+		if(WorkEnergy == MaxWorkEnergy)
+		{
+		 WorkEnergy = 0;
+		 return true;
+		}
+		return false;
+	}
+	
+	private boolean hasfreeForceEnergyStorage()
+	{
+		if(this.MaxForceEnergyBuffer > this.ForceEnergybuffer)
+		 return true;
+		return false;
+	}
+	
+	
+	private boolean hasStufftoConvert()
+	{
+		if (WorkCylce > 0)
+		{
+			return true;
+			
+		}else{
+		
+		if (getStackInSlot(0) != null) {
+				if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemForcicium) {
+				
+			      WorkCylce = 10;
+			      decrStackSize(0, 1);
+			      return true;
+					
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
+			
+			
+			if (this.getTicker() == 20) {
+
+				if(this.hasfreeForceEnergyStorage())
+				{
+					if(this.hasStufftoConvert())
+					{
+						if(this.hasPowertoConvert())
+						{
+						  this.WorkEnergy = 0;
+						  this.WorkCylce--;
+						  this.ForceEnergybuffer += 100000;	
+							
+						}
+					}
+				}
+				
+				this.setTicker((short) 0);
+			}
+			this.setTicker((short) (this.getTicker() + 1));
 			
 			
 			
@@ -69,86 +168,21 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 
 	
 	@Override
-	public int getSizeInventory() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int var1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ItemStack decrStackSize(int var1, int var2) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int var1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setInventorySlotContents(int var1, ItemStack var2) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getInvName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void openChest() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void closeChest() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public int getStartInventorySide(ForgeDirection side) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
-	public int getSizeInventorySide(ForgeDirection side) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
 	public boolean demandsEnergy() {
-		// TODO Auto-generated method stub
+		if(this.MaxWorkEnergy != this.WorkEnergy)
+		{
+			return true;
+		}
 		return false;
 	}
 
 
 	@Override
 	public int injectEnergy(Direction directionFrom, int amount) {
-		// TODO Auto-generated method stub
-		return 0;
+	   WorkEnergy =+ amount;
+	   return  WorkEnergy - MaxWorkEnergy;
 	}
+	
 	@Override
 	public void invalidate() {
 		if (addedToEnergyNet) {
@@ -225,8 +259,72 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 
 		nbttagcompound.setTag("Items", nbttaglist);
 	}
-
 	
+	public ItemStack getStackInSlot(int i) {
+		return inventory[i];
+	}
+
+	public String getInvName() {
+		return "Extractor";
+	}
+
+	public int getInventoryStackLimit() {
+		return 64;
+	}
+
+	public int getSizeInventory() {
+		return inventory.length;
+	}
+	
+	public void setInventorySlotContents(int i, ItemStack itemstack) {
+		inventory[i] = itemstack;
+		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
+			itemstack.stackSize = getInventoryStackLimit();
+		}
+	}
+	
+	public ItemStack decrStackSize(int i, int j) {
+		if (inventory[i] != null) {
+			if (inventory[i].stackSize <= j) {
+				ItemStack itemstack = inventory[i];
+				inventory[i] = null;
+				return itemstack;
+			}
+			ItemStack itemstack1 = inventory[i].splitStack(j);
+			if (inventory[i].stackSize == 0) {
+				inventory[i] = null;
+			}
+			return itemstack1;
+		} else {
+			return null;
+		}
+	}
+	
+	@Override
+	public ItemStack getStackInSlotOnClosing(int var1) {
+		return null;
+	}
+
+	@Override
+	public int getStartInventorySide(ForgeDirection side) {
+		return 1;
+	}
+
+	@Override
+	public int getSizeInventorySide(ForgeDirection side) {
+		return 1;
+	}
+	
+
+	@Override
+	public void openChest() {
+	}
+
+	@Override
+	public void closeChest(){ 
+	}
+	
+
 	
 
 }

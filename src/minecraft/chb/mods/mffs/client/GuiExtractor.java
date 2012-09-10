@@ -1,5 +1,5 @@
 /*  
-    Copyright (C) 2012 Thunderdark
+     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -46,6 +46,12 @@ public class GuiExtractor extends GuiContainer {
 		int w = (width - xSize) / 2;
 		int k = (height - ySize) / 2;
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
+		
+		int i1 = (79 * (tileEntity.getWorkEnergy())) / (tileEntity.getMaxWorkEnergy());
+		drawTexturedModalRect(w + 49, k + 69, 176, 0, i1+1, 79);
+		
+		int l1 = (32 * tileEntity.getWorkCylce()) / 10;
+		drawTexturedModalRect(w + 74,k + 30, 180,82,l1+1,32);
 	}
 	@Override
 	protected void drawGuiContainerForegroundLayer() {

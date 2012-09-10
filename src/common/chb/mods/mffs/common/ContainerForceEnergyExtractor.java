@@ -22,6 +22,7 @@ package chb.mods.mffs.common;
 
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.ICrafting;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 
@@ -29,13 +30,17 @@ public class ContainerForceEnergyExtractor extends Container {
 	
 	private TileEntityExtractor Extractor;
 	private EntityPlayer player;
+	private int WorkEnergy;
+	private int WorkCylce;
 
 	public ContainerForceEnergyExtractor(EntityPlayer player,
 			TileEntityExtractor tileentity) {
 		Extractor = tileentity;
 		this.player = player;
+		WorkEnergy = -1;
+		WorkCylce = -1;
 
-		addSlotToContainer(new Slot(Extractor, 1, 43, 26)); // MasterCard
+		addSlotToContainer(new Slot(Extractor, 0, 82, 6)); // Forcecium Input 
 
 		int var3;
 
@@ -78,4 +83,42 @@ public class ContainerForceEnergyExtractor extends Container {
 		}
 		return itemstack;
 	}
+	
+	
+	public void updateProgressBar(int i, int j) {
+		switch (i) {
+		case 1:
+			Extractor.setWorkEnergy(j);
+			break;
+
+		case 0:
+			Extractor.setWorkCylce(j);
+			break;
+       }
+	}
+	
+	
+	@Override
+	public void updateCraftingResults() {
+		super.updateCraftingResults();
+
+		for (int i = 0; i < crafters.size(); i++) {
+			ICrafting icrafting = (ICrafting) crafters.get(i);
+
+			if (WorkEnergy != Extractor.getWorkEnergy()) {
+				icrafting.updateCraftingInventoryInfo(this, 0,
+						Extractor.getWorkEnergy());
+			}
+			if (WorkCylce != Extractor.getWorkCylce()) {
+				icrafting.updateCraftingInventoryInfo(this, 1,
+						Extractor.getWorkCylce());
+			}
+
+		}
+
+		WorkEnergy = Extractor.getWorkEnergy();
+		WorkCylce = Extractor.getWorkCylce();
+	}
+	
+	
 }
