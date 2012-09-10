@@ -32,7 +32,7 @@ public final class Linkgrid {
 
 	static class Worldlinknet {
 		private Map<Integer, TileEntityProjector> Projektor = new Hashtable<Integer, TileEntityProjector>();
-		private Map<Integer, TileEntityGenerator> Generator = new Hashtable<Integer, TileEntityGenerator>();
+		private Map<Integer, TileEntityCapacitor> Capacitors = new Hashtable<Integer, TileEntityCapacitor>();
 		private Map<Integer, TileEntitySecurityStation> SecStation = new Hashtable<Integer, TileEntitySecurityStation>();
 		private Map<Integer, TileEntityAreaDefenseStation> DefStation = new Hashtable<Integer, TileEntityAreaDefenseStation>();
 		private Map<Integer, TileEntityProjector> Jammer = new Hashtable<Integer, TileEntityProjector>();
@@ -42,8 +42,8 @@ public final class Linkgrid {
 			return Projektor;
 		}
 
-		public Map<Integer, TileEntityGenerator> getGenerator() {
-			return Generator;
+		public Map<Integer, TileEntityCapacitor> getCapacitor() {
+			return Capacitors;
 		}
 
 		public Map<Integer, TileEntitySecurityStation> getSecStation() {
@@ -62,15 +62,15 @@ public final class Linkgrid {
 			return FieldFusion;
 		}
 
-		public int newGenerator_ID(TileEntityGenerator tileEntityGeneratorCore) {
+		public int newGenerator_ID(TileEntityCapacitor tileEntityCapacitor) {
 			Random random = new Random();
-			int tempGenerator_ID = random.nextInt();
+			int tempCapacitor_ID = random.nextInt();
 
-			while (Generator.get(tempGenerator_ID) != null) {
-				tempGenerator_ID = random.nextInt();
+			while (Capacitors.get(tempCapacitor_ID) != null) {
+				tempCapacitor_ID = random.nextInt();
 			}
-			Generator.put(tempGenerator_ID, tileEntityGeneratorCore);
-			return tempGenerator_ID;
+			Capacitors.put(tempCapacitor_ID, tileEntityCapacitor);
+			return tempCapacitor_ID;
 		}
 
 		public int newSecStation_ID(TileEntitySecurityStation tileEntity) {

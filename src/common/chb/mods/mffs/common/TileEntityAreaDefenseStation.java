@@ -225,12 +225,12 @@ ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 							getStackInSlot(0)).getInteger("Generator_ID"));
 					}
 
-				if(Linkgrid.getWorldMap(worldObj).getGenerator().get(this.getLinkGenerator_ID())!=null)
+				if(Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getLinkGenerator_ID())!=null)
 				{
-				 int transmit =	Linkgrid.getWorldMap(worldObj).getGenerator().get(this.getLinkGenerator_ID()).getTransmitrange();
-				 int gen_x=Linkgrid.getWorldMap(worldObj).getGenerator().get(this.getLinkGenerator_ID()).xCoord - this.xCoord;
-			     int gen_y=Linkgrid.getWorldMap(worldObj).getGenerator().get(this.getLinkGenerator_ID()).yCoord - this.yCoord;
-			     int gen_z=Linkgrid.getWorldMap(worldObj).getGenerator().get(this.getLinkGenerator_ID()).zCoord - this.zCoord;
+				 int transmit =	Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getLinkGenerator_ID()).getTransmitrange();
+				 int gen_x=Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getLinkGenerator_ID()).xCoord - this.xCoord;
+			     int gen_y=Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getLinkGenerator_ID()).yCoord - this.yCoord;
+			     int gen_z=Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getLinkGenerator_ID()).zCoord - this.zCoord;
 
 				 if(Math.sqrt(gen_x * gen_x + gen_y * gen_y + gen_z * gen_z) <= transmit)
 				 {
@@ -341,10 +341,10 @@ ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 				this.setLinkGenerator(true);
 				try {
 					this.setLinkPower(Linkgrid.getWorldMap(worldObj)
-							.getGenerator().get(this.getLinkGenerator_ID())
+							.getCapacitor().get(this.getLinkGenerator_ID())
 							.getForcepower());
 					this.setMaxlinkPower(Linkgrid.getWorldMap(worldObj)
-							.getGenerator().get(this.getLinkGenerator_ID())
+							.getCapacitor().get(this.getLinkGenerator_ID())
 							.getMaxforcepower());
 				} catch (java.lang.NullPointerException ex) {
 					this.setLinkGenerator(false);

@@ -48,17 +48,17 @@ public class ItemCardSecurityLink extends Item  {
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
 
 		if (!world.isRemote) {
-			if (tileEntity instanceof TileEntityGenerator) {
-				if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityGenerator)tileEntity).getSecStation_ID()) != null)
+			if (tileEntity instanceof TileEntityCapacitor) {
+				if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()) != null)
 				{
-					if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityGenerator)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+					if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
 						return false;
 					}
 				}
 
-				if(((TileEntityGenerator)tileEntity).getStackInSlot(4)==null)
+				if(((TileEntityCapacitor)tileEntity).getStackInSlot(4)==null)
 				{
-					((TileEntityGenerator)tileEntity).setInventorySlotContents(4,itemstack);
+					((TileEntityCapacitor)tileEntity).setInventorySlotContents(4,itemstack);
 					entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
 					Functions.ChattoPlayer(entityplayer, "[Generator] Success: <Security Station Link> Card installed");
 					return true;

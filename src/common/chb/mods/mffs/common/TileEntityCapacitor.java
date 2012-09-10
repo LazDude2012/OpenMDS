@@ -45,33 +45,31 @@ import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
-public class TileEntityGenerator extends TileEntityMaschines implements
-ISidedInventory, IEnergySink,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEntityEventListener{
+public class TileEntityCapacitor extends TileEntityMaschines implements
+ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEntityEventListener{
 	private ItemStack inventory[];
 	private int forcepower;
 	private int maxforcepower;
 	private int transmitrange;
-	private int Generator_ID;
+	private int Capacitor_ID;
 	private int SecStation_ID;
 	private boolean create;
 	private boolean LinkedSecStation;
 	private short linketprojektor;
-	private boolean addedToEnergyNet;
 	private boolean euinjektor;
 	private int capacity;
 	private int SwitchTyp;
 	private boolean OnOffSwitch;
 
-	public TileEntityGenerator() {
+	public TileEntityCapacitor() {
 		inventory = new ItemStack[5];
 		transmitrange = 8;
 		SecStation_ID = 0;
 		forcepower = 0;
 		maxforcepower = 10000000;
-		Generator_ID = 0;
+		Capacitor_ID = 0;
 		linketprojektor = 0;
 		create = true;
-		addedToEnergyNet = false;
 		euinjektor = false;
 		LinkedSecStation = false;
 		capacity = 0;
@@ -106,7 +104,7 @@ ISidedInventory, IEnergySink,INetworkDataProvider,INetworkUpdateListener,INetwor
 	}
 
 	public Container getContainer(InventoryPlayer inventoryplayer) {
-		return new ContainerGenerator(inventoryplayer.player, this);
+		return new ContainerCapacitor(inventoryplayer.player, this);
 	}
 
 	public boolean isLinkedSecStation() {
@@ -155,8 +153,8 @@ ISidedInventory, IEnergySink,INetworkDataProvider,INetworkUpdateListener,INetwor
 		return transmitrange;
 	}
 
-	public int getGenerator_ID() {
-		return Generator_ID;
+	public int getCapacitor_ID() {
+		return Capacitor_ID;
 	}
 
 	public int getSizeInventory() {
@@ -169,38 +167,38 @@ ISidedInventory, IEnergySink,INetworkDataProvider,INetworkUpdateListener,INetwor
 		int temp_maxforcepower = 10000000;
 
 		if (getStackInSlot(0) != null) {
-			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemupgradegencap) {
+			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemupgradecapcap) {
 				temp_maxforcepower += (2000000 * getStackInSlot(0).stackSize);
 			}
-			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemupgradegenrange) {
+			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemupgradecaprange) {
 				stacksize = getStackInSlot(0).stackSize;
 			}
 
-			if (getStackInSlot(0).getItem() != ModularForceFieldSystem.MFFSitemupgradegencap
-					&& getStackInSlot(0).getItem() != ModularForceFieldSystem.MFFSitemupgradegenrange) {
+			if (getStackInSlot(0).getItem() != ModularForceFieldSystem.MFFSitemupgradecapcap
+					&& getStackInSlot(0).getItem() != ModularForceFieldSystem.MFFSitemupgradecaprange) {
 				dropplugins(0,this);
 			}
 		}
 
 		if (getStackInSlot(1) != null) {
-			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSitemupgradegencap) {
+			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSitemupgradecapcap) {
 				temp_maxforcepower += (2000000 * getStackInSlot(1).stackSize);
 			}
-			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSitemupgradegenrange) {
+			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSitemupgradecaprange) {
 				stacksize += getStackInSlot(1).stackSize;
 			}
 
-			if (getStackInSlot(1).getItem() != ModularForceFieldSystem.MFFSitemupgradegencap
-					&& getStackInSlot(1).getItem() != ModularForceFieldSystem.MFFSitemupgradegenrange) {
+			if (getStackInSlot(1).getItem() != ModularForceFieldSystem.MFFSitemupgradecapcap
+					&& getStackInSlot(1).getItem() != ModularForceFieldSystem.MFFSitemupgradecaprange) {
 				dropplugins(1,this);
 			}
 		}
 
 		if (getStackInSlot(2) != null) {
-			if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSitemUpgradegenEUInjektor) {
+			if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSitemUpgradecapEUInjektor) {
 				euinjektor = true;
 			}
-			if (getStackInSlot(2).getItem() != ModularForceFieldSystem.MFFSitemUpgradegenEUInjektor) {
+			if (getStackInSlot(2).getItem() != ModularForceFieldSystem.MFFSitemUpgradecapEUInjektor) {
 				dropplugins(2,this);
 			}
 		} else {
@@ -257,12 +255,12 @@ ISidedInventory, IEnergySink,INetworkDataProvider,INetworkUpdateListener,INetwor
 	}
 
 	public void addtogrid() {
-		Linkgrid.getWorldMap(worldObj).getGenerator()
-				.put(getGenerator_ID(), this);
+		Linkgrid.getWorldMap(worldObj).getCapacitor()
+				.put(getCapacitor_ID(), this);
 	}
 
 	public void removefromgrid() {
-		Linkgrid.getWorldMap(worldObj).getGenerator().remove(getGenerator_ID());
+		Linkgrid.getWorldMap(worldObj).getCapacitor().remove(getCapacitor_ID());
 		dropplugins();
 	}
 
@@ -273,7 +271,7 @@ ISidedInventory, IEnergySink,INetworkDataProvider,INetworkUpdateListener,INetwor
 		forcepower = nbttagcompound.getInteger("forcepower");
 		maxforcepower = nbttagcompound.getInteger("maxforcepower");
 		transmitrange = nbttagcompound.getInteger("transmitrange");
-		Generator_ID = nbttagcompound.getInteger("Generator_ID");
+		Capacitor_ID = nbttagcompound.getInteger("Capacitor_ID");
 
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		inventory = new ItemStack[getSizeInventory()];
@@ -296,7 +294,7 @@ ISidedInventory, IEnergySink,INetworkDataProvider,INetworkUpdateListener,INetwor
 		nbttagcompound.setInteger("forcepower", forcepower);
 		nbttagcompound.setInteger("maxforcepower", maxforcepower);
 		nbttagcompound.setInteger("transmitrange", transmitrange);
-		nbttagcompound.setInteger("Generator_ID", Generator_ID);
+		nbttagcompound.setInteger("Capacitor_ID", Capacitor_ID);
 
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < inventory.length; i++) {
@@ -323,14 +321,14 @@ ISidedInventory, IEnergySink,INetworkDataProvider,INetworkUpdateListener,INetwor
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			if (create) {
-				if (Generator_ID == 0) {
-					Generator_ID = Linkgrid.getWorldMap(worldObj)
+				if (Capacitor_ID == 0) {
+					Capacitor_ID = Linkgrid.getWorldMap(worldObj)
 							.newGenerator_ID(this);
-					Linkgrid.getWorldMap(worldObj).getGenerator()
-							.put(getGenerator_ID(), this);
+					Linkgrid.getWorldMap(worldObj).getCapacitor()
+							.put(getCapacitor_ID(), this);
 				} else {
-					Linkgrid.getWorldMap(worldObj).getGenerator()
-							.put(getGenerator_ID(), this);
+					Linkgrid.getWorldMap(worldObj).getCapacitor()
+							.put(getCapacitor_ID(), this);
 				}
 				create = false;
 			}
@@ -358,7 +356,7 @@ ISidedInventory, IEnergySink,INetworkDataProvider,INetworkUpdateListener,INetwor
 			if (this.getTicker() == 10) {
 				
 				setLinketprojektor((short) Linkgrid.getWorldMap(worldObj)
-						.condevisec(getGenerator_ID(), xCoord, yCoord, zCoord,
+						.condevisec(getCapacitor_ID(), xCoord, yCoord, zCoord,
 								getTransmitrange()));
 				
 				this.setCapacity(((getForcepower()/1000)*100)/(getMaxforcepower()/1000));
@@ -374,10 +372,6 @@ ISidedInventory, IEnergySink,INetworkDataProvider,INetworkUpdateListener,INetwor
 				setWrenchRate(1);
 			}
 
-			if (!addedToEnergyNet) {
-				EnergyNet.getForWorld(worldObj).addTileEntity(this);
-				addedToEnergyNet = true;
-			}
 		} else {
 			if (create) {
 				NetworkHelper.requestInitialData(this);
@@ -429,47 +423,7 @@ ISidedInventory, IEnergySink,INetworkDataProvider,INetworkUpdateListener,INetwor
 		return null;
 	}
 
-	public void invalidate() {
-		if (addedToEnergyNet) {
-			EnergyNet.getForWorld(worldObj).removeTileEntity(this);
-			addedToEnergyNet = false;
-		}
 
-		super.invalidate();
-	}
-
-	@Override
-	public boolean acceptsEnergyFrom(TileEntity tileentity, Direction direction) {
-		return true;
-	}
-
-	@Override
-	public boolean isAddedToEnergyNet() {
-		return addedToEnergyNet;
-	}
-
-	@Override
-	public boolean demandsEnergy() {
-		if (this.isActive() && euinjektor) {
-			if (this.getForcepower() < this.getMaxforcepower()) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public int injectEnergy(Direction directionFrom, int amount) {
-		this.setForcepower(this.getForcepower() + (amount * 10));
-		int j = 0;
-		if (this.getForcepower() > this.getMaxforcepower()) {
-			j = this.getForcepower() - this.getMaxforcepower();
-			this.setForcepower(this.getMaxforcepower());
-		}
-		return (int) (j / 10);
-	}
 
 	@Override
 	public void openChest() {

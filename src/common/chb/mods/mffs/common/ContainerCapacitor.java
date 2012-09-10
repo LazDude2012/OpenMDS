@@ -26,8 +26,8 @@ import net.minecraft.src.ICrafting;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 
-public class ContainerGenerator extends Container {
-	private TileEntityGenerator generatorentity;
+public class ContainerCapacitor extends Container {
+	private TileEntityCapacitor generatorentity;
 
 	private int forcepower;
 	private int maxforcepower;
@@ -35,8 +35,8 @@ public class ContainerGenerator extends Container {
 	private short linketprojektor;
 	private EntityPlayer player;
 
-	public ContainerGenerator(EntityPlayer player,
-			TileEntityGenerator tileentity) {
+	public ContainerCapacitor(EntityPlayer player,
+			TileEntityCapacitor tileentity) {
 		forcepower = -1;
 		maxforcepower = -1;
 		transmitrange = -1;

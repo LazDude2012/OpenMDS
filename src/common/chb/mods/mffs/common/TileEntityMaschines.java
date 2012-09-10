@@ -100,11 +100,11 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencha
 		   {
 				  if(((TileEntityProjector)this).getaccesstyp()==2)
 				  {
-					if(Linkgrid.getWorldMap(worldObj).getGenerator().get(((TileEntityProjector)this).getLinkGenerator_ID())!= null)
+					if(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityProjector)this).getLinkGenerator_ID())!= null)
 					{
-					if(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getGenerator().get(((TileEntityProjector)this).getLinkGenerator_ID()).getSecStation_ID()) != null)
+					if(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityProjector)this).getLinkGenerator_ID()).getSecStation_ID()) != null)
 					{
-						if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getGenerator().get(((TileEntityProjector)this).getLinkGenerator_ID()).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+						if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityProjector)this).getLinkGenerator_ID()).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
 							return false;
 						}
 					}
@@ -129,11 +129,11 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencha
 				}
 		   }
 
-		   if(this instanceof TileEntityGenerator)
+		   if(this instanceof TileEntityCapacitor)
 		   {
-			   if(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityGenerator)this).getSecStation_ID()) != null)
+			   if(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityCapacitor)this).getSecStation_ID()) != null)
 			   {
-					if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityGenerator)this)).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+					if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityCapacitor)this)).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
 					return false;
 					}
 			   }
@@ -195,11 +195,11 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencha
 		
 		
 		
-	   if(this instanceof TileEntityGenerator)
+	   if(this instanceof TileEntityCapacitor)
 	   {
-		 if(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityGenerator)this).getSecStation_ID()) != null)
+		 if(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityCapacitor)this).getSecStation_ID()) != null)
 			{
-		      if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityGenerator)this).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+		      if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityCapacitor)this).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
 					return false;
 				}
 			}
@@ -209,11 +209,11 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencha
 	   {
 		  if(((TileEntityProjector)this).getaccesstyp()==2)
 		  {
-			if(Linkgrid.getWorldMap(worldObj).getGenerator().get(((TileEntityProjector)this).getLinkGenerator_ID())!= null)
+			if(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityProjector)this).getLinkGenerator_ID())!= null)
 			{
-			if(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getGenerator().get(((TileEntityProjector)this).getLinkGenerator_ID()).getSecStation_ID()) != null)
+			if(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityProjector)this).getLinkGenerator_ID()).getSecStation_ID()) != null)
 			{
-				if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getGenerator().get(((TileEntityProjector)this).getLinkGenerator_ID()).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+				if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityProjector)this).getLinkGenerator_ID()).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
 					return false;
 				}
 			}

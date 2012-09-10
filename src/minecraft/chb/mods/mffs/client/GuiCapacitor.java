@@ -28,22 +28,22 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
-import chb.mods.mffs.common.ContainerGenerator;
-import chb.mods.mffs.common.TileEntityGenerator;
+import chb.mods.mffs.common.ContainerCapacitor;
+import chb.mods.mffs.common.TileEntityCapacitor;
 
 
-public class GuiGenerator extends GuiContainer {
-	private TileEntityGenerator Core;
+public class GuiCapacitor extends GuiContainer {
+	private TileEntityCapacitor Core;
 
-	public GuiGenerator(EntityPlayer player,
-			TileEntityGenerator tileentity) {
-		super(new ContainerGenerator(player, tileentity));
+	public GuiCapacitor(EntityPlayer player,
+			TileEntityCapacitor tileentity) {
+		super(new ContainerCapacitor(player, tileentity));
 		Core = tileentity;
 	}
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		int textur = mc.renderEngine
-				.getTexture("/chb/mods/mffs/sprites/GuiGenerator.png");
+				.getTexture("/chb/mods/mffs/sprites/GuiCapacitor.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(textur);
 		int w = (width - xSize) / 2;
@@ -54,7 +54,7 @@ public class GuiGenerator extends GuiContainer {
 	}
 	@Override
 	protected void drawGuiContainerForegroundLayer() {
-		fontRenderer.drawString("MFFS Force Power Gen. V2", 5, 5, 0x404040);
+		fontRenderer.drawString("Force Energy Capacitor", 5, 5, 0x404040);
 		fontRenderer.drawString("Force Energy", 15, 50, 0x404040);
 		fontRenderer.drawString(
 				(new StringBuilder()).append(" ").append(Core.getForcepower())

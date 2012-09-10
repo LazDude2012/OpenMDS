@@ -26,20 +26,20 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
-public class BlockGenerator extends BlockMFFSBase {
-	public BlockGenerator(int i, int texturindex) {
+public class BlockCapacitor extends BlockMFFSBase {
+	public BlockCapacitor(int i, int texturindex) {
 		super(i, texturindex);
 		setRequiresSelfNotify();
 	}
 
 	@Override
 	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/generator.png";
+		return "/chb/mods/mffs/sprites/Capacitor.png";
 	}
 
 	public Integer getGui(World world, int i, int j, int k,
 			EntityPlayer entityplayer) {
-		return ModularForceFieldSystem.GUI_GENERATOR;
+		return ModularForceFieldSystem.GUI_CAPACITOR;
 	}
 
 	
@@ -69,7 +69,7 @@ public class BlockGenerator extends BlockMFFSBase {
 	
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityGenerator();
+		return new TileEntityCapacitor();
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class BlockGenerator extends BlockMFFSBase {
 			return false;
         }
 
-		TileEntityGenerator tileentity = (TileEntityGenerator) world
+		TileEntityCapacitor tileentity = (TileEntityCapacitor) world
 				.getBlockTileEntity(i, j, k);
 
 		if(Linkgrid.getWorldMap(world).getSecStation().get(tileentity.getSecStation_ID()) != null)

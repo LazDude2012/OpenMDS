@@ -23,7 +23,7 @@ package chb.mods.mffs.client;
 import org.lwjgl.opengl.GL11;
 
 import chb.mods.mffs.common.TileEntityProjector;
-import chb.mods.mffs.common.TileEntityGenerator;
+import chb.mods.mffs.common.TileEntityCapacitor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.TileEntity;
@@ -86,11 +86,11 @@ public class GuigrafikButton extends GuiButton
                 }
             }
 
-            if(tileEntity instanceof TileEntityGenerator)
+            if(tileEntity instanceof TileEntityCapacitor)
             {
                 if(typ == 2)
                 {
-                    switch(((TileEntityGenerator)tileEntity).getswitchtyp())
+                    switch(((TileEntityCapacitor)tileEntity).getswitchtyp())
                     {
                     case 0:
                     	this.drawTexturedModalRect(this.xPosition, this.yPosition, 80, 80, this.width, this.height);

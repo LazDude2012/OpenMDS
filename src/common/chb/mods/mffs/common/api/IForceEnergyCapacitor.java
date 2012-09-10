@@ -18,24 +18,22 @@
     Thunderdark - initial implementation
 */
 
-package chb.mods.mffs.common;
+package chb.mods.mffs.common.api;
 
-import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.Item;
+public interface IForceEnergyCapacitor {
+	public int getcapacity();
+	// Charging status in %
 
-public class ItemGeneratorUpgradeRange extends Item  {
-	public ItemGeneratorUpgradeRange(int i) {
-		super(i);
-		setIconIndex(33);
-		setMaxStackSize(9);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
-	}
+	public int getMaxforcepower();
+	//Max ForcePower for this Generator
 
-	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/items.png";
-	}
+	public int getForcepower();
+	// ForcePower left in his Generator
 
-	public boolean isRepairable() {
-		return false;
-	}
+	public int getTransmitrange();
+	// Range of maximum transmit
+
+	public Short getLinketprojektor();
+	 //count of paired device
+
 }

@@ -49,16 +49,16 @@ public class ItemCardEmpty extends Item {
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
 
 		if (!world.isRemote) {
-			if (tileEntity instanceof TileEntityGenerator) {
-				if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityGenerator)tileEntity).getSecStation_ID()) != null)
+			if (tileEntity instanceof TileEntityCapacitor) {
+				if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()) != null)
 				{
-					if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityGenerator)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,2))) {
+					if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,2))) {
 						return false;
 					}
 				}
 
 				ItemStack newcard =  new ItemStack(ModularForceFieldSystem.MFFSitemfc);
-				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Generator_ID", ((TileEntityGenerator)tileEntity).getGenerator_ID());
+				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Generator_ID", ((TileEntityCapacitor)tileEntity).getCapacitor_ID());
 				entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
 				Functions.ChattoPlayer(entityplayer, "[Generator] Success: <Power-Link> Card create");
 				return true;

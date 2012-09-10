@@ -61,11 +61,12 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @NetworkMod(channels = { "MFFS" },clientSideRequired = true, serverSideRequired = false)
 
 public class ModularForceFieldSystem {
-	public static final int GUI_GENERATOR = 1;
+	public static final int GUI_CAPACITOR= 1;
 	public static final int GUI_PROJECTOR = 2;
 	public static final int GUI_SECSTATION = 3;
 	public static final int GUI_DEFSTATION = 4;
-
+	public static final int GUI_EXTRACTOR = 5;
+	
 	public static final int FORCEFIELBOCKMETA_DEFAULT = 0;
 	public static final int FORCEFIELBOCKMETA_ZAPPER = 1;
 	public static final int FORCEFIELBOCKMETA_AREA = 2;
@@ -77,12 +78,13 @@ public class ModularForceFieldSystem {
 
 	public static  int FORCEFIELDRENDER_ID =2908;
 
-	public static Block MFFSGenerator;
+	public static Block MFFSCapacitor;
 	public static Block MFFSProjector;
 	public static Block MFFSSecurtyStation;
 	public static Block MFFSDefenceStation;
 	public static Block MFFSFieldblock;
-
+	public static Block MFFSExtractor;
+	
 	public static Block MFFSMonazitOre;
 	public static Item MFFSitemForcicium;
 	public static Item MFFSitemForcePowerCrystal;
@@ -99,9 +101,9 @@ public class ModularForceFieldSystem {
 	public static Item MFFSItemIDCard;
 	public static Item MFFSItemSecLinkCard;
 
-	public static Item MFFSitemupgradegenrange;
-	public static Item MFFSitemupgradegencap;
-	public static Item MFFSitemUpgradegenEUInjektor;
+	public static Item MFFSitemupgradecaprange;
+	public static Item MFFSitemupgradecapcap;
+	public static Item MFFSitemUpgradecapEUInjektor;
 
 	public static Item MFFSProjectorTypsphere;
 	public static Item MFFSProjectorTypkube;
@@ -167,10 +169,11 @@ public class ModularForceFieldSystem {
 			MobDefenseDamage = MFFSconfig.getOrCreateIntProperty("MobDefenseDamage", Configuration.CATEGORY_GENERAL,10).getInt(10);
 			DefenseStationFPpeerAttack = MFFSconfig.getOrCreateIntProperty("DefenseStationFPpeerAttack", Configuration.CATEGORY_GENERAL,25000).getInt(25000);
 		
+			MFFSExtractor = new BlockForceEnergyExtractor(MFFSconfig.getOrCreateBlockIdProperty("MFFSExtractor", 4076).getInt(4076),0).setBlockName("MFFSExtractor");
 		    MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getOrCreateBlockIdProperty("MFFSMonazitOre", 4077).getInt(4077)).setBlockName("MFFSMonazitOre");
 			MFFSDefenceStation = new BlockAreaDefenseStation(MFFSconfig.getOrCreateBlockIdProperty("MFFSDefenceStation", 4078).getInt(4078),0).setBlockName("MFFSDefenceStation");
 			MFFSSecurtyStation = new BlockSecurtyStation(MFFSconfig.getOrCreateBlockIdProperty("MFFSSecurtyStation", 4079).getInt(4079),0).setBlockName("MFFSSecurtyStation");
-			MFFSGenerator = new BlockGenerator(MFFSconfig.getOrCreateBlockIdProperty("MFFSGenerator", 4080).getInt(4080),0).setBlockName("MFFSGenerator");
+			MFFSCapacitor = new BlockCapacitor(MFFSconfig.getOrCreateBlockIdProperty("MFFSCapacitor", 4080).getInt(4080),0).setBlockName("MFFSCapacitor");
 			MFFSProjector = new BlockProjector(MFFSconfig.getOrCreateBlockIdProperty("MFFSProjector", 4081).getInt(4081),0).setBlockName("MFFSProjector");
 			MFFSFieldblock = new BlockForceField(MFFSconfig.getOrCreateBlockIdProperty("MFFSFieldblock", 4082).getInt(4082));
 
@@ -181,9 +184,9 @@ public class ModularForceFieldSystem {
 			MFFSitemMFDdebugger= new ItemDebugger(MFFSconfig.getOrCreateIntProperty("itemMFDdebugger",Configuration.CATEGORY_ITEM,11111).getInt(11111)).setItemName("itemMFDdebugger");
 			MFFSitemcardempty= new ItemCardEmpty(MFFSconfig.getOrCreateIntProperty("itemcardempty",Configuration.CATEGORY_ITEM,11115).getInt(11115)).setItemName("itemcardempty");
 			MFFSitemfc= new ItemCardPowerLink(MFFSconfig.getOrCreateIntProperty("itemfc",Configuration.CATEGORY_ITEM,11116).getInt(11116)).setItemName("itemfc");
-			MFFSitemUpgradegenEUInjektor= new ItemGeneratorInjektorEU(MFFSconfig.getOrCreateIntProperty("ItemUpgradegenEuinjekt",Configuration.CATEGORY_ITEM,11118).getInt(11116)).setItemName("ItemUpgradegenEuinjekt");
-			MFFSitemupgradegenrange= new ItemGeneratorUpgradeRange(MFFSconfig.getOrCreateIntProperty("itemupgradegenrange",Configuration.CATEGORY_ITEM,11119).getInt(11119)).setItemName("itemupgradegenrange");
-			MFFSitemupgradegencap= new ItemGeneratorUpgradeCapacity(MFFSconfig.getOrCreateIntProperty("itemupgradegencap",Configuration.CATEGORY_ITEM,11120).getInt(11120)).setItemName("itemupgradegencap");
+			MFFSitemUpgradecapEUInjektor= new ItemCapacitorInjektorEU(MFFSconfig.getOrCreateIntProperty("ItemUpgradecapEuinjekt",Configuration.CATEGORY_ITEM,11118).getInt(11116)).setItemName("ItemUpgradecapEuinjekt");
+			MFFSitemupgradecaprange= new ItemCapacitorUpgradeRange(MFFSconfig.getOrCreateIntProperty("itemupgradecaprange",Configuration.CATEGORY_ITEM,11119).getInt(11119)).setItemName("itemupgradecaprange");
+			MFFSitemupgradecapcap= new ItemCapacitorUpgradeCapacity(MFFSconfig.getOrCreateIntProperty("itemupgradecapcap",Configuration.CATEGORY_ITEM,11120).getInt(11120)).setItemName("itemupgradecapcap");
 			MFFSProjectorTypsphere= new ItemProjectorModuleSphere(MFFSconfig.getOrCreateIntProperty("itemProjectorTypsphere",Configuration.CATEGORY_ITEM,11121).getInt(11121)).setItemName("itemProjectorTypsphere");
 			MFFSProjectorTypkube= new ItemProjectorModuleCube(MFFSconfig.getOrCreateIntProperty("itemProjectorTypkube",Configuration.CATEGORY_ITEM,11122).getInt(11122)).setItemName("itemProjectorTypkube");
 			MFFSProjectorTypwall= new ItemProjectorModuleWall(MFFSconfig.getOrCreateIntProperty("itemProjectorTypwall",Configuration.CATEGORY_ITEM,11124).getInt(11124)).setItemName("itemProjectorTypwall");
@@ -219,18 +222,21 @@ public class ModularForceFieldSystem {
 
 	@Init
 	public void load(FMLInitializationEvent evt) {
-		GameRegistry.registerBlock(MFFSGenerator);
+		GameRegistry.registerBlock(MFFSCapacitor);
 		GameRegistry.registerBlock(MFFSProjector);
 		GameRegistry.registerBlock(MFFSSecurtyStation);
 		GameRegistry.registerBlock(MFFSFieldblock);
 		GameRegistry.registerBlock(MFFSDefenceStation);
 		GameRegistry.registerBlock(MFFSMonazitOre);
+		GameRegistry.registerBlock(MFFSExtractor);
 
 		OreDictionary.registerOre("Forcicium", MFFSitemForcicium);
 
+		
+		GameRegistry.registerTileEntity(TileEntityExtractor.class, "MFFSExtractor");
 		GameRegistry.registerTileEntity(TileEntityAreaDefenseStation.class, "MFFSDefenceStation");
 		GameRegistry
-				.registerTileEntity(TileEntityGenerator.class, "MFFSGenerator");
+				.registerTileEntity(TileEntityCapacitor.class, "MFFSCapacitor");
 		GameRegistry
 				.registerTileEntity(TileEntityProjector.class, "MFFSProjector");
 		GameRegistry.registerTileEntity(TileEntitySecurityStation.class,
@@ -244,7 +250,7 @@ public class ModularForceFieldSystem {
 						Item.diamond, 'C', Block.glass });
 
 		CraftingManager.getInstance().addRecipe(
-				new ItemStack(MFFSitemUpgradegenEUInjektor),
+				new ItemStack(MFFSitemUpgradecapEUInjektor),
 				new Object[] { "ABA", "ACA", "ABA", 'A',
 						MFFSitemForcicium,
 						'B',
@@ -255,16 +261,16 @@ public class ModularForceFieldSystem {
 				"AAA", "ABA", "AAA", 'A', Item.paper,
 				'B', Items.getItem("electronicCircuit") });
 
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemupgradegencap),
+		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemupgradecapcap),
 				new Object[] { " A ", "ABA", " A ", 'A',
 						Items.getItem("advancedAlloy"), 'B',
 						Items.getItem("electrolyzedWaterCell") });
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemupgradegenrange),
+		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemupgradecaprange),
 				new Object[] { " A ", "ABA", " A ", 'A',
 						Items.getItem("advancedAlloy"), 'B',
 						Items.getItem("frequencyTransmitter") });
 		CraftingManager.getInstance().addRecipe(
-				new ItemStack(MFFSGenerator, 1),
+				new ItemStack(MFFSCapacitor, 1),
 				new Object[] { "ABA", "CDC", "ABA", 'A',
 						MFFSitemForcePowerCrystal,
 						'B',
@@ -471,15 +477,19 @@ public class ModularForceFieldSystem {
 		}
 
 		for(int meta = 0; meta< 16; meta++)
-		{	Generatetexturindex(Block.cloth, meta);}
-
+		{
+			Generatetexturindex(Block.cloth, meta);
+		}
+		
+		
+		LanguageRegistry.instance().addNameForObject(MFFSExtractor, "en_US", "MFFS Force Energy Extractor");
 		LanguageRegistry.instance().addNameForObject(MFFSMonazitOre,"en_US", "Monazit");
 		LanguageRegistry.instance().addNameForObject(MFFSitemForcicium,"en_US", "Forcicium");
 		LanguageRegistry.instance().addNameForObject(MFFSitemForcePowerCrystal,"en_US", "MFFS Force Energy Crystal");
 		LanguageRegistry.instance().addNameForObject(MFFSitemSwitch,"en_US", "MFFS MultiTool <Switch>");
 		LanguageRegistry.instance().addNameForObject(MFFSitemWrench,"en_US", "MFFS MultiTool <Wrench>");
 		LanguageRegistry.instance().addNameForObject(MFFSDefenceStation,"en_US", "MFFS Area Defense Station");
-		LanguageRegistry.instance().addNameForObject(MFFSGenerator,"en_US", "MFFS Force Power Generator");
+		LanguageRegistry.instance().addNameForObject(MFFSCapacitor,"en_US", "MFFS Force Energy Capacitor");
 		LanguageRegistry.instance().addNameForObject(MFFSProjector,"en_US", "MFFS Modular Projector");
 		LanguageRegistry.instance().addNameForObject(MFFSSecurtyStation,"en_US", "MFFS Security Station");
 		LanguageRegistry.instance().addNameForObject(MFFSitemFocusmatix,"en_US", "MFFS Projector Focus Matrix");
@@ -490,9 +500,9 @@ public class ModularForceFieldSystem {
 		LanguageRegistry.instance().addNameForObject(MFFSItemSecLinkCard,"en_US", "MFFS Card <Security Station Link> ");
 		LanguageRegistry.instance().addNameForObject(MFFSitemMFDdebugger,"en_US", "MFFS Device <Debugger>");
 		LanguageRegistry.instance().addNameForObject(MFFSitemMFDidtool,"en_US", "MFFS MultiTool <ID-Card Coder>");
-		LanguageRegistry.instance().addNameForObject(MFFSitemUpgradegenEUInjektor,"en_US","MFFS  Generator Injektor <EU>");
-		LanguageRegistry.instance().addNameForObject(MFFSitemupgradegenrange,"en_US","MFFS Generator Upgrade <Range> ");
-		LanguageRegistry.instance().addNameForObject(MFFSitemupgradegencap,"en_US","MFFS Generator Upgrade <Capacity> ");
+		LanguageRegistry.instance().addNameForObject(MFFSitemUpgradecapEUInjektor,"en_US","MFFS Capacitor Injektor <EU>");
+		LanguageRegistry.instance().addNameForObject(MFFSitemupgradecaprange,"en_US","MFFS Capacitor Upgrade <Range> ");
+		LanguageRegistry.instance().addNameForObject(MFFSitemupgradecapcap,"en_US","MFFS Capacitor Upgrade <Capacity> ");
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorTypsphere,"en_US","MFFS Projector Module <Sphere> ");
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorTypkube,"en_US",	"MFFS Projector Module <Cube>");
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorTypwall,"en_US","MFFS Projector Module <Wall>");
@@ -519,9 +529,10 @@ public class ModularForceFieldSystem {
 	@PostInit
 	public void modsLoaded(FMLPostInitializationEvent evt) {
 		ExplosionWhitelist.addWhitelistedBlock(MFFSDefenceStation);
-		ExplosionWhitelist.addWhitelistedBlock(MFFSGenerator);
+		ExplosionWhitelist.addWhitelistedBlock(MFFSCapacitor);
 		ExplosionWhitelist.addWhitelistedBlock(MFFSProjector);
 		ExplosionWhitelist.addWhitelistedBlock(MFFSSecurtyStation);
+		ExplosionWhitelist.addWhitelistedBlock(MFFSExtractor);
 	}
 
 	private void Generatetexturindex(Block block, int meta)

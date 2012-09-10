@@ -27,10 +27,11 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import chb.mods.mffs.client.*;
 
 public class CommonProxy implements IGuiHandler {
-	public static final int GUI_GENERATOR = 1;
+	public static final int GUI_CAPACITOR = 1;
 	public static final int GUI_PROJECTOR = 2;
 	public static final int GUI_SECSTATION = 3;
 	public static final int GUI_DEFSTATION = 4;
+	public static final int GUI_EXTRACTOR = 5;
 
 	public void registerRenderInformation()
 {
@@ -48,10 +49,10 @@ public class CommonProxy implements IGuiHandler {
 		}
 
 		switch (ID) {
-		case GUI_GENERATOR:
-			return new GuiGenerator(player,
-					te == null ? new TileEntityGenerator()
-							: ((TileEntityGenerator) te));
+		case GUI_CAPACITOR:
+			return new GuiCapacitor(player,
+					te == null ? new TileEntityCapacitor()
+							: ((TileEntityCapacitor) te));
 		case GUI_PROJECTOR:
 			return new GuiProjector(player,
 					te == null ? new TileEntityProjector()
@@ -64,6 +65,12 @@ public class CommonProxy implements IGuiHandler {
 			return new GuiAreaDefenseStation(player,
 					te == null ? new TileEntityAreaDefenseStation()
 							: ((TileEntityAreaDefenseStation) te));
+			
+		case GUI_EXTRACTOR:
+			return new GuiExtractor(player,
+					te == null ? new TileEntityExtractor()
+							: ((TileEntityExtractor) te));
+		
 		}
 		return null;
 	}
@@ -77,10 +84,10 @@ public class CommonProxy implements IGuiHandler {
 			}
 
 			switch (ID) {
-			case GUI_GENERATOR:
-				return new ContainerGenerator(player,
-						te == null ? new TileEntityGenerator()
-								: ((TileEntityGenerator) te));
+			case GUI_CAPACITOR:
+				return new ContainerCapacitor(player,
+						te == null ? new TileEntityCapacitor()
+								: ((TileEntityCapacitor) te));
 			case GUI_PROJECTOR:
 				return new ContainerProjektor(player,
 						te == null ? new TileEntityProjector()
@@ -94,6 +101,10 @@ public class CommonProxy implements IGuiHandler {
 					return new ContainerAreaDefenseStation(player,
 							te == null ? new TileEntityAreaDefenseStation()
 									: ((TileEntityAreaDefenseStation) te));
+			case GUI_EXTRACTOR:
+				return new ContainerForceEnergyExtractor(player,
+						te == null ? new TileEntityExtractor()
+								: ((TileEntityExtractor) te));
 			}
 			return null;
 		}

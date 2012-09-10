@@ -62,9 +62,9 @@ public abstract class BlockMFFSBase extends BlockContainer {
 	public void onBlockAdded(World world, int i, int j, int k) {
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
 
-		if(tileEntity instanceof TileEntityGenerator)
+		if(tileEntity instanceof TileEntityCapacitor)
 		{
-			((TileEntityGenerator)tileEntity).addtogrid();
+			((TileEntityCapacitor)tileEntity).addtogrid();
 		}
 		if(tileEntity instanceof TileEntityAreaDefenseStation)
 		{
@@ -83,9 +83,9 @@ public abstract class BlockMFFSBase extends BlockContainer {
 	public void breakBlock(World world, int i, int j, int k,int a,int b) {
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
 
-		if(tileEntity instanceof TileEntityGenerator)
+		if(tileEntity instanceof TileEntityCapacitor)
 		{
-			((TileEntityGenerator)tileEntity).removefromgrid();
+			((TileEntityCapacitor)tileEntity).removefromgrid();
 		}
 		if(tileEntity instanceof TileEntityAreaDefenseStation)
 		{

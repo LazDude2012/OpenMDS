@@ -131,7 +131,7 @@ public class BlockForceField extends BlockContainer{
 					int First_Gen_ID = ffworldmap.getGenratorID();
 					int First_Pro_ID = ffworldmap.getProjectorID();
 
-					 TileEntityGenerator  generator = Linkgrid.getWorldMap(world).getGenerator().get(First_Gen_ID);
+					 TileEntityCapacitor  generator = Linkgrid.getWorldMap(world).getCapacitor().get(First_Gen_ID);
 					 TileEntityProjector  projector = Linkgrid.getWorldMap(world).getProjektor().get(First_Pro_ID);
 
 					 if(generator != null && projector!= null)
@@ -333,12 +333,12 @@ public class BlockForceField extends BlockContainer{
 					world.markBlockAsNeedsUpdate(i, j, k);
 					ffworldmap.setSync(true);
 
-					TileEntity tileEntity = Linkgrid.getWorldMap(world).getGenerator().get(ffworldmap.getGenratorID());
-					if (tileEntity instanceof TileEntityGenerator && tileEntity != null) {
+					TileEntity tileEntity = Linkgrid.getWorldMap(world).getCapacitor().get(ffworldmap.getGenratorID());
+					if (tileEntity instanceof TileEntityCapacitor && tileEntity != null) {
 						if (ffworldmap.getTyp() == 1) {
-							((TileEntityGenerator) tileEntity).Energylost(ModularForceFieldSystem.forcefieldblockcost* ModularForceFieldSystem.forcefieldblockcreatemodifier);
+							((TileEntityCapacitor) tileEntity).Energylost(ModularForceFieldSystem.forcefieldblockcost* ModularForceFieldSystem.forcefieldblockcreatemodifier);
 						} else {
-							((TileEntityGenerator) tileEntity).Energylost(ModularForceFieldSystem.forcefieldblockcost* ModularForceFieldSystem.forcefieldblockcreatemodifier* ModularForceFieldSystem.forcefieldblockzappermodifier);
+							((TileEntityCapacitor) tileEntity).Energylost(ModularForceFieldSystem.forcefieldblockcost* ModularForceFieldSystem.forcefieldblockcreatemodifier* ModularForceFieldSystem.forcefieldblockzappermodifier);
 						}
 				}
 			}
@@ -427,10 +427,10 @@ public class BlockForceField extends BlockContainer{
 		ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(world)
 				.getForceFieldStackMap(WorldMap.Cordhash(i, j, k));
 		if (ffworldmap != null && !ffworldmap.isEmpty()) {
-			TileEntity tileEntity = Linkgrid.getWorldMap(world).getGenerator()
+			TileEntity tileEntity = Linkgrid.getWorldMap(world).getCapacitor()
 					.get(ffworldmap.getGenratorID());
-			if (tileEntity instanceof TileEntityGenerator && tileEntity != null) {
-				((TileEntityGenerator) tileEntity)
+			if (tileEntity instanceof TileEntityCapacitor && tileEntity != null) {
+				((TileEntityCapacitor) tileEntity)
 						.Energylost(ModularForceFieldSystem.forcefieldblockcost
 								* ModularForceFieldSystem.forcefieldblockcreatemodifier);
 			}

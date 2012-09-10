@@ -44,11 +44,11 @@ public class ItemSwitch extends ItemMultitool {
 		{
 		if(((TileEntityProjector)tileentity).getaccesstyp()== 2)
 		{
-		if(Linkgrid.getWorldMap(world).getGenerator().get(((TileEntityProjector)tileentity).getLinkGenerator_ID())!= null)
+		if(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileentity).getLinkGenerator_ID())!= null)
 		{
-		if(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getGenerator().get(((TileEntityProjector)tileentity).getLinkGenerator_ID()).getSecStation_ID()) != null)
+		if(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileentity).getLinkGenerator_ID()).getSecStation_ID()) != null)
 		{
-			if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getGenerator().get(((TileEntityProjector)tileentity).getLinkGenerator_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+			if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileentity).getLinkGenerator_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
 				if(world.isRemote)
 				Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 				return false;
@@ -78,19 +78,19 @@ public class ItemSwitch extends ItemMultitool {
 			}
 		}
 
-		if(tileentity instanceof TileEntityGenerator)
+		if(tileentity instanceof TileEntityCapacitor)
 
 		{
-			if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityGenerator)tileentity).getSecStation_ID()) != null)
+			if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileentity).getSecStation_ID()) != null)
 			{
-				if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityGenerator)tileentity).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+				if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileentity).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
 					if(world.isRemote)
 					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 					return false;
 				}
 			}
 
-			if(((TileEntityGenerator)tileentity).getswitchtyp() == 1)
+			if(((TileEntityCapacitor)tileentity).getswitchtyp() == 1)
 			{
 				if(ElectricItem.canUse(itemstack, 1000))
 				{

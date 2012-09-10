@@ -28,14 +28,14 @@ import net.minecraft.src.TileEntitySpecialRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import chb.mods.mffs.common.TileEntityGenerator;
+import chb.mods.mffs.common.TileEntityCapacitor;
 
-public class TileEntityGeneratorRenderer extends TileEntitySpecialRenderer {
+public class TECapacitorRenderer extends TileEntitySpecialRenderer {
 	@Override
 	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float f) {
-        if(tileEntity instanceof TileEntityGenerator)
+        if(tileEntity instanceof TileEntityCapacitor)
         {
-        	TileEntityGenerator topview = (TileEntityGenerator)tileEntity;
+        	TileEntityCapacitor topview = (TileEntityCapacitor)tileEntity;
             GL11.glPushMatrix();
             GL11.glPolygonOffset( -10, -10 );
             GL11.glEnable ( GL11.GL_POLYGON_OFFSET_FILL );
@@ -86,7 +86,7 @@ public class TileEntityGeneratorRenderer extends TileEntitySpecialRenderer {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             FontRenderer fontRenderer = this.getFontRenderer();
             int maxWidth = 1;
-            String header = "MFFS Generatior V2";
+            String header = "MFFS Capacitor";
             maxWidth = Math.max(fontRenderer.getStringWidth(header), maxWidth);
             maxWidth+=4;
             int lineHeight = fontRenderer.FONT_HEIGHT + 2;

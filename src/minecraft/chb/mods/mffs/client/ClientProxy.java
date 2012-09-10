@@ -28,7 +28,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import chb.mods.mffs.common.CommonProxy;
 import chb.mods.mffs.common.ModularForceFieldSystem;
-import chb.mods.mffs.common.TileEntityGenerator;
+import chb.mods.mffs.common.TileEntityCapacitor;
 
 public class ClientProxy extends CommonProxy {
 	@Override
@@ -41,11 +41,12 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/items.png");
  		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/blocks.png");
  		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/forciciumore.png");
+ 		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/Extractor.png");
 	}
 
 	@Override
      public void registerTileEntitySpecialRenderer() {
-     ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGenerator.class, new TileEntityGeneratorRenderer());
+     ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCapacitor.class, new TECapacitorRenderer());
      RenderingRegistry.registerBlockHandler(new ForceFieldRenderer());
 	}
 
