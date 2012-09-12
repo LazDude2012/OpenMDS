@@ -20,6 +20,8 @@
 
 package chb.mods.mffs.client;
 
+import javax.swing.text.html.parser.Entity;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.src.EntityPlayer;
@@ -47,15 +49,26 @@ public class GuiExtractor extends GuiContainer {
 		int k = (height - ySize) / 2;
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
 		
-		int i1 = (79 * (tileEntity.getWorkEnergy())) / (tileEntity.getMaxWorkEnergy());
-		drawTexturedModalRect(w + 49, k + 69, 176, 0, i1+1, 79);
+		int Workpowerslider = (79 * (tileEntity.getWorkEnergy())) / (tileEntity.getMaxWorkEnergy());
+		drawTexturedModalRect(w + 49, k + 69, 176, 0, Workpowerslider, 6);
 		
-		int l1 = (32 * tileEntity.getWorkCylce()) / 10;
-		drawTexturedModalRect(w + 74,k + 30, 180,82,l1+1,32);
+		int WorkCylce =  (32 * tileEntity.getWorkCylce()) / TileEntityExtractor.MAXWORKCYLCE;
+		drawTexturedModalRect(w + 73,k + 30, 179,81,WorkCylce,32);
+		
+		int ForceEnergy  = (24 * tileEntity.getForceEnergybuffer() / tileEntity.getMaxForceEnergyBuffer());
+		drawTexturedModalRect(w + 137,k + 40,219,80,32,ForceEnergy);
+		
 	}
 	@Override
 	protected void drawGuiContainerForegroundLayer() {
-		fontRenderer.drawString("MFFS FE Extractor", 5, 5, 0x404040);
+		fontRenderer.drawString("Force Energy", 5, 5, 0x404040);
+		fontRenderer.drawString("Extractor", 110, 5, 0x404040);
+		fontRenderer.drawString(String.valueOf(tileEntity.getForceEnergybuffer()/1000).concat("k"), 140, 69, 0x404040);
+		
+		int workEnergyinprozent = tileEntity.getWorkEnergy() * 100 / (tileEntity.getMaxWorkEnergy());
+		
+		fontRenderer.drawString(String.valueOf(workEnergyinprozent).concat("%"), 23, 69, 0x404040);
+	
 
 	}
 }

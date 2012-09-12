@@ -50,4 +50,14 @@ public class BlockMonazitOre extends Block {
 			int l) {
     	return 0;
 	}
+    @Override
+    public int idDropped(int par1, Random par2Random, int par3)
+    {
+        return ModularForceFieldSystem.MFFSitemForcicium.shiftedIndex;
+    }
+    @Override
+    public int quantityDropped(Random par1Random)
+    {
+        return 4 + par1Random.nextInt(2);
+    }
 }

@@ -241,9 +241,9 @@ public final class ForceFieldOptions {
 					 {
 							if(Target.equals("mobs"))
 							{
-								Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation.getLinkGenerator_ID())
+								Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation.getlinkCapacitors_ID())
 								.setForcepower(Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation
-									.getLinkGenerator_ID()).getForcepower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
+									.getlinkCapacitors_ID()).getForcepower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
 
 							entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.MobDefenseDamage);
 							continue;
@@ -253,9 +253,9 @@ public final class ForceFieldOptions {
 							{
 								if(!Linkgrid.getWorldMap(world).getSecStation().get(DefenseStation.getSecStation_ID()).isAccessGranted(((EntityPlayer)entityLiving).username,ModularForceFieldSystem.PERSONALID_FULLACCESS))
 									{
-									Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation.getLinkGenerator_ID())
+									Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation.getlinkCapacitors_ID())
 									.setForcepower(Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation
-										.getLinkGenerator_ID()).getForcepower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
+										.getlinkCapacitors_ID()).getForcepower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
 
 									Functions.ChattoPlayer((EntityPlayer)entityLiving,"[Defence Area Station] !!! you  are in a restricted area !!! ");
 									entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);

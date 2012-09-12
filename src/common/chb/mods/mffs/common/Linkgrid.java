@@ -35,9 +35,15 @@ public final class Linkgrid {
 		private Map<Integer, TileEntityCapacitor> Capacitors = new Hashtable<Integer, TileEntityCapacitor>();
 		private Map<Integer, TileEntitySecurityStation> SecStation = new Hashtable<Integer, TileEntitySecurityStation>();
 		private Map<Integer, TileEntityAreaDefenseStation> DefStation = new Hashtable<Integer, TileEntityAreaDefenseStation>();
+		private Map<Integer, TileEntityExtractor> Extractor = new Hashtable<Integer, TileEntityExtractor>();
 		private Map<Integer, TileEntityProjector> Jammer = new Hashtable<Integer, TileEntityProjector>();
 		private Map<Integer, TileEntityProjector> FieldFusion = new Hashtable<Integer, TileEntityProjector>();
 
+
+		public Map<Integer, TileEntityExtractor> getExtractor() {
+			return Extractor;
+		}
+		
 		public Map<Integer, TileEntityProjector> getProjektor() {
 			return Projektor;
 		}
@@ -94,16 +100,27 @@ public final class Linkgrid {
 			DefStation.put(tempDefStation_ID, tileEntity);
 			return tempDefStation_ID;
 		}
+		
+		public int newExtractor_ID(TileEntityExtractor tileEntity) {
+			Random random = new Random();
+			int tempExtractor_ID = random.nextInt();
+
+			while (Extractor.get(tempExtractor_ID) != null) {
+				tempExtractor_ID = random.nextInt();
+			}
+			Extractor.put(tempExtractor_ID, tileEntity);
+			return tempExtractor_ID;
+		}
 
 		public static int myRandom(int low, int high) {
 			return (int) (Math.random() * (high - low) + low);
 		}
 
-		public int condevisec(int Generator_ID, int xCoordr, int yCoordr,
+		public int condevisec(int Capacitors_ID, int xCoordr, int yCoordr,
 				int zCoordr, int i) {
 			int counter = 0;
 			for (TileEntityProjector tileentity : Projektor.values()) {
-				if (tileentity.getLinkGenerator_ID() == Generator_ID) {
+				if (tileentity.getLinkGenerator_ID() == Capacitors_ID) {
 					int dx = tileentity.xCoord - xCoordr;
 					int dy = tileentity.yCoord - yCoordr;
 					int dz = tileentity.zCoord - zCoordr;
@@ -115,7 +132,19 @@ public final class Linkgrid {
 			}
 
 			for (TileEntityAreaDefenseStation tileentity : DefStation.values()) {
-				if (tileentity.getLinkGenerator_ID() == Generator_ID) {
+				if (tileentity.getlinkCapacitors_ID() == Capacitors_ID) {
+					int dx = tileentity.xCoord - xCoordr;
+					int dy = tileentity.yCoord - yCoordr;
+					int dz = tileentity.zCoord - zCoordr;
+
+					if (i >= Math.sqrt(dx * dx + dy * dy + dz * dz)) {
+						counter++;
+					}
+				}
+			}
+			
+			for (TileEntityExtractor tileentity : Extractor.values()) {
+				if (tileentity.getLinkCapacitors_ID() == Capacitors_ID) {
 					int dx = tileentity.xCoord - xCoordr;
 					int dy = tileentity.yCoord - yCoordr;
 					int dz = tileentity.zCoord - zCoordr;

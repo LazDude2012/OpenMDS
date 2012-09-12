@@ -56,7 +56,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	private boolean create;
 	private boolean LinkedSecStation;
 	private short linketprojektor;
-	private boolean euinjektor;
 	private int capacity;
 	private int SwitchTyp;
 	private boolean OnOffSwitch;
@@ -70,7 +69,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		Capacitor_ID = 0;
 		linketprojektor = 0;
 		create = true;
-		euinjektor = false;
 		LinkedSecStation = false;
 		capacity = 0;
 		SwitchTyp = 0;
@@ -194,16 +192,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 			}
 		}
 
-		if (getStackInSlot(2) != null) {
-			if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSitemUpgradecapEUInjektor) {
-				euinjektor = true;
-			}
-			if (getStackInSlot(2).getItem() != ModularForceFieldSystem.MFFSitemUpgradecapEUInjektor) {
-				dropplugins(2,this);
-			}
-		} else {
-			euinjektor = false;
-		}
 
 		if (getStackInSlot(4) != null) {
 			if (getStackInSlot(4).getItem() == ModularForceFieldSystem.MFFSItemSecLinkCard) {
@@ -343,7 +331,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		    this.setOnOffSwitch((powerdirekt || powerindrekt));
 			}
 
-			if (getOnOffSwitch() && euinjektor) {
+			if (getOnOffSwitch()) {
 				if (isActive() != true) {
 					setActive(true);
 				}

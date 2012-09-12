@@ -22,6 +22,8 @@ import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntityExtractor extends TileEntityMaschines implements ISidedInventory
 ,IEnergySink,INetworkDataProvider,INetworkUpdateListener{
+	
+	public static final int MAXWORKCYLCE = 125;
 
 	private ItemStack inventory[];
 	private boolean addedToEnergyNet;
@@ -32,21 +34,63 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 	private int ForceEnergybuffer;
 	private int MaxForceEnergyBuffer;
 	private int WorkCylce;
+	private int LinkCapacitor_ID;
 	
 	
 	public TileEntityExtractor() {
 		
-		inventory = new ItemStack[1];
+		inventory = new ItemStack[2];
 		create = true;
 		addedToEnergyNet = false;
 		Extractor_ID = 0;
+		LinkCapacitor_ID = 0;
 		WorkEnergy = 0;
-		MaxWorkEnergy = 2048;
+		MaxWorkEnergy = 4000;
 		ForceEnergybuffer = 0;
 		MaxForceEnergyBuffer = 1000000;
 		WorkCylce = 0;
 	}
 	
+	
+	
+	public int getLinkCapacitors_ID() {
+		return LinkCapacitor_ID;
+	}
+	
+	public void setLinkCapacitor_ID(int id){
+		this.LinkCapacitor_ID = id;
+	}
+	
+	public int getExtractor_ID() {
+		return Extractor_ID;
+	}
+
+
+
+
+	public int getMaxForceEnergyBuffer() {
+		return MaxForceEnergyBuffer;
+	}
+
+
+
+	public void setMaxForceEnergyBuffer(int maxForceEnergyBuffer) {
+		MaxForceEnergyBuffer = maxForceEnergyBuffer;
+	}
+	
+	public int getForceEnergybuffer() {
+		return ForceEnergybuffer;
+	}
+
+
+
+	public void setForceEnergybuffer(int forceEnergybuffer) {
+		ForceEnergybuffer = forceEnergybuffer;
+		NetworkHelper.updateTileEntityField(this, "ForceEnergybuffer");
+	}
+
+
+
 	public void setWorkCylce(int i)
 	{
 		this.WorkCylce = i;
@@ -72,12 +116,76 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 	public void setMaxWorkEnergy(int maxWorkEnergy) {
 		MaxWorkEnergy = maxWorkEnergy;
 	}
+	
+	
+	public void addtogrid() {
+		Linkgrid.getWorldMap(worldObj).getExtractor()
+				.put(getExtractor_ID(), this);
+	}
 
+	public void removefromgrid() {
+		Linkgrid.getWorldMap(worldObj).getExtractor().remove(getExtractor_ID());
+		dropplugins();
+	}
+	
+	public void dropplugins() {
+		for (int a = 0; a < this.inventory.length; a++) {
+			dropplugins(a,this);
+		}
+	}
+	
+	
+	public void checkslots(boolean init) {
+		if (getStackInSlot(1) != null) {
+			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSitemfc) {
+				if (getLinkCapacitors_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
+						getStackInSlot(1)).getInteger("Generator_ID")) {
+					setLinkCapacitor_ID(NBTTagCompoundHelper.getTAGfromItemstack(
+							getStackInSlot(1)).getInteger("Generator_ID"));
+				}
+
+				if (Linkgrid.getWorldMap(worldObj).getCapacitor()
+						.get(this.getLinkCapacitors_ID()) != null) {
+					int transmit = Linkgrid.getWorldMap(worldObj)
+							.getCapacitor().get(this.getLinkCapacitors_ID())
+							.getTransmitrange();
+					int gen_x = Linkgrid.getWorldMap(worldObj).getCapacitor()
+							.get(this.getLinkCapacitors_ID()).xCoord
+							- this.xCoord;
+					int gen_y = Linkgrid.getWorldMap(worldObj).getCapacitor()
+							.get(this.getLinkCapacitors_ID()).yCoord
+							- this.yCoord;
+					int gen_z = Linkgrid.getWorldMap(worldObj).getCapacitor()
+							.get(this.getLinkCapacitors_ID()).zCoord
+							- this.zCoord;
+
+					if (Math.sqrt(gen_x * gen_x + gen_y * gen_y + gen_z * gen_z) <= transmit) {
+
+					} else {
+						setLinkCapacitor_ID(0);
+					}
+				} else {
+					setLinkCapacitor_ID(0);
+					if (!init) {
+						dropplugins(1,this);
+					}
+				}
+			} else {
+				if (getStackInSlot(1).getItem() != ModularForceFieldSystem.MFFSitemfc) {
+					dropplugins(1,this);
+				}
+			}
+		} else {
+		    this.setLinkCapacitor_ID(0);
+		}
+	}
+	
+	
 	private boolean hasPowertoConvert()
 	{
 		if(WorkEnergy == MaxWorkEnergy)
 		{
-		 WorkEnergy = 0;
+		 setWorkEnergy(0);
 		 return true;
 		}
 		return false;
@@ -102,7 +210,7 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 		if (getStackInSlot(0) != null) {
 				if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemForcicium) {
 				
-			      WorkCylce = 10;
+		    	  setWorkCylce(MAXWORKCYLCE);
 			      decrStackSize(0, 1);
 			      return true;
 					
@@ -113,28 +221,67 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 		return false;
 	}
 	
+	public void transferForceEnergy()
+	{
+		if(this.getForceEnergybuffer() >= 8000)
+		{	
+		if(LinkCapacitor_ID!=0)
+		{
+			TileEntityCapacitor Cap =Linkgrid.getWorldMap(worldObj).getCapacitor().get(LinkCapacitor_ID);	
+			if(Cap != null)
+			{
+				if((Cap.getForcepower() + 8000) < Cap.getMaxforcepower())
+				{
+					Cap.setForcepower(Cap.getForcepower() + 8000);
+					setForceEnergybuffer(this.getForceEnergybuffer()-8000);
+				}
+			}
+		}
+		}
+	}
+	
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			
-			
+			if (create) {
+				if (Extractor_ID == 0) {
+					Extractor_ID = Linkgrid.getWorldMap(worldObj)
+							.newExtractor_ID(this);
+				}
+				addtogrid();
+				checkslots(true);
+				create = false;
+			}
+		
 			if (this.getTicker() == 20) {
 
-				if(this.hasfreeForceEnergyStorage())
+				checkslots(false);
+				if(this.hasfreeForceEnergyStorage() && this.hasStufftoConvert() && this.hasPowertoConvert())
 				{
-					if(this.hasStufftoConvert())
-					{
-						if(this.hasPowertoConvert())
-						{
-						  this.WorkEnergy = 0;
-						  this.WorkCylce--;
-						  this.ForceEnergybuffer += 100000;	
+				
+							if (isActive() != true) {
+								setActive(true);
+							}
 							
-						}
+						  setWorkEnergy(0);
+						  setWorkCylce(getWorkCylce()-1);
+						  setForceEnergybuffer(getForceEnergybuffer()+ 8000);	
+		
+				}else{
+					
+					if (isActive() != false) {
+						setActive(false);
 					}
+					
 				}
+				
+				
+				
+				transferForceEnergy();
 				
 				this.setTicker((short) 0);
 			}
+		
 			this.setTicker((short) (this.getTicker() + 1));
 			
 			
@@ -169,7 +316,7 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 	
 	@Override
 	public boolean demandsEnergy() {
-		if(this.MaxWorkEnergy != this.WorkEnergy)
+		if(this.MaxWorkEnergy > this.WorkEnergy)
 		{
 			return true;
 		}
@@ -179,8 +326,17 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 
 	@Override
 	public int injectEnergy(Direction directionFrom, int amount) {
-	   WorkEnergy =+ amount;
-	   return  WorkEnergy - MaxWorkEnergy;
+	 if(this.MaxWorkEnergy > this.WorkEnergy)
+	 {
+		 WorkEnergy =  WorkEnergy + amount;
+		 if(WorkEnergy > MaxWorkEnergy)
+		 {
+			 int rest = WorkEnergy - MaxWorkEnergy;
+			 WorkEnergy = WorkEnergy - rest;
+			 return rest;
+		 }
+	 } 
+	   return 0;
 	}
 	
 	@Override
@@ -210,7 +366,10 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 
 		NetworkedFields.add("active");
 		NetworkedFields.add("wrenchRate");
-
+		NetworkedFields.add("ForceEnergybuffer");
+		NetworkedFields.add("WorkCylce");
+		NetworkedFields.add("WorkEnergy");
+		
 		return NetworkedFields;
 	}
 
@@ -227,7 +386,10 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 		super.readFromNBT(nbttagcompound);
 
 		 Extractor_ID = nbttagcompound.getInteger("Extractor_ID");
-
+		 ForceEnergybuffer = nbttagcompound.getInteger("ForceEnergybuffer");
+		 WorkEnergy = nbttagcompound.getInteger("WorkEnergy");
+		 WorkCylce = nbttagcompound.getInteger("WorkCylce");
+		 
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		inventory = new ItemStack[getSizeInventory()];
 		for (int i = 0; i < nbttaglist.tagCount(); i++) {
@@ -245,6 +407,9 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 
+		nbttagcompound.setInteger("WorkCylce", WorkCylce);
+		nbttagcompound.setInteger("WorkEnergy", WorkEnergy);
+		nbttagcompound.setInteger("ForceEnergybuffer",ForceEnergybuffer);
 		nbttagcompound.setInteger("Extractor_ID", Extractor_ID);
 
 		NBTTagList nbttaglist = new NBTTagList();
@@ -323,6 +488,8 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 	@Override
 	public void closeChest(){ 
 	}
+
+
 	
 
 	

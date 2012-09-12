@@ -32,16 +32,21 @@ public class ContainerForceEnergyExtractor extends Container {
 	private EntityPlayer player;
 	private int WorkEnergy;
 	private int WorkCylce;
-
+	private int ForceEnergybuffer;
+	private int MaxWorkEnergy;
+	
 	public ContainerForceEnergyExtractor(EntityPlayer player,
 			TileEntityExtractor tileentity) {
 		Extractor = tileentity;
 		this.player = player;
 		WorkEnergy = -1;
 		WorkCylce = -1;
+		ForceEnergybuffer = -1;
+		MaxWorkEnergy = -1;	
 
 		addSlotToContainer(new Slot(Extractor, 0, 82, 6)); // Forcecium Input 
-
+		addSlotToContainer(new Slot(Extractor, 1, 145, 20)); // Power Link  
+		
 		int var3;
 
 		for (var3 = 0; var3 < 3; ++var3) {
@@ -87,13 +92,20 @@ public class ContainerForceEnergyExtractor extends Container {
 	
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
-		case 1:
+		case 0:
 			Extractor.setWorkEnergy(j);
 			break;
 
-		case 0:
+		case 1:
 			Extractor.setWorkCylce(j);
 			break;
+		case 2:
+		    Extractor.getForceEnergybuffer();
+			break;
+		case 3:
+		    Extractor.getMaxWorkEnergy();
+			break;
+       
        }
 	}
 	
@@ -105,6 +117,7 @@ public class ContainerForceEnergyExtractor extends Container {
 		for (int i = 0; i < crafters.size(); i++) {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
+			
 			if (WorkEnergy != Extractor.getWorkEnergy()) {
 				icrafting.updateCraftingInventoryInfo(this, 0,
 						Extractor.getWorkEnergy());
@@ -113,11 +126,21 @@ public class ContainerForceEnergyExtractor extends Container {
 				icrafting.updateCraftingInventoryInfo(this, 1,
 						Extractor.getWorkCylce());
 			}
+			if (ForceEnergybuffer != Extractor.getForceEnergybuffer()) {
+				icrafting.updateCraftingInventoryInfo(this, 2,
+						Extractor.getForceEnergybuffer());
+			}
+			if (MaxWorkEnergy != Extractor.getMaxWorkEnergy()) {
+				icrafting.updateCraftingInventoryInfo(this, 3,
+						Extractor.getMaxWorkEnergy());
+			}
 
 		}
 
+		MaxWorkEnergy = Extractor.getMaxWorkEnergy();
 		WorkEnergy = Extractor.getWorkEnergy();
 		WorkCylce = Extractor.getWorkCylce();
+		ForceEnergybuffer = Extractor.getForceEnergybuffer();
 	}
 	
 	

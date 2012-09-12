@@ -103,7 +103,6 @@ public class ModularForceFieldSystem {
 
 	public static Item MFFSitemupgradecaprange;
 	public static Item MFFSitemupgradecapcap;
-	public static Item MFFSitemUpgradecapEUInjektor;
 
 	public static Item MFFSProjectorTypsphere;
 	public static Item MFFSProjectorTypkube;
@@ -184,7 +183,6 @@ public class ModularForceFieldSystem {
 			MFFSitemMFDdebugger= new ItemDebugger(MFFSconfig.getOrCreateIntProperty("itemMFDdebugger",Configuration.CATEGORY_ITEM,11111).getInt(11111)).setItemName("itemMFDdebugger");
 			MFFSitemcardempty= new ItemCardEmpty(MFFSconfig.getOrCreateIntProperty("itemcardempty",Configuration.CATEGORY_ITEM,11115).getInt(11115)).setItemName("itemcardempty");
 			MFFSitemfc= new ItemCardPowerLink(MFFSconfig.getOrCreateIntProperty("itemfc",Configuration.CATEGORY_ITEM,11116).getInt(11116)).setItemName("itemfc");
-			MFFSitemUpgradecapEUInjektor= new ItemCapacitorInjektorEU(MFFSconfig.getOrCreateIntProperty("ItemUpgradecapEuinjekt",Configuration.CATEGORY_ITEM,11118).getInt(11116)).setItemName("ItemUpgradecapEuinjekt");
 			MFFSitemupgradecaprange= new ItemCapacitorUpgradeRange(MFFSconfig.getOrCreateIntProperty("itemupgradecaprange",Configuration.CATEGORY_ITEM,11119).getInt(11119)).setItemName("itemupgradecaprange");
 			MFFSitemupgradecapcap= new ItemCapacitorUpgradeCapacity(MFFSconfig.getOrCreateIntProperty("itemupgradecapcap",Configuration.CATEGORY_ITEM,11120).getInt(11120)).setItemName("itemupgradecapcap");
 			MFFSProjectorTypsphere= new ItemProjectorModuleSphere(MFFSconfig.getOrCreateIntProperty("itemProjectorTypsphere",Configuration.CATEGORY_ITEM,11121).getInt(11121)).setItemName("itemProjectorTypsphere");
@@ -248,14 +246,6 @@ public class ModularForceFieldSystem {
 				new Object[] { "ACA", "CBC", "ACA", 'A',
 						Items.getItem("carbonPlate"), 'B',
 						Item.diamond, 'C', Block.glass });
-
-		CraftingManager.getInstance().addRecipe(
-				new ItemStack(MFFSitemUpgradecapEUInjektor),
-				new Object[] { "ABA", "ACA", "ABA", 'A',
-						MFFSitemForcicium,
-						'B',
-						Items.getItem("trippleInsulatedIronCableItem"),
-						'C', Items.getItem("hvTransformer") });
 
 		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemcardempty), new Object[] {
 				"AAA", "ABA", "AAA", 'A', Item.paper,
@@ -414,8 +404,6 @@ public class ModularForceFieldSystem {
 		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MFFSitemcardempty),new Object[] { new ItemStack(MFFSItemIDCard) });
 		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MFFSitemcardempty),new Object[] { new ItemStack(MFFSItemSecLinkCard) });
 
-		Ic2Recipes.addExtractorRecipe(new ItemStack(MFFSMonazitOre), new ItemStack(MFFSitemForcicium,4));
-
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 
 		proxy.registerRenderInformation();
@@ -500,7 +488,6 @@ public class ModularForceFieldSystem {
 		LanguageRegistry.instance().addNameForObject(MFFSItemSecLinkCard,"en_US", "MFFS Card <Security Station Link> ");
 		LanguageRegistry.instance().addNameForObject(MFFSitemMFDdebugger,"en_US", "MFFS Device <Debugger>");
 		LanguageRegistry.instance().addNameForObject(MFFSitemMFDidtool,"en_US", "MFFS MultiTool <ID-Card Coder>");
-		LanguageRegistry.instance().addNameForObject(MFFSitemUpgradecapEUInjektor,"en_US","MFFS Capacitor Injektor <EU>");
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradecaprange,"en_US","MFFS Capacitor Upgrade <Range> ");
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradecapcap,"en_US","MFFS Capacitor Upgrade <Capacity> ");
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorTypsphere,"en_US","MFFS Projector Module <Sphere> ");
