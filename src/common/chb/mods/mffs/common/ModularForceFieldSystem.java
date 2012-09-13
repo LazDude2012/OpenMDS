@@ -101,6 +101,7 @@ public class ModularForceFieldSystem {
 	public static Item MFFSItemIDCard;
 	public static Item MFFSItemSecLinkCard;
 
+	public static Item MFFSitemupgradeexctractorboost;
 	public static Item MFFSitemupgradecaprange;
 	public static Item MFFSitemupgradecapcap;
 
@@ -183,6 +184,7 @@ public class ModularForceFieldSystem {
 			MFFSitemMFDdebugger= new ItemDebugger(MFFSconfig.getOrCreateIntProperty("itemMFDdebugger",Configuration.CATEGORY_ITEM,11111).getInt(11111)).setItemName("itemMFDdebugger");
 			MFFSitemcardempty= new ItemCardEmpty(MFFSconfig.getOrCreateIntProperty("itemcardempty",Configuration.CATEGORY_ITEM,11115).getInt(11115)).setItemName("itemcardempty");
 			MFFSitemfc= new ItemCardPowerLink(MFFSconfig.getOrCreateIntProperty("itemfc",Configuration.CATEGORY_ITEM,11116).getInt(11116)).setItemName("itemfc");
+			MFFSitemupgradeexctractorboost = new ItemExtractorUpgradeBooster(MFFSconfig.getOrCreateIntProperty("itemextractorbooster",Configuration.CATEGORY_ITEM,11118).getInt(11118)).setItemName("itemextractorbooster");
 			MFFSitemupgradecaprange= new ItemCapacitorUpgradeRange(MFFSconfig.getOrCreateIntProperty("itemupgradecaprange",Configuration.CATEGORY_ITEM,11119).getInt(11119)).setItemName("itemupgradecaprange");
 			MFFSitemupgradecapcap= new ItemCapacitorUpgradeCapacity(MFFSconfig.getOrCreateIntProperty("itemupgradecapcap",Configuration.CATEGORY_ITEM,11120).getInt(11120)).setItemName("itemupgradecapcap");
 			MFFSProjectorTypsphere= new ItemProjectorModuleSphere(MFFSconfig.getOrCreateIntProperty("itemProjectorTypsphere",Configuration.CATEGORY_ITEM,11121).getInt(11121)).setItemName("itemProjectorTypsphere");
@@ -469,7 +471,7 @@ public class ModularForceFieldSystem {
 			Generatetexturindex(Block.cloth, meta);
 		}
 		
-		
+		LanguageRegistry.instance().addNameForObject(MFFSitemupgradeexctractorboost, "en_US", "MFFS Extractor Booster");
 		LanguageRegistry.instance().addNameForObject(MFFSExtractor, "en_US", "MFFS Force Energy Extractor");
 		LanguageRegistry.instance().addNameForObject(MFFSMonazitOre,"en_US", "Monazit");
 		LanguageRegistry.instance().addNameForObject(MFFSitemForcicium,"en_US", "Forcicium");

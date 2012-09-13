@@ -62,6 +62,9 @@ public class GuiExtractor extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer() {
 		fontRenderer.drawString("Force Energy", 5, 5, 0x404040);
+		
+		fontRenderer.drawString("Upgrades", 10, 30, 0x404040);
+		
 		fontRenderer.drawString("Extractor", 110, 5, 0x404040);
 		fontRenderer.drawString(String.valueOf(tileEntity.getForceEnergybuffer()/1000).concat("k"), 140, 69, 0x404040);
 		

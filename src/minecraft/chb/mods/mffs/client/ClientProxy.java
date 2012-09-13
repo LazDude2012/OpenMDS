@@ -37,7 +37,7 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/DefenceStation.png");
 		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/projector.png");
 		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/SecurtyStation.png");
-    	MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/generator.png");
+    	MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/Capacitor.png");
 		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/items.png");
  		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/blocks.png");
  		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/forciciumore.png");

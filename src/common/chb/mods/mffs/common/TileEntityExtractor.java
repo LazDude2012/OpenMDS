@@ -8,6 +8,7 @@ import ic2.api.EnergyNet;
 import ic2.api.IEnergySink;
 import ic2.api.INetworkDataProvider;
 import ic2.api.INetworkUpdateListener;
+import ic2.api.Items;
 import ic2.api.NetworkHelper;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
@@ -35,11 +36,12 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 	private int MaxForceEnergyBuffer;
 	private int WorkCylce;
 	private int LinkCapacitor_ID;
+	private int workTicker;
 	
 	
 	public TileEntityExtractor() {
 		
-		inventory = new ItemStack[2];
+		inventory = new ItemStack[4];
 		create = true;
 		addedToEnergyNet = false;
 		Extractor_ID = 0;
@@ -49,10 +51,24 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 		ForceEnergybuffer = 0;
 		MaxForceEnergyBuffer = 1000000;
 		WorkCylce = 0;
+		workTicker = 20;
 	}
 	
 	
 	
+	
+	public int getWorkTicker() {
+		return workTicker;
+	}
+
+
+	public void setWorkTicker(int workTicker) {
+		this.workTicker = workTicker;
+	}
+
+
+
+
 	public int getLinkCapacitors_ID() {
 		return LinkCapacitor_ID;
 	}
@@ -178,6 +194,35 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 		} else {
 		    this.setLinkCapacitor_ID(0);
 		}
+		
+		if (getStackInSlot(2) != null) {
+			if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSitemupgradecapcap) {
+				
+				setMaxForceEnergyBuffer(1000000 + (getStackInSlot(2).stackSize * 100000));
+				
+			 }else{
+				 setMaxForceEnergyBuffer(1000000);
+				 dropplugins(2,this);
+			 }
+			}else{
+				setMaxForceEnergyBuffer(1000000);
+			}
+		
+		if (getStackInSlot(3) != null) {
+			if (getStackInSlot(3).getItem() == ModularForceFieldSystem.MFFSitemupgradeexctractorboost) {
+		
+				setWorkTicker(20 - getStackInSlot(3).stackSize);
+			
+			
+				
+			}else{
+				setWorkTicker(20);
+				dropplugins(3,this);
+			}
+		}else{
+			setWorkTicker(20);
+		}
+		
 	}
 	
 	
@@ -253,20 +298,23 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 				create = false;
 			}
 		
-			if (this.getTicker() == 20) {
+			if (this.getTicker() >= getWorkTicker()) {
 
 				checkslots(false);
-				if(this.hasfreeForceEnergyStorage() && this.hasStufftoConvert() && this.hasPowertoConvert())
+				if(this.hasfreeForceEnergyStorage() && this.hasStufftoConvert())
 				{
+					
 				
 							if (isActive() != true) {
 								setActive(true);
 							}
-							
+
+					if(this.hasPowertoConvert()){
+						
 						  setWorkEnergy(0);
 						  setWorkCylce(getWorkCylce()-1);
 						  setForceEnergybuffer(getForceEnergybuffer()+ 8000);	
-		
+					}
 				}else{
 					
 					if (isActive() != false) {
@@ -284,15 +332,7 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 		
 			this.setTicker((short) (this.getTicker() + 1));
 			
-			
-			
-	if (isActive() && getWrenchDropRate() <= 1) {
-		setWrenchRate(0);
-	}
-	if (!isActive() && getWrenchDropRate() >= 0) {
-	setWrenchRate(1);
-	}		
-	
+				
 	
 	if (!addedToEnergyNet) {
 		EnergyNet.getForWorld(worldObj).addTileEntity(this);

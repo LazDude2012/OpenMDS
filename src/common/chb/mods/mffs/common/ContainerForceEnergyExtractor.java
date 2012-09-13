@@ -46,6 +46,8 @@ public class ContainerForceEnergyExtractor extends Container {
 
 		addSlotToContainer(new Slot(Extractor, 0, 82, 6)); // Forcecium Input 
 		addSlotToContainer(new Slot(Extractor, 1, 145, 20)); // Power Link  
+		addSlotToContainer(new Slot(Extractor, 2, 20, 46)); // Cap Upgrade  
+		addSlotToContainer(new Slot(Extractor, 3, 40, 46)); // Overclocker
 		
 		int var3;
 
