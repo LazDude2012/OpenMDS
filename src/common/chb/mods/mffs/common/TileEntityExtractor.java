@@ -2,7 +2,6 @@ package chb.mods.mffs.common;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import ic2.api.Direction;
 import ic2.api.EnergyNet;
 import ic2.api.IEnergySink;
@@ -25,7 +24,7 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 ,IEnergySink,INetworkDataProvider,INetworkUpdateListener{
 	
 	public static final int MAXWORKCYLCE = 125;
-
+	
 	private ItemStack inventory[];
 	private boolean addedToEnergyNet;
 	private boolean create;
@@ -228,7 +227,7 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 	
 	private boolean hasPowertoConvert()
 	{
-		if(WorkEnergy == MaxWorkEnergy)
+		if(WorkEnergy >= MaxWorkEnergy-1)
 		{
 		 setWorkEnergy(0);
 		 return true;
@@ -285,6 +284,9 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 		}
 	}
 	
+	public void convertMJtoWorkEnergy(){
+	}
+
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			
@@ -299,15 +301,15 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 			}
 		
 			if (this.getTicker() >= getWorkTicker()) {
-
+				
+				convertMJtoWorkEnergy();  	
 				checkslots(false);
 				if(this.hasfreeForceEnergyStorage() && this.hasStufftoConvert())
 				{
-					
-				
-							if (isActive() != true) {
-								setActive(true);
-							}
+							
+				 if (isActive() != true) {
+					 setActive(true);
+					}
 
 					if(this.hasPowertoConvert()){
 						
@@ -322,9 +324,7 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 					}
 					
 				}
-				
-				
-				
+			
 				transferForceEnergy();
 				
 				this.setTicker((short) 0);
@@ -528,9 +528,6 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 	@Override
 	public void closeChest(){ 
 	}
-
-
-	
 
 	
 

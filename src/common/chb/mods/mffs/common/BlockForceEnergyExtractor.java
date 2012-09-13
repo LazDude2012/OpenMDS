@@ -92,7 +92,7 @@ public class BlockForceEnergyExtractor extends BlockMFFSBase {
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityExtractor();
+		return new TileEntityExtractorBC();
 	}
 	
 	
