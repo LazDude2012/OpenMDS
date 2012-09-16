@@ -138,6 +138,22 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencha
 					}
 			   }
 		   }
+		   
+		   
+			  if(this instanceof TileEntityExtractor)
+			  {
+				if(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityExtractor)this).getLinkCapacitors_ID())!= null)
+				{
+				if(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityExtractor)this).getLinkCapacitors_ID()).getSecStation_ID()) != null)
+				{
+					if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityExtractor)this).getLinkCapacitors_ID()).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+						return false;
+					}
+				}
+			}
+			  }
+		   
+		   
 
 		if(this instanceof TileEntityAreaDefenseStation)
 		   {
@@ -246,6 +262,21 @@ public abstract class TileEntityMaschines extends TileEntity implements IWrencha
 				}
 			}
 	   }
+	   
+	   
+		  if(this instanceof TileEntityExtractor)
+		  {
+			if(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityExtractor)this).getLinkCapacitors_ID())!= null)
+			{
+			if(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityExtractor)this).getLinkCapacitors_ID()).getSecStation_ID()) != null)
+			{
+				if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityExtractor)this).getLinkCapacitors_ID()).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+					return false;
+				}
+			}
+		}
+		  }
+		  
 
 		if (getWrenchDropRate() <= 0) {
 			return false;

@@ -36,6 +36,7 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 	private int WorkCylce;
 	private int LinkCapacitor_ID;
 	private int workTicker;
+	private int workdone;
 	
 	
 	public TileEntityExtractor() {
@@ -55,6 +56,18 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 	
 	
 	
+	
+	public int getWorkdone() {
+		return workdone;
+	}
+
+
+
+	public void setWorkdone(int workdone) {
+		this.workdone = workdone;
+		NetworkHelper.updateTileEntityField(this,"workdone");
+	}
+
 	
 	public int getWorkTicker() {
 		return workTicker;
@@ -101,7 +114,7 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 
 	public void setForceEnergybuffer(int forceEnergybuffer) {
 		ForceEnergybuffer = forceEnergybuffer;
-		NetworkHelper.updateTileEntityField(this, "ForceEnergybuffer");
+		NetworkHelper.updateTileEntityField(this,"ForceEnergybuffer");
 	}
 
 
@@ -109,6 +122,7 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 	public void setWorkCylce(int i)
 	{
 		this.WorkCylce = i;
+		NetworkHelper.updateTileEntityField(this,"WorkCylce");
 	}
 	
 	public int getWorkCylce(){
@@ -303,6 +317,7 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 			if (this.getTicker() >= getWorkTicker()) {
 				
 				convertMJtoWorkEnergy();  	
+				setWorkdone( getWorkEnergy() * 100 / getMaxWorkEnergy());
 				checkslots(false);
 				if(this.hasfreeForceEnergyStorage() && this.hasStufftoConvert())
 				{
@@ -406,20 +421,33 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 
 		NetworkedFields.add("active");
 		NetworkedFields.add("wrenchRate");
+		NetworkedFields.add("facing");
 		NetworkedFields.add("ForceEnergybuffer");
 		NetworkedFields.add("WorkCylce");
 		NetworkedFields.add("WorkEnergy");
-		
+		NetworkedFields.add("workdone");
+
 		return NetworkedFields;
 	}
 
 	@Override
 	public void onNetworkUpdate(String field) {
-
+		if (field.equals("facing")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
 		if (field.equals("active")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
-
+		if (field.equals("WorkCylce")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		if (field.equals("ForceEnergybuffer")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		if (field.equals("workdone")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		
 	}
 	
 	public void readFromNBT(NBTTagCompound nbttagcompound) {

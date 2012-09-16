@@ -49,7 +49,7 @@ public class GuiExtractor extends GuiContainer {
 		int k = (height - ySize) / 2;
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
 		
-		int Workpowerslider = (79 * (tileEntity.getWorkEnergy())) / (tileEntity.getMaxWorkEnergy());
+		int Workpowerslider = (79 * tileEntity.getWorkdone() / 100);
 		drawTexturedModalRect(w + 49, k + 69, 176, 0, Workpowerslider, 6);
 		
 		int WorkCylce =  (32 * tileEntity.getWorkCylce()) / TileEntityExtractor.MAXWORKCYLCE;
@@ -68,9 +68,7 @@ public class GuiExtractor extends GuiContainer {
 		fontRenderer.drawString("Extractor", 110, 5, 0x404040);
 		fontRenderer.drawString(String.valueOf(tileEntity.getForceEnergybuffer()/1000).concat("k"), 140, 69, 0x404040);
 		
-		int workEnergyinprozent = tileEntity.getWorkEnergy() * 100 / (tileEntity.getMaxWorkEnergy());
-		
-		fontRenderer.drawString(String.valueOf(workEnergyinprozent).concat("%"), 23, 69, 0x404040);
+		fontRenderer.drawString(String.valueOf(tileEntity.getWorkdone()).concat("%"), 23, 69, 0x404040);
 	
 
 	}

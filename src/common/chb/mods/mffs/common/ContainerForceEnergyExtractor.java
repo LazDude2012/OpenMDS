@@ -30,24 +30,22 @@ public class ContainerForceEnergyExtractor extends Container {
 	
 	private TileEntityExtractor Extractor;
 	private EntityPlayer player;
-	private int WorkEnergy;
 	private int WorkCylce;
 	private int ForceEnergybuffer;
-	private int MaxWorkEnergy;
+	private int workdone;
 	
 	public ContainerForceEnergyExtractor(EntityPlayer player,
 			TileEntityExtractor tileentity) {
 		Extractor = tileentity;
 		this.player = player;
-		WorkEnergy = -1;
 		WorkCylce = -1;
 		ForceEnergybuffer = -1;
-		MaxWorkEnergy = -1;	
+		workdone = -1;	
 
 		addSlotToContainer(new Slot(Extractor, 0, 82, 6)); // Forcecium Input 
 		addSlotToContainer(new Slot(Extractor, 1, 145, 20)); // Power Link  
 		addSlotToContainer(new Slot(Extractor, 2, 20, 46)); // Cap Upgrade  
-		addSlotToContainer(new Slot(Extractor, 3, 40, 46)); // Overclocker
+		addSlotToContainer(new Slot(Extractor, 3, 39, 46)); // Overclocker
 		
 		int var3;
 
@@ -95,17 +93,14 @@ public class ContainerForceEnergyExtractor extends Container {
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
 		case 0:
-			Extractor.setWorkEnergy(j);
+			Extractor.setWorkdone(j);
 			break;
 
 		case 1:
 			Extractor.setWorkCylce(j);
 			break;
 		case 2:
-		    Extractor.getForceEnergybuffer();
-			break;
-		case 3:
-		    Extractor.getMaxWorkEnergy();
+		    Extractor.setForceEnergybuffer(j);
 			break;
        
        }
@@ -120,9 +115,9 @@ public class ContainerForceEnergyExtractor extends Container {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
 			
-			if (WorkEnergy != Extractor.getWorkEnergy()) {
+			if (workdone != Extractor.getWorkdone()) {
 				icrafting.updateCraftingInventoryInfo(this, 0,
-						Extractor.getWorkEnergy());
+						Extractor.getWorkdone());
 			}
 			if (WorkCylce != Extractor.getWorkCylce()) {
 				icrafting.updateCraftingInventoryInfo(this, 1,
@@ -132,15 +127,10 @@ public class ContainerForceEnergyExtractor extends Container {
 				icrafting.updateCraftingInventoryInfo(this, 2,
 						Extractor.getForceEnergybuffer());
 			}
-			if (MaxWorkEnergy != Extractor.getMaxWorkEnergy()) {
-				icrafting.updateCraftingInventoryInfo(this, 3,
-						Extractor.getMaxWorkEnergy());
-			}
 
 		}
 
-		MaxWorkEnergy = Extractor.getMaxWorkEnergy();
-		WorkEnergy = Extractor.getWorkEnergy();
+		workdone = Extractor.getWorkdone();
 		WorkCylce = Extractor.getWorkCylce();
 		ForceEnergybuffer = Extractor.getForceEnergybuffer();
 	}

@@ -29,6 +29,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import chb.mods.mffs.common.CommonProxy;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.TileEntityCapacitor;
+import chb.mods.mffs.common.TileEntityExtractor;
 
 public class ClientProxy extends CommonProxy {
 	@Override
@@ -47,6 +48,9 @@ public class ClientProxy extends CommonProxy {
 	@Override
      public void registerTileEntitySpecialRenderer() {
      ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCapacitor.class, new TECapacitorRenderer());
+     ClientRegistry.bindTileEntitySpecialRenderer(TileEntityExtractor.class, new TEExtractorRenderer());
+  
+     
      RenderingRegistry.registerBlockHandler(new ForceFieldRenderer());
 	}
 

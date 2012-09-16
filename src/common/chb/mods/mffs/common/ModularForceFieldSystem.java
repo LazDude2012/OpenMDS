@@ -232,8 +232,9 @@ public class ModularForceFieldSystem {
 
 		OreDictionary.registerOre("Forcicium", MFFSitemForcicium);
 
-		GameRegistry.registerTileEntity(TileEntityExtractorBC.class, "MFFSExtractor");
+		GameRegistry.registerTileEntity(TileEntityExtractorBC.class, "MFFSExtractorBC");
 		GameRegistry.registerTileEntity(TileEntityExtractor.class, "MFFSExtractor");
+		
 		GameRegistry.registerTileEntity(TileEntityAreaDefenseStation.class, "MFFSDefenceStation");
 		GameRegistry
 				.registerTileEntity(TileEntityCapacitor.class, "MFFSCapacitor");

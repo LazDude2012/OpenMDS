@@ -22,7 +22,9 @@ package chb.mods.mffs.common;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
+import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
@@ -42,6 +44,30 @@ public class BlockForceEnergyExtractor extends BlockMFFSBase {
 	public Integer getGui(World world, int i, int j, int k,
 			EntityPlayer entityplayer) {
 		return ModularForceFieldSystem.GUI_EXTRACTOR;
+	}
+	
+	@Override
+	public void onBlockPlacedBy(World world, int i, int j, int k,
+			EntityLiving entityliving) {
+		TileEntityMaschines tileentityblock = (TileEntityMaschines) world
+				.getBlockTileEntity(i, j, k);
+
+		int l = MathHelper
+				.floor_double((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+		int i1 = Math.round(entityliving.rotationPitch);
+		if (i1 >= 65) {
+			tileentityblock.setFacing( (short) 1);
+		} else if (i1 <= -65) {
+			tileentityblock.setFacing((short) 0);
+		} else if (l == 0) {
+			tileentityblock.setFacing( (short) 2);
+		} else if (l == 1) {
+			tileentityblock.setFacing( (short) 5);
+		} else if (l == 2) {
+			tileentityblock.setFacing((short) 3);
+		} else if (l == 3) {
+			tileentityblock.setFacing((short) 4);
+		}
 	}
 	
 	@Override
