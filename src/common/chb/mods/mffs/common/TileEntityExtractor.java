@@ -168,9 +168,9 @@ public class TileEntityExtractor extends TileEntityMaschines implements ISidedIn
 		if (getStackInSlot(1) != null) {
 			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSitemfc) {
 				if (getLinkCapacitors_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
-						getStackInSlot(1)).getInteger("Generator_ID")) {
+						getStackInSlot(1)).getInteger("CapacitorID")) {
 					setLinkCapacitor_ID(NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(1)).getInteger("Generator_ID"));
+							getStackInSlot(1)).getInteger("CapacitorID"));
 				}
 
 				if (Linkgrid.getWorldMap(worldObj).getCapacitor()

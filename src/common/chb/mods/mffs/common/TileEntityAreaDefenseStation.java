@@ -220,9 +220,9 @@ ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 		if (getStackInSlot(0) != null) {
 			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemfc) {
 				if (getlinkCapacitors_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
-						getStackInSlot(0)).getInteger("Generator_ID")) {
+						getStackInSlot(0)).getInteger("CapacitorID")) {
 					setlinkCapacitors_ID(NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(0)).getInteger("Generator_ID"));
+							getStackInSlot(0)).getInteger("CapacitorID"));
 					}
 
 				if(Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID())!=null)

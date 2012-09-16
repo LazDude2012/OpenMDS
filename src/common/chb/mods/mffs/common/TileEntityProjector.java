@@ -465,9 +465,9 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		if (getStackInSlot(0) != null) {
 			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemfc) {
 				if (getLinkGenerator_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
-						getStackInSlot(0)).getInteger("Generator_ID")) {
+						getStackInSlot(0)).getInteger("CapacitorID")) {
 					setLinkGenerator_ID(NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(0)).getInteger("Generator_ID"));
+							getStackInSlot(0)).getInteger("CapacitorID"));
 				}
 
 				if (Linkgrid.getWorldMap(worldObj).getCapacitor()

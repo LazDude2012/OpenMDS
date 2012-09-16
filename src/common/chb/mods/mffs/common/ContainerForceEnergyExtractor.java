@@ -31,7 +31,6 @@ public class ContainerForceEnergyExtractor extends Container {
 	private TileEntityExtractor Extractor;
 	private EntityPlayer player;
 	private int WorkCylce;
-	private int ForceEnergybuffer;
 	private int workdone;
 	
 	public ContainerForceEnergyExtractor(EntityPlayer player,
@@ -39,7 +38,6 @@ public class ContainerForceEnergyExtractor extends Container {
 		Extractor = tileentity;
 		this.player = player;
 		WorkCylce = -1;
-		ForceEnergybuffer = -1;
 		workdone = -1;	
 
 		addSlotToContainer(new Slot(Extractor, 0, 82, 6)); // Forcecium Input 
@@ -98,11 +96,7 @@ public class ContainerForceEnergyExtractor extends Container {
 
 		case 1:
 			Extractor.setWorkCylce(j);
-			break;
-		case 2:
-		    Extractor.setForceEnergybuffer(j);
-			break;
-       
+			break;       
        }
 	}
 	
@@ -123,16 +117,12 @@ public class ContainerForceEnergyExtractor extends Container {
 				icrafting.updateCraftingInventoryInfo(this, 1,
 						Extractor.getWorkCylce());
 			}
-			if (ForceEnergybuffer != Extractor.getForceEnergybuffer()) {
-				icrafting.updateCraftingInventoryInfo(this, 2,
-						Extractor.getForceEnergybuffer());
-			}
 
 		}
 
 		workdone = Extractor.getWorkdone();
 		WorkCylce = Extractor.getWorkCylce();
-		ForceEnergybuffer = Extractor.getForceEnergybuffer();
+
 	}
 	
 	

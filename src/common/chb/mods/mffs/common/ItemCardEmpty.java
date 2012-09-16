@@ -46,9 +46,9 @@ public class ItemCardEmpty extends Item {
 	@Override
 	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer,
 			World world, int i, int j, int k, int l) {
+		
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
 
-		if (!world.isRemote) {
 			if (tileEntity instanceof TileEntityCapacitor) {
 				if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()) != null)
 				{
@@ -58,8 +58,11 @@ public class ItemCardEmpty extends Item {
 				}
 
 				ItemStack newcard =  new ItemStack(ModularForceFieldSystem.MFFSitemfc);
-				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Generator_ID", ((TileEntityCapacitor)tileEntity).getCapacitor_ID());
+				ItemCardPowerLink.setCapacitorID(newcard,(((TileEntityCapacitor)tileEntity).getCapacitor_ID()));
+				
 				entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
+	
+				if (world.isRemote)
 				Functions.ChattoPlayer(entityplayer, "[Generator] Success: <Power-Link> Card create");
 				return true;
 			}
@@ -72,10 +75,12 @@ public class ItemCardEmpty extends Item {
 				ItemStack newcard =   new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
 				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Secstation_ID", ((TileEntitySecurityStation)tileEntity).getSecurtyStation_ID());
 				entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
+				
+				if (world.isRemote)
 				Functions.ChattoPlayer(entityplayer, "[Security Station] Success: <Security Station Link>  Card create");
 				return true;
 			}
-		}
+		
 		return false;
 	}
 }
