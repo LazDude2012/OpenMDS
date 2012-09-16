@@ -23,7 +23,6 @@ package chb.mods.mffs.common;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
@@ -43,29 +42,50 @@ public class ItemCardPowerLink extends Item  {
 	public boolean isRepairable() {
 		return false;
 	}
-	
-	@Override
-	public boolean isDamageable()
-	{
-	return true;
-	}
-	
-	
-    public static  void setCapacitorID(ItemStack itemStack, int CapacitorID)
-    {
-       
-       NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-       nbtTagCompound.setInteger("CapacitorID", CapacitorID);
-
-    }
-	
-	
 	@Override
 	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer,
 			World world, int i, int j, int k, int l) {
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
 
 		if (!world.isRemote) {
+			
+			
+			if (tileEntity instanceof TileEntityExtractor) {
+				TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityExtractor)tileEntity).getLinkCapacitors_ID());
+
+				if(Generator!= null)
+				{
+				TileEntitySecurityStation SecurityStation  = Linkgrid.getWorldMap(world).getSecStation().get(Generator.getSecStation_ID());
+
+				if(SecurityStation  != null)
+				{
+					if (!(SecurityStation.isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+						return false;
+					}
+				}
+			}
+
+				if(((TileEntityExtractor)tileEntity).getStackInSlot(1)==null)
+				{
+					((TileEntityExtractor)tileEntity).setInventorySlotContents(1,itemstack);
+					entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
+					Functions.ChattoPlayer(entityplayer, "[Extractor] Success: <Power-Link> Card installed");
+					return true;
+				}
+				else
+				{
+					Functions.ChattoPlayer(entityplayer, "[Extractor] Fail: Slot is not empty");
+					return false;
+				}
+			}
+			
+			
+			
+			
+			
+			
+			
+			
 			if (tileEntity instanceof TileEntityProjector) {
 				TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileEntity).getLinkGenerator_ID());
 
@@ -85,13 +105,11 @@ public class ItemCardPowerLink extends Item  {
 				{
 					((TileEntityProjector)tileEntity).setInventorySlotContents(0,itemstack);
 					entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
-					if (world.isRemote)
 					Functions.ChattoPlayer(entityplayer, "[Projector] Success: <Power-Link> Card installed");
 					return true;
 				}
 				else
 				{
-					if (world.isRemote)
 					Functions.ChattoPlayer(entityplayer, "[Projector] Fail: Slot is not empty");
 					return false;
 				}
@@ -109,40 +127,15 @@ public class ItemCardPowerLink extends Item  {
 				{
 					((TileEntityAreaDefenseStation)tileEntity).setInventorySlotContents(0,itemstack);
 					entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
-					if (world.isRemote)
 					Functions.ChattoPlayer(entityplayer, "[Defence Station] Success: <Power-Link> Card installed");
 					return true;
 				}
 				else
 				{
-					if (world.isRemote)
 					Functions.ChattoPlayer(entityplayer, "[Defence Station] Fail: Slot is not empty");
 					return false;
 				}
 			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 		}
 		return false;
 	}

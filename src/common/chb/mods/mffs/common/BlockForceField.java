@@ -60,11 +60,13 @@ public class BlockForceField extends BlockContainer{
 	    this.posz = k;
 	}
 
+	
 	@Override
 	public int getRenderBlockPass() {
-		if(Functions.getClientWorld().getBlockMetadata(posx , posy, posz) == ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE)
+
+		if(ModularForceFieldSystem.proxy.getClientWorld().getBlockMetadata(posx , posy, posz) == ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE)
 		{
-			TileEntityForceField ForceField   =	(TileEntityForceField) Functions.getClientWorld().getBlockTileEntity(posx , posy, posz);
+			TileEntityForceField ForceField   =	(TileEntityForceField) ModularForceFieldSystem.proxy.getClientWorld().getBlockTileEntity(posx , posy, posz);
 
 	        if(ForceField  != null){
 	        	if(ForceField.getTexturid(1) == 67 || ForceField.getTexturid(1) == 205)

@@ -22,8 +22,6 @@ package chb.mods.mffs.common;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.client.FMLClientHandler;
-
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
@@ -53,10 +51,6 @@ public class Functions {
 
 		return block.getBlockDropped(world, i, j, k, meta, 0);
 	}
-
-	  public static World getClientWorld() {
-      return FMLClientHandler.instance().getClient().theWorld;
-}
 
 
 	public static void ChattoPlayer(EntityPlayer player, String Message) {
