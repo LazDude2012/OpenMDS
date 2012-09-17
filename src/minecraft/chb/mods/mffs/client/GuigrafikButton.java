@@ -88,7 +88,7 @@ public class GuigrafikButton extends GuiButton
 
             if(tileEntity instanceof TileEntityCapacitor)
             {
-                if(typ == 2)
+                if(typ == 1)
                 {
                     switch(((TileEntityCapacitor)tileEntity).getswitchtyp())
                     {
@@ -100,6 +100,24 @@ public class GuigrafikButton extends GuiButton
                     break;
                     }
                 }
+                
+                if(typ == 2)
+                {
+                    switch(((TileEntityCapacitor)tileEntity).getPowerlinkmode())
+                    {
+                    case 0:
+                    	this.drawTexturedModalRect(this.xPosition, this.yPosition, 96, 80, this.width, this.height);
+                    break;
+                    case 1:
+                    	this.drawTexturedModalRect(this.xPosition, this.yPosition, 112, 80, this.width, this.height);
+                    break;
+                    }
+                }
+                
+                
+                
+                
+                
             }
         }
     }

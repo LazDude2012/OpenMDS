@@ -58,6 +58,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	private short linketprojektor;
 	private int capacity;
 	private int SwitchTyp;
+	private int Powerlinkmode;
 	private boolean OnOffSwitch;
 
 	public TileEntityCapacitor() {
@@ -73,6 +74,21 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		capacity = 0;
 		SwitchTyp = 0;
 		OnOffSwitch = false;
+		Powerlinkmode= 0;
+	
+	}
+	
+	
+	
+
+	public int getPowerlinkmode() {
+		return Powerlinkmode;
+	}
+
+
+	public void setPowerlinkmode(int powerlinkmode) {
+		Powerlinkmode = powerlinkmode;
+		NetworkHelper.updateTileEntityField(this, "Powerlinkmode");
 	}
 
 	public boolean getOnOffSwitch() {
@@ -430,6 +446,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		NetworkedFields.add("transmitrange");
 		NetworkedFields.add("capacity");
 		NetworkedFields.add("SwitchTyp");
+		NetworkedFields.add("Powerlinkmode");
 
 		return NetworkedFields;
 	}
@@ -486,8 +503,18 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 				this.setswitchtyp(0);
 			}
 		break;
-
+		
 		case 1:
+			if(this.getPowerlinkmode() == 0)
+			{
+				this.setPowerlinkmode(1);
+			}else{
+				this.setPowerlinkmode(0);
+			}
+		break;
+		
+
+		case 2:
 			if(this.getOnOffSwitch())
 			{
 				this.setOnOffSwitch(false);

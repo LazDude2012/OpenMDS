@@ -95,7 +95,7 @@ public class ItemSwitch extends ItemMultitool {
 				if(ElectricItem.canUse(itemstack, 1000))
 				{
 				ElectricItem.use(itemstack, 1000, entityplayer);
-				NetworkHelper.initiateClientTileEntityEvent(tileentity,1);
+				NetworkHelper.initiateClientTileEntityEvent(tileentity,2);
 
 				return true;
 				}else{

@@ -19,6 +19,7 @@
 */
 package chb.mods.mffs.common;
 
+import ic2.api.Items;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
@@ -70,6 +71,7 @@ public class BlockCapacitor extends BlockMFFSBase {
 	public boolean onBlockActivated(World world, int i, int j, int k,
 			EntityPlayer entityplayer, int par6, float par7, float par8,
 			float par9){
+		if (!world.isRemote) {
 		if (entityplayer.isSneaking())
         {
 			return false;
@@ -90,6 +92,17 @@ public class BlockCapacitor extends BlockMFFSBase {
 				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {
 			return false;
 		}
+		
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem() == Items.getItem("wrench"))) {
+			return false;
+		}
+		
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem() == Items.getItem("electricWrench"))) {
+			return false;
+		}	
+		
 
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemMultitool)) {
@@ -108,6 +121,7 @@ public class BlockCapacitor extends BlockMFFSBase {
 
 		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_CAPACITOR, world,
 				i, j, k);
+		}
 		return true;
 	}
 }

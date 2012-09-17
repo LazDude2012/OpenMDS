@@ -20,6 +20,8 @@
 
 package chb.mods.mffs.common;
 
+import ic2.api.Items;
+
 import java.util.Random;
 
 import net.minecraft.src.Block;
@@ -73,6 +75,7 @@ public class BlockProjector extends BlockMFFSBase {
 	public boolean onBlockActivated(World world, int i, int j, int k,
 			EntityPlayer entityplayer, int par6, float par7, float par8,
 			float par9){
+		if (!world.isRemote) {
 		if (entityplayer.isSneaking())
         {
 			return false;
@@ -109,6 +112,17 @@ public class BlockProjector extends BlockMFFSBase {
 				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {
 			return false;
 		}
+		
+		
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem().itemID == Items.getItem("wrench").itemID)) {
+			return false;
+		}
+		
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem().itemID == Items.getItem("electricWrench").itemID)) {
+			return false;
+		}	
 
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemMultitool)) {
@@ -130,8 +144,9 @@ public class BlockProjector extends BlockMFFSBase {
 			return false;
 		}
 
-		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_PROJECTOR, world,
-				i, j, k);
+		
+		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_PROJECTOR, world,i, j, k);
+		}
 		return true;
 	}
 
