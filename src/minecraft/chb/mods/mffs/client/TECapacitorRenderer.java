@@ -112,13 +112,13 @@ public class TECapacitorRenderer extends TileEntitySpecialRenderer {
                 offsetY = 0;
             }
             GL11.glDisable(GL11.GL_LIGHTING);
-            fontRenderer.drawString(header, offsetX-realWidth/2, 1+offsetY-realHeight/2 + -3 * lineHeight, 1);
-            fontRenderer.drawString("capacity: ", offsetX-realWidth/2, 1+offsetY-realHeight/2 + -1 * lineHeight, 1);
-            fontRenderer.drawString(String.valueOf(topview.getcapacity()).concat(" % "), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf((topview.getForcepower()*100)/topview.getMaxforcepower()).concat(" % ")), offsetY - realHeight/2-1*lineHeight, 1);
-            fontRenderer.drawString("range: ", offsetX-realWidth/2, 1+offsetY-realHeight/2 + 0 * lineHeight, 1);
-            fontRenderer.drawString(String.valueOf(topview.getTransmitrange()), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf(topview.getTransmitrange())), offsetY - realHeight/2+0*lineHeight, 1);
-            fontRenderer.drawString("linked device: ", offsetX-realWidth/2, 1+offsetY-realHeight/2 + 1 * lineHeight, 1);
-            fontRenderer.drawString(String.valueOf(topview.getLinketprojektor()), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf(topview.getLinketprojektor())), offsetY - realHeight/2+1*lineHeight, 1);
+            fontRenderer.drawString(header, offsetX-realWidth/2, 1+offsetY-realHeight/2 + -2 * lineHeight, 1);
+            fontRenderer.drawString("capacity: ", offsetX-realWidth/2, 1+offsetY-realHeight/2 + 0 * lineHeight, 1);
+            fontRenderer.drawString(String.valueOf(topview.getcapacity()).concat(" % "), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf((topview.getForcepower()*100)/topview.getMaxforcepower()).concat(" % ")), offsetY - realHeight/2-0*lineHeight, 1);
+            fontRenderer.drawString("range: ", offsetX-realWidth/2, 1+offsetY-realHeight/2 + 1 * lineHeight, 1);
+            fontRenderer.drawString(String.valueOf(topview.getTransmitrange()), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf(topview.getTransmitrange())), offsetY - realHeight/2+1*lineHeight, 1);
+            fontRenderer.drawString("linked device: ", offsetX-realWidth/2, 1+offsetY-realHeight/2 + 2 * lineHeight, 1);
+            fontRenderer.drawString(String.valueOf(topview.getLinketprojektor()), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf(topview.getLinketprojektor())), offsetY - realHeight/2+2*lineHeight, 1);
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glDepthMask(true);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
