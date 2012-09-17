@@ -158,7 +158,7 @@ public class ModularForceFieldSystem {
 		try {
 			MFFSconfig.load();
 			
-			Admin = MFFSconfig.getOrCreateProperty("ForceFieldMaster", Configuration.CATEGORY_GENERAL, "Thunderdark").value;
+			Admin = MFFSconfig.getOrCreateProperty("ForceFieldMaster", Configuration.CATEGORY_GENERAL, "nobody").value;
 			forcefieldremoveonlywaterandlava = MFFSconfig.getOrCreateBooleanProperty("forcefieldremoveonlywaterandlava", Configuration.CATEGORY_GENERAL, false).getBoolean(false);
 			forcefieldtransportcost = MFFSconfig.getOrCreateIntProperty("forcefieldremoveonlywaterandlava", Configuration.CATEGORY_GENERAL, 10000).getInt(10000);
 			forcefieldblockcost = MFFSconfig.getOrCreateIntProperty("forcefieldblockcost", Configuration.CATEGORY_GENERAL, 1).getInt(1);
@@ -244,6 +244,30 @@ public class ModularForceFieldSystem {
 				"MFFSSecurtyStation");
 		GameRegistry.registerTileEntity(TileEntityForceField.class,
 				"MFFSForceField");
+		
+		
+		//Recipe final for 2.1.7
+		
+		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSExtractor,1),
+				new Object[] { " B ", "CDC", " E ",
+			'B',Items.getItem("advancedCircuit"), 'C',MFFSitemForcePowerCrystal, 
+			'D',Items.getItem("advancedMachine"), 'E',Items.getItem("extractor")
+		});
+		
+		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemupgradeexctractorboost,2),
+				new Object[] { " B ", "BAB", " B ",
+			'A',Items.getItem("overclockerUpgrade"), 'B',Items.getItem("carbonPlate")
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		//
+		
 
 		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemFocusmatix, 64),
 				new Object[] { "ACA", "CBC", "ACA", 'A',
