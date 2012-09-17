@@ -46,9 +46,6 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		setCreativeTab(CreativeTabs.tabBlock);
 	}
 
-	public abstract Integer getGui(World world, int i, int j, int k,
-			EntityPlayer entityplayer);
-
 	@Override
 	public abstract TileEntity createNewTileEntity(World world);
 

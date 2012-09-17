@@ -35,11 +35,6 @@ public class BlockAreaDefenseStation extends BlockMFFSBase {
 		return "/chb/mods/mffs/sprites/DefenceStation.png";
 	}
 
-	public Integer getGui(World world, int i, int j, int k,
-			EntityPlayer entityplayer) {
-		return ModularForceFieldSystem.GUI_DEFSTATION;
-	}
-
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new TileEntityAreaDefenseStation();
@@ -89,15 +84,8 @@ public class BlockAreaDefenseStation extends BlockMFFSBase {
 			return false;
 		}
 
-		if (world.isRemote)
-			return false;
 
-		int gui = getGui(world, i, j, k, entityplayer);
-
-		if (gui < 0)
-			return false;
-
-		entityplayer.openGui(ModularForceFieldSystem.instance, gui, world,
+		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_DEFSTATION, world,
 				i, j, k);
 		return true;
 	}

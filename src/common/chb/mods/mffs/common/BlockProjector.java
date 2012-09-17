@@ -40,11 +40,6 @@ public class BlockProjector extends BlockMFFSBase {
 		return "/chb/mods/mffs/sprites/projector.png";
 	}
 
-	public Integer getGui(World world, int i, int j, int k,
-			EntityPlayer entityplayer) {
-		return ModularForceFieldSystem.GUI_PROJECTOR;
-	}
-
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k,
 			EntityLiving entityliving) {
@@ -135,15 +130,7 @@ public class BlockProjector extends BlockMFFSBase {
 			return false;
 		}
 
-		if (world.isRemote)
-			return false;
-
-		int gui = getGui(world, i, j, k, entityplayer);
-
-		if (gui < 0)
-			return false;
-
-		entityplayer.openGui(ModularForceFieldSystem.instance, gui, world,
+		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_PROJECTOR, world,
 				i, j, k);
 		return true;
 	}

@@ -41,10 +41,6 @@ public class BlockForceEnergyExtractor extends BlockMFFSBase {
 		return "/chb/mods/mffs/sprites/Extractor.png";
 	}
 
-	public Integer getGui(World world, int i, int j, int k,
-			EntityPlayer entityplayer) {
-		return ModularForceFieldSystem.GUI_EXTRACTOR;
-	}
 	
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k,
@@ -103,15 +99,7 @@ public class BlockForceEnergyExtractor extends BlockMFFSBase {
 			return false;
 		}
 
-		if (world.isRemote)
-			return false;
-
-		int gui = getGui(world, i, j, k, entityplayer);
-
-		if (gui < 0)
-			return false;
-
-		entityplayer.openGui(ModularForceFieldSystem.instance, gui, world,
+		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_EXTRACTOR, world,
 				i, j, k);
 		return true;
 	}

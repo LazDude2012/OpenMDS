@@ -36,12 +36,6 @@ public class BlockCapacitor extends BlockMFFSBase {
 	public String getTextureFile() {
 		return "/chb/mods/mffs/sprites/Capacitor.png";
 	}
-
-	public Integer getGui(World world, int i, int j, int k,
-			EntityPlayer entityplayer) {
-		return ModularForceFieldSystem.GUI_CAPACITOR;
-	}
-
 	
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k,
@@ -112,15 +106,7 @@ public class BlockCapacitor extends BlockMFFSBase {
 			return false;
 		}
 
-		if (world.isRemote)
-			return false;
-
-		int gui = getGui(world, i, j, k, entityplayer);
-
-		if (gui < 0)
-			return false;
-
-		entityplayer.openGui(ModularForceFieldSystem.instance, gui, world,
+		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_CAPACITOR, world,
 				i, j, k);
 		return true;
 	}
