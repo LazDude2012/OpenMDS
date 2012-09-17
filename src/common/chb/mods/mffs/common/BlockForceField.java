@@ -116,7 +116,6 @@ public class BlockForceField extends BlockContainer{
 				}
 			}
 		}
-		if (world.isRemote)
 		Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: No Force Field Synchron Capacitor in Inventory");
 		return null;
 	}
@@ -215,7 +214,6 @@ public class BlockForceField extends BlockContainer{
 
 							if(First_Gen_ID != wff.isExistForceFieldStackMap(x, y , z ,counter-1,typ))
 							{
-								if (world.isRemote) 
 							 Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 							 return false;
 							}
@@ -244,13 +242,11 @@ public class BlockForceField extends BlockContainer{
 						    	break;
 							}
 							
-							if (world.isRemote) 
 							Functions.ChattoPlayer(entityplayer,"[Field Security] Success: access granted");
 
 							if (counter >= 0 && counter <= 5) {
 								if (world.getBlockId(x, y , z) == 0 && world.getBlockId(x, y - ymodi, z) == 0) {
 									if(y-ymodi <=0){
-									if (world.isRemote) 
 									Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: transmission into Void not allowed ");
 									}else{
 									if(ItemForceFieldSynchronCapacitor.canuseBatpack(energycap))
@@ -259,10 +255,10 @@ public class BlockForceField extends BlockContainer{
 										{
 											ElectricItem.use(energycap, ModularForceFieldSystem.forcefieldtransportcost, entityplayer);
 											entityplayer.setPositionAndUpdate(x + 0.5, y-ymodi ,z + 0.5);
-											if (world.isRemote) 
+		
 											Functions.ChattoPlayer(entityplayer,"[Field Security] Success: transmission complete");
 										}else{
-											if (world.isRemote) 
+										
 											Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: MFFS Forcefield synchron capacitor is empty ");
 										}
 									}else{
@@ -271,25 +267,25 @@ public class BlockForceField extends BlockContainer{
 										{
 											ElectricItem.discharge(energycap, ModularForceFieldSystem.forcefieldtransportcost, 1, true, false);
 											entityplayer.setPositionAndUpdate(x + 0.5, y-ymodi ,z + 0.5);
-											if (world.isRemote) 
+										
 											Functions.ChattoPlayer(entityplayer,"[Field Security] Success: transmission complete");
 										}else{
-											if (world.isRemote) 
+										
 											Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: MFFS Forcefield synchron capacitor is empty ");
 										}
 								    	}
 									}
 								} else {
-									if (world.isRemote) 
+								
 									Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: detected obstacle ");
 								}
 							}else {
-								if (world.isRemote) 
+							
 								Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: Field to Strong >= 5 Blocks");
 							}
 						} else {
 							if(energycap!= null){
-								if (world.isRemote) 
+								
 								Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 							}
 						}
