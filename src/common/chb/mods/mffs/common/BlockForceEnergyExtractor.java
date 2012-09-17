@@ -20,6 +20,7 @@
 
 package chb.mods.mffs.common;
 
+import ic2.api.Items;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.EntityLiving;
@@ -70,6 +71,8 @@ public class BlockForceEnergyExtractor extends BlockMFFSBase {
 	public boolean onBlockActivated(World world, int i, int j, int k,
 			EntityPlayer entityplayer, int par6, float par7, float par8,
 			float par9){
+		if (!world.isRemote) {
+		
 		if (entityplayer.isSneaking())
         {
 			return false;
@@ -78,29 +81,57 @@ public class BlockForceEnergyExtractor extends BlockMFFSBase {
 		TileEntityExtractor tileentity = (TileEntityExtractor) world
 				.getBlockTileEntity(i, j, k);
 
+	if(tileentity instanceof TileEntityExtractor)
+	{
+		if(Linkgrid.getWorldMap(world).getCapacitor().get(tileentity.getLinkCapacitors_ID())!= null)
+		{
+		if(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(tileentity.getLinkCapacitors_ID()).getSecStation_ID()) != null)
+		{
+			if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(tileentity.getLinkCapacitors_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+				Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
+				return false;
+			}
+		}
+	}
+		}
+	
+		
+		
 
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {
 			return false;
 		}
+		
+		
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem() == Items.getItem("wrench"))) {
+			return false;
+		}
+		
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem() == Items.getItem("electricWrench"))) {
+			return false;
+		}	
+		
+		
 
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemMultitool)) {
 			return false;
 		}
 
+		
 		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardEmpty)) {
+				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardPowerLink)) {
 			return false;
 		}
-
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardSecurityLink)) {
-			return false;
-		}
+		
 
 		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_EXTRACTOR, world,
 				i, j, k);
+		
+		}
 		return true;
 	}
 
