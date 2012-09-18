@@ -28,7 +28,7 @@ import net.minecraft.src.GuiContainer;
 
 import org.lwjgl.opengl.GL11;
 
-import chb.mods.mffs.common.ContainerProjektor;
+import chb.mods.mffs.common.ContainerProjector;
 import chb.mods.mffs.common.TileEntityProjector;
 
 
@@ -37,7 +37,7 @@ public class GuiProjector extends GuiContainer {
 
 	public GuiProjector(EntityPlayer player,
 			TileEntityProjector tileentity) {
-		super(new ContainerProjektor(player, tileentity));
+		super(new ContainerProjector(player, tileentity));
 		projector = tileentity;
 	}
 	@Override
@@ -85,8 +85,8 @@ public class GuiProjector extends GuiContainer {
 	}
 
 	public void initGui() {
-		controlList.add(new GuigrafikButton(0, (width / 2) + 4, (height / 2) - 47,projector,1));
-		controlList.add(new GuigrafikButton(1, (width / 2) + 67, (height / 2) -76,projector,2));
+		controlList.add(new GuiGraphicButton(0, (width / 2) + 4, (height / 2) - 47,projector,1));
+		controlList.add(new GuiGraphicButton(1, (width / 2) + 67, (height / 2) -76,projector,2));
 
 		super.initGui();
 	}

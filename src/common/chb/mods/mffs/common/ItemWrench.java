@@ -51,10 +51,10 @@ public class ItemWrench extends ItemMultitool  {
 			{
 				
 				
-				if(tileentity instanceof TileEntityMaschines)
+				if(tileentity instanceof TileEntityMachines)
 				{
 				
-					if(((TileEntityMaschines)tileentity).isActive())
+					if(((TileEntityMachines)tileentity).isActive())
 					return false;
 				}
 				

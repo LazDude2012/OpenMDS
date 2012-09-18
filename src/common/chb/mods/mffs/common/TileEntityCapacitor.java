@@ -45,13 +45,14 @@ import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
-public class TileEntityCapacitor extends TileEntityMaschines implements
+public class TileEntityCapacitor extends TileEntityMachines implements
 ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEntityEventListener{
 	private ItemStack inventory[];
 	private int forcepower;
 	private int maxforcepower;
 	private int transmitrange;
 	private int Capacitor_ID;
+	private int Remote_Capacitor_ID;
 	private int SecStation_ID;
 	private boolean create;
 	private boolean LinkedSecStation;
@@ -68,6 +69,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		forcepower = 0;
 		maxforcepower = 10000000;
 		Capacitor_ID = 0;
+		Remote_Capacitor_ID = 0;
 		linketprojektor = 0;
 		create = true;
 		LinkedSecStation = false;
@@ -80,6 +82,15 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	
 	
 	
+	
+
+	public int getRemote_Capacitor_ID() {
+		return Remote_Capacitor_ID;
+	}
+
+	public void setRemote_Capacitor_ID(int remote_Capacitor_ID) {
+		Remote_Capacitor_ID = remote_Capacitor_ID;
+	}
 
 	public int getPowerlinkmode() {
 		return Powerlinkmode;
@@ -207,6 +218,40 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 				dropplugins(1,this);
 			}
 		}
+		
+		if (getStackInSlot(2) != null) {
+			if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSitemfc) {
+				if (this.getCapacitor_ID()!= NBTTagCompoundHelper.getTAGfromItemstack(
+						getStackInSlot(2)).getInteger("CapacitorID")) {
+				
+					if (this.getRemote_Capacitor_ID()!= NBTTagCompoundHelper.getTAGfromItemstack(
+							getStackInSlot(2)).getInteger("CapacitorID")) {
+						
+						this.setRemote_Capacitor_ID(NBTTagCompoundHelper.getTAGfromItemstack(
+							getStackInSlot(2)).getInteger("CapacitorID"));
+						
+						if (Linkgrid.getWorldMap(worldObj).getCapacitor()
+								.get(this.getRemote_Capacitor_ID()) == null) {
+							
+							dropplugins(2,this);
+							this.setRemote_Capacitor_ID(0);
+						}
+		
+					}
+				
+				}else{
+					dropplugins(2,this);
+					this.setRemote_Capacitor_ID(0);
+				}
+				
+			}else{
+				dropplugins(2,this);
+				this.setRemote_Capacitor_ID(0);
+			}
+		}
+		
+		
+		
 
 
 		if (getStackInSlot(4) != null) {
@@ -276,7 +321,8 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		maxforcepower = nbttagcompound.getInteger("maxforcepower");
 		transmitrange = nbttagcompound.getInteger("transmitrange");
 		Capacitor_ID = nbttagcompound.getInteger("Capacitor_ID");
-
+		Powerlinkmode = nbttagcompound.getInteger("Powerlinkmode");
+	
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		inventory = new ItemStack[getSizeInventory()];
 		for (int i = 0; i < nbttaglist.tagCount(); i++) {
@@ -299,6 +345,8 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		nbttagcompound.setInteger("maxforcepower", maxforcepower);
 		nbttagcompound.setInteger("transmitrange", transmitrange);
 		nbttagcompound.setInteger("Capacitor_ID", Capacitor_ID);
+		nbttagcompound.setInteger("Powerlinkmode", Powerlinkmode);
+	
 
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < inventory.length; i++) {
@@ -365,6 +413,10 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 				
 				this.setCapacity(((getForcepower()/1000)*100)/(getMaxforcepower()/1000));
 				checkslots();
+				if(isActive())
+				{
+				powertransfer();
+				}
 				this.setTicker((short) 0);
 			}
 			this.setTicker((short) (this.getTicker() + 1));
@@ -381,6 +433,88 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 				NetworkHelper.requestInitialData(this);
 				create = false;
 			}
+		}
+	}
+	
+	private void powertransfer()
+	{
+		
+		if(getRemote_Capacitor_ID()!= 0)
+		{
+	    TileEntityCapacitor RemoteCap = Linkgrid.getWorldMap(worldObj).getCapacitor().get(getRemote_Capacitor_ID());	
+	    
+	    if(RemoteCap != null)
+	    {	    	
+	    	
+	      int maxtrasferrate = this.getMaxforcepower() / 120;
+	      int forceenergyspace = RemoteCap.getMaxforcepower() - RemoteCap.getForcepower();
+	      	    	
+		switch(this.getPowerlinkmode())
+		{
+		case 0:
+		if(getcapacity() >= 90 && RemoteCap.getcapacity() != 100)
+		{
+			
+		    if(forceenergyspace > maxtrasferrate)
+		    {
+		    	RemoteCap.setForcepower(RemoteCap.getForcepower() + maxtrasferrate);
+                this.setForcepower(this.getForcepower() - maxtrasferrate);		    
+		    }else{
+		    	RemoteCap.setForcepower(RemoteCap.getForcepower() + forceenergyspace);
+                this.setForcepower(this.getForcepower() - forceenergyspace);	
+		    }
+			
+		}
+		break;
+		case 1:
+		if(RemoteCap.getcapacity() < this.getcapacity())	
+		{
+			int balancevaue = this.getForcepower()- RemoteCap.getForcepower();
+			
+		    if(balancevaue > maxtrasferrate)
+		    {
+		    	RemoteCap.setForcepower(RemoteCap.getForcepower() + maxtrasferrate);
+                this.setForcepower(this.getForcepower() - maxtrasferrate);		    
+		    }else{
+		    	RemoteCap.setForcepower(RemoteCap.getForcepower() + balancevaue);
+                this.setForcepower(this.getForcepower() - balancevaue);	
+		    }
+			
+		}
+		break;		
+		case 2:
+		if(getcapacity() > 0 && RemoteCap.getcapacity() != 100)
+		{
+
+		  if(this.getForcepower() > maxtrasferrate)
+		  {
+			    if(forceenergyspace > maxtrasferrate)
+			    {
+			    	RemoteCap.setForcepower(RemoteCap.getForcepower() + maxtrasferrate);
+	                this.setForcepower(this.getForcepower() - maxtrasferrate);		    
+			    }else{
+			    	RemoteCap.setForcepower(RemoteCap.getForcepower() + forceenergyspace);
+	                this.setForcepower(this.getForcepower() - forceenergyspace);	
+			    }
+                
+		  }else{
+			  
+			    if(forceenergyspace > this.getForcepower())
+			    {
+			    	RemoteCap.setForcepower(RemoteCap.getForcepower() + this.getForcepower());
+	                this.setForcepower(this.getForcepower() - this.getForcepower());		    
+			    }else{
+			    	RemoteCap.setForcepower(RemoteCap.getForcepower() + forceenergyspace);
+	                this.setForcepower(this.getForcepower() - forceenergyspace);	
+			    }
+			  
+			  
+		  }
+
+		}		
+		break;
+		}	
+		}
 		}
 	}
 
@@ -505,9 +639,9 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		break;
 		
 		case 1:
-			if(this.getPowerlinkmode() == 0)
+			if(this.getPowerlinkmode() != 2)
 			{
-				this.setPowerlinkmode(1);
+				this.setPowerlinkmode(this.getPowerlinkmode() +1);
 			}else{
 				this.setPowerlinkmode(0);
 			}

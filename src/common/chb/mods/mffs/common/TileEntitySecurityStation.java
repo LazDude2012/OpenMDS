@@ -40,7 +40,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 
-public class TileEntitySecurityStation extends TileEntityMaschines implements
+public class TileEntitySecurityStation extends TileEntityMachines implements
 ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
 	private boolean Multiusermod;
 	private String MainUser;

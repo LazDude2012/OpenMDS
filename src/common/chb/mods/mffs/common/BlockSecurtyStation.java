@@ -40,7 +40,7 @@ public class BlockSecurtyStation extends BlockMFFSBase {
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k,
 			EntityLiving entityliving) {
-		TileEntityMaschines tileentityblock = (TileEntityMaschines) world
+		TileEntityMachines tileentityblock = (TileEntityMachines) world
 				.getBlockTileEntity(i, j, k);
 
 		int l = MathHelper

@@ -120,8 +120,8 @@ public abstract class BlockMFFSBase extends BlockContainer {
 	public static boolean isActive(IBlockAccess iblockaccess, int i, int j,
 			int k) {
 		TileEntity tileentity = iblockaccess.getBlockTileEntity(i, j, k);
-		if (tileentity instanceof TileEntityMaschines) {
-			return ((TileEntityMaschines) tileentity).isActive();
+		if (tileentity instanceof TileEntityMachines) {
+			return ((TileEntityMachines) tileentity).isActive();
 		} else {
 			return false;
 		}
@@ -131,7 +131,7 @@ public abstract class BlockMFFSBase extends BlockContainer {
 			int l) {
 		TileEntity tileentity = iblockaccess.getBlockTileEntity(i, j, k);
 
-		int facing = (tileentity instanceof TileEntityMaschines) ? ((TileEntityMaschines) tileentity)
+		int facing = (tileentity instanceof TileEntityMachines) ? ((TileEntityMachines) tileentity)
 				.getFacing() : 1;
 		int typ = (tileentity instanceof TileEntityProjector) ? ((TileEntityProjector) tileentity)
 				.getProjektor_Typ() : 0;
@@ -156,9 +156,9 @@ public abstract class BlockMFFSBase extends BlockContainer {
 	@Override
 	public float getExplosionResistance(Entity entity,World world, int i, int j,
 			int k, double d, double d1, double d2) {
-		if (world.getBlockTileEntity(i, j, k) instanceof TileEntityMaschines) {
+		if (world.getBlockTileEntity(i, j, k) instanceof TileEntityMachines) {
 			TileEntity tileentity = world.getBlockTileEntity(i, j, k);
-			if (((TileEntityMaschines) tileentity).isActive()) {
+			if (((TileEntityMachines) tileentity).isActive()) {
 				return 999F;
 			} else {
 				return 25F;

@@ -26,6 +26,7 @@ import ic2.api.Ic2Recipes;
 import ic2.api.Items;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +39,7 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.ModLoader;
+import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -57,10 +59,12 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1")
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1", dependencies = "after:IC2")
 @NetworkMod(channels = { "MFFS" },clientSideRequired = true, serverSideRequired = false)
 
 public class ModularForceFieldSystem {
+	
+	
 	public static final int GUI_CAPACITOR= 1;
 	public static final int GUI_PROJECTOR = 2;
 	public static final int GUI_SECSTATION = 3;
@@ -143,6 +147,8 @@ public class ModularForceFieldSystem {
 
 	public static String Admin;
     public static Map<Integer, int[]> idmetatotextur = new HashMap<Integer, int[]>();
+    
+    public static Class Extractor =  TileEntityExtractor.class;
 
 	@SidedProxy(clientSide = "chb.mods.mffs.client.ClientProxy", serverSide = "chb.mods.mffs.common.CommonProxy")
     public static CommonProxy proxy;
@@ -152,6 +158,7 @@ public class ModularForceFieldSystem {
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event) {
+		
 		
 		MFFSconfig = new Configuration(event.getSuggestedConfigurationFile());
 		event.getModMetadata().version = Versioninfo.version();
@@ -169,7 +176,7 @@ public class ModularForceFieldSystem {
 			MobDefenseDamage = MFFSconfig.getOrCreateIntProperty("MobDefenseDamage", Configuration.CATEGORY_GENERAL,10).getInt(10);
 			DefenseStationFPpeerAttack = MFFSconfig.getOrCreateIntProperty("DefenseStationFPpeerAttack", Configuration.CATEGORY_GENERAL,25000).getInt(25000);
 		
-			MFFSExtractor = new BlockForceEnergyExtractor(MFFSconfig.getOrCreateBlockIdProperty("MFFSExtractor", 4076).getInt(4076),0).setBlockName("MFFSExtractor");
+			MFFSExtractor = new BlockExtractor(MFFSconfig.getOrCreateBlockIdProperty("MFFSExtractor", 4076).getInt(4076),0).setBlockName("MFFSExtractor");
 		    MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getOrCreateBlockIdProperty("MFFSMonazitOre", 4077).getInt(4077)).setBlockName("MFFSMonazitOre");
 			MFFSDefenceStation = new BlockAreaDefenseStation(MFFSconfig.getOrCreateBlockIdProperty("MFFSDefenceStation", 4078).getInt(4078),0).setBlockName("MFFSDefenceStation");
 			MFFSSecurtyStation = new BlockSecurtyStation(MFFSconfig.getOrCreateBlockIdProperty("MFFSSecurtyStation", 4079).getInt(4079),0).setBlockName("MFFSSecurtyStation");
@@ -180,7 +187,7 @@ public class ModularForceFieldSystem {
 			MFFSitemWrench= new ItemWrench(MFFSconfig.getOrCreateIntProperty("itemWrench",Configuration.CATEGORY_ITEM,11107).getInt(11107)).setItemName("itemWrench");
 			MFFSitemSwitch= new ItemSwitch(MFFSconfig.getOrCreateIntProperty("itemSwitch",Configuration.CATEGORY_ITEM,11108).getInt(11108)).setItemName("itemSwitch");
 			MFFSitemForceFieldsync= new ItemForceFieldSynchronCapacitor(MFFSconfig.getOrCreateIntProperty("itemForceFieldsync",Configuration.CATEGORY_ITEM,11109).getInt(11109)).setItemName("itemForceFieldsync");
-			MFFSitemMFDidtool= new ItemPersonalIIDWriter(MFFSconfig.getOrCreateIntProperty("ItemMFDIDwriter",Configuration.CATEGORY_ITEM,11110).getInt(11110)).setItemName("ItemMFDIDwriter");
+			MFFSitemMFDidtool= new ItemPersonalIDWriter(MFFSconfig.getOrCreateIntProperty("ItemMFDIDwriter",Configuration.CATEGORY_ITEM,11110).getInt(11110)).setItemName("ItemMFDIDwriter");
 			MFFSitemMFDdebugger= new ItemDebugger(MFFSconfig.getOrCreateIntProperty("itemMFDdebugger",Configuration.CATEGORY_ITEM,11111).getInt(11111)).setItemName("itemMFDdebugger");
 			MFFSitemcardempty= new ItemCardEmpty(MFFSconfig.getOrCreateIntProperty("itemcardempty",Configuration.CATEGORY_ITEM,11115).getInt(11115)).setItemName("itemcardempty");
 			MFFSitemfc= new ItemCardPowerLink(MFFSconfig.getOrCreateIntProperty("itemfc",Configuration.CATEGORY_ITEM,11116).getInt(11116)).setItemName("itemfc");
@@ -222,6 +229,9 @@ public class ModularForceFieldSystem {
 
 	@Init
 	public void load(FMLInitializationEvent evt) {
+		
+		loadbuildcaftstuff();
+		
 		GameRegistry.registerBlock(MFFSCapacitor);
 		GameRegistry.registerBlock(MFFSProjector);
 		GameRegistry.registerBlock(MFFSSecurtyStation);
@@ -231,9 +241,8 @@ public class ModularForceFieldSystem {
 		GameRegistry.registerBlock(MFFSExtractor);
 
 		OreDictionary.registerOre("Forcicium", MFFSitemForcicium);
-
-		GameRegistry.registerTileEntity(TileEntityExtractorBC.class, "MFFSExtractorBC");
-		GameRegistry.registerTileEntity(TileEntityExtractor.class, "MFFSExtractor");
+		
+		GameRegistry.registerTileEntity(Extractor, "MFFSExtractor");
 		
 		GameRegistry.registerTileEntity(TileEntityAreaDefenseStation.class, "MFFSDefenceStation");
 		GameRegistry
@@ -259,11 +268,23 @@ public class ModularForceFieldSystem {
 			'A',Items.getItem("overclockerUpgrade"), 'B',Items.getItem("carbonPlate")
 		});
 		
+		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemupgradecapcap),
+				new Object[] { " A ", "ABA", " A ", 'A',
+						Items.getItem("carbonPlate"), 'B',
+						MFFSitemForcePowerCrystal });
+		
+		
+		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemupgradecaprange),
+				new Object[] { "AAA", "BCB", "BDB",
+			'A',Items.getItem("copperCableItem"), 
+			'B',Items.getItem("carbonPlate"),
+			'C',Items.getItem("insulatedCopperCableItem"), 
+			'D',Items.getItem("advancedCircuit") 				
+		});
 		
 		
 		
-		
-		
+
 		
 		
 		//
@@ -278,14 +299,8 @@ public class ModularForceFieldSystem {
 				"AAA", "ABA", "AAA", 'A', Item.paper,
 				'B', Items.getItem("electronicCircuit") });
 
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemupgradecapcap),
-				new Object[] { " A ", "ABA", " A ", 'A',
-						Items.getItem("advancedAlloy"), 'B',
-						Items.getItem("electrolyzedWaterCell") });
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemupgradecaprange),
-				new Object[] { " A ", "ABA", " A ", 'A',
-						Items.getItem("advancedAlloy"), 'B',
-						Items.getItem("frequencyTransmitter") });
+
+	
 		CraftingManager.getInstance().addRecipe(
 				new ItemStack(MFFSCapacitor, 1),
 				new Object[] { "ABA", "CDC", "ABA", 'A',
@@ -547,6 +562,8 @@ public class ModularForceFieldSystem {
 		ExplosionWhitelist.addWhitelistedBlock(MFFSProjector);
 		ExplosionWhitelist.addWhitelistedBlock(MFFSSecurtyStation);
 		ExplosionWhitelist.addWhitelistedBlock(MFFSExtractor);
+		
+	
 	}
 
 	private void Generatetexturindex(Block block, int meta)
@@ -556,4 +573,19 @@ public class ModularForceFieldSystem {
 			index[side] = block.getBlockTextureFromSideAndMetadata(side, meta);
 		idmetatotextur.put(block.blockID + meta*1000, index);
 	}
+	
+	
+	public static void loadbuildcaftstuff() {
+		System.out.println("[ModularForceFieldSystem] Loading submodule for Buildcraft");
+		
+		try {
+			Extractor = ModularForceFieldSystem.class.getClassLoader().loadClass("chb.mods.mffs.common.TileEntityExtractorBC");
+			
+		} catch (Throwable t) {
+			System.out.println("[ModularForceFieldSystem] Submodule not loaded: Buildcraft not found");
+			
+		}
+	}
+	
+	
 }

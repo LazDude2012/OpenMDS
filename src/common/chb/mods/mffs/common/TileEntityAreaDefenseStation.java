@@ -39,7 +39,7 @@ import net.minecraft.src.NBTTagList;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
-public class TileEntityAreaDefenseStation extends TileEntityMaschines implements
+public class TileEntityAreaDefenseStation extends TileEntityMachines implements
 ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 	private ItemStack ProjektorItemStacks[];
 	private int Defstation_ID;

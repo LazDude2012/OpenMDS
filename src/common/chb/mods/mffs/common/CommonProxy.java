@@ -89,7 +89,7 @@ public class CommonProxy implements IGuiHandler {
 						te == null ? new TileEntityCapacitor()
 								: ((TileEntityCapacitor) te));
 			case GUI_PROJECTOR:
-				return new ContainerProjektor(player,
+				return new ContainerProjector(player,
 						te == null ? new TileEntityProjector()
 								: ((TileEntityProjector) te));
 			case GUI_SECSTATION:

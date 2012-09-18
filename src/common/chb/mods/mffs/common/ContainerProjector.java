@@ -26,13 +26,13 @@ import net.minecraft.src.ICrafting;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 
-public class ContainerProjektor extends Container {
+public class ContainerProjector extends Container {
 	private TileEntityProjector projectorentity;
 	private int linkPower;
 	private int maxlinkPower;
 	private EntityPlayer player;
 
-	public ContainerProjektor(EntityPlayer player,
+	public ContainerProjector(EntityPlayer player,
 			TileEntityProjector tileentity) {
 		this.player = player;
 		projectorentity = tileentity;

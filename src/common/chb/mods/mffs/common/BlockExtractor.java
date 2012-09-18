@@ -29,10 +29,10 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
-public class BlockForceEnergyExtractor extends BlockMFFSBase {
+public class BlockExtractor extends BlockMFFSBase {
 
 
-	public BlockForceEnergyExtractor(int i, int texturindex) {
+	public BlockExtractor(int i, int texturindex) {
 		super(i, texturindex);
 		setRequiresSelfNotify();
 	}
@@ -46,7 +46,7 @@ public class BlockForceEnergyExtractor extends BlockMFFSBase {
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k,
 			EntityLiving entityliving) {
-		TileEntityMaschines tileentityblock = (TileEntityMaschines) world
+		TileEntityMachines tileentityblock = (TileEntityMachines) world
 				.getBlockTileEntity(i, j, k);
 
 		int l = MathHelper
@@ -137,10 +137,15 @@ public class BlockForceEnergyExtractor extends BlockMFFSBase {
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityExtractorBC();
+		
+		try {
+			return (TileEntity) ModularForceFieldSystem.Extractor.newInstance();
+		} catch (Exception e) {
+			
+			System.out.println("[ModularForceFieldSystem][Error] Extractor TileEntity fail");
+			return null;
+		} 
+		
 	}
-	
-	
-	
 	
 }

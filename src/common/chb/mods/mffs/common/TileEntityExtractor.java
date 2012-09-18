@@ -20,7 +20,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
-public class TileEntityExtractor extends TileEntityMaschines implements ISidedInventory
+public class TileEntityExtractor extends TileEntityMachines implements ISidedInventory
 ,IEnergySink,INetworkDataProvider,INetworkUpdateListener{
 	
 	public static final int MAXWORKCYLCE = 125;

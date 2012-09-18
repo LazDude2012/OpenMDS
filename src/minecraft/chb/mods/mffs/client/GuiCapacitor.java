@@ -77,9 +77,9 @@ public class GuiCapacitor extends GuiContainer {
 	}
 
 	public void initGui() {
-		controlList.add(new GuigrafikButton(0, (width / 2) + 27, (height / 2) - 60,Core,1));
+		controlList.add(new GuiGraphicButton(0, (width / 2) + 27, (height / 2) - 60,Core,1));
 		
-		controlList.add(new GuigrafikButton(1, (width / 2) + 46, (height / 2) - 35,Core,2));
+		controlList.add(new GuiGraphicButton(1, (width / 2) + 38, (height / 2) - 35,Core,2));
 
 		super.initGui();
 	}

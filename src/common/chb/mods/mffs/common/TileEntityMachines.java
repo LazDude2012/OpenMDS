@@ -32,14 +32,14 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
 
-public abstract class TileEntityMaschines extends TileEntity implements IWrenchable{
+public abstract class TileEntityMachines extends TileEntity implements IWrenchable{
 	
 	private boolean active;
 	private short facing;
 	private float wrenchRate;
 	private short ticker;
 
-	public TileEntityMaschines()
+	public TileEntityMachines()
 
 	{
 		active = false;

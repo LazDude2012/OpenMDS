@@ -48,7 +48,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
-public class TileEntityProjector extends TileEntityMaschines implements IModularProjector,
+public class TileEntityProjector extends TileEntityMachines implements IModularProjector,
 ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEntityEventListener{
 	private ItemStack ProjektorItemStacks[];
 
@@ -1876,7 +1876,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 	@Override
 	public Container getContainer(InventoryPlayer inventoryplayer) {
-		return new ContainerProjektor(inventoryplayer.player, this);
+		return new ContainerProjector(inventoryplayer.player, this);
 	}
 
 

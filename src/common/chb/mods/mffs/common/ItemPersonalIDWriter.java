@@ -31,8 +31,8 @@ import net.minecraft.src.World;
 
 
 
-public class ItemPersonalIIDWriter extends ItemMultitool{
-	public ItemPersonalIIDWriter(int i) {
+public class ItemPersonalIDWriter extends ItemMultitool{
+	public ItemPersonalIDWriter(int i) {
 		super(i,2);
 	}
 

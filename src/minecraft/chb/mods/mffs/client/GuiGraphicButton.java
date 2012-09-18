@@ -28,13 +28,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.TileEntity;
 
-public class GuigrafikButton extends GuiButton
+public class GuiGraphicButton extends GuiButton
 
 {
 	private TileEntity tileEntity;
 	private int typ;
 
-    public GuigrafikButton(int par1, int par2, int par3, TileEntity tileEntity,int typ)
+    public GuiGraphicButton(int par1, int par2, int par3, TileEntity tileEntity,int typ)
     {
         super(par1, par2, par3, 16, 16, "");
         this.tileEntity = tileEntity;
@@ -110,6 +110,9 @@ public class GuigrafikButton extends GuiButton
                     break;
                     case 1:
                     	this.drawTexturedModalRect(this.xPosition, this.yPosition, 112, 80, this.width, this.height);
+                    break;
+                    case 2:
+                    	this.drawTexturedModalRect(this.xPosition, this.yPosition, 128, 80, this.width, this.height);
                     break;
                     }
                 }

@@ -48,7 +48,7 @@ public class ContainerCapacitor extends Container {
 		addSlotToContainer(new Slot(generatorentity, 4, 154, 47));
 		addSlotToContainer(new Slot(generatorentity, 0, 154, 5));
 		addSlotToContainer(new Slot(generatorentity, 1, 154, 26));
-		addSlotToContainer(new Slot(generatorentity, 2, 115, 47));
+		addSlotToContainer(new Slot(generatorentity, 2, 107, 47));
 	
 
 		int var3;
