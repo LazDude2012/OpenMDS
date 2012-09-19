@@ -86,11 +86,11 @@ public class BlockProjector extends BlockMFFSBase {
 
 		if(tileentity.getaccesstyp()== 2)
 		{
-		if(Linkgrid.getWorldMap(world).getCapacitor().get(tileentity.getLinkGenerator_ID())!= null)
+		if(Linkgrid.getWorldMap(world).getCapacitor().get(tileentity.getLinkCapacitor_ID())!= null)
 		{
-		if(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(tileentity.getLinkGenerator_ID()).getSecStation_ID()) != null)
+		if(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(tileentity.getLinkCapacitor_ID()).getSecStation_ID()) != null)
 		{
-			if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(tileentity.getLinkGenerator_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+			if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(tileentity.getLinkCapacitor_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
 				Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 				return false;
 			}

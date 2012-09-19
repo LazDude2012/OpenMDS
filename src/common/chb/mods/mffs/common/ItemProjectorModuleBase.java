@@ -51,7 +51,7 @@ public class ItemProjectorModuleBase extends Item  {
 			if (tileEntity instanceof TileEntityProjector) {
 				  if(((TileEntityProjector)tileEntity).getaccesstyp()==2)
 				  {
-						TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileEntity).getLinkGenerator_ID());
+						TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileEntity).getLinkCapacitor_ID());
 
 						if(Generator!= null)
 						{

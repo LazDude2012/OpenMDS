@@ -60,7 +60,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1", dependencies = "after:IC2")
-@NetworkMod(channels = { "MFFS" },clientSideRequired = true, serverSideRequired = false)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 
 public class ModularForceFieldSystem {
 	

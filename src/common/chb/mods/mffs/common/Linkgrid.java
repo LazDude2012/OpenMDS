@@ -120,7 +120,7 @@ public final class Linkgrid {
 				int zCoordr, int i) {
 			int counter = 0;
 			for (TileEntityProjector tileentity : Projektor.values()) {
-				if (tileentity.getLinkGenerator_ID() == Capacitors_ID) {
+				if (tileentity.getLinkCapacitor_ID() == Capacitors_ID) {
 					int dx = tileentity.xCoord - xCoordr;
 					int dy = tileentity.yCoord - yCoordr;
 					int dz = tileentity.zCoord - zCoordr;

@@ -65,7 +65,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	private short forcefieldblock_meta;
 	private int ProjektorTyp;
 	private int Projektor_ID;
-	private int linkGenerator_ID;
+	private int linkCapacitor_ID;
 	private int linkPower;
 	private int maxlinkPower;
 	private int blockcounter;
@@ -83,7 +83,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		Random random = new Random();
 
 		ProjektorItemStacks = new ItemStack[13];
-		linkGenerator_ID = 0;
+		linkCapacitor_ID = 0;
 		Projektor_ID = random.nextInt();
 		linkPower = 0;
 		maxlinkPower = 1000000;
@@ -256,12 +256,12 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		this.linkPower = linkPower;
 	}
 
-	public int getLinkGenerator_ID() {
-		return linkGenerator_ID;
+	public int getLinkCapacitor_ID() {
+		return linkCapacitor_ID;
 	}
 
-	public void setLinkGenerator_ID(int linkGenerator_ID) {
-		this.linkGenerator_ID = linkGenerator_ID;
+	public void setLinkCapacitor_ID(int i) {
+		this.linkCapacitor_ID = i;
 	}
 
 	public boolean isOptionDamage() {
@@ -464,35 +464,35 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	public void checkslots(boolean init) {
 		if (getStackInSlot(0) != null) {
 			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemfc) {
-				if (getLinkGenerator_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
+				if (getLinkCapacitor_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
 						getStackInSlot(0)).getInteger("CapacitorID")) {
-					setLinkGenerator_ID(NBTTagCompoundHelper.getTAGfromItemstack(
+					setLinkCapacitor_ID(NBTTagCompoundHelper.getTAGfromItemstack(
 							getStackInSlot(0)).getInteger("CapacitorID"));
 				}
 
 				if (Linkgrid.getWorldMap(worldObj).getCapacitor()
-						.get(this.getLinkGenerator_ID()) != null) {
+						.get(this.getLinkCapacitor_ID()) != null) {
 					int transmit = Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getLinkGenerator_ID())
+							.getCapacitor().get(this.getLinkCapacitor_ID())
 							.getTransmitrange();
 					int gen_x = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkGenerator_ID()).xCoord
+							.get(this.getLinkCapacitor_ID()).xCoord
 							- this.xCoord;
 					int gen_y = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkGenerator_ID()).yCoord
+							.get(this.getLinkCapacitor_ID()).yCoord
 							- this.yCoord;
 					int gen_z = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkGenerator_ID()).zCoord
+							.get(this.getLinkCapacitor_ID()).zCoord
 							- this.zCoord;
 
 					if (Math.sqrt(gen_x * gen_x + gen_y * gen_y + gen_z * gen_z) <= transmit) {
 						setLinkGenerator(true);
 					} else {
-						setLinkGenerator_ID(0);
+						setLinkCapacitor_ID(0);
 						setLinkGenerator(false);
 					}
 				} else {
-					setLinkGenerator_ID(0);
+					setLinkCapacitor_ID(0);
 					setLinkGenerator(false);
 					if (!init) {
 						dropplugins(0,this);
@@ -504,7 +504,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 				}
 			}
 		} else {
-			setLinkGenerator_ID(0);
+			setLinkCapacitor_ID(0);
 			setLinkGenerator(false);
 		}
 
@@ -1004,7 +1004,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
-			if (this.isCreate() && this.getLinkGenerator_ID() != 0) {
+			if (this.isCreate() && this.getLinkCapacitor_ID() != 0) {
 				addtogrid();
 				checkslots(true);
 				if (this.isActive()) {
@@ -1013,14 +1013,14 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 				this.setCreate(false);
 			}
 
-			if (this.getLinkGenerator_ID() != 0) {
+			if (this.getLinkCapacitor_ID() != 0) {
 				this.setLinkGenerator(true);
 				try {
 					this.setLinkPower(Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getLinkGenerator_ID())
+							.getCapacitor().get(this.getLinkCapacitor_ID())
 							.getForcepower());
 					this.setMaxlinkPower(Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getLinkGenerator_ID())
+							.getCapacitor().get(this.getLinkCapacitor_ID())
 							.getMaxforcepower());
 				} catch (java.lang.NullPointerException ex) {
 					this.setLinkGenerator(false);
@@ -1523,7 +1523,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 		if(!ffworldmap.isEmpty())
 		{
-		 if(ffworldmap.getGenratorID()== this.getLinkGenerator_ID())
+		 if(ffworldmap.getGenratorID()== this.getLinkCapacitor_ID())
 		 {
 			TileEntityProjector Projector =  Linkgrid.getWorldMap(worldObj).getProjektor().get(ffworldmap.getProjectorID());
 
@@ -1568,10 +1568,10 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		{
 			if(ffworldmap.getProjectorID() != getProjektor_ID()){
 			    ffworldmap.removebyProjector(getProjektor_ID());
-				ffworldmap.add(getLinkGenerator_ID(), getProjektor_ID(), getforcefieldblock_meta());
+				ffworldmap.add(getLinkCapacitor_ID(), getProjektor_ID(), getforcefieldblock_meta());
 			    }
 		}else{
-			ffworldmap.add(getLinkGenerator_ID(), getProjektor_ID(), getforcefieldblock_meta());
+			ffworldmap.add(getLinkCapacitor_ID(), getProjektor_ID(), getforcefieldblock_meta());
 			ffworldmap.setSync(false);
 		}
 
@@ -1599,7 +1599,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 	public void FieldGenerate(boolean init) {
 			TileEntity tileEntity = Linkgrid.getWorldMap(worldObj)
-					.getCapacitor().get(this.linkGenerator_ID);
+					.getCapacitor().get(this.linkCapacitor_ID);
 			if (tileEntity instanceof TileEntityCapacitor && tileEntity != null) {
 				int cost = 0;
 
@@ -1739,7 +1739,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 		Map<Integer, TileEntityProjector> FieldFusion = Linkgrid.getWorldMap(worldObj).getFieldFusion();
 		for (TileEntityProjector tileentity : FieldFusion.values()) {
-		 if(tileentity.getLinkGenerator_ID() == this.linkGenerator_ID)
+		 if(tileentity.getLinkCapacitor_ID() == this.linkCapacitor_ID)
 		 {
 			 if(tileentity.isActive())
 			 {

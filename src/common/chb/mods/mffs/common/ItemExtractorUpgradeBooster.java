@@ -27,7 +27,7 @@ public class ItemExtractorUpgradeBooster extends Item  {
 	public ItemExtractorUpgradeBooster(int i) {
 		super(i);
 		setIconIndex(37);
-		setMaxStackSize(10);
+		setMaxStackSize(19);
 		setTabToDisplayOn(CreativeTabs.tabMaterials);
 	}
 	@Override

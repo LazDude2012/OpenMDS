@@ -87,7 +87,7 @@ public class ItemCardPowerLink extends Item  {
 			
 			
 			if (tileEntity instanceof TileEntityProjector) {
-				TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileEntity).getLinkGenerator_ID());
+				TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileEntity).getLinkCapacitor_ID());
 
 				if(Generator!= null)
 				{

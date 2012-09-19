@@ -163,9 +163,9 @@ public final class ForceFieldOptions {
         		if (projector.getLinkPower() > ModularForceFieldSystem.DefenseStationFPpeerAttack) {
 					if(Target.equals("mobs"))
 					{
-						Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkGenerator_ID())
+						Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkCapacitor_ID())
 						.setForcepower(Linkgrid.getWorldMap(world).getCapacitor().get(projector
-							.getLinkGenerator_ID()).getForcepower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
+							.getLinkCapacitor_ID()).getForcepower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
 
 					entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.MobDefenseDamage);
 					continue;
@@ -177,7 +177,7 @@ public final class ForceFieldOptions {
 
 						if(projector.getaccesstyp()==2)
 						{
-							TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkGenerator_ID());
+							TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkCapacitor_ID());
 							if(Generator != null)
 							{
 							TileEntitySecurityStation SecurityStation = Linkgrid.getWorldMap(world).getSecStation().get(Generator.getSecStation_ID());
@@ -199,9 +199,9 @@ public final class ForceFieldOptions {
 
 						if (killswitch)
 							{
-							Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkGenerator_ID())
+							Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkCapacitor_ID())
 							.setForcepower(Linkgrid.getWorldMap(world).getCapacitor().get(projector
-								.getLinkGenerator_ID()).getForcepower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
+								.getLinkCapacitor_ID()).getForcepower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
 
 							Functions.ChattoPlayer((EntityPlayer)entityLiving,"[Defence Area Station] !!! you  are in a restricted area !!! ");
 							entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);
@@ -292,12 +292,12 @@ public final class ForceFieldOptions {
 
 			if(Option.equalsIgnoreCase("jammer"))
 			{
-				logicswitch = tileentity.getLinkGenerator_ID() != tileEntityProjector.getLinkGenerator_ID();
+				logicswitch = tileentity.getLinkCapacitor_ID() != tileEntityProjector.getLinkCapacitor_ID();
 			}
 
 			if(Option.equalsIgnoreCase("fieldfuser"))
 			{
-				logicswitch = tileentity.getLinkGenerator_ID() == tileEntityProjector.getLinkGenerator_ID() &&
+				logicswitch = tileentity.getLinkCapacitor_ID() == tileEntityProjector.getLinkCapacitor_ID() &&
 					          tileentity.getProjektor_ID() != tileEntityProjector.getProjektor_ID();
 			}
 
