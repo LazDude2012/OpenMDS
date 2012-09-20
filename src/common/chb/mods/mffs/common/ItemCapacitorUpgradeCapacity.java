@@ -28,7 +28,7 @@ public class ItemCapacitorUpgradeCapacity extends Item  {
 		super(i);
 		setIconIndex(32);
 		setMaxStackSize(9);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

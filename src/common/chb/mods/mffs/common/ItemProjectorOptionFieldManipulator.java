@@ -31,7 +31,7 @@ public class ItemProjectorOptionFieldManipulator extends Item  {
 		super(i);
 		setIconIndex(34);
 		setMaxStackSize(1);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

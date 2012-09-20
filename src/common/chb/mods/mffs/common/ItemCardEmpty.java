@@ -32,7 +32,7 @@ public class ItemCardEmpty extends Item {
 		super(i);
 		setIconIndex(16);
 		setMaxStackSize(1);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

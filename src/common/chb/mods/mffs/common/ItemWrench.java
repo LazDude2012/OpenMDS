@@ -21,38 +21,49 @@
 package chb.mods.mffs.common;
 
 import chb.mods.mffs.common.api.*;
-import ic2.api.ElectricItem;
 import ic2.api.IWrenchable;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
 public class ItemWrench extends ItemMultitool  {
+	
 	protected ItemWrench(int id) {
 		super(id, 0);
 	}
+
+	
 
 	@Override
 	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player,
 			World world, int x, int y, int z, int side, float hitX, float hitY,
 			float hitZ) {
+		
+		System.out.println(ModularForceFieldSystem.proxy.isClient());
 
 		TileEntity tileentity =  world.getBlockTileEntity(x,y,z);
+		
+
 
 		if(tileentity instanceof IWrenchable)
 		{
+		
 			
-			if(ElectricItem.canUse(stack, 500))
+			if(ForceEnergyItems.use(stack, 1000, false,player))
 			{
+				
+		
 			
 			if(((IWrenchable)tileentity).wrenchCanSetFacing(player, side))
 			{
-				
+		
 				
 				if(tileentity instanceof TileEntityMachines)
 				{
+			
 				
 					if(((TileEntityMachines)tileentity).isActive())
 					return false;
@@ -61,8 +72,9 @@ public class ItemWrench extends ItemMultitool  {
 				if(((IWrenchable)tileentity).getFacing() != side )
 				{
 
+
 					((IWrenchable)tileentity).setFacing((short) side);
-					ElectricItem.use(stack, 500,player);
+					ForceEnergyItems.use(stack, 1000, true,player);
 					return true;
 				}
 
@@ -80,12 +92,15 @@ public class ItemWrench extends ItemMultitool  {
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
+		System.out.println("wrechen");
+		
 		if(entityplayer.isSneaking())
 		{
-		int powerleft = ElectricItem.discharge(itemstack, getMaxCharge(), 1, true, true);
-		ItemStack hand = entityplayer.inventory.getCurrentItem();
-		hand= new ItemStack(ModularForceFieldSystem.MFFSitemSwitch, 1);
-		ElectricItem.charge(hand, powerleft, 1, true, false);
+			int powerleft = this.getForceEnergy(itemstack);
+			System.out.println(powerleft);
+			ItemStack hand = entityplayer.inventory.getCurrentItem();
+			hand= new ItemStack(ModularForceFieldSystem.MFFSitemSwitch, 1);
+			ForceEnergyItems.charge(hand, powerleft,entityplayer);
 		return hand;
 		}
 		return itemstack;

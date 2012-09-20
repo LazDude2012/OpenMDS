@@ -28,7 +28,7 @@ public class ItemForcePowerCrystal extends Item{
 		super(i);
 		setIconIndex(96);
 		setMaxStackSize(1);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

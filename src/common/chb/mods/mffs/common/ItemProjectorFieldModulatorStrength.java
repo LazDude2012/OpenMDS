@@ -28,7 +28,7 @@ public class ItemProjectorFieldModulatorStrength extends Item {
 		super(i);
 		setIconIndex(65);
 		setMaxStackSize(64);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

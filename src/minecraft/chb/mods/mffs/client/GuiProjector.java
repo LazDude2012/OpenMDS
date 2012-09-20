@@ -56,22 +56,22 @@ public class GuiProjector extends GuiContainer {
 
 		if (projector.getProjektor_Typ() != 0 ) {
 			if (projector.getProjektor_Typ() != 7){
-				drawTexturedModalRect(w + 119, k + 43, 177, 143, 16, 16); // distance
+				drawTexturedModalRect(w + 119, k + 43, 177, 143, 16, 16); 
 			}
 
 			if (projector.getProjektor_Typ() != 4   && projector.getProjektor_Typ() != 2 ) {
-				drawTexturedModalRect(w + 155, k + 43, 177, 143, 16, 16); // stärke
+				drawTexturedModalRect(w + 155, k + 43, 177, 143, 16, 16);
 			}
 
 			if (projector.getProjektor_Typ() == 1 || projector.getProjektor_Typ() == 2 || projector.getProjektor_Typ() == 6|| projector.getProjektor_Typ() == 7) {
-				drawTexturedModalRect(w + 137, k + 8, 177, 143, 16, 16); // Focus
-																		// up
-				drawTexturedModalRect(w + 137, k + 42, 177, 143, 16, 16); // Focus
-																			// down
-				drawTexturedModalRect(w + 154, k + 25, 177, 143, 16, 16); // Focus
-																			// rechts
-				drawTexturedModalRect(w + 120, k + 25, 177, 143, 16, 16); // Focus
-																			// left
+				drawTexturedModalRect(w + 137, k + 8, 177, 143, 16, 16); 
+																		
+				drawTexturedModalRect(w + 137, k + 42, 177, 143, 16, 16); 
+																			
+				drawTexturedModalRect(w + 154, k + 25, 177, 143, 16, 16); 
+																			
+				drawTexturedModalRect(w + 120, k + 25, 177, 143, 16, 16); 
+																			
 			}
 
 			if (projector.isOptioncamouflage()) {

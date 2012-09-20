@@ -28,7 +28,7 @@ public class ItemCapacitorUpgradeRange extends Item  {
 		super(i);
 		setIconIndex(33);
 		setMaxStackSize(9);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 
 	public String getTextureFile() {

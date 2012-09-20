@@ -31,7 +31,7 @@ public class ItemProjectorOptionFieldFusion extends Item  {
 		super(i);
 		setIconIndex(43);
 		setMaxStackSize(1);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

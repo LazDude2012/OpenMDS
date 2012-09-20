@@ -31,7 +31,7 @@ public class ItemProjectorOptionDefenseStation extends Item  {
 		super(i);
 		setIconIndex(39);
 		setMaxStackSize(1);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

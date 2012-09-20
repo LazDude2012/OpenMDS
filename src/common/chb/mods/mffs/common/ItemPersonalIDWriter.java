@@ -22,42 +22,45 @@ package chb.mods.mffs.common;
 
 
 import java.util.List;
-
-import ic2.api.ElectricItem;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Slot;
 import net.minecraft.src.World;
 
 
 
 public class ItemPersonalIDWriter extends ItemMultitool{
+	
 	public ItemPersonalIDWriter(int i) {
 		super(i,2);
 	}
+
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
 		if(entityplayer.isSneaking())
 		{
-		int powerleft = ElectricItem.discharge(itemstack, getMaxCharge(), 1, true, true);
+	
+		int powerleft = this.getForceEnergy(itemstack);
+		System.out.println(powerleft);
 		ItemStack hand = entityplayer.inventory.getCurrentItem();
 		hand= new ItemStack(ModularForceFieldSystem.MFFSitemWrench, 1);
-		ElectricItem.charge(hand, powerleft, 1, true, false);
+		ForceEnergyItems.charge(hand, powerleft,entityplayer);
+		
 		return hand;
 		}
-
+	
 			List<Slot> slots = entityplayer.inventorySlots.inventorySlots;
 			for (Slot slot : slots) {
 				if (slot.getStack() != null) {
 					if (slot.getStack().getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
-						if(ElectricItem.canUse(itemstack, 1000))
+						if(ForceEnergyItems.use(itemstack, 1000, false,entityplayer))
 						{
-                      
-							ElectricItem.use(itemstack, 1000, entityplayer);
+					     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
                             ItemStack IDCard= new ItemStack(ModularForceFieldSystem.MFFSItemIDCard, 1);
                             ItemCardPersonalID.setOwner(IDCard, entityplayer.username);
                             ItemCardPersonalID.setSeclevel(IDCard, 1);
@@ -88,4 +91,6 @@ public class ItemPersonalIDWriter extends ItemMultitool{
 			float hitZ) {
 		return false;
 	}
+
+
 }

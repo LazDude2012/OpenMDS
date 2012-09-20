@@ -28,7 +28,7 @@ public class ItemExtractorUpgradeBooster extends Item  {
 		super(i);
 		setIconIndex(37);
 		setMaxStackSize(19);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

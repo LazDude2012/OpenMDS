@@ -21,20 +21,27 @@
 package chb.mods.mffs.common;
 
 
-import ic2.api.ElectricItem;
-import ic2.api.NetworkHelper;
+import cpw.mods.fml.common.Side;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
 public class ItemSwitch extends ItemMultitool {
+	
 	protected ItemSwitch(int id) {
 		super(id, 1);
+
 	}
+	
+
+	
 
 	@Override
 	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+		
+		System.out.println(ModularForceFieldSystem.proxy.isClient());
 
 		TileEntity tileentity =  world
 				.getBlockTileEntity(x,y,z);
@@ -59,12 +66,17 @@ public class ItemSwitch extends ItemMultitool {
 
 			if(((TileEntityProjector)tileentity).getswitchtyp() == 1)
 			{
-				if(ElectricItem.canUse(itemstack, 1000))
+				if(ForceEnergyItems.use(itemstack, 1000, false,entityplayer))
 				{
-				ElectricItem.use(itemstack, 1000, entityplayer);
+			     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
 
-				NetworkHelper.initiateClientTileEntityEvent(tileentity,2);
-				
+					if(((TileEntityProjector)tileentity).getOnOffSwitch())
+					{
+						((TileEntityProjector)tileentity).setOnOffSwitch(false);
+					}else{
+						((TileEntityProjector)tileentity).setOnOffSwitch(true);
+					}
+					
 				return true;
 				}else{
 					if(world.isRemote)
@@ -92,10 +104,16 @@ public class ItemSwitch extends ItemMultitool {
 
 			if(((TileEntityCapacitor)tileentity).getswitchtyp() == 1)
 			{
-				if(ElectricItem.canUse(itemstack, 1000))
+				if(ForceEnergyItems.use(itemstack, 1000, false,entityplayer))
 				{
-				ElectricItem.use(itemstack, 1000, entityplayer);
-				NetworkHelper.initiateClientTileEntityEvent(tileentity,2);
+			     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
+			     
+					if(((TileEntityCapacitor)tileentity).getOnOffSwitch())
+					{
+						((TileEntityCapacitor)tileentity).setOnOffSwitch(false);
+					}else{
+						((TileEntityCapacitor)tileentity).setOnOffSwitch(true);
+					}
 
 				return true;
 				}else{
@@ -116,12 +134,15 @@ public class ItemSwitch extends ItemMultitool {
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
+		
+		
 		if(entityplayer.isSneaking())
 		{
-		int powerleft = ElectricItem.discharge(itemstack, getMaxCharge(), 1, true, true);
-		ItemStack hand = entityplayer.inventory.getCurrentItem();
-		hand= new ItemStack(ModularForceFieldSystem.MFFSitemMFDidtool, 1);
-		ElectricItem.charge(hand, powerleft, 1, true, false);
+			int powerleft = this.getForceEnergy(itemstack);
+			System.out.println(powerleft);
+			ItemStack hand = entityplayer.inventory.getCurrentItem();
+			hand= new ItemStack(ModularForceFieldSystem.MFFSitemMFDidtool, 1);
+			ForceEnergyItems.charge(hand, powerleft,entityplayer);
 		return hand;
 		}
 		return itemstack;

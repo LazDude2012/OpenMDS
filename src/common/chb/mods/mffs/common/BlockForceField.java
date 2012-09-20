@@ -19,8 +19,6 @@
 */
 package chb.mods.mffs.common;
 
-import ic2.api.ElectricItem;
-
 import java.util.List;
 import java.util.Random;
 
@@ -79,7 +77,7 @@ public class BlockForceField extends BlockContainer{
 	        	}
 	        }
 	     }
-		return 1;
+		return 0;
 	}
 
     @Override
@@ -249,23 +247,9 @@ public class BlockForceField extends BlockContainer{
 									if(y-ymodi <=0){
 									Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: transmission into Void not allowed ");
 									}else{
-									if(ItemForceFieldSynchronCapacitor.canuseBatpack(energycap))
-									{
-										if(ElectricItem.canUse(energycap, ModularForceFieldSystem.forcefieldtransportcost))
+										if(ForceEnergyItems.use(energycap, ModularForceFieldSystem.forcefieldtransportcost,false,entityplayer))
 										{
-											ElectricItem.use(energycap, ModularForceFieldSystem.forcefieldtransportcost, entityplayer);
-											entityplayer.setPositionAndUpdate(x + 0.5, y-ymodi ,z + 0.5);
-		
-											Functions.ChattoPlayer(entityplayer,"[Field Security] Success: transmission complete");
-										}else{
-										
-											Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: MFFS Forcefield synchron capacitor is empty ");
-										}
-									}else{
-									int amount = ElectricItem.discharge(energycap, ModularForceFieldSystem.forcefieldtransportcost, 1, true, true);
-									if(amount == ModularForceFieldSystem.forcefieldtransportcost)
-										{
-											ElectricItem.discharge(energycap, ModularForceFieldSystem.forcefieldtransportcost, 1, true, false);
+											ForceEnergyItems.use(energycap, ModularForceFieldSystem.forcefieldtransportcost,true,entityplayer);
 											entityplayer.setPositionAndUpdate(x + 0.5, y-ymodi ,z + 0.5);
 										
 											Functions.ChattoPlayer(entityplayer,"[Field Security] Success: transmission complete");
@@ -273,7 +257,7 @@ public class BlockForceField extends BlockContainer{
 										
 											Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: MFFS Forcefield synchron capacitor is empty ");
 										}
-								    	}
+								    	
 									}
 								} else {
 								

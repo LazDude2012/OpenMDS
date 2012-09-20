@@ -23,6 +23,7 @@ package chb.mods.mffs.common;
 import java.util.List;
 
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
@@ -31,13 +32,13 @@ import net.minecraft.src.World;
 import ic2.api.ElectricItem;
 import ic2.api.IElectricItem;
 
-public class ItemForceFieldSynchronCapacitor extends Item implements IElectricItem{
+public class ItemForceFieldSynchronCapacitor extends Item implements IForceEnergyItems{
 	public ItemForceFieldSynchronCapacitor(int i) {
 		super(i);
 		setMaxStackSize(1);
 		setIconIndex(4);
-		setMaxDamage(27);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setMaxDamage(100);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {
@@ -47,74 +48,67 @@ public class ItemForceFieldSynchronCapacitor extends Item implements IElectricIt
 	public boolean isRepairable() {
 		return false;
 	}
+	
 
 	@Override
 	public boolean isDamageable()
 	{
 	return true;
 	}
+	
+    @Override
+    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5)
+    {
+    	par1ItemStack.setItemDamage(getItemDamage(par1ItemStack));
+    }
+	
+	@Override
+    public   void setForceEnergy(ItemStack itemStack, int  ForceEnergy)
+    {
+       
+       NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
+       nbtTagCompound.setInteger("ForceEnergy", ForceEnergy);
 
+    }
+    
 	@Override
-	public boolean canProvideEnergy() {
-		return false;
-	}
-	@Override
-	public int getChargedItemId() {
-		return this.shiftedIndex;
-	}
+	public  int getForceEnergy(ItemStack itemstack)
+    {
+   
+    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
+    	if(nbtTagCompound != null)
+    	{
+    		return nbtTagCompound.getInteger("ForceEnergy");
+    	}
+       return 0;
+    }
+	
+
 
     @Override
     public void addInformation(ItemStack itemStack, List info)
     {
-        String tooltip = String.format( "%d EU/%d EU ",ElectricItem.discharge(itemStack, getMaxCharge(), 1, true, true),getMaxCharge());
+        String tooltip = String.format( "%d FE/%d FE ",getForceEnergy(itemStack),getMaxForceEnergy());
         info.add(tooltip);
     }
-
-	public static boolean canuseBatpack(ItemStack itemStack)
-	{
-    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-    	if(nbtTagCompound != null)
-    	{
-    		return nbtTagCompound.getBoolean("Batpack");
-    	}
-		return false;
-	}
-
+    
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemstack, World world,
-			EntityPlayer entityplayer) {
-	if(!world.isRemote)
-	{
-    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
-    	if(nbtTagCompound != null)
-    	{
-    		if(nbtTagCompound.getBoolean("Batpack"))
-    		{
-    			nbtTagCompound.setBoolean("Batpack", false);
-    			entityplayer.addChatMessage("[Synchron Capacitor] ignore batpack/lappack");
-    		}else{
-    			nbtTagCompound.setBoolean("Batpack", true);
-    			entityplayer.addChatMessage("[Synchron Capacitor] can use batpack/lappack");
-    		}
-    	}
+	public int getforceEnergyTransferMax() {
+		
+		return 2000;
 	}
-		return itemstack;
-	}
-
+	
 	@Override
-	public int getEmptyItemId() {
-		return this.shiftedIndex;
-	}
-	@Override
-	public int getMaxCharge() {
+	public int getMaxForceEnergy() {
+		
 		return ModularForceFieldSystem.forcefieldtransportcost*10;
 	}
+	
 	@Override
-	public int getTier() {
-		return 1;
+	public int getItemDamage(ItemStack itemStack)
+	{
+		return 101-((getForceEnergy(itemStack)*100)/getMaxForceEnergy());
+		
 	}
-	@Override
-	public int getTransferLimit() {
-		return 1000;
-	}
+ 
 }

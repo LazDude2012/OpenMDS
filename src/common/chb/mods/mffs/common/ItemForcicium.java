@@ -28,7 +28,7 @@ public class ItemForcicium extends Item{
 		super(i);
 		setIconIndex(97);
 		setMaxStackSize(64);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

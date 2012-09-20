@@ -220,6 +220,58 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		}
 		
 		if (getStackInSlot(2) != null) {
+			
+			if (getStackInSlot(2).getItem() instanceof IForceEnergyItems) {
+				
+				if(this.getRemote_Capacitor_ID()!= 0)
+				this.setRemote_Capacitor_ID(0);
+				
+				IForceEnergyItems ForceEnergyItem = (IForceEnergyItems) getStackInSlot(2).getItem();
+				
+				if(ForceEnergyItem.getForceEnergy(getStackInSlot(2)) < ForceEnergyItem.getMaxForceEnergy())
+				{
+					
+					int maxtransfer = ForceEnergyItem.getforceEnergyTransferMax();
+					int freeeamount = ForceEnergyItem.getMaxForceEnergy() - ForceEnergyItem.getForceEnergy(getStackInSlot(2));
+					
+					if(getcapacity() > 0)
+					{
+
+					  if(this.getForcepower() > maxtransfer)
+					  {
+						    if(freeeamount > maxtransfer)
+						    {
+						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+maxtransfer);
+				                this.setForcepower(this.getForcepower() - maxtransfer);		    
+						    }else{
+						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+freeeamount);
+				                this.setForcepower(this.getForcepower() - freeeamount);	
+						    }
+			                
+					  }else{
+						  
+						    if(freeeamount > this.getForcepower())
+						    {
+						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+this.getForcepower());
+				                this.setForcepower(this.getForcepower() - this.getForcepower());		    
+						    }else{
+						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+freeeamount);
+				                this.setForcepower(this.getForcepower() - freeeamount);	
+						    }
+						  
+						  
+					  }
+					  
+					  getStackInSlot(2).setItemDamage(ForceEnergyItem.getItemDamage(getStackInSlot(2)));
+					}
+			
+				}
+				return;
+			
+			}
+			
+			
+			
 			if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSitemfc) {
 				if (this.getCapacitor_ID()!= NBTTagCompoundHelper.getTAGfromItemstack(
 						getStackInSlot(2)).getInteger("CapacitorID")) {
@@ -646,16 +698,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 				this.setPowerlinkmode(0);
 			}
 		break;
-		
 
-		case 2:
-			if(this.getOnOffSwitch())
-			{
-				this.setOnOffSwitch(false);
-			}else{
-				this.setOnOffSwitch(true);
-			}
-		break;
 		}
 	}
 

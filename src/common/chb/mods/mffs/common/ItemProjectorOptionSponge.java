@@ -31,7 +31,7 @@ public class ItemProjectorOptionSponge extends Item  {
 		super(i);
 		setIconIndex(35);
 		setMaxStackSize(1);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

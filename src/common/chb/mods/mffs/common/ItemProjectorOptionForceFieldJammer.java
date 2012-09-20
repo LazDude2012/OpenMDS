@@ -31,7 +31,7 @@ public class ItemProjectorOptionForceFieldJammer extends Item {
 		super(i);
 		setIconIndex(41);
 		setMaxStackSize(1);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

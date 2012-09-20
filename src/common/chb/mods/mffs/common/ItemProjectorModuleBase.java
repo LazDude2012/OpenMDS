@@ -31,7 +31,7 @@ public class ItemProjectorModuleBase extends Item  {
 	public ItemProjectorModuleBase(int i) {
 		super(i);
 		setMaxStackSize(1);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

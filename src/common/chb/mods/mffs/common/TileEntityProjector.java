@@ -1352,7 +1352,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 				}
 			}
 			break;
-		case 5: // Spähre
+		case 5: // Sphere
 
 			int yradius_sphere = this.getForceField_distance();
 
@@ -1940,16 +1940,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		}else{
 			this.setswitchtyp(0);
 		}
-
-	   break;
-	   case 2:
-
-			if(this.getOnOffSwitch())
-			{
-				this.setOnOffSwitch(false);
-			}else{
-				this.setOnOffSwitch(true);
-			}
 
 	   break;
 	   }

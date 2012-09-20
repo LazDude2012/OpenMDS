@@ -159,6 +159,9 @@ public class ModularForceFieldSystem {
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event) {
 		
+	     MinecraftForge.EVENT_BUS.register(this);
+	     MinecraftForge.EVENT_BUS.register(proxy);
+		
 		
 		MFFSconfig = new Configuration(event.getSuggestedConfigurationFile());
 		event.getModMetadata().version = Versioninfo.version();
@@ -206,7 +209,7 @@ public class ModularForceFieldSystem {
 			MFFSProjectorFFDistance= new ItemProjectorFieldModulatorDistance(MFFSconfig.getOrCreateIntProperty("itemProjectorFFDistance",Configuration.CATEGORY_ITEM,11131).getInt(11131)).setItemName("itemProjectorFFDistance");
 			MFFSProjectorFFStrenght= new ItemProjectorFieldModulatorStrength(MFFSconfig.getOrCreateIntProperty("itemProjectorFFStrength",Configuration.CATEGORY_ITEM,11132).getInt(11132)).setItemName("itemProjectorFFStrength");
 			MFFSitemFocusmatix= new ItemProjectorFocusMatrix(MFFSconfig.getOrCreateIntProperty("itemPorjectorFocusmatrix",Configuration.CATEGORY_ITEM,11133).getInt(11133)).setItemName("itemPorjectorFocusmatrix");
-			MFFSItemIDCard= new ItemCardPersonalID(MFFSconfig.getOrCreateIntProperty("itemIDCard",Configuration.CATEGORY_ITEM,11134).getInt(11134)).setItemName("itemPorjectorFocusmatrix");
+			MFFSItemIDCard= new ItemCardPersonalID(MFFSconfig.getOrCreateIntProperty("itemIDCard",Configuration.CATEGORY_ITEM,11134).getInt(11134)).setItemName("itemIDCard");
 			MFFSItemSecLinkCard= new ItemCardSecurityLink(MFFSconfig.getOrCreateIntProperty("itemSecLinkCard",Configuration.CATEGORY_ITEM,11135).getInt(11135)).setItemName("itemSecLinkCard");
 			MFFSSecStationexidreader= new ItemSecurityStationExternalIDReader(MFFSconfig.getOrCreateIntProperty("itemSecStationexidreader",Configuration.CATEGORY_ITEM,11136).getInt(11136)).setItemName("itemSecStationexidreader");
 			MFFSProjectorOptionDefenceStation= new ItemProjectorOptionDefenseStation(MFFSconfig.getOrCreateIntProperty("itemProjectorOptiondefencestation",Configuration.CATEGORY_ITEM,11137).getInt(11137)).setItemName("itemProjectorOptiondefencestation");
@@ -231,6 +234,7 @@ public class ModularForceFieldSystem {
 	public void load(FMLInitializationEvent evt) {
 		
 		loadbuildcaftstuff();
+		
 		
 		GameRegistry.registerBlock(MFFSCapacitor);
 		GameRegistry.registerBlock(MFFSProjector);

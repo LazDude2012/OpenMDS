@@ -28,7 +28,7 @@ public class ItemProjectorFocusMatrix extends Item  {
 		super(i);
 		setIconIndex(66);
 		setMaxStackSize(64);
-		setTabToDisplayOn(CreativeTabs.tabMaterials);
+		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 
 	public String getTextureFile() {
