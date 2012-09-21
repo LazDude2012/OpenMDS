@@ -41,7 +41,7 @@ public class ItemSwitch extends ItemMultitool {
 	@Override
 	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
 		
-		System.out.println(ModularForceFieldSystem.proxy.isClient());
+		System.out.println("working");
 
 		TileEntity tileentity =  world
 				.getBlockTileEntity(x,y,z);
