@@ -22,7 +22,7 @@ package chb.mods.mffs.common;
 
 import java.util.List;
 
-import chb.mods.mffs.common.api.IPersonalIDCrad;
+import chb.mods.mffs.api.IPersonalIDCrad;
 
 
 import net.minecraft.src.Item;

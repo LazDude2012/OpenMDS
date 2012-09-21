@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
 
-import chb.mods.mffs.common.api.IModularProjector;
+import chb.mods.mffs.api.IModularProjector;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.Container;
@@ -240,7 +240,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		this.maxlinkPower = maxlinkPower;
 	}
 
-	public boolean isLinkGenerator() {
+	public boolean isLinkCapacitor() {
 		return projektoroption[8];
 	}
 
@@ -1044,7 +1044,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 			}
 
 			if ((getOnOffSwitch() && (switchdelay >= 40))
-					&& getProjektor_Typ() != 0 && this.isLinkGenerator()
+					&& getProjektor_Typ() != 0 && this.isLinkCapacitor()
 					&& this.getLinkPower() > Forcepowerneed(5)) {
 				if (isActive() != true) {
 					setActive(true);
@@ -1055,7 +1055,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 				}
 			}
 			if ((!getOnOffSwitch() && switchdelay >= 40)
-					|| getProjektor_Typ() == 0 || !this.isLinkGenerator() || burnout
+					|| getProjektor_Typ() == 0 || !this.isLinkCapacitor() || burnout
 					|| this.getLinkPower() <= Forcepowerneed(1)) {
 				if (isActive() != false) {
 					setActive(false);

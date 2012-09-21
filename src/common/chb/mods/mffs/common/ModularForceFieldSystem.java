@@ -159,6 +159,7 @@ public class ModularForceFieldSystem {
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event) {
 		
+		
 	     MinecraftForge.EVENT_BUS.register(this);
 	     MinecraftForge.EVENT_BUS.register(proxy);
 		

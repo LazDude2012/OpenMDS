@@ -41,7 +41,9 @@ public class ItemSwitch extends ItemMultitool {
 	@Override
 	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
 		
-		System.out.println("working");
+		if (world.isRemote)
+			return false;
+		
 
 		TileEntity tileentity =  world
 				.getBlockTileEntity(x,y,z);
@@ -139,7 +141,6 @@ public class ItemSwitch extends ItemMultitool {
 		if(entityplayer.isSneaking())
 		{
 			int powerleft = this.getForceEnergy(itemstack);
-			System.out.println(powerleft);
 			ItemStack hand = entityplayer.inventory.getCurrentItem();
 			hand= new ItemStack(ModularForceFieldSystem.MFFSitemMFDidtool, 1);
 			ForceEnergyItems.charge(hand, powerleft,entityplayer);

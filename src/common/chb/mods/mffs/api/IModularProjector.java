@@ -18,22 +18,38 @@
     Thunderdark - initial implementation
 */
 
+package chb.mods.mffs.api;
 
-package chb.mods.mffs.common.api;
+public interface IModularProjector {
 
-import net.minecraft.src.ItemStack;
-
-public interface IPersonalIDCrad {
 	
-	public  String getUsername(ItemStack itemstack);
-// get saved Username or Nobody on Error  Itemstack
+	public boolean isLinkedSecStation();
+//  true/false Projector ist linked to a Security Station
 	
-	public int getSecLevel(ItemStack itemstack);
+	public int getProjektor_Typ();
+//  Typ of the Projector
+//  1 = Wall
+//  2 = Deflect
+//  3 = Tube
+//  4 = Cube
+//  5 =  Sphere
+//  6 = Conataiment
+//  7 =  Advance Cube
 
-// get saved Securtiy Level for his Card 
-// 0 = Error 
-// 1 = Limited Access
-// 2 = Full Access 
 	
-
+	public boolean isLinkCapacitor();
+//  true/false is linked to a ForcePower Relay
+	
+	public boolean isActive();
+//  true / false is Projector Active
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -18,38 +18,22 @@
     Thunderdark - initial implementation
 */
 
-package chb.mods.mffs.common.api;
+package chb.mods.mffs.api;
 
-public interface IModularProjector {
+public interface IForceEnergyCapacitor {
+	public int getcapacity();
+	// Charging status in %
 
-	
-	public boolean isLinkedSecStation();
-//  true/false Projector ist linked to a Security Station
-	
-	public int getProjektor_Typ();
-//  Typ of the Projector
-//  1 = Wall
-//  2 = Deflect
-//  3 = Tube
-//  4 = Cube
-//  5 =  Sphere
-//  6 = Conataiment
-//  7 =  Advance Cube
+	public int getMaxforcepower();
+	//Max ForcePower for this Generator
 
-	
-	public boolean isLinkGenerator();
-//  true/false is linked to a ForcePower Relay
-	
-	public boolean isActive();
-//  true / false is Projector Active
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public int getForcepower();
+	// ForcePower left in his Generator
+
+	public int getTransmitrange();
+	// Range of maximum transmit
+
+	public Short getLinketprojektor();
+	 //count of paired device
+
 }

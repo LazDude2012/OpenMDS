@@ -23,7 +23,7 @@ package chb.mods.mffs.common;
 import java.util.LinkedList;
 import java.util.List;
 
-import chb.mods.mffs.common.api.*;
+import chb.mods.mffs.api.*;
 
 import ic2.api.Direction;
 import ic2.api.EnergyNet;

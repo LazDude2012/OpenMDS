@@ -46,7 +46,6 @@ public class ItemPersonalIDWriter extends ItemMultitool{
 		{
 	
 		int powerleft = this.getForceEnergy(itemstack);
-		System.out.println(powerleft);
 		ItemStack hand = entityplayer.inventory.getCurrentItem();
 		hand= new ItemStack(ModularForceFieldSystem.MFFSitemWrench, 1);
 		ForceEnergyItems.charge(hand, powerleft,entityplayer);

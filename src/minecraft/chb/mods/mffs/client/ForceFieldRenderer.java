@@ -32,25 +32,19 @@ public class ForceFieldRenderer implements ISimpleBlockRenderingHandler {
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
 			Block block, int modelId, RenderBlocks renderer) {
 		if(block == ModularForceFieldSystem.MFFSFieldblock) {
-			if(world.getBlockMetadata(x, y, z) != ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE)
+			if(world.getBlockMetadata(x, y, z) == ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE)
 			{
-				if(world.getBlockMetadata(x, y, z)==ModularForceFieldSystem.FORCEFIELBOCKMETA_DEFAULT)
-				{
-					ForgeHooksClient.bindTexture("/chb/mods/mffs/sprites/blocks.png", 0);
-					renderer.renderStandardBlock(block, x, y, z);
-				}else{
-				ForgeHooksClient.bindTexture("/chb/mods/mffs/sprites/blocks.png", 0);
+                ForgeHooksClient.bindTexture("/terrain.png", 0);
 				renderer.renderStandardBlock(block, x, y, z);
-				}
 			}else
 			{
-				ForgeHooksClient.bindTexture("/terrain.png", 0);
+				ForgeHooksClient.bindTexture("/chb/mods/mffs/sprites/blocks.png", 0);
 				renderer.renderStandardBlock(block, x, y, z);
 			}
 
 			return true;
 		}
-		return false;
+		return true;
 	}
 
 	@Override

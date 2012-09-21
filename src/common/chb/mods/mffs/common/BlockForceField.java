@@ -22,6 +22,10 @@ package chb.mods.mffs.common;
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
+import chb.mods.mffs.api.IForceFieldBlock;
 import chb.mods.mffs.common.WorldMap.ForceFieldWorld;
 
 import net.minecraft.src.AxisAlignedBB;
@@ -38,7 +42,7 @@ import net.minecraft.src.Slot;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
-public class BlockForceField extends BlockContainer{
+public class BlockForceField extends BlockContainer implements IForceFieldBlock{
     public static int renderer;
     public int posx;
     public int posy;
@@ -50,6 +54,12 @@ public class BlockForceField extends BlockContainer{
 		setResistance(999F);
 		setTickRandomly(true);
 	}
+	
+	@Override
+	public String getTextureFile() {
+		return "/chb/mods/mffs/sprites/blocks.png";
+	}
+	
 
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k) {
@@ -58,7 +68,7 @@ public class BlockForceField extends BlockContainer{
 	    this.posz = k;
 	}
 
-	
+	@SideOnly(Side.CLIENT)
 	@Override
 	public int getRenderBlockPass() {
 
@@ -70,11 +80,10 @@ public class BlockForceField extends BlockContainer{
 	        	if(ForceField.getTexturid(1) == 67 || ForceField.getTexturid(1) == 205)
 	        	{
 	        		return 1;
-	        	}
-	        	else
-	        	{
+	        	}else{
 	        		return 0;
 	        	}
+	        	
 	        }
 	     }
 		return 0;

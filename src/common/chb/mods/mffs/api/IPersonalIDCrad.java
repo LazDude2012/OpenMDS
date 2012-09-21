@@ -18,22 +18,22 @@
     Thunderdark - initial implementation
 */
 
-package chb.mods.mffs.common.api;
 
-public interface IForceEnergyCapacitor {
-	public int getcapacity();
-	// Charging status in %
+package chb.mods.mffs.api;
 
-	public int getMaxforcepower();
-	//Max ForcePower for this Generator
+import net.minecraft.src.ItemStack;
 
-	public int getForcepower();
-	// ForcePower left in his Generator
+public interface IPersonalIDCrad {
+	
+	public  String getUsername(ItemStack itemstack);
+// get saved Username or Nobody on Error  Itemstack
+	
+	public int getSecLevel(ItemStack itemstack);
 
-	public int getTransmitrange();
-	// Range of maximum transmit
-
-	public Short getLinketprojektor();
-	 //count of paired device
+// get saved Securtiy Level for his Card 
+// 0 = Error 
+// 1 = Limited Access
+// 2 = Full Access 
+	
 
 }

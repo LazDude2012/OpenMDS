@@ -20,7 +20,7 @@
 
 package chb.mods.mffs.common;
 
-import chb.mods.mffs.common.api.*;
+import chb.mods.mffs.api.*;
 import ic2.api.IWrenchable;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
@@ -42,8 +42,10 @@ public class ItemWrench extends ItemMultitool  {
 			World world, int x, int y, int z, int side, float hitX, float hitY,
 			float hitZ) {
 		
-		System.out.println("working");
-
+		if (world.isRemote)
+			return false;
+		
+		
 		TileEntity tileentity =  world.getBlockTileEntity(x,y,z);
 		
 
@@ -92,12 +94,11 @@ public class ItemWrench extends ItemMultitool  {
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
-		System.out.println("wrechen");
+		
 		
 		if(entityplayer.isSneaking())
 		{
 			int powerleft = this.getForceEnergy(itemstack);
-			System.out.println(powerleft);
 			ItemStack hand = entityplayer.inventory.getCurrentItem();
 			hand= new ItemStack(ModularForceFieldSystem.MFFSitemSwitch, 1);
 			ForceEnergyItems.charge(hand, powerleft,entityplayer);
