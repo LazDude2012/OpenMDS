@@ -285,7 +285,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 						if (Linkgrid.getWorldMap(worldObj).getCapacitor()
 								.get(this.getRemote_Capacitor_ID()) == null) {
 							
-							dropplugins(2,this);
+							this.setInventorySlotContents(2, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 							this.setRemote_Capacitor_ID(0);
 						}
 		
@@ -297,8 +297,10 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 				}
 				
 			}else{
-				dropplugins(2,this);
 				this.setRemote_Capacitor_ID(0);
+				if (getStackInSlot(2).getItem() != ModularForceFieldSystem.MFFSitemcardempty) {
+					dropplugins(2,this);
+				}
 			}
 		}
 		
@@ -473,12 +475,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 			}
 			this.setTicker((short) (this.getTicker() + 1));
 
-			if (isActive() && getWrenchDropRate() <= 1) {
-				setWrenchRate(0);
-			}
-			if (!isActive() && getWrenchDropRate() >= 0) {
-				setWrenchRate(1);
-			}
 
 		} else {
 			if (create) {
@@ -625,8 +621,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		NetworkedFields.clear();
 
 		NetworkedFields.add("active");
-		NetworkedFields.add("facing");
-		NetworkedFields.add("wrenchRate");
+		NetworkedFields.add("side");
 		NetworkedFields.add("SwitchTyp");
 		NetworkedFields.add("linketprojektor");
 		NetworkedFields.add("transmitrange");
@@ -640,7 +635,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	
 	@Override
 	public void onNetworkUpdate(String field) {
-		if (field.equals("facing")) {
+		if (field.equals("side")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("active")) {

@@ -42,29 +42,6 @@ public class BlockProjector extends BlockMFFSBase {
 		return "/chb/mods/mffs/sprites/projector.png";
 	}
 
-	@Override
-	public void onBlockPlacedBy(World world, int i, int j, int k,
-			EntityLiving entityliving) {
-		TileEntityMachines tileentityblock = (TileEntityMachines) world
-				.getBlockTileEntity(i, j, k);
-
-		int l = MathHelper
-				.floor_double((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
-		int i1 = Math.round(entityliving.rotationPitch);
-		if (i1 >= 65) {
-			tileentityblock.setFacing( (short) 1);
-		} else if (i1 <= -65) {
-			tileentityblock.setFacing((short) 0);
-		} else if (l == 0) {
-			tileentityblock.setFacing( (short) 2);
-		} else if (l == 1) {
-			tileentityblock.setFacing( (short) 5);
-		} else if (l == 2) {
-			tileentityblock.setFacing((short) 3);
-		} else if (l == 3) {
-			tileentityblock.setFacing((short) 4);
-		}
-	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {

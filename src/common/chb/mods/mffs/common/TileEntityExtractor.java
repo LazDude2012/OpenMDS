@@ -7,7 +7,6 @@ import ic2.api.EnergyNet;
 import ic2.api.IEnergySink;
 import ic2.api.INetworkDataProvider;
 import ic2.api.INetworkUpdateListener;
-import ic2.api.Items;
 import ic2.api.NetworkHelper;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
@@ -196,11 +195,11 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 				} else {
 					setLinkCapacitor_ID(0);
 					if (!init) {
-						dropplugins(1,this);
+						this.setInventorySlotContents(1, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 					}
 				}
 			} else {
-				if (getStackInSlot(1).getItem() != ModularForceFieldSystem.MFFSitemfc) {
+				if (getStackInSlot(1).getItem() != ModularForceFieldSystem.MFFSitemcardempty) {
 					dropplugins(1,this);
 				}
 			}
@@ -420,8 +419,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		NetworkedFields.clear();
 
 		NetworkedFields.add("active");
-		NetworkedFields.add("wrenchRate");
-		NetworkedFields.add("facing");
+		NetworkedFields.add("side");
 		NetworkedFields.add("ForceEnergybuffer");
 		NetworkedFields.add("WorkCylce");
 		NetworkedFields.add("WorkEnergy");
@@ -432,7 +430,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 	@Override
 	public void onNetworkUpdate(String field) {
-		if (field.equals("facing")) {
+		if (field.equals("side")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("active")) {

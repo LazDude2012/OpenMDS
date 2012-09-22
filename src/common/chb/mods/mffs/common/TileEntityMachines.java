@@ -20,6 +20,7 @@
 
 package chb.mods.mffs.common;
 
+import chb.mods.mffs.api.IMFFS_Wrench;
 import ic2.api.IWrenchable;
 import ic2.api.NetworkHelper;
 import net.minecraft.src.Container;
@@ -32,19 +33,17 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
 
-public abstract class TileEntityMachines extends TileEntity implements IWrenchable{
+public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wrench,IWrenchable{
 	
 	private boolean active;
-	private short facing;
-	private float wrenchRate;
+	private int side;
 	private short ticker;
 
 	public TileEntityMachines()
 
 	{
 		active = false;
-		facing = -1;
-		wrenchRate = 1;
+		side = -1;
 		ticker = 0;
 	}
 
@@ -75,26 +74,29 @@ public abstract class TileEntityMachines extends TileEntity implements IWrenchab
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 
 		super.readFromNBT(nbttagcompound);
-		facing = nbttagcompound.getShort("facing");
+		side = nbttagcompound.getInteger("side");
 		active = nbttagcompound.getBoolean("active");
-		wrenchRate = nbttagcompound.getFloat("wrenchRate");
+
 	}
 
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setShort("facing", facing);
+		nbttagcompound.setInteger("side", side);
 		nbttagcompound.setBoolean("active", active);
-		nbttagcompound.setFloat("wrenchRate", wrenchRate);
+
 	}
 	
 	@Override
-	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
+	public boolean wrenchCanManipulate(EntityPlayer entityPlayer, int side) {
 		
-		   if(side == facing)
-		   {
-			   return false;
-		   }
 
+		   if(this.active)
+		   {
+			   if (!(this instanceof TileEntityExtractor ))
+			   {
+				   return false; 
+			   }
+		   }
 
 
 		   if(this instanceof TileEntityProjector)
@@ -165,12 +167,7 @@ public abstract class TileEntityMachines extends TileEntity implements IWrenchab
 			   return false;
 		   }
 		
-				
-		
-		
-		if (getWrenchDropRate() <= 0) {
-			return false;
-		}
+
 
 		return true;
 	}
@@ -183,9 +180,9 @@ public abstract class TileEntityMachines extends TileEntity implements IWrenchab
 		this.ticker = ticker;
 	}
 	@Override
-	public void setFacing(short i) {
-		facing = i;
-		NetworkHelper.updateTileEntityField(this, "facing");
+	public void setSide(int i) {
+		side = i;
+		NetworkHelper.updateTileEntityField(this, "side");
 	}
 
 	public boolean isActive() {
@@ -198,99 +195,11 @@ public abstract class TileEntityMachines extends TileEntity implements IWrenchab
 	}
 	
 	@Override
-	public short getFacing() {
-		return facing;
+	public int getSide() {
+		return side;
 	}
 	
-	
-	public void setWrenchRate(float i) {
-		wrenchRate = i;
-		NetworkHelper.updateTileEntityField(this, "wrenchRate");
-	}
-	
-	@Override
-	public float getWrenchDropRate() {
-		return wrenchRate;
-	}
-	
-	
-	@Override
-	public boolean wrenchCanRemove(EntityPlayer entityPlayer) {
 		
-		
-		
-	   if(this instanceof TileEntityCapacitor)
-	   {
-		 if(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityCapacitor)this).getSecStation_ID()) != null)
-			{
-		      if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityCapacitor)this).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-					return false;
-				}
-			}
-		 }
-
-	   if(this instanceof TileEntityProjector)
-	   {
-		  if(((TileEntityProjector)this).getaccesstyp()==2)
-		  {
-			if(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityProjector)this).getLinkCapacitor_ID())!= null)
-			{
-			if(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityProjector)this).getLinkCapacitor_ID()).getSecStation_ID()) != null)
-			{
-				if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityProjector)this).getLinkCapacitor_ID()).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-					return false;
-				}
-			}
-		}
-		  }
-		 if(((TileEntityProjector)this).getaccesstyp()==3)
-		 {
-			if(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityProjector)this).getSecStation_ID()) != null)
-			{
-			if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityProjector)this).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-			return false;
-			}
-		}
-		  }
-	   }
-
-	   if(this instanceof TileEntitySecurityStation)
-	   {
-			if (!(((TileEntitySecurityStation)this).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-				return false;
-			}
-	   }
-
-	   if(this instanceof TileEntityAreaDefenseStation)
-	   {
-			if(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityAreaDefenseStation)this).getSecStation_ID()) != null)
-			{
-				if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityAreaDefenseStation)this).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-					return false;
-				}
-			}
-	   }
-	   
-	   
-		  if(this instanceof TileEntityExtractor)
-		  {
-			if(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityExtractor)this).getLinkCapacitors_ID())!= null)
-			{
-			if(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityExtractor)this).getLinkCapacitors_ID()).getSecStation_ID()) != null)
-			{
-				if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityExtractor)this).getLinkCapacitors_ID()).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-					return false;
-				}
-			}
-		}
-		  }
-		  
-
-		if (getWrenchDropRate() <= 0) {
-			return false;
-		}
-		return true;
-	}
 	
 
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
@@ -303,5 +212,39 @@ public abstract class TileEntityMachines extends TileEntity implements IWrenchab
 	}
 	
 	
+	@Override
+	public short getFacing() {
+		return (short) side;
+	}
+	
+	
+	@Override
+	public float getWrenchDropRate() {
+		return 1;
+	}
+	
+	@Override
+	public void setFacing(short i) {
+		side = i;
+		NetworkHelper.updateTileEntityField(this, "side");
+	}
+	
+	@Override
+	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
+		  
+		if(this.side == side)
+		   {
+			   return false;
+		   }
+		
+		return wrenchCanManipulate(entityPlayer, side);
+	}
+	
+	@Override
+	public boolean wrenchCanRemove(EntityPlayer entityPlayer) {
+		
+		return wrenchCanManipulate(entityPlayer, -1);
+	}
+
 }
 

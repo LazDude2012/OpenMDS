@@ -59,7 +59,7 @@ public class Functions {
 
 
 	public static IInventory searchinventory(TileEntityMachines tileEntity, World worldObj,boolean faceinginventory) {
-		int facing = tileEntity.getFacing();
+		int facing = tileEntity.getSide();
 
 		if(faceinginventory)
 		{

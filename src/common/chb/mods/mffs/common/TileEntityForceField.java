@@ -31,6 +31,8 @@ import java.util.List;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
+import net.minecraftforge.event.Event;
+import net.minecraftforge.event.IEventListener;
 
 
 public class TileEntityForceField extends TileEntity implements INetworkDataProvider,INetworkUpdateListener {

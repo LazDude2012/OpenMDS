@@ -149,6 +149,7 @@ public class ModularForceFieldSystem {
     public static Map<Integer, int[]> idmetatotextur = new HashMap<Integer, int[]>();
     
     public static Class Extractor =  TileEntityExtractor.class;
+    public static Class Maschine =  TileEntityMachines.class;
 
 	@SidedProxy(clientSide = "chb.mods.mffs.client.ClientProxy", serverSide = "chb.mods.mffs.common.CommonProxy")
     public static CommonProxy proxy;
@@ -162,8 +163,7 @@ public class ModularForceFieldSystem {
 		
 	     MinecraftForge.EVENT_BUS.register(this);
 	     MinecraftForge.EVENT_BUS.register(proxy);
-		
-		
+
 		MFFSconfig = new Configuration(event.getSuggestedConfigurationFile());
 		event.getModMetadata().version = Versioninfo.version();
 		try {
@@ -580,17 +580,16 @@ public class ModularForceFieldSystem {
 	}
 	
 	
-	public static void loadbuildcaftstuff() {
-		System.out.println("[ModularForceFieldSystem] Loading submodule for Buildcraft");
+	public static boolean loadbuildcaftstuff() {
+		System.out.println("[ModularForceFieldSystem] Loading module for Buildcraft");
 		
 		try {
 			Extractor = ModularForceFieldSystem.class.getClassLoader().loadClass("chb.mods.mffs.common.TileEntityExtractorBC");
-			
+			return true;
 		} catch (Throwable t) {
 			System.out.println("[ModularForceFieldSystem] Submodule not loaded: Buildcraft not found");
-			
+			return false;
 		}
 	}
-	
-	
+		
 }

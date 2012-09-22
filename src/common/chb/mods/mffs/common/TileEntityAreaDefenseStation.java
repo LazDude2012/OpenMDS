@@ -246,10 +246,10 @@ ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 				{
 	 	    	setLinkGenerator(false);
 	 	    	setlinkCapacitors_ID(0);
-				dropplugins(0,this);
+	 	    	this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 				}
 			} else {
-				if (getStackInSlot(0).getItem() != ModularForceFieldSystem.MFFSitemfc) {
+				if (getStackInSlot(0).getItem() != ModularForceFieldSystem.MFFSitemcardempty) {
 					dropplugins(0,this);
 				}
 			}
@@ -386,13 +386,6 @@ ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 				}
 			}
 
-			if (isActive() && getWrenchDropRate() == 1.0F) {
-				setWrenchRate(-1.0F);
-			}
-			if (!isActive() && getWrenchDropRate() == -1.0F) {
-				setWrenchRate(1.0F);
-			}
-
 
 			if (this.getTicker() == 20) {
 				checkslots();
@@ -508,8 +501,8 @@ ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 
 		NetworkedFields.add("linkSecStation");
 		NetworkedFields.add("active");
-		NetworkedFields.add("facing");
-		NetworkedFields.add("wrenchRate");
+		NetworkedFields.add("side");
+
 
 		return NetworkedFields;
 	}

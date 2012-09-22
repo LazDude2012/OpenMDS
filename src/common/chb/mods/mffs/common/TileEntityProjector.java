@@ -495,11 +495,11 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 					setLinkCapacitor_ID(0);
 					setLinkGenerator(false);
 					if (!init) {
-						dropplugins(0,this);
+						this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 					}
 				}
 			} else {
-				if (getStackInSlot(0).getItem() != ModularForceFieldSystem.MFFSitemfc) {
+				if (getStackInSlot(0).getItem() != ModularForceFieldSystem.MFFSitemcardempty) {
 					dropplugins(0,this);
 				}
 			}
@@ -1065,13 +1065,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 				}
 			}
 
-			if (isActive() && getWrenchDropRate() <= 1) {
-				setWrenchRate(0);
-			}
-			if (!isActive() && getWrenchDropRate() >= 0) {
-				setWrenchRate(1);
-			}
-
 
 			if (this.getTicker() == 20) {
 				checkslots(false);
@@ -1127,48 +1120,48 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 			for (int x1 = 0 - getFocusleft(); x1 < getFocusright() + 1; x1++) {
 				for (int z1 = 0 - getFocusdown(); z1 < getFocusup() + 1; z1++) {
 					for (int y1 = 1; y1 < getForceField_strength() + 1; y1++) {
-						if (this.getFacing() == 0) {
+						if (this.getSide() == 0) {
 							tpy = y1 - y1 - y1 - getForceField_distance();
 							tpx = x1;
 							tpz = z1 - z1 - z1;
 						}
 
-						if (this.getFacing() == 1) {
+						if (this.getSide() == 1) {
 							tpy = y1 + getForceField_distance();
 							tpx = x1;
 							tpz = z1 - z1 - z1;
 						}
 
-						if (this.getFacing() == 2) {
+						if (this.getSide() == 2) {
 							tpz = y1 - y1 - y1 - getForceField_distance();
 							tpx = x1 - x1 - x1;
 							tpy = z1;
 						}
 
-						if (this.getFacing() == 3) {
+						if (this.getSide() == 3) {
 							tpz = y1 + getForceField_distance();
 							tpx = x1;
 							tpy = z1;
 						}
 
-						if (this.getFacing() == 4) {
+						if (this.getSide() == 4) {
 							tpx = y1 - y1 - y1 - getForceField_distance();
 							tpz = x1;
 							tpy = z1;
 						}
-						if (this.getFacing() == 5) {
+						if (this.getSide() == 5) {
 							tpx = y1 + getForceField_distance();
 							tpz = x1 - x1 - x1;
 							tpy = z1;
 						}
 
-						if ((this.getFacing() == 0 || this.getFacing() == 1)
+						if ((this.getSide() == 0 || this.getSide() == 1)
 								&& ((tpx == 0 && tpz != 0)
 										|| (tpz == 0 && tpx != 0) || (tpz == 0 && tpx == 0))
-								|| (this.getFacing() == 2 || this.getFacing() == 3)
+								|| (this.getSide() == 2 || this.getSide() == 3)
 								&& ((tpx == 0 && tpy != 0)
 										|| (tpy == 0 && tpx != 0) || (tpy == 0 && tpx == 0))
-								|| (this.getFacing() == 4 || this.getFacing() == 5)
+								|| (this.getSide() == 4 || this.getSide() == 5)
 								&& ((tpz == 0 && tpy != 0)
 										|| (tpy == 0 && tpz != 0) || (tpy == 0 && tpz == 0)))
 
@@ -1184,36 +1177,36 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 			for (int x1 = 0 - getFocusleft(); x1 < getFocusright() + 1; x1++) {
 				for (int z1 = 0 - getFocusup(); z1 < getFocusdown() + 1; z1++) {
-					if (this.getFacing() == 0) {
+					if (this.getSide() == 0) {
 						tpy = 0 - getForceField_distance() - 1;
 						tpx = x1;
 						tpz = z1;
 					}
 
-					if (this.getFacing() == 1) {
+					if (this.getSide() == 1) {
 						tpy = 0 + getForceField_distance() + 1;
 						tpx = x1;
 						tpz = z1;
 					}
 
-					if (this.getFacing() == 2) {
+					if (this.getSide() == 2) {
 						tpz = 0 - getForceField_distance() - 1;
 						tpy = z1 - z1 - z1;
 						tpx = x1 - x1 - x1;
 					}
 
-					if (this.getFacing() == 3) {
+					if (this.getSide() == 3) {
 						tpz = 0 + getForceField_distance() + 1;
 						tpy = z1 - z1 - z1;
 						tpx = x1;
 					}
 
-					if (this.getFacing() == 4) {
+					if (this.getSide() == 4) {
 						tpx = 0 - getForceField_distance() - 1;
 						tpy = z1 - z1 - z1;
 						tpz = x1;
 					}
-					if (this.getFacing() == 5) {
+					if (this.getSide() == 5) {
 						tpx = 0 + getForceField_distance() + 1;
 						tpy = z1 - z1 - z1;
 						tpz = x1 - x1 - x1;
@@ -1226,48 +1219,48 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 			break;
 		case 3: // Tube
 
-			if (this.getFacing() == 0 || this.getFacing() == 1) {
+			if (this.getSide() == 0 || this.getSide() == 1) {
 				tpy = getForceField_strength();
 				tpx = getForceField_distance();
 				tpz = getForceField_distance();
 
 				y_offset_s = getForceField_strength() - getForceField_strength();
 				if (this.isOptionFieldcut()) {
-					if (this.getFacing() == 0) {
+					if (this.getSide() == 0) {
 						y_offset_e = getForceField_strength();
 					}
-					if (this.getFacing() == 1) {
+					if (this.getSide() == 1) {
 						y_offset_s = getForceField_strength();
 					}
 				}
 			}
 
-			if (this.getFacing() == 2 || this.getFacing() == 3) {
+			if (this.getSide() == 2 || this.getSide() == 3) {
 				tpy = getForceField_distance();
 				tpz = getForceField_strength();
 				tpx = getForceField_distance();
 
 				z_offset_s = getForceField_strength() - getForceField_strength();
 				if (this.isOptionFieldcut()) {
-					if (this.getFacing() == 2) {
+					if (this.getSide() == 2) {
 						z_offset_e = getForceField_strength();
 					}
-					if (this.getFacing() == 3) {
+					if (this.getSide() == 3) {
 						z_offset_s = getForceField_strength();
 					}
 				}
 			}
-			if (this.getFacing() == 4 || this.getFacing() == 5) {
+			if (this.getSide() == 4 || this.getSide() == 5) {
 				tpy = getForceField_distance();
 				tpz = getForceField_distance();
 				tpx = getForceField_strength();
 
 				x_offset_s = getForceField_strength() - getForceField_strength();
 				if (this.isOptionFieldcut()) {
-					if (this.getFacing() == 4) {
+					if (this.getSide() == 4) {
 						x_offset_e = getForceField_strength();
 					}
-					if (this.getFacing() == 5) {
+					if (this.getSide() == 5) {
 						x_offset_s = getForceField_strength();
 					}
 				}
@@ -1281,15 +1274,15 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 						int tpz_temp = tpz;
 
 						if (tpx == getForceField_strength()
-								&& (this.getFacing() == 4 || this.getFacing() == 5)) {
+								&& (this.getSide() == 4 || this.getSide() == 5)) {
 							tpx_temp += 1;
 						}
 						if (tpy == getForceField_strength()
-								&& (this.getFacing() == 0 || this.getFacing() == 1)) {
+								&& (this.getSide() == 0 || this.getSide() == 1)) {
 							tpy_temp += 1;
 						}
 						if (tpz == getForceField_strength()
-								&& (this.getFacing() == 2 || this.getFacing() == 3)) {
+								&& (this.getSide() == 2 || this.getSide() == 3)) {
 							tpz_temp += 1;
 						}
 
@@ -1393,7 +1386,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 			for (int y1 = 0; y1 <= getForceField_strength(); y1++) {
 				for (int x1 = 0 - getFocusleft(); x1 < getFocusright() + 1; x1++) {
 			    	for (int z1 = 0 - getFocusup(); z1 < getFocusdown() + 1; z1++) {
-						if (this.getFacing() == 0) {
+						if (this.getSide() == 0) {
 							if(this.ProjektorTyp==6)
 							{
 								tpy = y1 - y1 - y1 - getForceField_distance()-1;
@@ -1404,7 +1397,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 							tpz = z1;
 						}
 
-						if (this.getFacing() == 1) {
+						if (this.getSide() == 1) {
 							if(this.ProjektorTyp==6)
 							{
 								tpy = y1 + getForceField_distance()+1;
@@ -1415,7 +1408,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 							tpz = z1;
 						}
 
-						if (this.getFacing() == 2) {
+						if (this.getSide() == 2) {
 							if(this.ProjektorTyp==6)
 							{
 								tpz = y1 - y1 - y1 - getForceField_distance()-1;
@@ -1427,7 +1420,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 							tpx = x1 - x1 - x1;
 						}
 
-						if (this.getFacing() == 3) {
+						if (this.getSide() == 3) {
 							if(this.ProjektorTyp==6)
 							{
 								tpz = y1 + getForceField_distance()+1;
@@ -1439,7 +1432,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 							tpx = x1;
 						}
 
-						if (this.getFacing() == 4) {
+						if (this.getSide() == 4) {
 							if(this.ProjektorTyp==6)
 							{
 								tpx = y1 - y1 - y1 - getForceField_distance()-1;
@@ -1450,7 +1443,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 							tpy = z1 - z1 - z1;
 							tpz = x1;
 						}
-						if (this.getFacing() == 5) {
+						if (this.getSide() == 5) {
 							if(this.ProjektorTyp==6)
 							{
 								tpx = y1 + getForceField_distance()+1;
@@ -1465,7 +1458,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 						{
 							if(this.isOptionFieldcut() && this.getProjektor_Typ() == 7)
 	                        {
-								switch(this.getFacing())
+								switch(this.getSide())
 								{
 									case 0:
 										if((yCoord + tpy) > this.yCoord )
@@ -1888,8 +1881,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 		NetworkedFields.add("ProjektorTyp");
 		NetworkedFields.add("active");
-		NetworkedFields.add("facing");
-		NetworkedFields.add("wrenchRate");
+		NetworkedFields.add("side");
 		NetworkedFields.add("burnout");
 		NetworkedFields.add("camoflage");
 		NetworkedFields.add("accesstyp");
@@ -1902,7 +1894,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	@Override
 	public void onNetworkUpdate(String field){
 		
-		if (field.equals("facing")) {
+		if (field.equals("side")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("active")) {

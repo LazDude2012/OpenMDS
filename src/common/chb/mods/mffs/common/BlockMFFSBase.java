@@ -25,9 +25,11 @@ import java.util.Random;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
+import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
+import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
@@ -126,13 +128,38 @@ public abstract class BlockMFFSBase extends BlockContainer {
 			return false;
 		}
 	}
+	
+	@Override
+	public void onBlockPlacedBy(World world, int i, int j, int k,
+			EntityLiving entityliving) {
+		TileEntityMachines tileentityblock = (TileEntityMachines) world
+				.getBlockTileEntity(i, j, k);
+
+		int l = MathHelper
+				.floor_double((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+		int i1 = Math.round(entityliving.rotationPitch);
+		if (i1 >= 65) {
+			tileentityblock.setSide( (short) 1);
+		} else if (i1 <= -65) {
+			tileentityblock.setSide((short) 0);
+		} else if (l == 0) {
+			tileentityblock.setSide( (short) 2);
+		} else if (l == 1) {
+			tileentityblock.setSide( (short) 5);
+		} else if (l == 2) {
+			tileentityblock.setSide((short) 3);
+		} else if (l == 3) {
+			tileentityblock.setSide((short) 4);
+		}
+	}
+	
 	@Override
 	public int getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k,
 			int l) {
 		TileEntity tileentity = iblockaccess.getBlockTileEntity(i, j, k);
 
 		int facing = (tileentity instanceof TileEntityMachines) ? ((TileEntityMachines) tileentity)
-				.getFacing() : 1;
+				.getSide() : 1;
 		int typ = (tileentity instanceof TileEntityProjector) ? ((TileEntityProjector) tileentity)
 				.getProjektor_Typ() : 0;
 

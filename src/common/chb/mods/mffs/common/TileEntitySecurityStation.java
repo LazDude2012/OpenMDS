@@ -190,13 +190,6 @@ ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
 				}
 			}
 
-			if (isActive() && getWrenchDropRate() <= 1) {
-				setWrenchRate(0);
-			}
-			if (!isActive() && getWrenchDropRate() >= 0) {
-				setWrenchRate(1);
-			}
-
 
 			if (this.getTicker() == 10) {
 				checkslots();
@@ -376,15 +369,15 @@ ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
 		NetworkedFields.add("MainUser");
 		NetworkedFields.add("Multiusermod");
 		NetworkedFields.add("active");
-		NetworkedFields.add("facing");
-		NetworkedFields.add("wrenchRate");
+		NetworkedFields.add("side");
+
 
 		return NetworkedFields;
 	}
 
 	@Override
 	public void onNetworkUpdate(String field) {
-		if (field.equals("facing")) {
+		if (field.equals("side")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("active")) {

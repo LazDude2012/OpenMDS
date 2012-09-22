@@ -21,7 +21,6 @@
 package chb.mods.mffs.common;
 
 import chb.mods.mffs.api.*;
-import ic2.api.IWrenchable;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
@@ -50,7 +49,7 @@ public class ItemWrench extends ItemMultitool  {
 		
 
 
-		if(tileentity instanceof IWrenchable)
+		if(tileentity instanceof IMFFS_Wrench)
 		{
 		
 			
@@ -59,7 +58,7 @@ public class ItemWrench extends ItemMultitool  {
 				
 		
 			
-			if(((IWrenchable)tileentity).wrenchCanSetFacing(player, side))
+			if(((IMFFS_Wrench)tileentity).wrenchCanManipulate(player, side))
 			{
 		
 				
@@ -71,13 +70,17 @@ public class ItemWrench extends ItemMultitool  {
 					return false;
 				}
 				
-				if(((IWrenchable)tileentity).getFacing() != side )
+				if(((IMFFS_Wrench)tileentity).getSide() != side )
 				{
 
 
-					((IWrenchable)tileentity).setFacing((short) side);
+					((IMFFS_Wrench)tileentity).setSide( side);
 					ForceEnergyItems.use(stack, 1000, true,player);
 					return true;
+				}else{
+					
+		            world.spawnEntityInWorld(new EntityItem(world,x,y,z, new ItemStack(tileentity.getBlockType())));
+		            world.setBlockWithNotify(x, y, z, 0);
 				}
 
 			}
