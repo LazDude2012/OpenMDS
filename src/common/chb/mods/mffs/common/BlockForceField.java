@@ -49,7 +49,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
     public int posz;
 
 	public BlockForceField(int i) {
-		super(i, i, Material.glass);
+		super(i, i, Material.portal);
 		setHardness(0.5F);
 		setResistance(999F);
 		setTickRandomly(true);
@@ -344,7 +344,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 			float f = 0.0625F;
 			return AxisAlignedBB.getBoundingBox(i + f, j + f, k + f, i + 1 - f, j + 1 - f, k + 1 - f);
 		}
-
+		
 		return AxisAlignedBB.getBoundingBox((float) i, j, (float) k, (float) (i + 1), (float) (j + 1), (float) (k + 1));
 	}
 
@@ -356,11 +356,23 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
     @Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k,
 			Entity entity) {
+    	
 		if (world.getBlockMetadata(i, j, k) == 1) {
 			if (entity instanceof EntityLiving) {
-				entity.attackEntityFrom(DamageSource.generic, 5);
+				entity.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);
 			}
+		}else{
+			
+			if (entity instanceof EntityPlayer) {
+				((EntityPlayer) entity).setEntityHealth(0);
+				Functions.ChattoPlayer((EntityPlayer)entity,"[Field Security] Force Fields are sometimes deadly");
+				
+			}
+			
 		}
+				
+		
+		
 	}
 	@Override
 	public int quantityDropped(Random random) {
@@ -376,7 +388,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 		switch(side) {
 		case 0: yCord++;
 		break;
-		case 1: yCord--;
+    	case 1: yCord--;
 		break;
 		case 2: zCord++;
 		break;
@@ -392,6 +404,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 			return false;
 
 		return super.shouldSideBeRendered(iblockaccess, x, y, z, side);
+		
 	}
 
     @Override
