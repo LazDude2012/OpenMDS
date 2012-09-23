@@ -167,6 +167,8 @@ public final class ForceFieldOptions {
 						.setForcepower(Linkgrid.getWorldMap(world).getCapacitor().get(projector
 							.getLinkCapacitor_ID()).getForcepower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
 
+					
+						
 					entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.MobDefenseDamage);
 					continue;
 					}
@@ -205,6 +207,7 @@ public final class ForceFieldOptions {
 
 							Functions.ChattoPlayer((EntityPlayer)entityLiving,"[Defence Area Station] !!! you  are in a restricted area !!! ");
 							entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);
+					
 							continue;
 							}
 

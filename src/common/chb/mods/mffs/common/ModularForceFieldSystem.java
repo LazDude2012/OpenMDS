@@ -149,7 +149,7 @@ public class ModularForceFieldSystem {
     public static Map<Integer, int[]> idmetatotextur = new HashMap<Integer, int[]>();
     
     public static Class Extractor =  TileEntityExtractor.class;
-    public static Class Maschine =  TileEntityMachines.class;
+  
 
 	@SidedProxy(clientSide = "chb.mods.mffs.client.ClientProxy", serverSide = "chb.mods.mffs.common.CommonProxy")
     public static CommonProxy proxy;
@@ -234,7 +234,9 @@ public class ModularForceFieldSystem {
 	@Init
 	public void load(FMLInitializationEvent evt) {
 		
-		loadbuildcaftstuff();
+		if(loadbuildcaftstuff() && loadUEstuff())
+		{Extractor =TileEntityExtractorAll.class; }
+
 		
 		
 		GameRegistry.registerBlock(MFFSCapacitor);
@@ -587,9 +589,22 @@ public class ModularForceFieldSystem {
 			Extractor = ModularForceFieldSystem.class.getClassLoader().loadClass("chb.mods.mffs.common.TileEntityExtractorBC");
 			return true;
 		} catch (Throwable t) {
-			System.out.println("[ModularForceFieldSystem] Submodule not loaded: Buildcraft not found");
+			System.out.println("[ModularForceFieldSystem] Module not loaded: Buildcraft not found");
 			return false;
 		}
 	}
+	
+	public static boolean loadUEstuff() {
+		System.out.println("[ModularForceFieldSystem] Loading module for Universal Electricity");
+		
+		try {
+			Extractor = ModularForceFieldSystem.class.getClassLoader().loadClass("chb.mods.mffs.common.TileEntityExtractorUE");
+			return true;
+		} catch (Throwable t) {
+			System.out.println("[ModularForceFieldSystem] Module not loaded: Universal Electricity not found");
+			return false;
+		}
+	}
+	
 		
 }

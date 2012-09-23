@@ -198,20 +198,7 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 	public int getSide() {
 		return side;
 	}
-	
-		
-	
 
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
-			return false;
-		} else {
-			return entityplayer.getDistance((double) xCoord + 0.5D,
-					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
-		}
-	}
-	
-	
 	@Override
 	public short getFacing() {
 		return (short) side;

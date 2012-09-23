@@ -162,6 +162,15 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		}
 	}
 	
+	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
+			return false;
+		} else {
+			return entityplayer.getDistance((double) xCoord + 0.5D,
+					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
+		}
+	}
+	
 	
 	public void checkslots(boolean init) {
 		if (getStackInSlot(1) != null) {
@@ -297,9 +306,9 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		}
 	}
 	
-	public void convertMJtoWorkEnergy(){
-	}
-
+	public void converMJtoWorkEnergy(){}
+	public void converUEtoWorkEnergy(){}
+	
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			
@@ -315,7 +324,9 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		
 			if (this.getTicker() >= getWorkTicker()) {
 				
-				convertMJtoWorkEnergy();  	
+				converMJtoWorkEnergy();
+				converUEtoWorkEnergy();	
+				
 				setWorkdone( getWorkEnergy() * 100 / getMaxWorkEnergy());
 				checkslots(false);
 				if(this.hasfreeForceEnergyStorage() && this.hasStufftoConvert())

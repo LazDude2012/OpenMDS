@@ -30,6 +30,7 @@ import java.util.List;
 import net.minecraft.src.Block;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityItem;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
@@ -253,6 +254,15 @@ ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
 		}
 	}
 
+	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
+			return false;
+		} else {
+			return entityplayer.getDistance((double) xCoord + 0.5D,
+					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
+		}
+	}
+	
 	public int getSizeInventory() {
 		return inventory.length;
 	}

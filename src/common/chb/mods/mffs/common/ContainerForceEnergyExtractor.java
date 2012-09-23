@@ -28,22 +28,22 @@ import net.minecraft.src.Slot;
 
 public class ContainerForceEnergyExtractor extends Container {
 	
-	private TileEntityExtractor Extractor;
+	private TileEntityExtractor ForceEnergyExtractor;
 	private EntityPlayer player;
 	private int WorkCylce;
 	private int workdone;
 	
 	public ContainerForceEnergyExtractor(EntityPlayer player,
 			TileEntityExtractor tileentity) {
-		Extractor = tileentity;
+		ForceEnergyExtractor = tileentity;
 		this.player = player;
 		WorkCylce = -1;
 		workdone = -1;	
 
-		addSlotToContainer(new Slot(Extractor, 0, 82, 6)); // Forcecium Input 
-		addSlotToContainer(new Slot(Extractor, 1, 145, 20)); // Power Link  
-		addSlotToContainer(new Slot(Extractor, 2, 20, 46)); // Cap Upgrade  
-		addSlotToContainer(new Slot(Extractor, 3, 39, 46)); // Overclocker
+		addSlotToContainer(new Slot(ForceEnergyExtractor, 0, 82, 6)); // Forcecium Input 
+		addSlotToContainer(new Slot(ForceEnergyExtractor, 1, 145, 20)); // Power Link  
+		addSlotToContainer(new Slot(ForceEnergyExtractor, 2, 20, 46)); // Cap Upgrade  
+		addSlotToContainer(new Slot(ForceEnergyExtractor, 3, 39, 46)); // Overclocker
 		
 		int var3;
 
@@ -64,7 +64,7 @@ public class ContainerForceEnergyExtractor extends Container {
     }
 
 	public boolean canInteractWith(EntityPlayer entityplayer) {
-		return Extractor.isUseableByPlayer(entityplayer);
+		return ForceEnergyExtractor.isUseableByPlayer(entityplayer);
 	}
 	@Override
 	public ItemStack transferStackInSlot(int i) {
@@ -91,11 +91,11 @@ public class ContainerForceEnergyExtractor extends Container {
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
 		case 0:
-			Extractor.setWorkdone(j);
+			ForceEnergyExtractor.setWorkdone(j);
 			break;
 
 		case 1:
-			Extractor.setWorkCylce(j);
+			ForceEnergyExtractor.setWorkCylce(j);
 			break;       
        }
 	}
@@ -109,19 +109,19 @@ public class ContainerForceEnergyExtractor extends Container {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
 			
-			if (workdone != Extractor.getWorkdone()) {
+			if (workdone != ForceEnergyExtractor.getWorkdone()) {
 				icrafting.updateCraftingInventoryInfo(this, 0,
-						Extractor.getWorkdone());
+						ForceEnergyExtractor.getWorkdone());
 			}
-			if (WorkCylce != Extractor.getWorkCylce()) {
+			if (WorkCylce != ForceEnergyExtractor.getWorkCylce()) {
 				icrafting.updateCraftingInventoryInfo(this, 1,
-						Extractor.getWorkCylce());
+						ForceEnergyExtractor.getWorkCylce());
 			}
 
 		}
 
-		workdone = Extractor.getWorkdone();
-		WorkCylce = Extractor.getWorkCylce();
+		workdone = ForceEnergyExtractor.getWorkdone();
+		WorkCylce = ForceEnergyExtractor.getWorkCylce();
 
 	}
 	

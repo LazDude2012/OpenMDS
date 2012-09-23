@@ -143,6 +143,7 @@ public class ContainerCapacitor extends Container {
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return generatorentity.isUseableByPlayer(entityplayer);
 	}
+	
 	@Override
 	public ItemStack transferStackInSlot(int i) {
 		ItemStack itemstack = null;
