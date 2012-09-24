@@ -50,12 +50,8 @@ public class ItemCardEmpty extends Item {
 
 		if (!world.isRemote) {
 			if (tileEntity instanceof TileEntityCapacitor) {
-				if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()) != null)
-				{
-					if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,2))) {
-						return false;
-					}
-				}
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  {
 
 				
 				ItemStack newcard =  new ItemStack(ModularForceFieldSystem.MFFSitemfc);
@@ -65,12 +61,12 @@ public class ItemCardEmpty extends Item {
 				entityplayer.addChatMessage("[Generator] Success: <Power-Link> Card create");
 				
 				return true;
+				 }
 			}
 
 			if (tileEntity instanceof TileEntitySecurityStation) {
-				if (!(((TileEntitySecurityStation)tileEntity).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-					return false;
-				}
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  {
 
 				ItemStack newcard =   new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
 				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Secstation_ID", ((TileEntitySecurityStation)tileEntity).getSecurtyStation_ID());
@@ -78,6 +74,7 @@ public class ItemCardEmpty extends Item {
 				
 				Functions.ChattoPlayer(entityplayer, "[Security Station] Success: <Security Station Link>  Card create");
 				return true;
+				 }
 			}
 		}
 		return false;

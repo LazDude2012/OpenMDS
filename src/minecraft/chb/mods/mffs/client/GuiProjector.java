@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,13 +13,12 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
 
 package chb.mods.mffs.client;
-
 
 import ic2.api.NetworkHelper;
 import net.minecraft.src.EntityPlayer;
@@ -30,7 +29,6 @@ import org.lwjgl.opengl.GL11;
 
 import chb.mods.mffs.common.ContainerProjector;
 import chb.mods.mffs.common.TileEntityProjector;
-
 
 public class GuiProjector extends GuiContainer {
 	private TileEntityProjector projector;
@@ -56,7 +54,7 @@ public class GuiProjector extends GuiContainer {
 
 		if (projector.getProjektor_Typ() != 0 ) {
 			if (projector.getProjektor_Typ() != 7){
-				drawTexturedModalRect(w + 119, k + 43, 177, 143, 16, 16); 
+				drawTexturedModalRect(w + 119, k + 43, 177, 143, 16, 16);
 			}
 
 			if (projector.getProjektor_Typ() != 4   && projector.getProjektor_Typ() != 2 ) {
@@ -64,14 +62,13 @@ public class GuiProjector extends GuiContainer {
 			}
 
 			if (projector.getProjektor_Typ() == 1 || projector.getProjektor_Typ() == 2 || projector.getProjektor_Typ() == 6|| projector.getProjektor_Typ() == 7) {
-				drawTexturedModalRect(w + 137, k + 8, 177, 143, 16, 16); 
-																		
-				drawTexturedModalRect(w + 137, k + 42, 177, 143, 16, 16); 
-																			
-				drawTexturedModalRect(w + 154, k + 25, 177, 143, 16, 16); 
-																			
-				drawTexturedModalRect(w + 120, k + 25, 177, 143, 16, 16); 
-																			
+				drawTexturedModalRect(w + 137, k + 8, 177, 143, 16, 16);
+
+				drawTexturedModalRect(w + 137, k + 42, 177, 143, 16, 16);
+
+				drawTexturedModalRect(w + 154, k + 25, 177, 143, 16, 16);
+
+				drawTexturedModalRect(w + 120, k + 25, 177, 143, 16, 16);
 			}
 
 			if (projector.isOptioncamouflage()) {

@@ -49,68 +49,28 @@ public class ItemCardSecurityLink extends Item  {
 
 		if (!world.isRemote) {
 			if (tileEntity instanceof TileEntityCapacitor) {
-				if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()) != null)
-				{
-					if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-						return false;
-					}
-				}
+				
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  {
 
-				if(((TileEntityCapacitor)tileEntity).getStackInSlot(4)==null)
-				{
-					((TileEntityCapacitor)tileEntity).setInventorySlotContents(4,itemstack);
-					entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
-					Functions.ChattoPlayer(entityplayer, "[Generator] Success: <Security Station Link> Card installed");
-					return true;
-				}
-				else
-				{
-					Functions.ChattoPlayer(entityplayer, "[Generator] Fail: Slot is not empty");
-					return false;
-				}
+					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 4,"<Security Station Link>");
+					  
+				  }
 			}
 
 			if (tileEntity instanceof TileEntityAreaDefenseStation) {
-				if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityAreaDefenseStation)tileEntity).getSecStation_ID()) != null)
-				{
-					if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityAreaDefenseStation)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-						return false;
-					}
-				}
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  {
 
-				if(((TileEntityAreaDefenseStation)tileEntity).getStackInSlot(1)==null)
-				{
-					((TileEntityAreaDefenseStation)tileEntity).setInventorySlotContents(1,itemstack);
-					entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
-					Functions.ChattoPlayer(entityplayer, "[Defence Station] Success: <Security Station Link> Card installed");
-					return true;
-				}
-				else
-				{
-					Functions.ChattoPlayer(entityplayer, "[Defence Station] Fail: Slot is not empty");
-					return false;
-				}
+					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 1,"<Security Station Link>");
+			}
 			}
 
 			if (tileEntity instanceof TileEntityProjector) {
-				if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityProjector)tileEntity).getSecStation_ID()) != null)
-				{
-					if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityProjector)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-						return false;
-					}
-				}
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  {
 
-				if(((TileEntityProjector)tileEntity).getStackInSlot(12)==null)
-				{
-					((TileEntityProjector)tileEntity).setInventorySlotContents(12,itemstack);
-					entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
-					Functions.ChattoPlayer(entityplayer, "[Projector] Success: <Security Station Link> Card installed");
-					return true;
-				}
-				else
-				{
-					Functions.ChattoPlayer(entityplayer, "[Projector] Fail: Slot is not empty");
-					return false;
+					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 12,"<Security Station Link>");
 				}
 			}
 		}

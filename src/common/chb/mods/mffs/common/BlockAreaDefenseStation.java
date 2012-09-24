@@ -54,18 +54,8 @@ public class BlockAreaDefenseStation extends BlockMFFSBase {
 
 		TileEntity tileentity = world.getBlockTileEntity(i, j, k);
 
-       if(tileentity != null)
-       {
-    	   TileEntitySecurityStation SecurityStation = Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityAreaDefenseStation)tileentity).getSecStation_ID());
-		   if(SecurityStation !=null)
-		   {
-			   if(!SecurityStation.isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))
-			   {
-					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
-					return false;
-			   }
-		   }
-       }
+		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world))
+		{return false;}
 
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {

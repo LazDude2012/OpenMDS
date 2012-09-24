@@ -96,7 +96,8 @@ public class ContainerForceEnergyExtractor extends Container {
 
 		case 1:
 			ForceEnergyExtractor.setWorkCylce(j);
-			break;       
+			break;
+             
        }
 	}
 	
@@ -118,10 +119,12 @@ public class ContainerForceEnergyExtractor extends Container {
 						ForceEnergyExtractor.getWorkCylce());
 			}
 
+
 		}
 
 		workdone = ForceEnergyExtractor.getWorkdone();
 		WorkCylce = ForceEnergyExtractor.getWorkCylce();
+
 
 	}
 	

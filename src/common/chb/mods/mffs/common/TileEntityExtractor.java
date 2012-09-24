@@ -8,6 +8,7 @@ import ic2.api.IEnergySink;
 import ic2.api.INetworkDataProvider;
 import ic2.api.INetworkUpdateListener;
 import ic2.api.NetworkHelper;
+import net.minecraft.src.Block;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
@@ -22,8 +23,9 @@ import net.minecraftforge.common.ISidedInventory;
 public class TileEntityExtractor extends TileEntityMachines implements ISidedInventory
 ,IEnergySink,INetworkDataProvider,INetworkUpdateListener{
 	
-	public static final int MAXWORKCYLCE = 125;
-	
+	public static final int FORCECIUMWORKCYLCE  = 125;
+	public static final int FORCECIUMBLOCKWORKCYLCE = 1200;
+
 	private ItemStack inventory[];
 	private boolean addedToEnergyNet;
 	private boolean create;
@@ -36,6 +38,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	private int LinkCapacitor_ID;
 	private int workTicker;
 	private int workdone;
+	private int maxworkcylce;
 	
 	
 	public TileEntityExtractor() {
@@ -51,16 +54,24 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		MaxForceEnergyBuffer = 1000000;
 		WorkCylce = 0;
 		workTicker = 20;
+		maxworkcylce = 125;
 	}
 	
 	
 	
 	
+	
+	public int getMaxworkcylce() {
+		return maxworkcylce;
+	}
+
+	public void setMaxworkcylce(int maxworkcylce) {
+		this.maxworkcylce = maxworkcylce;
+	}
+
 	public int getWorkdone() {
 		return workdone;
 	}
-
-
 
 	public void setWorkdone(int workdone) {
 		this.workdone = workdone;
@@ -275,12 +286,20 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		
 		if (getStackInSlot(0) != null) {
 				if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemForcicium) {
-				
-		    	  setWorkCylce(MAXWORKCYLCE);
+		    	  setMaxworkcylce(FORCECIUMWORKCYLCE);
+				  setWorkCylce(getMaxworkcylce());
 			      decrStackSize(0, 1);
 			      return true;
-					
 				}
+				
+		
+			
+				if (inventory[0].itemID == ModularForceFieldSystem.MFFSForciciumBlock.blockID ){
+			    	  setMaxworkcylce(FORCECIUMBLOCKWORKCYLCE);
+					  setWorkCylce(getMaxworkcylce());
+				      decrStackSize(0, 1);
+				      return true;
+					}
 			}
 		}
 		
@@ -557,7 +576,11 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		return 1;
 	}
 	
-
+	
+	public ItemStack[] getContents() {
+		return inventory;
+	}
+	
 	@Override
 	public void openChest() {
 	}

@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,13 +13,12 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
 
 package chb.mods.mffs.client;
-
 
 import ic2.api.NetworkHelper;
 
@@ -30,7 +29,6 @@ import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
 import chb.mods.mffs.common.ContainerCapacitor;
 import chb.mods.mffs.common.TileEntityCapacitor;
-
 
 public class GuiCapacitor extends GuiContainer {
 	private TileEntityCapacitor Core;
@@ -78,7 +76,7 @@ public class GuiCapacitor extends GuiContainer {
 
 	public void initGui() {
 		controlList.add(new GuiGraphicButton(0, (width / 2) + 27, (height / 2) - 60,Core,1));
-		
+
 		controlList.add(new GuiGraphicButton(1, (width / 2) + 38, (height / 2) - 35,Core,2));
 
 		super.initGui();

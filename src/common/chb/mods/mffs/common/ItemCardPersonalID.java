@@ -22,7 +22,7 @@ package chb.mods.mffs.common;
 
 import java.util.List;
 
-import chb.mods.mffs.api.IPersonalIDCrad;
+import chb.mods.mffs.api.IPersonalIDCard;
 
 
 import net.minecraft.src.Item;
@@ -31,7 +31,7 @@ import net.minecraft.src.NBTTagCompound;
 
 
 
-public class ItemCardPersonalID extends Item implements IPersonalIDCrad{
+public class ItemCardPersonalID extends Item implements IPersonalIDCard{
 	
 	public ItemCardPersonalID(int i) {
 		super(i);

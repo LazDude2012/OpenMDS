@@ -58,19 +58,8 @@ public class BlockExtractor extends BlockMFFSBase {
 		TileEntityExtractor tileentity = (TileEntityExtractor) world
 				.getBlockTileEntity(i, j, k);
 
-	if(tileentity instanceof TileEntityExtractor)
-	{
-		if(Linkgrid.getWorldMap(world).getCapacitor().get(tileentity.getLinkCapacitors_ID())!= null)
-		{
-		if(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(tileentity.getLinkCapacitors_ID()).getSecStation_ID()) != null)
-		{
-			if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(tileentity.getLinkCapacitors_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-				Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
-				return false;
-			}
-		}
-	}
-		}
+		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world))
+		{return false;}
 	
 		
 		

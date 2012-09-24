@@ -21,6 +21,7 @@
 package chb.mods.mffs.common;
 
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IInventory;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
@@ -42,6 +43,8 @@ public class ItemCardPowerLink extends Item  {
 	public boolean isRepairable() {
 		return false;
 	}
+	
+	
 	@Override
 	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer,
 			World world, int i, int j, int k, int l) {
@@ -49,94 +52,62 @@ public class ItemCardPowerLink extends Item  {
 
 		if (!world.isRemote) {
 			
-			
-			if (tileEntity instanceof TileEntityExtractor) {
-				TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityExtractor)tileEntity).getLinkCapacitors_ID());
 
-				if(Generator!= null)
-				{
-				TileEntitySecurityStation SecurityStation  = Linkgrid.getWorldMap(world).getSecStation().get(Generator.getSecStation_ID());
-
-				if(SecurityStation  != null)
-				{
-					if (!(SecurityStation.isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-						return false;
-					}
-				}
-			}
-
-				if(((TileEntityExtractor)tileEntity).getStackInSlot(1)==null)
-				{
-					((TileEntityExtractor)tileEntity).setInventorySlotContents(1,itemstack);
-					entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
-					Functions.ChattoPlayer(entityplayer, "[Extractor] Success: <Power-Link> Card installed");
-					return true;
-				}
-				else
-				{
-					Functions.ChattoPlayer(entityplayer, "[Extractor] Fail: Slot is not empty");
-					return false;
-				}
-			}
-			
-			
-			
-			
-			
-			
-			
-			
 			if (tileEntity instanceof TileEntityProjector) {
-				TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileEntity).getLinkCapacitor_ID());
+			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+			  {
 
-				if(Generator!= null)
-				{
-				TileEntitySecurityStation SecurityStation  = Linkgrid.getWorldMap(world).getSecStation().get(Generator.getSecStation_ID());
+				  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 0,"<Power-Link>");
 
-				if(SecurityStation  != null)
-				{
-					if (!(SecurityStation.isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-						return false;
-					}
-				}
-			}
-
-				if(((TileEntityProjector)tileEntity).getStackInSlot(0)==null)
-				{
-					((TileEntityProjector)tileEntity).setInventorySlotContents(0,itemstack);
-					entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
-					Functions.ChattoPlayer(entityplayer, "[Projector] Success: <Power-Link> Card installed");
-					return true;
-				}
-				else
-				{
-					Functions.ChattoPlayer(entityplayer, "[Projector] Fail: Slot is not empty");
-					return false;
-				}
-			}
-
+			  }
+            }
+			
+			if (tileEntity instanceof TileEntityExtractor ) {
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  {
+				
+						if(((TileEntityExtractor)tileEntity).getStackInSlot(1)==null)
+						{
+							((TileEntityExtractor)tileEntity).setInventorySlotContents(1,itemstack);
+							entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
+							Functions.ChattoPlayer(entityplayer, "Success: <Power-Link> Card installed");
+							return true;
+						}
+						else
+						{
+							if(((TileEntityExtractor)tileEntity).getStackInSlot(1).getItem()==ModularForceFieldSystem.MFFSitemcardempty)
+							{
+								ItemStack itemstackcopy = itemstack.copy();
+								((TileEntityExtractor)tileEntity).setInventorySlotContents(1,itemstackcopy);
+								Functions.ChattoPlayer(entityplayer, "Success: <Power-Link> Card data copied ");
+								return true;
+							}
+							Functions.ChattoPlayer(entityplayer, "Fail: Slot is not empty");
+							return false;
+						}
+				  }
+	            }
+			
+			
 			if (tileEntity instanceof TileEntityAreaDefenseStation) {
-				if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityAreaDefenseStation)tileEntity).getSecStation_ID()) != null)
-				{
-					if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityAreaDefenseStation)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-						return false;
-					}
-				}
-
-				if(((TileEntityAreaDefenseStation)tileEntity).getStackInSlot(0)==null)
-				{
-					((TileEntityAreaDefenseStation)tileEntity).setInventorySlotContents(0,itemstack);
-					entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
-					Functions.ChattoPlayer(entityplayer, "[Defence Station] Success: <Power-Link> Card installed");
-					return true;
-				}
-				else
-				{
-					Functions.ChattoPlayer(entityplayer, "[Defence Station] Fail: Slot is not empty");
-					return false;
-				}
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  {
+		
+					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 0,"<Power-Link>");
+				  }
 			}
+			
+			if (tileEntity instanceof TileEntityCapacitor) {
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  {
+		
+					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 2,"<Power-Link>");
+				  }
+			}
+			
 		}
 		return false;
 	}
+	
+
 }

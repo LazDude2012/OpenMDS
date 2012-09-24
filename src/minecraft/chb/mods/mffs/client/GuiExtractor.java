@@ -1,4 +1,4 @@
-/*  
+/*
      Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -48,28 +48,33 @@ public class GuiExtractor extends GuiContainer {
 		int w = (width - xSize) / 2;
 		int k = (height - ySize) / 2;
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
-		
+
 		int Workpowerslider = (79 * tileEntity.getWorkdone() / 100);
 		drawTexturedModalRect(w + 49, k + 69, 176, 0, Workpowerslider, 6);
 		
-		int WorkCylce =  (32 * tileEntity.getWorkCylce()) / TileEntityExtractor.MAXWORKCYLCE;
-		drawTexturedModalRect(w + 73,k + 30, 179,81,WorkCylce,32);
+		int WorkCylce;
 		
+		if(tileEntity.getWorkCylce()>125)
+		{
+			 WorkCylce =  (32 * tileEntity.getWorkCylce()) / TileEntityExtractor.FORCECIUMBLOCKWORKCYLCE;
+		}else{
+			 WorkCylce =  (32 * tileEntity.getWorkCylce()) / TileEntityExtractor.FORCECIUMWORKCYLCE;
+		}
+		
+		drawTexturedModalRect(w + 73,k + 30, 179,81,WorkCylce,32);
+
 		int ForceEnergy  = (24 * tileEntity.getForceEnergybuffer() / tileEntity.getMaxForceEnergyBuffer());
 		drawTexturedModalRect(w + 137,k + 40,219,80,32,ForceEnergy);
-		
 	}
 	@Override
 	protected void drawGuiContainerForegroundLayer() {
 		fontRenderer.drawString("Force Energy", 5, 5, 0x404040);
-		
+
 		fontRenderer.drawString("Upgrades", 10, 30, 0x404040);
-		
+
 		fontRenderer.drawString("Extractor", 110, 5, 0x404040);
 		fontRenderer.drawString(String.valueOf(tileEntity.getForceEnergybuffer()/1000).concat("k"), 140, 69, 0x404040);
-		
-		fontRenderer.drawString(String.valueOf(tileEntity.getWorkdone()).concat("%"), 23, 69, 0x404040);
-	
 
+		fontRenderer.drawString(String.valueOf(tileEntity.getWorkdone()).concat("%"), 23, 69, 0x404040);
 	}
 }

@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -43,14 +43,14 @@ public class ClientProxy extends CommonProxy {
  		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/blocks.png");
  		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/forciciumore.png");
  		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/Extractor.png");
+ 		MinecraftForgeClient.preloadTexture("/chb/mods/mffs/sprites/forciciumblock.png");
 	}
 
 	@Override
      public void registerTileEntitySpecialRenderer() {
      ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCapacitor.class, new TECapacitorRenderer());
      ClientRegistry.bindTileEntitySpecialRenderer(TileEntityExtractor.class, new TEExtractorRenderer());
-  
-     
+
      RenderingRegistry.registerBlockHandler(new ForceFieldRenderer());
 	}
 
@@ -58,7 +58,7 @@ public class ClientProxy extends CommonProxy {
 	public World getClientWorld() {
 		return FMLClientHandler.instance().getClient().theWorld;
 	}
-	
+
 	@Override
 	public boolean isClient()
 	{

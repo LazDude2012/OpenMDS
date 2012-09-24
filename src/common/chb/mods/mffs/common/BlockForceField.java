@@ -346,6 +346,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 		}
 		
 		return AxisAlignedBB.getBoundingBox((float) i, j, (float) k, (float) (i + 1), (float) (j + 1), (float) (k + 1));
+	
 	}
 
     @Override

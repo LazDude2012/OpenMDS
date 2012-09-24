@@ -97,78 +97,13 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 				   return false; 
 			   }
 		   }
-
-
-		   if(this instanceof TileEntityProjector)
-		   {
-				  if(((TileEntityProjector)this).getaccesstyp()==2)
-				  {
-					  
-					  
-					if(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityProjector)this).getLinkCapacitor_ID())!= null)
-					{
-					
-					if(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityProjector)this).getLinkCapacitor_ID()).getSecStation_ID()) != null)
-					{
-						if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityProjector)this).getLinkCapacitor_ID()).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-							return false;
-						}
-					}
-				}
-				  }
-				 if(((TileEntityProjector)this).getaccesstyp()==3)
-				 {
-					 
-					if(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityProjector)this).getSecStation_ID()) != null)
-					{
-					if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityProjector)this).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-					return false;
-					}
-				}
-				  }
-		   }
-
-		   if(this instanceof TileEntitySecurityStation)
-		   {
-				if (!(((TileEntitySecurityStation)this).isAccessGranted(entityPlayer.username,
-						ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-					return false;
-				}
-		   }
-
-		   if(this instanceof TileEntityCapacitor)
-		   {
-			   if(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityCapacitor)this).getSecStation_ID()) != null)
-			   {
-					if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(((TileEntityCapacitor)this).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-					return false;
-					}
-			   }
-		   }
 		   
-		   
-			  if(this instanceof TileEntityExtractor)
-			  {
-				if(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityExtractor)this).getLinkCapacitors_ID())!= null)
-				{
-				if(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityExtractor)this).getLinkCapacitors_ID()).getSecStation_ID()) != null)
-				{
-					if (!(Linkgrid.getWorldMap(worldObj).getSecStation().get(Linkgrid.getWorldMap(worldObj).getCapacitor().get(((TileEntityExtractor)this).getLinkCapacitors_ID()).getSecStation_ID()).isAccessGranted(entityPlayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-						return false;
-					}
-				}
-			}
-			  }
-		   
-		   
+		   if(this instanceof TileEntityAreaDefenseStation)
+		   {return false;}
 
-		if(this instanceof TileEntityAreaDefenseStation)
-		   {
-			   return false;
-		   }
-		
-
-
+		   if(!SecurityHelper.isAccessGranted(this, entityPlayer, worldObj))
+		   {return false;}
+		   
 		return true;
 	}
 

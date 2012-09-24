@@ -88,8 +88,9 @@ public class ModularForceFieldSystem {
 	public static Block MFFSDefenceStation;
 	public static Block MFFSFieldblock;
 	public static Block MFFSExtractor;
-	
 	public static Block MFFSMonazitOre;
+	public static Block MFFSForciciumBlock;
+	
 	public static Item MFFSitemForcicium;
 	public static Item MFFSitemForcePowerCrystal;
 
@@ -180,6 +181,7 @@ public class ModularForceFieldSystem {
 			MobDefenseDamage = MFFSconfig.getOrCreateIntProperty("MobDefenseDamage", Configuration.CATEGORY_GENERAL,10).getInt(10);
 			DefenseStationFPpeerAttack = MFFSconfig.getOrCreateIntProperty("DefenseStationFPpeerAttack", Configuration.CATEGORY_GENERAL,25000).getInt(25000);
 		
+			MFFSForciciumBlock = new BlockForcicium(MFFSconfig.getOrCreateBlockIdProperty("MFFSForciciumBlock", 4075).getInt(4075)).setBlockName("MFFSForciciumBlock");
 			MFFSExtractor = new BlockExtractor(MFFSconfig.getOrCreateBlockIdProperty("MFFSExtractor", 4076).getInt(4076),0).setBlockName("MFFSExtractor");
 		    MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getOrCreateBlockIdProperty("MFFSMonazitOre", 4077).getInt(4077)).setBlockName("MFFSMonazitOre");
 			MFFSDefenceStation = new BlockAreaDefenseStation(MFFSconfig.getOrCreateBlockIdProperty("MFFSDefenceStation", 4078).getInt(4078),0).setBlockName("MFFSDefenceStation");
@@ -246,8 +248,12 @@ public class ModularForceFieldSystem {
 		GameRegistry.registerBlock(MFFSDefenceStation);
 		GameRegistry.registerBlock(MFFSMonazitOre);
 		GameRegistry.registerBlock(MFFSExtractor);
+		GameRegistry.registerBlock(MFFSForciciumBlock);
+	
 
-		OreDictionary.registerOre("Forcicium", MFFSitemForcicium);
+		OreDictionary.registerOre("ForciciumItem", MFFSitemForcicium);
+		OreDictionary.registerOre("MonazitOre", MFFSMonazitOre);
+		OreDictionary.registerOre("ForciciumBlock", MFFSForciciumBlock);
 		
 		GameRegistry.registerTileEntity(Extractor, "MFFSExtractor");
 		
@@ -289,9 +295,10 @@ public class ModularForceFieldSystem {
 			'D',Items.getItem("advancedCircuit") 				
 		});
 		
+		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSForciciumBlock, 1),
+				new Object[] { "AAA", "AAA", "AAA", 'A',MFFSitemForcicium});
 		
-		
-
+		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MFFSitemForcicium,9),new Object[] { new ItemStack(MFFSForciciumBlock) });
 		
 		
 		//
@@ -518,6 +525,7 @@ public class ModularForceFieldSystem {
 			Generatetexturindex(Block.cloth, meta);
 		}
 		
+		LanguageRegistry.instance().addNameForObject(MFFSForciciumBlock, "en_US", "Block of Forcicium");
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradeexctractorboost, "en_US", "MFFS Extractor Booster");
 		LanguageRegistry.instance().addNameForObject(MFFSExtractor, "en_US", "MFFS Force Energy Extractor");
 		LanguageRegistry.instance().addNameForObject(MFFSMonazitOre,"en_US", "Monazit");

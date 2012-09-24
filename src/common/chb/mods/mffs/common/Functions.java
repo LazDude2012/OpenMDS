@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;
+import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
@@ -120,4 +121,30 @@ public class Functions {
 		}
 		return null;
 	}
+	
+	
+	public static boolean setIteminSlot(ItemStack itemstack, EntityPlayer entityplayer,TileEntity tileEntity,int Slot, String Cardname)
+	{
+		if(((IInventory)tileEntity).getStackInSlot(Slot)==null)
+		{
+			((IInventory)tileEntity).setInventorySlotContents(Slot,itemstack);
+			entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
+			Functions.ChattoPlayer(entityplayer, "Success: "+Cardname+" Card installed");
+			return true;
+		}
+		else
+		{
+			if(((IInventory)tileEntity).getStackInSlot(Slot).getItem()==ModularForceFieldSystem.MFFSitemcardempty)
+			{
+				ItemStack itemstackcopy = itemstack.copy();
+				((IInventory)tileEntity).setInventorySlotContents(Slot,itemstackcopy);
+				Functions.ChattoPlayer(entityplayer, "Success: "+Cardname+" Card data copied ");
+				return true;
+			}
+			Functions.ChattoPlayer(entityplayer, "Fail: Slot is not empty");
+			return false;
+		}
+	}
+		
+	
 }

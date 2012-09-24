@@ -58,13 +58,8 @@ public class BlockCapacitor extends BlockMFFSBase {
 		TileEntityCapacitor tileentity = (TileEntityCapacitor) world
 				.getBlockTileEntity(i, j, k);
 
-		if(Linkgrid.getWorldMap(world).getSecStation().get(tileentity.getSecStation_ID()) != null)
-		{
-			if (!(Linkgrid.getWorldMap(world).getSecStation().get(tileentity.getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-				Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
-				return false;
-			}
-		}
+		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world))
+		{return false;}
 
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {

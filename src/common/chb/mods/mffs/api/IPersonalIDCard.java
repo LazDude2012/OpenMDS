@@ -23,7 +23,7 @@ package chb.mods.mffs.api;
 
 import net.minecraft.src.ItemStack;
 
-public interface IPersonalIDCrad {
+public interface IPersonalIDCard {
 	
 	public  String getUsername(ItemStack itemstack);
 // get saved Username or Nobody on Error  Itemstack
