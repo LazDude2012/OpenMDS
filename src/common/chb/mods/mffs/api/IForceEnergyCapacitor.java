@@ -25,14 +25,8 @@ public interface IForceEnergyCapacitor
 	// Charging status in %
 	public int getCapacity();
 	
-	//Allows people to set the capacity of the capacitor
-	public void setCapacity(int capacity);
-
 	//Max ForcePower for this Generator
 	public int getMaxForcePower();
-
-	//Sets the ForcePower for this Generator
-	public void setForcePower(int forcePower);
 	
 	// ForcePower left in his Generator
 	public int getForcePower();
