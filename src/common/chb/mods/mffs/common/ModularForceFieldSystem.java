@@ -20,6 +20,7 @@
 
 package chb.mods.mffs.common;
 
+import chb.mods.mffs.network.NetworkHandler;
 
 import ic2.api.ExplosionWhitelist;
 import ic2.api.Items;
@@ -51,7 +52,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1", dependencies = "after:IC2")
-@NetworkMod(clientSideRequired = true, serverSideRequired = false)
+@NetworkMod(channels = { "MFFS" },clientSideRequired = true, serverSideRequired = false,packetHandler = NetworkHandler.class)
 
 public class ModularForceFieldSystem {
 	

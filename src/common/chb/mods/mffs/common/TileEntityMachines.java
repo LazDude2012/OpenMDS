@@ -21,7 +21,6 @@
 package chb.mods.mffs.common;
 
 import ic2.api.IWrenchable;
-import ic2.api.NetworkHelper;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
@@ -31,6 +30,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import chb.mods.mffs.api.IMFFS_Wrench;
+import chb.mods.mffs.network.NetworkHandler;
 
 public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wrench,IWrenchable{
 	
@@ -116,7 +116,7 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 	@Override
 	public void setSide(int i) {
 		side = i;
-		NetworkHelper.updateTileEntityField(this, "side");
+		NetworkHandler.updateTileEntityField(this, "side");
 	}
 
 	public boolean isActive() {
@@ -125,7 +125,7 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 
 	public void setActive(boolean flag) {
 		active = flag;
-		NetworkHelper.updateTileEntityField(this, "active");
+		NetworkHandler.updateTileEntityField(this, "active");
 	}
 	
 	@Override
@@ -146,8 +146,7 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 	
 	@Override
 	public void setFacing(short i) {
-		side = i;
-		NetworkHelper.updateTileEntityField(this, "side");
+		setSide(i);
 	}
 	
 	@Override

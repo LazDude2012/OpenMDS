@@ -29,8 +29,10 @@ import net.minecraft.src.Slot;
 public class ContainerCapacitor extends Container {
 	private TileEntityCapacitor generatorentity;
 
+	private int capacity;
 	private int forcepower;
-	private int maxforcepower;
+	private int SwitchTyp;
+	private int Powerlinkmode;
 	private short transmitrange;
 	private short linketprojektor;
 	private EntityPlayer player;
@@ -38,10 +40,11 @@ public class ContainerCapacitor extends Container {
 	public ContainerCapacitor(EntityPlayer player,
 			TileEntityCapacitor tileentity) {
 		forcepower = -1;
-		maxforcepower = -1;
 		transmitrange = -1;
 		linketprojektor = -1;
-
+		capacity = -1;
+		SwitchTyp= -1 ;
+		Powerlinkmode =-1;
 		generatorentity = tileentity;
 		this.player = player;
 
@@ -91,19 +94,30 @@ public class ContainerCapacitor extends Container {
 				icrafting.updateCraftingInventoryInfo(this, 3,
 						generatorentity.getForcePower() >>> 16);
 			}
-
-			if (maxforcepower != generatorentity.getMaxForcePower()) {
+			if (capacity != generatorentity.getCapacity()) {
 				icrafting.updateCraftingInventoryInfo(this, 4,
-						generatorentity.getMaxForcePower() & 0xffff);
-				icrafting.updateCraftingInventoryInfo(this, 5,
-						generatorentity.getMaxForcePower() >>> 16);
+						generatorentity.getCapacity());
 			}
+			if (SwitchTyp != generatorentity.getswitchtyp()) {
+				icrafting.updateCraftingInventoryInfo(this, 5,
+						generatorentity.getswitchtyp());
+			}
+			if (Powerlinkmode != generatorentity.getPowerlinkmode()) {
+				icrafting.updateCraftingInventoryInfo(this, 6,
+						generatorentity.getPowerlinkmode());
+			}
+			
+			
+
+
 		}
 
 		transmitrange = (short) generatorentity.getTransmitRange();
 		linketprojektor = generatorentity.getLinketProjektor();
 		forcepower = generatorentity.getForcePower();
-		maxforcepower = generatorentity.getMaxForcePower();
+		capacity = generatorentity.getCapacity();
+		SwitchTyp= generatorentity.getswitchtyp();
+		Powerlinkmode = generatorentity.getPowerlinkmode();
 	}
 
 	public void updateProgressBar(int i, int j) {
@@ -119,23 +133,24 @@ public class ContainerCapacitor extends Container {
 			break;
 
 		case 2:
-			generatorentity
-					.setForcepower((generatorentity.getForcePower() & 0xffff0000)
+			generatorentity.setForcePower((generatorentity.getForcePower() & 0xffff0000)
 							| j);
 			break;
 		case 3:
-			generatorentity
-					.setForcepower((generatorentity.getForcePower() & 0xffff)
+			generatorentity.setForcePower((generatorentity.getForcePower() & 0xffff)
 							| (j << 16));
 			break;
 
 		case 4:
-			generatorentity.setMaxforcepower((generatorentity
-					.getMaxForcePower() & 0xffff0000) | j);
+			generatorentity.setCapacity(j);
 			break;
+			
 		case 5:
-			generatorentity.setMaxforcepower((generatorentity
-					.getMaxForcePower() & 0xffff) | (j << 16));
+			generatorentity.setswitchtyp(j);
+			break;
+			
+		case 6:
+			generatorentity.setPowerlinkmode(j);
 			break;
 		}
 	}

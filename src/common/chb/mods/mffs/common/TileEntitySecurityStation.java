@@ -20,9 +20,9 @@
 
 package chb.mods.mffs.common;
 
-import ic2.api.INetworkDataProvider;
-import ic2.api.INetworkUpdateListener;
-import ic2.api.NetworkHelper;
+import chb.mods.mffs.network.INetworkHandlerEventListener;
+import chb.mods.mffs.network.INetworkHandlerListener;
+import chb.mods.mffs.network.NetworkHandler;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -41,7 +41,7 @@ import net.minecraftforge.common.ISidedInventory;
 
 
 public class TileEntitySecurityStation extends TileEntityMachines implements
-ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
+ISidedInventory, INetworkHandlerListener {
 	private boolean Multiusermod;
 	private String MainUser;
 	private boolean create;
@@ -68,7 +68,6 @@ ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
 
 	public void setMultiusermod(boolean multiusermod) {
 		Multiusermod = multiusermod;
-		NetworkHelper.updateTileEntityField(this, "Multiusermod");
 	}
 
 	public boolean isCreate() {
@@ -85,7 +84,6 @@ ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
 
 	public void setMainUser(String s) {
 		this.MainUser = s;
-		NetworkHelper.updateTileEntityField(this, "MainUser");
 	}
 
 	public int getSecurtyStation_ID() {
@@ -198,7 +196,7 @@ ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
 			this.setTicker((short) (this.getTicker() + 1));
 		} else {
 			if (this.isCreate()) {
-				NetworkHelper.requestInitialData(this);
+				NetworkHandler.requestInitialData(this);
 				this.setCreate(false);
 			}
 		}
@@ -221,11 +219,14 @@ ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
 					Card.setSeclevel(getStackInSlot(1), ModularForceFieldSystem.PERSONALID_FULLACCESS);
 				}
 			}else{
-				this.setMainUser("");
+
+				setMainUser("");
 				dropplugins(1);
 			}
 		}else{
-			this.setMainUser("");
+
+			setMainUser("");
+			
 		}
 
 		if (getStackInSlot(2) != null) {
@@ -370,29 +371,6 @@ ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
 		return false;
 	}
 
-	@Override
-	public List<String> getNetworkedFields() {
-		List<String> NetworkedFields = new LinkedList<String>();
-		NetworkedFields.clear();
-
-		NetworkedFields.add("MainUser");
-		NetworkedFields.add("Multiusermod");
-		NetworkedFields.add("active");
-		NetworkedFields.add("side");
-
-
-		return NetworkedFields;
-	}
-
-	@Override
-	public void onNetworkUpdate(String field) {
-		if (field.equals("side")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("active")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-	}
 
 	public ItemStack[] getContents() {
 		return inventory;
@@ -409,6 +387,29 @@ ISidedInventory,  INetworkUpdateListener,INetworkDataProvider {
 	@Override
 	public int getSizeInventorySide(ForgeDirection side) {
 		return 0;
+	}
+
+	@Override
+	public void onNetworkHandlerUpdate(String field) {
+		if (field.equals("side")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		if (field.equals("active")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		
+	}
+
+	@Override
+	public List<String> geFieldsforUpdate() {
+		List<String> NetworkedFields = new LinkedList<String>();
+		NetworkedFields.clear();
+
+		NetworkedFields.add("active");
+		NetworkedFields.add("side");
+
+
+		return NetworkedFields;
 	}
 	
 

@@ -20,10 +20,6 @@
 
 package chb.mods.mffs.common;
 
-import ic2.api.INetworkClientTileEntityEventListener;
-import ic2.api.INetworkDataProvider;
-import ic2.api.INetworkUpdateListener;
-import ic2.api.NetworkHelper;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -44,10 +40,14 @@ import net.minecraft.src.NBTTagList;
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
+
 import chb.mods.mffs.api.IModularProjector;
+import chb.mods.mffs.network.INetworkHandlerEventListener;
+import chb.mods.mffs.network.INetworkHandlerListener;
+import chb.mods.mffs.network.NetworkHandler;
 
 public class TileEntityProjector extends TileEntityMachines implements IModularProjector,
-ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEntityEventListener{
+ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	private ItemStack ProjektorItemStacks[];
 
 	private boolean[] projektoroption = { false, false, false, false, false,false,false,true,false,false,false,false,false};
@@ -65,7 +65,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	private int Projektor_ID;
 	private int linkCapacitor_ID;
 	private int linkPower;
-	private int maxlinkPower;
 	private int blockcounter;
 	private int ForceField_strength;
 	private int ForceField_distance;
@@ -74,6 +73,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	private int accesstyp;
 	private int SwitchTyp;
 	private boolean OnOffSwitch;
+	private int capacity;
 
 	protected Stack<Integer> field_queue = new Stack<Integer>();
 
@@ -84,7 +84,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		linkCapacitor_ID = 0;
 		Projektor_ID = random.nextInt();
 		linkPower = 0;
-		maxlinkPower = 1000000;
 		forcefieldblock_meta = ModularForceFieldSystem.FORCEFIELBOCKMETA_DEFAULT;
 		ProjektorTyp = 0;
 		switchdelay = 0;
@@ -97,9 +96,21 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		LinkedSecStation = false;
 		SwitchTyp = 0;
 		OnOffSwitch = false;
+		capacity = 0;
 	}
 
 	// Start Getter AND Setter
+
+	
+	public int getCapacity(){
+		return capacity;
+	}
+
+	
+	public void setCapacity(int Capacity){
+		this.capacity = Capacity;
+	}
+	
 
 	public boolean getOnOffSwitch() {
 		return OnOffSwitch;
@@ -116,7 +127,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	public void setswitchtyp(int a) {
 	   this.SwitchTyp = a;
 
-	   NetworkHelper.updateTileEntityField(this, "SwitchTyp");
 	}
 
 	public boolean isLinkedSecStation() {
@@ -138,7 +148,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	public void setaccesstyp(int accesstyp) {
 		this.accesstyp = accesstyp;
 
-		NetworkHelper.updateTileEntityField(this, "accesstyp");
 	}
 
 	public int getForcefieldtextur_id(int l) {
@@ -192,7 +201,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	public void setProjektor_Typ(int ProjektorTyp) {
 		this.ProjektorTyp = ProjektorTyp;
 
-		NetworkHelper.updateTileEntityField(this, "ProjektorTyp");
+		NetworkHandler.updateTileEntityField(this, "ProjektorTyp");
 	}
 
 	public int getForceField_strength() {
@@ -228,14 +237,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 	public void setforcefieldblock_meta(int ffmeta) {
 		this.forcefieldblock_meta =  (short) ffmeta;
-	}
-
-	public int getMaxlinkPower() {
-		return maxlinkPower;
-	}
-
-	public void setMaxlinkPower(int maxlinkPower) {
-		this.maxlinkPower = maxlinkPower;
 	}
 
 	public boolean isLinkCapacitor() {
@@ -336,8 +337,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 	public void setBurnout(boolean b) {
 		burnout = b;
-
-		NetworkHelper.updateTileEntityField(this, "burnout");
+		NetworkHandler.updateTileEntityField(this, "burnout");
 	}
 
 	public boolean isJammeractive() {
@@ -393,8 +393,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 	public void setOptioncamouflage(boolean b) {
 		camoflage = b;
-
-		NetworkHelper.updateTileEntityField(this, "camoflage");
 	}
 
 	// End Getter AND Setter
@@ -1017,18 +1015,18 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 					this.setLinkPower(Linkgrid.getWorldMap(worldObj)
 							.getCapacitor().get(this.getLinkCapacitor_ID())
 							.getForcePower());
-					this.setMaxlinkPower(Linkgrid.getWorldMap(worldObj)
+					this.setCapacity(Linkgrid.getWorldMap(worldObj)
 							.getCapacitor().get(this.getLinkCapacitor_ID())
-							.getMaxForcePower());
+							.getCapacity());
 				} catch (java.lang.NullPointerException ex) {
 					this.setLinkGenerator(false);
 					this.setLinkPower(0);
-					this.setMaxlinkPower(1000000);
+					this.setCapacity(0);
 				}
 			} else {
 				this.setLinkGenerator(false);
 				this.setLinkPower(0);
-				this.setMaxlinkPower(1000000);
+				this.setCapacity(0);
 			}
 
 			boolean powerdirekt = worldObj.isBlockGettingPowered(xCoord,
@@ -1081,7 +1079,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 			this.setTicker((short) (this.getTicker() + 1));
 		} else {
 			if (this.isCreate()) {
-				NetworkHelper.requestInitialData(this);
+				NetworkHandler.requestInitialData(this);
 				this.setCreate(false);
 			}
 		}
@@ -1871,69 +1869,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	}
 
 
-	@Override
-	public List<String> getNetworkedFields() {
-		
-		List<String> NetworkedFields = new LinkedList<String>();
-		NetworkedFields.clear();
-
-		NetworkedFields.add("ProjektorTyp");
-		NetworkedFields.add("active");
-		NetworkedFields.add("side");
-		NetworkedFields.add("burnout");
-		NetworkedFields.add("camoflage");
-		NetworkedFields.add("accesstyp");
-		NetworkedFields.add("SwitchTyp");
-
-		return NetworkedFields;
-	}
-
-
-	@Override
-	public void onNetworkUpdate(String field){
-		
-		if (field.equals("side")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("active")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("ProjektorTyp")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		
-	}
-
-	@Override
-	public void onNetworkEvent(EntityPlayer player,int event) {
-		
-		
-	   switch(event)
-	   {
-	   case 0:
-
-		   if(getaccesstyp()!=3)
-		   {
-		   if(getaccesstyp() == 2)
-		   {
-			   setaccesstyp(0);
-	       }else{
-	    	   setaccesstyp(getaccesstyp()+1);
-	       }
-		   }
-
-	   break;
-	   case 1:
-		if(this.getswitchtyp() == 0)
-		{
-			this.setswitchtyp(1);
-		}else{
-			this.setswitchtyp(0);
-		}
-
-	   break;
-	   }
-	}
 
 	public ItemStack[] getContents() {
 		return ProjektorItemStacks;
@@ -1950,6 +1885,66 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	@Override
 	public int getSizeInventorySide(ForgeDirection side) {
 		return 1;
+	}
+
+	@Override
+	public void onNetworkHandlerEvent(int event) {
+		
+		   switch(event)
+		   {
+		   case 0:
+
+			   if(getaccesstyp()!=3)
+			   {
+			   if(getaccesstyp() == 2)
+			   {
+				   setaccesstyp(0);
+		       }else{
+		    	   setaccesstyp(getaccesstyp()+1);
+		       }
+			   }
+
+		   break;
+		   case 1:
+			if(this.getswitchtyp() == 0)
+			{
+				this.setswitchtyp(1);
+			}else{
+				this.setswitchtyp(0);
+			}
+
+		   break;
+		   }
+		
+	}
+
+	@Override
+	public void onNetworkHandlerUpdate(String field) {
+		
+		if (field.equals("side")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		if (field.equals("active")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		if (field.equals("ProjektorTyp")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		
+	}
+
+	@Override
+	public List<String> geFieldsforUpdate() {
+		List<String> NetworkedFields = new LinkedList<String>();
+		NetworkedFields.clear();
+
+		NetworkedFields.add("ProjektorTyp");
+		NetworkedFields.add("active");
+		NetworkedFields.add("side");
+		NetworkedFields.add("burnout");
+		NetworkedFields.add("camoflage");
+	
+		return NetworkedFields;
 	}
 	
 

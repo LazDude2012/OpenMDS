@@ -20,10 +20,7 @@
 
 package chb.mods.mffs.common;
 
-import ic2.api.INetworkClientTileEntityEventListener;
-import ic2.api.INetworkDataProvider;
-import ic2.api.INetworkUpdateListener;
-import ic2.api.NetworkHelper;
+
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,10 +33,14 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
+
 import chb.mods.mffs.api.IForceEnergyCapacitor;
+import chb.mods.mffs.network.INetworkHandlerEventListener;
+import chb.mods.mffs.network.INetworkHandlerListener;
+import chb.mods.mffs.network.NetworkHandler;
 
 public class TileEntityCapacitor extends TileEntityMachines implements
-ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEntityEventListener, IForceEnergyCapacitor{
+ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEnergyCapacitor{
 	
 	private ItemStack inventory[];
 	private int forcePower;
@@ -75,14 +76,11 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	}
 	
 	
-	
-	
-
 	public int getRemote_Capacitor_ID() {
 		return Remote_Capacitor_ID;
 	}
 
-	public void setRemote_Capacitor_ID(int remote_Capacitor_ID) {
+	private void setRemote_Capacitor_ID(int remote_Capacitor_ID) {
 		Remote_Capacitor_ID = remote_Capacitor_ID;
 	}
 
@@ -93,7 +91,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 	public void setPowerlinkmode(int powerlinkmode) {
 		Powerlinkmode = powerlinkmode;
-		NetworkHelper.updateTileEntityField(this, "Powerlinkmode");
 	}
 
 	public boolean getOnOffSwitch() {
@@ -110,7 +107,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 	public void setswitchtyp(int a) {
 	   this.SwitchTyp = a;
-	   NetworkHelper.updateTileEntityField(this, "SwitchTyp");
 	}
 
 	@Override
@@ -118,10 +114,10 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		return capacity;
 	}
 
-	@Override
-	public void setCapacity(int capacity){
-		this.capacity = capacity;
-		NetworkHelper.updateTileEntityField(this, "capacity");
+	
+	public void setCapacity(int Capacity){
+		this.capacity = Capacity;
+		NetworkHandler.updateTileEntityField(this, "capacity");
 	}
 
 	public Container getContainer(InventoryPlayer inventoryplayer) {
@@ -151,7 +147,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 	public void setLinketprojektor(Short linketprojektor) {
 		this.linketprojektor = linketprojektor;
-		NetworkHelper.updateTileEntityField(this, "linketprojektor");
+		NetworkHandler.updateTileEntityField(this, "linketprojektor");
 	}
 
 	@Override
@@ -159,12 +155,8 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		return forcePower;
 	}
 	
-	@Override
-	public void setForcePower(int forcePower) {
-		this.forcePower = forcePower;
-	}
 
-	public void setForcepower(int f) {
+	public void setForcePower(int f) {
 		forcePower = f;
 	}
 
@@ -174,7 +166,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 	public void setTransmitrange(short transmitrange) {
 		this.transmitrange = transmitrange;
-		NetworkHelper.updateTileEntityField(this, "transmitrange");
+		NetworkHandler.updateTileEntityField(this, "transmitrange");
 	}
 
 	public int getTransmitRange() {
@@ -245,10 +237,10 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 						    if(freeeamount > maxtransfer)
 						    {
 						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+maxtransfer);
-				                this.setForcepower(this.getForcePower() - maxtransfer);		    
+				                this.setForcePower(this.getForcePower() - maxtransfer);		    
 						    }else{
 						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+freeeamount);
-				                this.setForcepower(this.getForcePower() - freeeamount);	
+				                this.setForcePower(this.getForcePower() - freeeamount);	
 						    }
 			                
 					  }else{
@@ -256,10 +248,10 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 						    if(freeeamount > this.getForcePower())
 						    {
 						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+this.getForcePower());
-				                this.setForcepower(this.getForcePower() - this.getForcePower());		    
+				                this.setForcePower(this.getForcePower() - this.getForcePower());		    
 						    }else{
 						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+freeeamount);
-				                this.setForcepower(this.getForcePower() - freeeamount);	
+				                this.setForcePower(this.getForcePower() - freeeamount);	
 						    }
 						  
 						  
@@ -350,7 +342,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 			this.setMaxforcepower(temp_maxforcepower);
 		}
 		if (this.getForcePower() > this.maxforcepower) {
-			this.setForcepower(maxforcepower);
+			this.setForcePower(maxforcepower);
 		}
 	}
 
@@ -420,10 +412,10 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 	public void Energylost(int fpcost) {
 		if (this.getForcePower() >= 0) {
-			this.setForcepower(this.getForcePower() - fpcost);
+			this.setForcePower(this.getForcePower() - fpcost);
 		}
 		if (this.getForcePower() < 0) {
-			this.setForcepower(0);
+			this.setForcePower(0);
 		}
 	}
 
@@ -464,11 +456,14 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 			if (this.getTicker() == 10) {
 				
-				setLinketprojektor((short) Linkgrid.getWorldMap(worldObj)
-						.condevisec(getCapacitor_ID(), xCoord, yCoord, zCoord,
-								getTransmitRange()));
+				if(this.getLinketProjektor() != (short) Linkgrid.getWorldMap(worldObj).condevisec(getCapacitor_ID(), xCoord, yCoord, zCoord,getTransmitRange()))
+				setLinketprojektor((short) Linkgrid.getWorldMap(worldObj).condevisec(getCapacitor_ID(), xCoord, yCoord, zCoord,getTransmitRange()));
 				
-				this.setCapacity(((getForcePower()/1000)*100)/(getMaxForcePower()/1000));
+				
+				if(this.getCapacity() != ((getForcePower()/1000)*100)/(getMaxForcePower()/1000))
+				   setCapacity(((getForcePower()/1000)*100)/(getMaxForcePower()/1000));
+				
+		
 				checkslots();
 				if(isActive())
 				{
@@ -481,7 +476,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 		} else {
 			if (create) {
-				NetworkHelper.requestInitialData(this);
+				NetworkHandler.requestInitialData(this);
 				create = false;
 			}
 		}
@@ -508,11 +503,11 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 			
 		    if(forceenergyspace > maxtrasferrate)
 		    {
-		    	RemoteCap.setForcepower(RemoteCap.getForcePower() + maxtrasferrate);
-                this.setForcepower(this.getForcePower() - maxtrasferrate);		    
+		    	RemoteCap.setForcePower(RemoteCap.getForcePower() + maxtrasferrate);
+                this.setForcePower(this.getForcePower() - maxtrasferrate);		    
 		    }else{
-		    	RemoteCap.setForcepower(RemoteCap.getForcePower() + forceenergyspace);
-                this.setForcepower(this.getForcePower() - forceenergyspace);	
+		    	RemoteCap.setForcePower(RemoteCap.getForcePower() + forceenergyspace);
+                this.setForcePower(this.getForcePower() - forceenergyspace);	
 		    }
 			
 		}
@@ -524,11 +519,11 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 			
 		    if(balancevaue > maxtrasferrate)
 		    {
-		    	RemoteCap.setForcepower(RemoteCap.getForcePower() + maxtrasferrate);
-                this.setForcepower(this.getForcePower() - maxtrasferrate);		    
+		    	RemoteCap.setForcePower(RemoteCap.getForcePower() + maxtrasferrate);
+                this.setForcePower(this.getForcePower() - maxtrasferrate);		    
 		    }else{
-		    	RemoteCap.setForcepower(RemoteCap.getForcePower() + balancevaue);
-                this.setForcepower(this.getForcePower() - balancevaue);	
+		    	RemoteCap.setForcePower(RemoteCap.getForcePower() + balancevaue);
+                this.setForcePower(this.getForcePower() - balancevaue);	
 		    }
 			
 		}
@@ -541,22 +536,22 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		  {
 			    if(forceenergyspace > maxtrasferrate)
 			    {
-			    	RemoteCap.setForcepower(RemoteCap.getForcePower() + maxtrasferrate);
-	                this.setForcepower(this.getForcePower() - maxtrasferrate);		    
+			    	RemoteCap.setForcePower(RemoteCap.getForcePower() + maxtrasferrate);
+	                this.setForcePower(this.getForcePower() - maxtrasferrate);		    
 			    }else{
-			    	RemoteCap.setForcepower(RemoteCap.getForcePower() + forceenergyspace);
-	                this.setForcepower(this.getForcePower() - forceenergyspace);	
+			    	RemoteCap.setForcePower(RemoteCap.getForcePower() + forceenergyspace);
+	                this.setForcePower(this.getForcePower() - forceenergyspace);	
 			    }
                 
 		  }else{
 			  
 			    if(forceenergyspace > this.getForcePower())
 			    {
-			    	RemoteCap.setForcepower(RemoteCap.getForcePower() + this.getForcePower());
-	                this.setForcepower(this.getForcePower() - this.getForcePower());		    
+			    	RemoteCap.setForcePower(RemoteCap.getForcePower() + this.getForcePower());
+	                this.setForcePower(this.getForcePower() - this.getForcePower());		    
 			    }else{
-			    	RemoteCap.setForcepower(RemoteCap.getForcePower() + forceenergyspace);
-	                this.setForcepower(this.getForcePower() - forceenergyspace);	
+			    	RemoteCap.setForcePower(RemoteCap.getForcePower() + forceenergyspace);
+	                this.setForcePower(this.getForcePower() - forceenergyspace);	
 			    }
 			  
 			  
@@ -618,43 +613,6 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	public void openChest() {
 	}
 	
-	@Override
-	public List<String> getNetworkedFields() {
-		List<String> NetworkedFields = new LinkedList<String>();
-		NetworkedFields.clear();
-
-		NetworkedFields.add("active");
-		NetworkedFields.add("side");
-		NetworkedFields.add("SwitchTyp");
-		NetworkedFields.add("linketprojektor");
-		NetworkedFields.add("transmitrange");
-		NetworkedFields.add("capacity");
-		NetworkedFields.add("SwitchTyp");
-		NetworkedFields.add("Powerlinkmode");
-
-		return NetworkedFields;
-	}
-
-	
-	@Override
-	public void onNetworkUpdate(String field) {
-		if (field.equals("side")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("active")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("linketprojektor")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("transmitrange")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("capacity")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		
-	}
 	
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
@@ -685,7 +643,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	}
 
 	@Override
-	public void onNetworkEvent(EntityPlayer player,int event) {
+	public void onNetworkHandlerEvent(int event) {
 		switch(event)
 		{
 		case 0:
@@ -710,7 +668,40 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	}
 
 
+	@Override
+	public void onNetworkHandlerUpdate(String field) {
+		if (field.equals("side")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		if (field.equals("active")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		if (field.equals("linketprojektor")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		if (field.equals("transmitrange")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		if (field.equals("capacity")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		
+	}
+
+
+	@Override
+	public List<String> geFieldsforUpdate() {
+		List<String> NetworkedFields = new LinkedList<String>();
+		NetworkedFields.clear();
+
+		NetworkedFields.add("active");
+		NetworkedFields.add("side");
+		NetworkedFields.add("SwitchTyp");
+		NetworkedFields.add("linketprojektor");
+		NetworkedFields.add("transmitrange");
+		NetworkedFields.add("capacity");
+		return NetworkedFields;
+	}
+
 	
-
-
 }

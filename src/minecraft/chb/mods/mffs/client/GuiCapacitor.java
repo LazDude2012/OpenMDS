@@ -20,7 +20,7 @@
 
 package chb.mods.mffs.client;
 
-import ic2.api.NetworkHelper;
+
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
@@ -29,6 +29,7 @@ import org.lwjgl.opengl.GL11;
 
 import chb.mods.mffs.common.ContainerCapacitor;
 import chb.mods.mffs.common.TileEntityCapacitor;
+import chb.mods.mffs.network.NetworkHandler;
 
 public class GuiCapacitor extends GuiContainer {
 	private TileEntityCapacitor Core;
@@ -47,7 +48,7 @@ public class GuiCapacitor extends GuiContainer {
 		int w = (width - xSize) / 2;
 		int k = (height - ySize) / 2;
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
-		int i1 = (79 * (Core.getForcePower()/1000)) / (Core.getMaxForcePower()/1000);
+		int i1 = (79 * Core.getCapacity() / 100);
 		drawTexturedModalRect(w + 8, k + 71, 176, 0, i1+1, 79);
 	}
 	@Override
@@ -71,7 +72,7 @@ public class GuiCapacitor extends GuiContainer {
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHelper.initiateClientTileEntityEvent(Core, guibutton.id);
+		NetworkHandler.fireTileEntityEvent(Core, guibutton.id);
 	}
 
 	public void initGui() {

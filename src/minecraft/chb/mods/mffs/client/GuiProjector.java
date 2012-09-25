@@ -29,6 +29,7 @@ import org.lwjgl.opengl.GL11;
 
 import chb.mods.mffs.common.ContainerProjector;
 import chb.mods.mffs.common.TileEntityProjector;
+import chb.mods.mffs.network.NetworkHandler;
 
 public class GuiProjector extends GuiContainer {
 	private TileEntityProjector projector;
@@ -49,7 +50,7 @@ public class GuiProjector extends GuiContainer {
 		int k = (height - ySize) / 2;
 
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
-		int i1 = (79 * (projector.getLinkPower()/1000)) / (projector.getMaxlinkPower()/1000);
+		int i1 = (79 * projector.getCapacity() / 100);
 		drawTexturedModalRect(w + 8, k + 71, 176, 0, i1 + 1, 79);
 
 		if (projector.getProjektor_Typ() != 0 ) {
@@ -78,7 +79,7 @@ public class GuiProjector extends GuiContainer {
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHelper.initiateClientTileEntityEvent(projector, guibutton.id);
+		NetworkHandler.fireTileEntityEvent(projector, guibutton.id);
 	}
 
 	public void initGui() {

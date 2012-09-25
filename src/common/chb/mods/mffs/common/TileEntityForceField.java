@@ -20,10 +20,11 @@
 
 package chb.mods.mffs.common;
 
-import ic2.api.INetworkDataProvider;
-import ic2.api.INetworkUpdateListener;
-import ic2.api.NetworkHelper;
+import chb.mods.mffs.network.INetworkHandlerEventListener;
+import chb.mods.mffs.network.INetworkHandlerListener;
+import chb.mods.mffs.network.NetworkHandler;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 
 
-public class TileEntityForceField extends TileEntity implements INetworkDataProvider,INetworkUpdateListener {
+public class TileEntityForceField extends TileEntity implements INetworkHandlerListener{
 private int[] texturid = {180,180,180,180,180,180};
 private boolean init = true;
 
@@ -48,11 +49,32 @@ private boolean init = true;
 	{
 		return texturid[l];
 	}
+	
+	public void  setTexturid(String texturid )
+	{
+		texturid = texturid.replace("[", "");
+		texturid = texturid.replace("]", "");
+		String[] test = texturid.split(",");	
+
+		int[] texturarray = new int[6];
+		
+		texturarray[0]=Integer.parseInt(test[0]);
+		texturarray[1]=Integer.parseInt(test[1]);
+		texturarray[2]=Integer.parseInt(test[2]);
+		texturarray[3]=Integer.parseInt(test[3]);
+		texturarray[4]=Integer.parseInt(test[4]);
+		texturarray[5]=Integer.parseInt(test[5]);
+		
+		setTexturid(texturarray);
+	}
+	
+	
+	
 
 	public void  setTexturid(int[] texturid )
 	{
 		this.texturid = texturid;
-		NetworkHelper.updateTileEntityField(this, "texturid");
+		NetworkHandler.updateTileEntityField(this, "texturid");
 	}
 
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -77,7 +99,7 @@ private boolean init = true;
 		}else{
 			if(init)
 			{
-				NetworkHelper.requestInitialData(this);
+				NetworkHandler.requestInitialData(this);
 			   init = false;
 			}
 		}
@@ -104,28 +126,28 @@ private boolean init = true;
 		worldObj.setBlockWithNotify(this.xCoord, this.yCoord,this.zCoord, 0);}
 	}
 
-	@Override
-	public List<String> getNetworkedFields() {
-		List<String> NetworkedFields = new LinkedList<String>();
-		NetworkedFields.clear();
 
-		NetworkedFields.add("texturid");
-
-		return NetworkedFields;
-	}
-
-	@Override
-	public void onNetworkUpdate(String field) {
-		if (field.equals("texturid")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-	}
 
 	public ItemStack[] getContents() {
 		return null;
 	}
 
 	public void setMaxStackSize(int arg0) {
+	}
+
+	@Override
+	public void onNetworkHandlerUpdate(String field) {
+		if (field.equals("texturid")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+	}
+
+	@Override
+	public List<String> geFieldsforUpdate() {
+		List<String> NetworkedFields = new LinkedList<String>();
+		NetworkedFields.clear();
+		NetworkedFields.add("texturid");
+		return NetworkedFields;
 	}
 
 

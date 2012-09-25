@@ -20,9 +20,10 @@
 
 package chb.mods.mffs.common;
 
-import ic2.api.INetworkDataProvider;
-import ic2.api.INetworkUpdateListener;
-import ic2.api.NetworkHelper;
+import chb.mods.mffs.network.INetworkHandlerEventListener;
+import chb.mods.mffs.network.INetworkHandlerListener;
+import chb.mods.mffs.network.NetworkHandler;
+
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +39,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntityAreaDefenseStation extends TileEntityMachines implements
-ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
+ISidedInventory,INetworkHandlerListener {
 	private ItemStack ProjektorItemStacks[];
 	private int Defstation_ID;
 	private int linkCapacitors_ID;
@@ -139,7 +140,7 @@ ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 
 	public void setlinkSecStation(boolean b) {
 		this.linkSecStation = b;
-		NetworkHelper.updateTileEntityField(this, "linkSecStation");
+		NetworkHandler.updateTileEntityField(this, "linkSecStation");
 	}
 
 	public int getLinkPower() {
@@ -270,21 +271,25 @@ ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 				if(Linkgrid.getWorldMap(worldObj)
 				.getSecStation().get(this.getSecStation_ID())!=null)
 				{
-					setlinkSecStation(true);
+					if(!this.islinkSecStation())
+					    setlinkSecStation(true);
 				}
 				else
 				{
-					setlinkSecStation(false);
+					if(this.islinkSecStation())
+					    setlinkSecStation(false);
 					dropplugins(1,this);
 				}
 			} else {
-				setlinkSecStation(false);
+				if(this.islinkSecStation())
+				    setlinkSecStation(false);
 				if (getStackInSlot(1).getItem() != ModularForceFieldSystem.MFFSItemSecLinkCard) {
 					dropplugins(1,this);
 				}
 			}
 		} else {
-			setlinkSecStation(false);
+			if(this.islinkSecStation())
+			    setlinkSecStation(false);
 			setSecStation_ID(0);
 		}
 
@@ -400,7 +405,7 @@ ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 			this.setTicker((short) (this.getTicker() + 1));
 		} else {
 			if (create) {
-				NetworkHelper.requestInitialData(this);
+				NetworkHandler.requestInitialData(this);
 				create = false;
 			}
 		}
@@ -492,25 +497,6 @@ ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 		return new ContainerAreaDefenseStation(inventoryplayer.player, this);
 	}
 
-	@Override
-	public List<String> getNetworkedFields() {
-		List<String> NetworkedFields = new LinkedList<String>();
-		NetworkedFields.clear();
-
-		NetworkedFields.add("linkSecStation");
-		NetworkedFields.add("active");
-		NetworkedFields.add("side");
-
-
-		return NetworkedFields;
-	}
-
-	@Override
-	public void onNetworkUpdate(String field) {
-		if (field.equals("active")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-	}
 
 	public ItemStack[] getContents() {
 		return ProjektorItemStacks;
@@ -527,6 +513,29 @@ ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 	@Override
 	public int getSizeInventorySide(ForgeDirection side) {
 		return 0;
+	}
+
+	
+	
+	@Override
+	public void onNetworkHandlerUpdate(String field) {
+		if (field.equals("active")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		
+	}
+
+	@Override
+	public List<String> geFieldsforUpdate() {
+		List<String> NetworkedFields = new LinkedList<String>();
+		NetworkedFields.clear();
+
+		NetworkedFields.add("linkSecStation");
+		NetworkedFields.add("active");
+		NetworkedFields.add("side");
+
+
+		return NetworkedFields;
 	}
 
 

@@ -3,12 +3,13 @@ package chb.mods.mffs.common;
 import ic2.api.Direction;
 import ic2.api.EnergyNet;
 import ic2.api.IEnergySink;
-import ic2.api.INetworkDataProvider;
-import ic2.api.INetworkUpdateListener;
-import ic2.api.NetworkHelper;
+
 
 import java.util.LinkedList;
 import java.util.List;
+
+import chb.mods.mffs.network.INetworkHandlerListener;
+import chb.mods.mffs.network.NetworkHandler;
 
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
@@ -21,7 +22,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntityExtractor extends TileEntityMachines implements ISidedInventory
-,IEnergySink,INetworkDataProvider,INetworkUpdateListener{
+,IEnergySink,INetworkHandlerListener{
 	
 	public static final int FORCECIUMWORKCYLCE  = 125;
 	public static final int FORCECIUMBLOCKWORKCYLCE = 1200;
@@ -75,7 +76,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 	public void setWorkdone(int workdone) {
 		this.workdone = workdone;
-		NetworkHelper.updateTileEntityField(this,"workdone");
+		NetworkHandler.updateTileEntityField(this,"workdone");
 	}
 
 	
@@ -124,7 +125,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 	public void setForceEnergybuffer(int forceEnergybuffer) {
 		ForceEnergybuffer = forceEnergybuffer;
-		NetworkHelper.updateTileEntityField(this,"ForceEnergybuffer");
+		NetworkHandler.updateTileEntityField(this,"ForceEnergybuffer");
 	}
 
 
@@ -132,7 +133,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	public void setWorkCylce(int i)
 	{
 		this.WorkCylce = i;
-		NetworkHelper.updateTileEntityField(this,"WorkCylce");
+		NetworkHandler.updateTileEntityField(this,"WorkCylce");
 	}
 	
 	public int getWorkCylce(){
@@ -317,7 +318,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 			{
 				if((Cap.getForcePower() + 8000) < Cap.getMaxForcePower())
 				{
-					Cap.setForcepower(Cap.getForcePower() + 8000);
+					Cap.setForcePower(Cap.getForcePower() + 8000);
 					setForceEnergybuffer(this.getForceEnergybuffer()-8000);
 				}
 			}
@@ -346,7 +347,9 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 				converMJtoWorkEnergy();
 				converUEtoWorkEnergy();	
 				
+				if(this.getWorkdone() != getWorkEnergy() * 100 / getMaxWorkEnergy())
 				setWorkdone( getWorkEnergy() * 100 / getMaxWorkEnergy());
+				
 				checkslots(false);
 				if(this.hasfreeForceEnergyStorage() && this.hasStufftoConvert())
 				{
@@ -385,7 +388,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		}else{
 			
 			if (create) {
-				NetworkHelper.requestInitialData(this);
+				NetworkHandler.requestInitialData(this);
 				create = false;
 			}
 		}
@@ -443,40 +446,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		return true;
 	}
 	
-	@Override
-	public List<String> getNetworkedFields() {
-		List<String> NetworkedFields = new LinkedList<String>();
-		NetworkedFields.clear();
-
-		NetworkedFields.add("active");
-		NetworkedFields.add("side");
-		NetworkedFields.add("ForceEnergybuffer");
-		NetworkedFields.add("WorkCylce");
-		NetworkedFields.add("WorkEnergy");
-		NetworkedFields.add("workdone");
-
-		return NetworkedFields;
-	}
-
-	@Override
-	public void onNetworkUpdate(String field) {
-		if (field.equals("side")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("active")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("WorkCylce")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("ForceEnergybuffer")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("workdone")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		
-	}
 	
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
@@ -589,6 +558,48 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	public void closeChest(){ 
 	}
 
-	
+
+
+
+
+	@Override
+	public void onNetworkHandlerUpdate(String field) {
+		if (field.equals("side")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		if (field.equals("active")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		if (field.equals("WorkCylce")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		if (field.equals("ForceEnergybuffer")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+		if (field.equals("workdone")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+	}
+
+
+
+
+
+	@Override
+	public List<String> geFieldsforUpdate() {
+		List<String> NetworkedFields = new LinkedList<String>();
+		NetworkedFields.clear();
+
+		NetworkedFields.add("active");
+		NetworkedFields.add("side");
+		NetworkedFields.add("ForceEnergybuffer");
+		NetworkedFields.add("WorkCylce");
+		NetworkedFields.add("WorkEnergy");
+		NetworkedFields.add("workdone");
+
+		return NetworkedFields;
+	}
+
+
 
 }

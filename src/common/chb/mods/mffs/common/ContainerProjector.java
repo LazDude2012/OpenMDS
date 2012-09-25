@@ -30,6 +30,9 @@ public class ContainerProjector extends Container {
 	private TileEntityProjector projectorentity;
 	private int linkPower;
 	private int maxlinkPower;
+	private int SwitchTyp;
+	private int accesstyp;
+	private int capacity;
 	private EntityPlayer player;
 
 	public ContainerProjector(EntityPlayer player,
@@ -38,6 +41,9 @@ public class ContainerProjector extends Container {
 		projectorentity = tileentity;
 		linkPower = -1;
 		maxlinkPower = -1;
+		SwitchTyp = -1;
+		accesstyp = -1;
+		capacity = -1;
 
 		addSlotToContainer(new Slot(projectorentity, 0, 11, 41)); // Linkcard
 		addSlotToContainer(new Slot(projectorentity, 1, 11, 18)); // Typ Slot
@@ -114,17 +120,28 @@ public class ContainerProjector extends Container {
 				icrafting.updateCraftingInventoryInfo(this, 1,
 						projectorentity.getLinkPower() >>> 16);
 			}
-
-			if (maxlinkPower != projectorentity.getMaxlinkPower()) {
+			if (capacity != projectorentity.getCapacity()) {
 				icrafting.updateCraftingInventoryInfo(this, 2,
-						projectorentity.getMaxlinkPower() & 0xffff);
-				icrafting.updateCraftingInventoryInfo(this, 3,
-						projectorentity.getMaxlinkPower() >>> 16);
+						projectorentity.getCapacity());
 			}
+			if (SwitchTyp != projectorentity.getswitchtyp()) {
+				icrafting.updateCraftingInventoryInfo(this, 3,
+						projectorentity.getswitchtyp());
+			}
+			if (accesstyp != projectorentity.getaccesstyp()) {
+				icrafting.updateCraftingInventoryInfo(this, 4,
+						projectorentity.getaccesstyp());
+			}
+
+			
+			
+			
 		}
 
 		linkPower = projectorentity.getLinkPower();
-		maxlinkPower = projectorentity.getMaxlinkPower();
+		SwitchTyp = projectorentity.getswitchtyp();
+		accesstyp = projectorentity.getaccesstyp();
+		capacity =  projectorentity.getCapacity();
 	}
 
 	public void updateProgressBar(int i, int j) {
@@ -139,17 +156,17 @@ public class ContainerProjector extends Container {
 					.setLinkPower((projectorentity.getLinkPower() & 0xffff)
 							| (j << 16));
 			break;
-
 		case 2:
-			projectorentity
-					.setMaxlinkPower((projectorentity.getMaxlinkPower() & 0xffff0000)
-							| j);
+			projectorentity.setCapacity(j);
 			break;
+			
 		case 3:
-			projectorentity
-					.setMaxlinkPower((projectorentity.getMaxlinkPower() & 0xffff)
-							| (j << 16));
+			projectorentity.setswitchtyp(j);
 			break;
+		case 4:
+			projectorentity.setaccesstyp(j);
+			break;
+
 		}
 	}
 }

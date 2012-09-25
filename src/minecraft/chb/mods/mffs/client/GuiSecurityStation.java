@@ -49,10 +49,8 @@ public class GuiSecurityStation extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer() {
 		fontRenderer.drawString("MFFS Security Station. V2", 5, 5, 0x404040);
-		fontRenderer.drawString("Master ID-Card:", 15,45, 0x404040);
-		fontRenderer.drawString(
-				(new StringBuilder()).append(" ").append(tileEntity.getMainUser())
-						.toString(), 15, 60, 0x404040);
+		fontRenderer.drawString("Master ID-Card", 15,45, 0x404040);
+
 
 		fontRenderer.drawString("Full Access", 115, 45, 0x404040);
 	}
