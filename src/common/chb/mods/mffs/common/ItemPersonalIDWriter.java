@@ -22,11 +22,9 @@ package chb.mods.mffs.common;
 
 
 import java.util.List;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityLiving;
+
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Slot;
 import net.minecraft.src.World;
 

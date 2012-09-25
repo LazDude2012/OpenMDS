@@ -27,7 +27,6 @@ import ic2.api.NetworkHelper;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.minecraft.src.Block;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;

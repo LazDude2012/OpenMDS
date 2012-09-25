@@ -20,12 +20,13 @@
 
 package chb.mods.mffs.client;
 
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.GuiContainer;
+
 import org.lwjgl.opengl.GL11;
 
 import chb.mods.mffs.common.ContainerAreaDefenseStation;
 import chb.mods.mffs.common.TileEntityAreaDefenseStation;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.GuiContainer;
 
 public class GuiAreaDefenseStation extends GuiContainer {
 	private TileEntityAreaDefenseStation DefenceStation;

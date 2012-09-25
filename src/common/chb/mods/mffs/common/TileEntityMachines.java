@@ -20,7 +20,6 @@
 
 package chb.mods.mffs.common;
 
-import chb.mods.mffs.api.IMFFS_Wrench;
 import ic2.api.IWrenchable;
 import ic2.api.NetworkHelper;
 import net.minecraft.src.Container;
@@ -30,8 +29,8 @@ import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
+import chb.mods.mffs.api.IMFFS_Wrench;
 
 public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wrench,IWrenchable{
 	

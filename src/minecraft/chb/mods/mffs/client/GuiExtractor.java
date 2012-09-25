@@ -20,16 +20,13 @@
 
 package chb.mods.mffs.client;
 
-import javax.swing.text.html.parser.Entity;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.GuiContainer;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.GuiContainer;
 import chb.mods.mffs.common.ContainerForceEnergyExtractor;
-import chb.mods.mffs.common.ContainerSecurityStation;
 import chb.mods.mffs.common.TileEntityExtractor;
-import chb.mods.mffs.common.TileEntitySecurityStation;
 
 public class GuiExtractor extends GuiContainer {
 	private TileEntityExtractor tileEntity;

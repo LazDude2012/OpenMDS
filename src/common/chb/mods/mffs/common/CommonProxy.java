@@ -23,8 +23,12 @@ package chb.mods.mffs.common;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import chb.mods.mffs.client.GuiAreaDefenseStation;
+import chb.mods.mffs.client.GuiCapacitor;
+import chb.mods.mffs.client.GuiExtractor;
+import chb.mods.mffs.client.GuiProjector;
+import chb.mods.mffs.client.GuiSecurityStation;
 import cpw.mods.fml.common.network.IGuiHandler;
-import chb.mods.mffs.client.*;
 
 public class CommonProxy implements IGuiHandler {
 	public static final int GUI_CAPACITOR = 1;
