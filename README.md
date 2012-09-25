@@ -1,1 +1,1 @@
-Modular Force Field System is a Minecraft mod developed by ThunderDark.
+Modular Force Field System is a Minecraft mod developed by Thunderdark.
