@@ -20,10 +20,11 @@
 
 package chb.mods.mffs.client;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiContainer;
+
+import org.lwjgl.opengl.GL11;
+
 import chb.mods.mffs.common.ContainerSecurityStation;
 import chb.mods.mffs.common.TileEntitySecurityStation;
 

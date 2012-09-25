@@ -20,35 +20,29 @@
 
 package chb.mods.mffs.common;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import chb.mods.mffs.api.*;
-
-import ic2.api.Direction;
-import ic2.api.EnergyNet;
-import ic2.api.IEnergySink;
 import ic2.api.INetworkClientTileEntityEventListener;
 import ic2.api.INetworkDataProvider;
-import ic2.api.INetworkTileEntityEventListener;
 import ic2.api.INetworkUpdateListener;
 import ic2.api.NetworkHelper;
 
-import net.minecraft.src.Block;
+import java.util.LinkedList;
+import java.util.List;
+
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
-import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
+import chb.mods.mffs.api.IForceEnergyCapacitor;
 
 public class TileEntityCapacitor extends TileEntityMachines implements
-ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEntityEventListener{
+ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEntityEventListener, IForceEnergyCapacitor{
+	
 	private ItemStack inventory[];
-	private int forcepower;
+	private int forcePower;
 	private int maxforcepower;
 	private int transmitrange;
 	private int Capacitor_ID;
@@ -66,7 +60,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		inventory = new ItemStack[5];
 		transmitrange = 8;
 		SecStation_ID = 0;
-		forcepower = 0;
+		forcePower = 0;
 		maxforcepower = 10000000;
 		Capacitor_ID = 0;
 		Remote_Capacitor_ID = 0;
@@ -119,10 +113,12 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	   NetworkHelper.updateTileEntityField(this, "SwitchTyp");
 	}
 
-	public int getcapacity(){
+	@Override
+	public int getCapacity(){
 		return capacity;
 	}
 
+	@Override
 	public void setCapacity(int capacity){
 		this.capacity = capacity;
 		NetworkHelper.updateTileEntityField(this, "capacity");
@@ -144,11 +140,12 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		this.maxforcepower = maxforcepower;
 	}
 
-	public int getMaxforcepower() {
+	@Override
+	public int getMaxForcePower() {
 		return maxforcepower;
 	}
-
-	public Short getLinketprojektor() {
+	
+	public Short getLinketProjektor() {
 		return linketprojektor;
 	}
 
@@ -157,12 +154,18 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		NetworkHelper.updateTileEntityField(this, "linketprojektor");
 	}
 
-	public int getForcepower() {
-		return forcepower;
+	@Override
+	public int getForcePower() {
+		return forcePower;
+	}
+	
+	@Override
+	public void setForcePower(int forcePower) {
+		this.forcePower = forcePower;
 	}
 
 	public void setForcepower(int f) {
-		forcepower = f;
+		forcePower = f;
 	}
 
 	public int getSecStation_ID() {
@@ -174,7 +177,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		NetworkHelper.updateTileEntityField(this, "transmitrange");
 	}
 
-	public int getTransmitrange() {
+	public int getTransmitRange() {
 		return transmitrange;
 	}
 
@@ -234,29 +237,29 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 					int maxtransfer = ForceEnergyItem.getforceEnergyTransferMax();
 					int freeeamount = ForceEnergyItem.getMaxForceEnergy() - ForceEnergyItem.getForceEnergy(getStackInSlot(2));
 					
-					if(getcapacity() > 0)
+					if(getCapacity() > 0)
 					{
 
-					  if(this.getForcepower() > maxtransfer)
+					  if(this.getForcePower() > maxtransfer)
 					  {
 						    if(freeeamount > maxtransfer)
 						    {
 						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+maxtransfer);
-				                this.setForcepower(this.getForcepower() - maxtransfer);		    
+				                this.setForcepower(this.getForcePower() - maxtransfer);		    
 						    }else{
 						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+freeeamount);
-				                this.setForcepower(this.getForcepower() - freeeamount);	
+				                this.setForcepower(this.getForcePower() - freeeamount);	
 						    }
 			                
 					  }else{
 						  
-						    if(freeeamount > this.getForcepower())
+						    if(freeeamount > this.getForcePower())
 						    {
-						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+this.getForcepower());
-				                this.setForcepower(this.getForcepower() - this.getForcepower());		    
+						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+this.getForcePower());
+				                this.setForcepower(this.getForcePower() - this.getForcePower());		    
 						    }else{
 						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+freeeamount);
-				                this.setForcepower(this.getForcepower() - freeeamount);	
+				                this.setForcepower(this.getForcePower() - freeeamount);	
 						    }
 						  
 						  
@@ -340,13 +343,13 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 		temp_transmitrange *= (stacksize + 1);
 
-		if (this.getTransmitrange() != temp_transmitrange) {
+		if (this.getTransmitRange() != temp_transmitrange) {
 			this.setTransmitrange(temp_transmitrange);
 		}
-		if (this.getMaxforcepower() != temp_maxforcepower) {
+		if (this.getMaxForcePower() != temp_maxforcepower) {
 			this.setMaxforcepower(temp_maxforcepower);
 		}
-		if (this.getForcepower() > this.maxforcepower) {
+		if (this.getForcePower() > this.maxforcepower) {
 			this.setForcepower(maxforcepower);
 		}
 	}
@@ -371,7 +374,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 		super.readFromNBT(nbttagcompound);
 		SwitchTyp = nbttagcompound.getInteger("SwitchTyp");
 		OnOffSwitch = nbttagcompound.getBoolean("OnOffSwitch");
-		forcepower = nbttagcompound.getInteger("forcepower");
+		forcePower = nbttagcompound.getInteger("forcepower");
 		maxforcepower = nbttagcompound.getInteger("maxforcepower");
 		transmitrange = nbttagcompound.getInteger("transmitrange");
 		Capacitor_ID = nbttagcompound.getInteger("Capacitor_ID");
@@ -395,7 +398,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 
 		nbttagcompound.setInteger("SwitchTyp", SwitchTyp);
 		nbttagcompound.setBoolean("OnOffSwitch", OnOffSwitch);
-		nbttagcompound.setInteger("forcepower", forcepower);
+		nbttagcompound.setInteger("forcepower", forcePower);
 		nbttagcompound.setInteger("maxforcepower", maxforcepower);
 		nbttagcompound.setInteger("transmitrange", transmitrange);
 		nbttagcompound.setInteger("Capacitor_ID", Capacitor_ID);
@@ -416,10 +419,10 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	}
 
 	public void Energylost(int fpcost) {
-		if (this.getForcepower() >= 0) {
-			this.setForcepower(this.getForcepower() - fpcost);
+		if (this.getForcePower() >= 0) {
+			this.setForcepower(this.getForcePower() - fpcost);
 		}
-		if (this.getForcepower() < 0) {
+		if (this.getForcePower() < 0) {
 			this.setForcepower(0);
 		}
 	}
@@ -463,9 +466,9 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 				
 				setLinketprojektor((short) Linkgrid.getWorldMap(worldObj)
 						.condevisec(getCapacitor_ID(), xCoord, yCoord, zCoord,
-								getTransmitrange()));
+								getTransmitRange()));
 				
-				this.setCapacity(((getForcepower()/1000)*100)/(getMaxforcepower()/1000));
+				this.setCapacity(((getForcePower()/1000)*100)/(getMaxForcePower()/1000));
 				checkslots();
 				if(isActive())
 				{
@@ -494,66 +497,66 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 	    if(RemoteCap != null)
 	    {	    	
 	    	
-	      int maxtrasferrate = this.getMaxforcepower() / 120;
-	      int forceenergyspace = RemoteCap.getMaxforcepower() - RemoteCap.getForcepower();
+	      int maxtrasferrate = this.getMaxForcePower() / 120;
+	      int forceenergyspace = RemoteCap.getMaxForcePower() - RemoteCap.getForcePower();
 	      	    	
 		switch(this.getPowerlinkmode())
 		{
 		case 0:
-		if(getcapacity() >= 90 && RemoteCap.getcapacity() != 100)
+		if(getCapacity() >= 90 && RemoteCap.getCapacity() != 100)
 		{
 			
 		    if(forceenergyspace > maxtrasferrate)
 		    {
-		    	RemoteCap.setForcepower(RemoteCap.getForcepower() + maxtrasferrate);
-                this.setForcepower(this.getForcepower() - maxtrasferrate);		    
+		    	RemoteCap.setForcepower(RemoteCap.getForcePower() + maxtrasferrate);
+                this.setForcepower(this.getForcePower() - maxtrasferrate);		    
 		    }else{
-		    	RemoteCap.setForcepower(RemoteCap.getForcepower() + forceenergyspace);
-                this.setForcepower(this.getForcepower() - forceenergyspace);	
+		    	RemoteCap.setForcepower(RemoteCap.getForcePower() + forceenergyspace);
+                this.setForcepower(this.getForcePower() - forceenergyspace);	
 		    }
 			
 		}
 		break;
 		case 1:
-		if(RemoteCap.getcapacity() < this.getcapacity())	
+		if(RemoteCap.getCapacity() < this.getCapacity())	
 		{
-			int balancevaue = this.getForcepower()- RemoteCap.getForcepower();
+			int balancevaue = this.getForcePower()- RemoteCap.getForcePower();
 			
 		    if(balancevaue > maxtrasferrate)
 		    {
-		    	RemoteCap.setForcepower(RemoteCap.getForcepower() + maxtrasferrate);
-                this.setForcepower(this.getForcepower() - maxtrasferrate);		    
+		    	RemoteCap.setForcepower(RemoteCap.getForcePower() + maxtrasferrate);
+                this.setForcepower(this.getForcePower() - maxtrasferrate);		    
 		    }else{
-		    	RemoteCap.setForcepower(RemoteCap.getForcepower() + balancevaue);
-                this.setForcepower(this.getForcepower() - balancevaue);	
+		    	RemoteCap.setForcepower(RemoteCap.getForcePower() + balancevaue);
+                this.setForcepower(this.getForcePower() - balancevaue);	
 		    }
 			
 		}
 		break;		
 		case 2:
-		if(getcapacity() > 0 && RemoteCap.getcapacity() != 100)
+		if(getCapacity() > 0 && RemoteCap.getCapacity() != 100)
 		{
 
-		  if(this.getForcepower() > maxtrasferrate)
+		  if(this.getForcePower() > maxtrasferrate)
 		  {
 			    if(forceenergyspace > maxtrasferrate)
 			    {
-			    	RemoteCap.setForcepower(RemoteCap.getForcepower() + maxtrasferrate);
-	                this.setForcepower(this.getForcepower() - maxtrasferrate);		    
+			    	RemoteCap.setForcepower(RemoteCap.getForcePower() + maxtrasferrate);
+	                this.setForcepower(this.getForcePower() - maxtrasferrate);		    
 			    }else{
-			    	RemoteCap.setForcepower(RemoteCap.getForcepower() + forceenergyspace);
-	                this.setForcepower(this.getForcepower() - forceenergyspace);	
+			    	RemoteCap.setForcepower(RemoteCap.getForcePower() + forceenergyspace);
+	                this.setForcepower(this.getForcePower() - forceenergyspace);	
 			    }
                 
 		  }else{
 			  
-			    if(forceenergyspace > this.getForcepower())
+			    if(forceenergyspace > this.getForcePower())
 			    {
-			    	RemoteCap.setForcepower(RemoteCap.getForcepower() + this.getForcepower());
-	                this.setForcepower(this.getForcepower() - this.getForcepower());		    
+			    	RemoteCap.setForcepower(RemoteCap.getForcePower() + this.getForcePower());
+	                this.setForcepower(this.getForcePower() - this.getForcePower());		    
 			    }else{
-			    	RemoteCap.setForcepower(RemoteCap.getForcepower() + forceenergyspace);
-	                this.setForcepower(this.getForcepower() - forceenergyspace);	
+			    	RemoteCap.setForcepower(RemoteCap.getForcePower() + forceenergyspace);
+	                this.setForcepower(this.getForcePower() - forceenergyspace);	
 			    }
 			  
 			  

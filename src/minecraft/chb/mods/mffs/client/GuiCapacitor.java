@@ -21,12 +21,12 @@
 package chb.mods.mffs.client;
 
 import ic2.api.NetworkHelper;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
+
+import org.lwjgl.opengl.GL11;
+
 import chb.mods.mffs.common.ContainerCapacitor;
 import chb.mods.mffs.common.TileEntityCapacitor;
 
@@ -47,7 +47,7 @@ public class GuiCapacitor extends GuiContainer {
 		int w = (width - xSize) / 2;
 		int k = (height - ySize) / 2;
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
-		int i1 = (79 * (Core.getForcepower()/1000)) / (Core.getMaxforcepower()/1000);
+		int i1 = (79 * (Core.getForcePower()/1000)) / (Core.getMaxForcePower()/1000);
 		drawTexturedModalRect(w + 8, k + 71, 176, 0, i1+1, 79);
 	}
 	@Override
@@ -55,18 +55,18 @@ public class GuiCapacitor extends GuiContainer {
 		fontRenderer.drawString("Force Energy Capacitor", 5, 5, 0x404040);
 		fontRenderer.drawString("Force Energy", 15, 50, 0x404040);
 		fontRenderer.drawString(
-				(new StringBuilder()).append(" ").append(Core.getForcepower())
+				(new StringBuilder()).append(" ").append(Core.getForcePower())
 						.toString(), 30, 60, 0x404040);
 
 		fontRenderer.drawString("transmit range:", 10, 20, 0x404040);
 		fontRenderer.drawString(
 				(new StringBuilder()).append(" ")
-						.append(Core.getTransmitrange()).toString(), 90, 20,
+						.append(Core.getTransmitRange()).toString(), 90, 20,
 				0x404040);
 		fontRenderer.drawString("linked device:", 10, 35, 0x404040);
 		fontRenderer.drawString(
 				(new StringBuilder()).append(" ")
-						.append(Core.getLinketprojektor()).toString(), 90, 35,
+						.append(Core.getLinketProjektor()).toString(), 90, 35,
 				0x404040);
 	}
 

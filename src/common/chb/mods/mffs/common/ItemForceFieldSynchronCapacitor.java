@@ -24,13 +24,10 @@ import java.util.List;
 
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
-import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
-import ic2.api.ElectricItem;
-import ic2.api.IElectricItem;
 
 public class ItemForceFieldSynchronCapacitor extends Item implements IForceEnergyItems{
 	public ItemForceFieldSynchronCapacitor(int i) {

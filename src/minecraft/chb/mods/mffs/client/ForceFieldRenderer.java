@@ -20,11 +20,11 @@
 
 package chb.mods.mffs.client;
 
-import chb.mods.mffs.common.ModularForceFieldSystem;
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
 import net.minecraftforge.client.ForgeHooksClient;
+import chb.mods.mffs.common.ModularForceFieldSystem;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class ForceFieldRenderer implements ISimpleBlockRenderingHandler {

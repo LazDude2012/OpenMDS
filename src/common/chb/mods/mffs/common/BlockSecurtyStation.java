@@ -22,9 +22,7 @@ package chb.mods.mffs.common;
 
 import ic2.api.Items;
 import net.minecraft.src.Block;
-import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 

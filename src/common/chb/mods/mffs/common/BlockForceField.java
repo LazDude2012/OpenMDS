@@ -22,12 +22,6 @@ package chb.mods.mffs.common;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
-
-import chb.mods.mffs.api.IForceFieldBlock;
-import chb.mods.mffs.common.WorldMap.ForceFieldWorld;
-
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.DamageSource;
@@ -41,6 +35,10 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.Slot;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import chb.mods.mffs.api.IForceFieldBlock;
+import chb.mods.mffs.common.WorldMap.ForceFieldWorld;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 public class BlockForceField extends BlockContainer implements IForceFieldBlock{
     public static int renderer;

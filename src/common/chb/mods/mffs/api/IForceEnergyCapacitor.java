@@ -20,20 +20,27 @@
 
 package chb.mods.mffs.api;
 
-public interface IForceEnergyCapacitor {
-	public int getcapacity();
+public interface IForceEnergyCapacitor
+{
 	// Charging status in %
+	public int getCapacity();
+	
+	//Allows people to set the capacity of the capacitor
+	public void setCapacity(int capacity);
 
-	public int getMaxforcepower();
 	//Max ForcePower for this Generator
+	public int getMaxForcePower();
 
-	public int getForcepower();
+	//Sets the ForcePower for this Generator
+	public void setForcePower(int forcePower);
+	
 	// ForcePower left in his Generator
+	public int getForcePower();
 
-	public int getTransmitrange();
 	// Range of maximum transmit
+	public int getTransmitRange();
 
-	public Short getLinketprojektor();
-	 //count of paired device
+	//count of paired device
+	public Short getLinketProjektor();
 
 }

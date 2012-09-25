@@ -22,7 +22,6 @@ package chb.mods.mffs.common;
 
 import ic2.api.INetworkClientTileEntityEventListener;
 import ic2.api.INetworkDataProvider;
-import ic2.api.INetworkTileEntityEventListener;
 import ic2.api.INetworkUpdateListener;
 import ic2.api.NetworkHelper;
 
@@ -32,8 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
-
-import chb.mods.mffs.api.IModularProjector;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.Container;
@@ -47,6 +44,7 @@ import net.minecraft.src.NBTTagList;
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
+import chb.mods.mffs.api.IModularProjector;
 
 public class TileEntityProjector extends TileEntityMachines implements IModularProjector,
 ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEntityEventListener{
@@ -474,7 +472,7 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 						.get(this.getLinkCapacitor_ID()) != null) {
 					int transmit = Linkgrid.getWorldMap(worldObj)
 							.getCapacitor().get(this.getLinkCapacitor_ID())
-							.getTransmitrange();
+							.getTransmitRange();
 					int gen_x = Linkgrid.getWorldMap(worldObj).getCapacitor()
 							.get(this.getLinkCapacitor_ID()).xCoord
 							- this.xCoord;
@@ -1018,10 +1016,10 @@ ISidedInventory,INetworkDataProvider,INetworkUpdateListener,INetworkClientTileEn
 				try {
 					this.setLinkPower(Linkgrid.getWorldMap(worldObj)
 							.getCapacitor().get(this.getLinkCapacitor_ID())
-							.getForcepower());
+							.getForcePower());
 					this.setMaxlinkPower(Linkgrid.getWorldMap(worldObj)
 							.getCapacitor().get(this.getLinkCapacitor_ID())
-							.getMaxforcepower());
+							.getMaxForcePower());
 				} catch (java.lang.NullPointerException ex) {
 					this.setLinkGenerator(false);
 					this.setLinkPower(0);

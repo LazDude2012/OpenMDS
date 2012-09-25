@@ -21,10 +21,8 @@
 package chb.mods.mffs.common;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Stack;
 
 public class ForceFieldBlockStack {
 	private int x;

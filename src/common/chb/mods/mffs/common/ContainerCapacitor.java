@@ -76,34 +76,34 @@ public class ContainerCapacitor extends Container {
 		for (int i = 0; i < crafters.size(); i++) {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
-			if (transmitrange != generatorentity.getTransmitrange()) {
+			if (transmitrange != generatorentity.getTransmitRange()) {
 				icrafting.updateCraftingInventoryInfo(this, 0,
-						generatorentity.getTransmitrange());
+						generatorentity.getTransmitRange());
 			}
-			if (linketprojektor != generatorentity.getLinketprojektor()) {
+			if (linketprojektor != generatorentity.getLinketProjektor()) {
 				icrafting.updateCraftingInventoryInfo(this, 1,
-						generatorentity.getLinketprojektor());
+						generatorentity.getLinketProjektor());
 			}
 
-			if (forcepower != generatorentity.getForcepower()) {
+			if (forcepower != generatorentity.getForcePower()) {
 				icrafting.updateCraftingInventoryInfo(this, 2,
-						generatorentity.getForcepower() & 0xffff);
+						generatorentity.getForcePower() & 0xffff);
 				icrafting.updateCraftingInventoryInfo(this, 3,
-						generatorentity.getForcepower() >>> 16);
+						generatorentity.getForcePower() >>> 16);
 			}
 
-			if (maxforcepower != generatorentity.getMaxforcepower()) {
+			if (maxforcepower != generatorentity.getMaxForcePower()) {
 				icrafting.updateCraftingInventoryInfo(this, 4,
-						generatorentity.getMaxforcepower() & 0xffff);
+						generatorentity.getMaxForcePower() & 0xffff);
 				icrafting.updateCraftingInventoryInfo(this, 5,
-						generatorentity.getMaxforcepower() >>> 16);
+						generatorentity.getMaxForcePower() >>> 16);
 			}
 		}
 
-		transmitrange = (short) generatorentity.getTransmitrange();
-		linketprojektor = generatorentity.getLinketprojektor();
-		forcepower = generatorentity.getForcepower();
-		maxforcepower = generatorentity.getMaxforcepower();
+		transmitrange = (short) generatorentity.getTransmitRange();
+		linketprojektor = generatorentity.getLinketProjektor();
+		forcepower = generatorentity.getForcePower();
+		maxforcepower = generatorentity.getMaxForcePower();
 	}
 
 	public void updateProgressBar(int i, int j) {
@@ -120,22 +120,22 @@ public class ContainerCapacitor extends Container {
 
 		case 2:
 			generatorentity
-					.setForcepower((generatorentity.getForcepower() & 0xffff0000)
+					.setForcepower((generatorentity.getForcePower() & 0xffff0000)
 							| j);
 			break;
 		case 3:
 			generatorentity
-					.setForcepower((generatorentity.getForcepower() & 0xffff)
+					.setForcepower((generatorentity.getForcePower() & 0xffff)
 							| (j << 16));
 			break;
 
 		case 4:
 			generatorentity.setMaxforcepower((generatorentity
-					.getMaxforcepower() & 0xffff0000) | j);
+					.getMaxForcePower() & 0xffff0000) | j);
 			break;
 		case 5:
 			generatorentity.setMaxforcepower((generatorentity
-					.getMaxforcepower() & 0xffff) | (j << 16));
+					.getMaxForcePower() & 0xffff) | (j << 16));
 			break;
 		}
 	}

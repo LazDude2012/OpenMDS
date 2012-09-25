@@ -28,8 +28,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-
-import net.minecraft.src.Block;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.InventoryPlayer;
@@ -227,7 +225,7 @@ ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 
 				if(Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID())!=null)
 				{
-				 int transmit =	Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID()).getTransmitrange();
+				 int transmit =	Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID()).getTransmitRange();
 				 int gen_x=Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID()).xCoord - this.xCoord;
 			     int gen_y=Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID()).yCoord - this.yCoord;
 			     int gen_z=Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID()).zCoord - this.zCoord;
@@ -342,10 +340,10 @@ ISidedInventory, INetworkUpdateListener,INetworkDataProvider {
 				try {
 					this.setLinkPower(Linkgrid.getWorldMap(worldObj)
 							.getCapacitor().get(this.getlinkCapacitors_ID())
-							.getForcepower());
+							.getForcePower());
 					this.setMaxlinkPower(Linkgrid.getWorldMap(worldObj)
 							.getCapacitor().get(this.getlinkCapacitors_ID())
-							.getMaxforcepower());
+							.getMaxForcePower());
 				} catch (java.lang.NullPointerException ex) {
 					this.setLinkGenerator(false);
 					this.setLinkPower(0);

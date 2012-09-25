@@ -20,13 +20,14 @@
 
 package chb.mods.mffs.client;
 
-import org.lwjgl.opengl.GL11;
-
-import chb.mods.mffs.common.TileEntityProjector;
-import chb.mods.mffs.common.TileEntityCapacitor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.TileEntity;
+
+import org.lwjgl.opengl.GL11;
+
+import chb.mods.mffs.common.TileEntityCapacitor;
+import chb.mods.mffs.common.TileEntityProjector;
 
 public class GuiGraphicButton extends GuiButton
 

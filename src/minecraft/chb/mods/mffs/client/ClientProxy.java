@@ -20,16 +20,14 @@
 
 package chb.mods.mffs.client;
 
-import net.minecraft.src.ModLoader;
 import net.minecraft.src.World;
 import net.minecraftforge.client.MinecraftForgeClient;
+import chb.mods.mffs.common.CommonProxy;
+import chb.mods.mffs.common.TileEntityCapacitor;
+import chb.mods.mffs.common.TileEntityExtractor;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import chb.mods.mffs.common.CommonProxy;
-import chb.mods.mffs.common.ModularForceFieldSystem;
-import chb.mods.mffs.common.TileEntityCapacitor;
-import chb.mods.mffs.common.TileEntityExtractor;
 
 public class ClientProxy extends CommonProxy {
 	@Override

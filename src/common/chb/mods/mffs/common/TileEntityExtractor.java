@@ -1,17 +1,17 @@
 package chb.mods.mffs.common;
 
-import java.util.LinkedList;
-import java.util.List;
 import ic2.api.Direction;
 import ic2.api.EnergyNet;
 import ic2.api.IEnergySink;
 import ic2.api.INetworkDataProvider;
 import ic2.api.INetworkUpdateListener;
 import ic2.api.NetworkHelper;
-import net.minecraft.src.Block;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
@@ -196,7 +196,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 						.get(this.getLinkCapacitors_ID()) != null) {
 					int transmit = Linkgrid.getWorldMap(worldObj)
 							.getCapacitor().get(this.getLinkCapacitors_ID())
-							.getTransmitrange();
+							.getTransmitRange();
 					int gen_x = Linkgrid.getWorldMap(worldObj).getCapacitor()
 							.get(this.getLinkCapacitors_ID()).xCoord
 							- this.xCoord;
@@ -315,9 +315,9 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 			TileEntityCapacitor Cap =Linkgrid.getWorldMap(worldObj).getCapacitor().get(LinkCapacitor_ID);	
 			if(Cap != null)
 			{
-				if((Cap.getForcepower() + 8000) < Cap.getMaxforcepower())
+				if((Cap.getForcePower() + 8000) < Cap.getMaxForcePower())
 				{
-					Cap.setForcepower(Cap.getForcepower() + 8000);
+					Cap.setForcepower(Cap.getForcePower() + 8000);
 					setForceEnergybuffer(this.getForceEnergybuffer()-8000);
 				}
 			}

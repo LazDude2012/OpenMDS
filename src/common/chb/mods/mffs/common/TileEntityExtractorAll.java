@@ -23,11 +23,9 @@ import java.util.LinkedList;
 
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-
 import universalelectricity.electricity.ElectricityManager;
 import universalelectricity.implement.IElectricityReceiver;
 import universalelectricity.implement.IElectricityStorage;
-
 import buildcraft.api.gates.IOverrideDefaultTriggers;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.power.IPowerProvider;

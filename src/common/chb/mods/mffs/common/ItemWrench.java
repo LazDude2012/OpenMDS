@@ -20,13 +20,12 @@
 
 package chb.mods.mffs.common;
 
-import chb.mods.mffs.api.*;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import chb.mods.mffs.api.IMFFS_Wrench;
 
 public class ItemWrench extends ItemMultitool  {
 	

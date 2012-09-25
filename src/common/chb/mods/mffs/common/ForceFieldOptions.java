@@ -22,7 +22,16 @@ package chb.mods.mffs.common;
 
 import java.util.List;
 import java.util.Map;
-import net.minecraft.src.*;
+
+import net.minecraft.src.AxisAlignedBB;
+import net.minecraft.src.DamageSource;
+import net.minecraft.src.EntityGhast;
+import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityMob;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntitySlime;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
 
 public final class ForceFieldOptions {
 //----------------------------Player / Mob Attack Function----------------------
@@ -165,7 +174,7 @@ public final class ForceFieldOptions {
 					{
 						Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkCapacitor_ID())
 						.setForcepower(Linkgrid.getWorldMap(world).getCapacitor().get(projector
-							.getLinkCapacitor_ID()).getForcepower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
+							.getLinkCapacitor_ID()).getForcePower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
 
 					
 						
@@ -203,7 +212,7 @@ public final class ForceFieldOptions {
 							{
 							Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkCapacitor_ID())
 							.setForcepower(Linkgrid.getWorldMap(world).getCapacitor().get(projector
-								.getLinkCapacitor_ID()).getForcepower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
+								.getLinkCapacitor_ID()).getForcePower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
 
 							Functions.ChattoPlayer((EntityPlayer)entityLiving,"[Defence Area Station] !!! you  are in a restricted area !!! ");
 							entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);
@@ -246,7 +255,7 @@ public final class ForceFieldOptions {
 							{
 								Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation.getlinkCapacitors_ID())
 								.setForcepower(Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation
-									.getlinkCapacitors_ID()).getForcepower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
+									.getlinkCapacitors_ID()).getForcePower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
 
 							entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.MobDefenseDamage);
 							continue;
@@ -258,7 +267,7 @@ public final class ForceFieldOptions {
 									{
 									Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation.getlinkCapacitors_ID())
 									.setForcepower(Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation
-										.getlinkCapacitors_ID()).getForcepower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
+										.getlinkCapacitors_ID()).getForcePower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
 
 									Functions.ChattoPlayer((EntityPlayer)entityLiving,"[Defence Area Station] !!! you  are in a restricted area !!! ");
 									entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);

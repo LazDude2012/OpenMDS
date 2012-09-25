@@ -24,7 +24,9 @@ package chb.mods.mffs.client;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntitySpecialRenderer;
+
 import org.lwjgl.opengl.GL11;
+
 import chb.mods.mffs.common.TileEntityExtractor;
 
 public class TEExtractorRenderer extends TileEntitySpecialRenderer {
