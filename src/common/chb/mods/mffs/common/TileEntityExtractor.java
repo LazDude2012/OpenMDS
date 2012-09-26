@@ -1,9 +1,5 @@
 package chb.mods.mffs.common;
 
-import ic2.api.Direction;
-import ic2.api.EnergyNet;
-import ic2.api.IEnergySink;
-
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,17 +18,17 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntityExtractor extends TileEntityMachines implements ISidedInventory
-,IEnergySink,INetworkHandlerListener{
+,INetworkHandlerListener{
 	
 	public static final int FORCECIUMWORKCYLCE  = 125;
 	public static final int FORCECIUMBLOCKWORKCYLCE = 1200;
 
 	private ItemStack inventory[];
-	private boolean addedToEnergyNet;
-	private boolean create;
+	
+    private boolean create;
 	private int Extractor_ID;
-	private int WorkEnergy;
-	private int MaxWorkEnergy;
+	protected int WorkEnergy;
+	protected int MaxWorkEnergy;
 	private int ForceEnergybuffer;
 	private int MaxForceEnergyBuffer;
 	private int WorkCylce;
@@ -46,7 +42,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		
 		inventory = new ItemStack[4];
 		create = true;
-		addedToEnergyNet = false;
 		Extractor_ID = 0;
 		LinkCapacitor_ID = 0;
 		WorkEnergy = 0;
@@ -380,11 +375,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 			this.setTicker((short) (this.getTicker() + 1));
 			
 				
-	
-	if (!addedToEnergyNet) {
-		EnergyNet.getForWorld(worldObj).addTileEntity(this);
-		addedToEnergyNet = true;
-	}
+
 		}else{
 			
 			if (create) {
@@ -401,50 +392,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	}
 
 	
-	@Override
-	public boolean demandsEnergy() {
-		if(this.MaxWorkEnergy > this.WorkEnergy)
-		{
-			return true;
-		}
-		return false;
-	}
 
-
-	@Override
-	public int injectEnergy(Direction directionFrom, int amount) {
-	 if(this.MaxWorkEnergy > this.WorkEnergy)
-	 {
-		 WorkEnergy =  WorkEnergy + amount;
-		 if(WorkEnergy > MaxWorkEnergy)
-		 {
-			 int rest = WorkEnergy - MaxWorkEnergy;
-			 WorkEnergy = WorkEnergy - rest;
-			 return rest;
-		 }
-	 } 
-	   return 0;
-	}
-	
-	@Override
-	public void invalidate() {
-		if (addedToEnergyNet) {
-			EnergyNet.getForWorld(worldObj).removeTileEntity(this);
-			addedToEnergyNet = false;
-		}
-
-		super.invalidate();
-	}
-	
-	@Override
-	public boolean isAddedToEnergyNet() {
-		return addedToEnergyNet;
-	}
-	
-	@Override
-	public boolean acceptsEnergyFrom(TileEntity tileentity, Direction direction) {
-		return true;
-	}
 	
 	
 	public void readFromNBT(NBTTagCompound nbttagcompound) {

@@ -10,28 +10,21 @@ import ic2.api.IEnergySink;
 import universalelectricity.electricity.ElectricityManager;
 import universalelectricity.implement.IElectricityReceiver;
 import universalelectricity.implement.IElectricityStorage;
-import buildcraft.api.gates.IOverrideDefaultTriggers;
-import buildcraft.api.gates.ITrigger;
-import buildcraft.api.power.IPowerProvider;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerFramework;
 
-public class TileEntityExtractorAll extends TileEntityExtractor implements 
-IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IElectricityReceiver,IElectricityStorage{
 
-	private IPowerProvider powerProvider;
+public class TileEntityExtractorEUUE extends TileEntityExtractor implements 
+IEnergySink,IElectricityReceiver,IElectricityStorage{
+
+	
 	private double wattHours = 0;
 	private boolean addedToEnergyNet;
 	
-public 	TileEntityExtractorAll()
+public 	TileEntityExtractorEUUE()
 {
 	super();
 	addedToEnergyNet = false;
 	EnergyNet.getForWorld(worldObj).addTileEntity(this);
 	ElectricityManager.instance.registerElectricUnit(this);
-	powerProvider = PowerFramework.currentFramework.createPowerProvider();
-	powerProvider.configure(10, 2, (int) (super.getMaxWorkEnergy() / 2.5),(int) (super.getMaxWorkEnergy() / 2.5),(int) (super.getMaxWorkEnergy() / 2.5));
-	
 }
 
 @Override
@@ -45,7 +38,6 @@ public void updateEntity() {
 
 }
 
-	
 @Override
 public boolean demandsEnergy() {
 	if(this.MaxWorkEnergy > this.WorkEnergy)
@@ -170,56 +162,6 @@ public void setWattHours(double wattHours, Object... data) {
 @Override
 public double getMaxWattHours() {
 	return 120000;
-}
-
-// End UE
-
-@Override
-public void converMJtoWorkEnergy(){
-	
-	if(this.getWorkEnergy() < this.getMaxWorkEnergy())
-	{
-      float use = powerProvider.useEnergy(1, (float) (this.getMaxWorkEnergy() - this.getWorkEnergy() / 2.5), true);
-	  
-      if(getWorkEnergy() + (use *2.5) > super.getMaxWorkEnergy())
-      {
-    	     setWorkEnergy(super.getMaxWorkEnergy()); 
-      }else{
-             setWorkEnergy((int) (getWorkEnergy() + (use *2.5)));
-      }
-	  
-
-	}
-	
-}
-
-@Override
-public void setPowerProvider(IPowerProvider provider) {
-	this.powerProvider = provider;
-}
-
-@Override
-public IPowerProvider getPowerProvider() {
-	return powerProvider;
-}
-
-
-@Override
-public void doWork() {}
-
-
-@Override
-public int powerRequest() {
-	
-	double workEnergyinMJ = super.getWorkEnergy()  / 2.5;
-	double MaxWorkEnergyinMj = super.getMaxWorkEnergy()  / 2.5;
-	
-	return  (int) (MaxWorkEnergyinMj - workEnergyinMJ) ;
-}
-
-@Override
-public LinkedList<ITrigger> getTriggers() {
-	return null;
 }
 
 

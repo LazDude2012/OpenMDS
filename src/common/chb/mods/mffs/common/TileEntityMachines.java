@@ -20,7 +20,6 @@
 
 package chb.mods.mffs.common;
 
-import ic2.api.IWrenchable;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
@@ -32,7 +31,7 @@ import net.minecraft.src.TileEntity;
 import chb.mods.mffs.api.IMFFS_Wrench;
 import chb.mods.mffs.network.NetworkHandler;
 
-public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wrench,IWrenchable{
+public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wrench{
 	
 	private boolean active;
 	private int side;
@@ -133,38 +132,6 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 		return side;
 	}
 
-	@Override
-	public short getFacing() {
-		return (short) side;
-	}
-	
-	
-	@Override
-	public float getWrenchDropRate() {
-		return 1;
-	}
-	
-	@Override
-	public void setFacing(short i) {
-		setSide(i);
-	}
-	
-	@Override
-	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
-		  
-		if(this.side == side)
-		   {
-			   return false;
-		   }
-		
-		return wrenchCanManipulate(entityPlayer, side);
-	}
-	
-	@Override
-	public boolean wrenchCanRemove(EntityPlayer entityPlayer) {
-		
-		return wrenchCanManipulate(entityPlayer, -1);
-	}
 
 }
 

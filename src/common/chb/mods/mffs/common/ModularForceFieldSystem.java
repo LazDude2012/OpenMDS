@@ -21,9 +21,8 @@
 package chb.mods.mffs.common;
 
 import chb.mods.mffs.network.NetworkHandler;
-
-import ic2.api.ExplosionWhitelist;
-import ic2.api.Items;
+import chb.mods.mffs.recipes.ModIndependentRecipes;
+import chb.mods.mffs.recipes.ModIndustrialcraftRecipes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -172,7 +171,7 @@ public class ModularForceFieldSystem {
 			DefenseStationDamage = MFFSconfig.getOrCreateIntProperty("DefenseStationDamage", Configuration.CATEGORY_GENERAL,10).getInt(10);
 			MobDefenseDamage = MFFSconfig.getOrCreateIntProperty("MobDefenseDamage", Configuration.CATEGORY_GENERAL,10).getInt(10);
 			DefenseStationFPpeerAttack = MFFSconfig.getOrCreateIntProperty("DefenseStationFPpeerAttack", Configuration.CATEGORY_GENERAL,25000).getInt(25000);
-		
+	
 			MFFSForciciumBlock = new BlockForcicium(MFFSconfig.getOrCreateBlockIdProperty("MFFSForciciumBlock", 4075).getInt(4075)).setBlockName("MFFSForciciumBlock");
 			MFFSExtractor = new BlockExtractor(MFFSconfig.getOrCreateBlockIdProperty("MFFSExtractor", 4076).getInt(4076),0).setBlockName("MFFSExtractor");
 		    MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getOrCreateBlockIdProperty("MFFSMonazitOre", 4077).getInt(4077)).setBlockName("MFFSMonazitOre");
@@ -228,11 +227,28 @@ public class ModularForceFieldSystem {
 	@Init
 	public void load(FMLInitializationEvent evt) {
 		
-		if(loadbuildcaftstuff() && loadUEstuff())
-		{Extractor =TileEntityExtractorAll.class; }
-
+		ModIndependentRecipes.init();
 		
+		boolean BuildCraft = loadbuildcaftstuff();
+		boolean UniversalElectricity = loadUEstuff();
+		boolean Industrialcraft = loadIndustrialcraftstuff();
 		
+        if(BuildCraft && UniversalElectricity && Industrialcraft)
+           Extractor =  TileEntityExtractorAll.class;
+		
+        if(BuildCraft && UniversalElectricity && !Industrialcraft)
+            Extractor =  TileEntityExtractorBCUE.class;
+        
+        if(BuildCraft && !UniversalElectricity && Industrialcraft)
+            Extractor =  TileEntityExtractorEUBC.class;
+        
+        if(!BuildCraft && UniversalElectricity && Industrialcraft)
+            Extractor =  TileEntityExtractorEUUE.class;
+        
+        if(!BuildCraft && !UniversalElectricity && !Industrialcraft)
+        	System.out.println("[ModularForceFieldSystem] ERROR: No Energy Mod found !!");
+		
+        
 		GameRegistry.registerBlock(MFFSCapacitor);
 		GameRegistry.registerBlock(MFFSProjector);
 		GameRegistry.registerBlock(MFFSSecurtyStation);
@@ -259,198 +275,7 @@ public class ModularForceFieldSystem {
 		GameRegistry.registerTileEntity(TileEntityForceField.class,
 				"MFFSForceField");
 		
-		
-		//Recipe final for 2.1.7
-		
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSExtractor,1),
-				new Object[] { " B ", "CDC", " E ",
-			'B',Items.getItem("advancedCircuit"), 'C',MFFSitemForcePowerCrystal, 
-			'D',Items.getItem("advancedMachine"), 'E',Items.getItem("extractor")
-		});
-		
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemupgradeexctractorboost,2),
-				new Object[] { " B ", "BAB", " B ",
-			'A',Items.getItem("overclockerUpgrade"), 'B',Items.getItem("carbonPlate")
-		});
-		
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemupgradecapcap),
-				new Object[] { " A ", "ABA", " A ", 'A',
-						Items.getItem("carbonPlate"), 'B',
-						MFFSitemForcePowerCrystal });
-		
-		
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemupgradecaprange),
-				new Object[] { "AAA", "BCB", "BDB",
-			'A',Items.getItem("copperCableItem"), 
-			'B',Items.getItem("carbonPlate"),
-			'C',Items.getItem("insulatedCopperCableItem"), 
-			'D',Items.getItem("advancedCircuit") 				
-		});
-		
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSForciciumBlock, 1),
-				new Object[] { "AAA", "AAA", "AAA", 'A',MFFSitemForcicium});
-		
-		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MFFSitemForcicium,9),new Object[] { new ItemStack(MFFSForciciumBlock) });
-		
-		
-		//
-		
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemFocusmatix, 64),
-				new Object[] { "ACA", "CBC", "ACA", 'A',
-						Items.getItem("carbonPlate"), 'B',
-						Item.diamond, 'C', Block.glass });
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemcardempty), new Object[] {
-				"AAA", "ABA", "AAA", 'A', Item.paper,
-				'B', Items.getItem("electronicCircuit") });
-
-
 	
-		CraftingManager.getInstance().addRecipe(
-				new ItemStack(MFFSCapacitor, 1),
-				new Object[] { "ABA", "CDC", "ABA", 'A',
-						MFFSitemForcePowerCrystal,
-						'B',
-						Items.getItem("frequencyTransmitter"),
-						'C',
-						Items.getItem("electronicCircuit"),
-						'D',
-						Items.getItem("advancedMachine") });
-
-		CraftingManager.getInstance()
-				.addRecipe(
-						new ItemStack(MFFSProjector, 1),
-						new Object[] { "DCD", "CAC", "DBD",
-								'A',
-								Items.getItem("advancedMachine"),
-								'B',
-								Items.getItem("frequencyTransmitter"),
-								'C', MFFSitemFocusmatix,
-								'D',
-								Items.getItem("advancedAlloy") });
-		CraftingManager.getInstance()
-				.addRecipe(
-						new ItemStack(MFFSSecurtyStation, 1),
-						new Object[] { "DCD", "CAC", "DBD",
-								'A',
-								Items.getItem("advancedMachine"),
-								'B',
-								Items.getItem("teleporter"),
-								'C',
-								Items.getItem("electronicCircuit"),
-								'D',
-								Items.getItem("advancedAlloy") });
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemFocusmatix, 64),
-				new Object[] { "ACA", "CBC", "ACA", 'A',
-						Items.getItem("carbonPlate"), 'B',
-						Item.diamond, 'C', Block.glass });
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorOptionZapper),
-				new Object[] { " A ", "ABA", " A ", 'A',
-						Items.getItem("advancedAlloy"), 'B',
-						Items.getItem("teslaCoil") });
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorOptionSubwater),
-				new Object[] { "BAB", "ABA", "BAB", 'A',
-						Items.getItem("advancedAlloy"), 'B',
-						Item.bucketEmpty });
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorOptionDome),
-				new Object[] { " A ", "ABA", " A ", 'A',
-						Items.getItem("advancedAlloy"), 'B',
-						Items.getItem("electronicCircuit") });
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorOptionCutter),
-				new Object[] { " A ", "ABA", " A ", 'A',
-						Items.getItem("advancedAlloy"), 'B',
-						Item.pickaxeSteel });
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorTypsphere),
-				new Object[] { " B ", "BAB", " B ", 'A',
-						MFFSitemFocusmatix, 'B',
-						Block.obsidian });
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorTypkube), new Object[] {
-				"B B", " A ", "B B", 'A',
-				MFFSitemFocusmatix, 'B', Block.obsidian });
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorTypwall), new Object[] {
-				"AA ", "AA ", "BB ", 'A',
-				MFFSitemFocusmatix, 'B', Block.obsidian });
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorTypdeflector),
-				new Object[] { "AAA", "ABA", "AAA", 'A',
-						MFFSitemFocusmatix, 'B',
-						Block.obsidian });
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorTyptube), new Object[] {
-				"AAA", " B ", "AAA", 'A',
-				MFFSitemFocusmatix, 'B', Block.obsidian });
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorFFStrenght),
-				new Object[] { "AAA", "AAA", "AAA", 'A',
-						MFFSitemFocusmatix });
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorFFDistance),
-				new Object[] { "AAA", "   ", "AAA", 'A',
-						MFFSitemFocusmatix });
-
-		CraftingManager.getInstance().addRecipe(
-				new ItemStack(MFFSSecStationexidreader),
-				new Object[] { "A  ", " B ", "  C", 'A',
-						MFFSitemcardempty, 'B',
-						Items.getItem("electronicCircuit"),
-						'C', Item.redstone });
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemForceFieldsync),
-				new Object[] { " A ", "ABA", " A ", 'A',
-			MFFSitemFocusmatix, 'B',
-			Item.diamond });
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemMFDidtool),
-				new Object[] { "DAE", " C ", "CBC", 'A',
-			Item.redstone, 'B',Items.getItem("advancedCircuit") ,
-			'C',Items.getItem("carbonPlate"),
-			'D',Items.getItem("wrench"),
-			'E',Block.lever
-		});
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemSwitch),
-				new Object[] { "DEA", " C ", "CBC", 'A',
-			Item.redstone, 'B',Items.getItem("advancedCircuit") ,
-			'C',Items.getItem("carbonPlate"),
-			'D',Items.getItem("wrench"),
-			'E',Block.lever
-		});
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemWrench),
-				new Object[] { "EDA", " C ", "CBC", 'A',
-			Item.redstone, 'B',Items.getItem("advancedCircuit") ,
-			'C',Items.getItem("carbonPlate"),
-			'D',Items.getItem("wrench"),
-			'E',Block.lever
-		});
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorTypcontainment), new Object[] {
-			"AAA", "ABA", "AAA", 'B',
-			MFFSitemFocusmatix, 'A', Block.obsidian });
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorTypAdvCube), new Object[] {
-			"AAA", "ABA", "AAA", 'A',
-			MFFSitemFocusmatix, 'B', MFFSProjectorTypkube });
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorOptionForceFieldJammer), new Object[] { " A ", "ABA", " A ", 'A', Items.getItem("frequencyTransmitter"),'B', MFFSitemFocusmatix });
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorOptionCamouflage), new Object[] { " A ", "ABA", " A ", 'B', Items.getItem("matter"),'A', Items.getItem("advancedAlloy") });
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorOptionFieldFusion), new Object[] { " A ", "ABA", " A ", 'B', Items.getItem("advancedCircuit"),'A', Items.getItem("advancedAlloy") });
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSDefenceStation,1),new Object[] { " B ", "CAC", " D ",'A',Items.getItem("advancedMachine"),
-			'B',Items.getItem("frequencyTransmitter"),
-			'C',Item.enderPearl,
-			'D',Items.getItem("carbonPlate")
-		});
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorOptionDefenceStation),new Object[] { " B ", "CAC", " B ", 'A', Items.getItem("teslaCoil"), 'B',this.MFFSItemIDCard , 'C',Items.getItem("electronicCircuit")});
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSProjectorOptionMoobEx), new Object[] { "BCB", "DAD", "ECE", 'A', Items.getItem("teslaCoil"), 'B', Item.bone, 'C', Item.blazeRod, 'D', Item.rottenFlesh, 'E', Item.spiderEye});
-		CraftingManager.getInstance().addRecipe(new ItemStack(MFFSitemForcePowerCrystal), new Object[] { "BBB", "BAB", "BBB", 'A', Item.diamond,'B', MFFSitemForcicium});
-
-		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MFFSitemcardempty),new Object[] { new ItemStack(MFFSitemfc) });
-		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MFFSitemcardempty),new Object[] { new ItemStack(MFFSItemIDCard) });
-		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MFFSitemcardempty),new Object[] { new ItemStack(MFFSItemSecLinkCard) });
 
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 
@@ -564,13 +389,7 @@ public class ModularForceFieldSystem {
 
 	@PostInit
 	public void modsLoaded(FMLPostInitializationEvent evt) {
-		ExplosionWhitelist.addWhitelistedBlock(MFFSDefenceStation);
-		ExplosionWhitelist.addWhitelistedBlock(MFFSCapacitor);
-		ExplosionWhitelist.addWhitelistedBlock(MFFSProjector);
-		ExplosionWhitelist.addWhitelistedBlock(MFFSSecurtyStation);
-		ExplosionWhitelist.addWhitelistedBlock(MFFSExtractor);
-		
-	
+				
 	}
 
 	private void Generatetexturindex(Block block, int meta)
@@ -581,6 +400,22 @@ public class ModularForceFieldSystem {
 		idmetatotextur.put(block.blockID + meta*1000, index);
 	}
 	
+	
+	
+	
+	public static boolean loadIndustrialcraftstuff() {
+		System.out.println("[ModularForceFieldSystem] Loading module for Industrialcraft");
+		
+		try {
+			Extractor = ModularForceFieldSystem.class.getClassLoader().loadClass("chb.mods.mffs.common.TileEntityExtractorEU");
+			ModIndustrialcraftRecipes.init();
+			ModIndustrialcraftRecipes.register();
+			return true;
+		} catch (Throwable t) {
+			System.out.println("[ModularForceFieldSystem] Module not loaded: Industrialcraft not found");
+			return false;
+		}
+	}
 	
 	public static boolean loadbuildcaftstuff() {
 		System.out.println("[ModularForceFieldSystem] Loading module for Buildcraft");

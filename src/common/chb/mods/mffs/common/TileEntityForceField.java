@@ -52,24 +52,22 @@ private boolean init = true;
 	
 	public void  setTexturid(String texturid )
 	{
+	
 		texturid = texturid.replace("[", "");
 		texturid = texturid.replace("]", "");
-		String[] test = texturid.split(",");	
+		String[] texurStringarray = texturid.split(",");	
 
-		int[] texturarray = new int[6];
-		
-		texturarray[0]=Integer.parseInt(test[0]);
-		texturarray[1]=Integer.parseInt(test[1]);
-		texturarray[2]=Integer.parseInt(test[2]);
-		texturarray[3]=Integer.parseInt(test[3]);
-		texturarray[4]=Integer.parseInt(test[4]);
-		texturarray[5]=Integer.parseInt(test[5]);
-		
-		setTexturid(texturarray);
+	
+		this.texturid[0] = Integer.parseInt(texurStringarray[0].trim());
+		this.texturid[1] = Integer.parseInt(texurStringarray[1].trim());
+		this.texturid[2] = Integer.parseInt(texurStringarray[2].trim());
+		this.texturid[3] = Integer.parseInt(texurStringarray[3].trim());
+		this.texturid[4] = Integer.parseInt(texurStringarray[4].trim());
+		this.texturid[5] = Integer.parseInt(texurStringarray[5].trim());
+
+	
+				
 	}
-	
-	
-	
 
 	public void  setTexturid(int[] texturid )
 	{

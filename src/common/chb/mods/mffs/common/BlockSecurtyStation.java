@@ -20,7 +20,6 @@
 
 package chb.mods.mffs.common;
 
-import ic2.api.Items;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.TileEntity;
@@ -66,18 +65,7 @@ public class BlockSecurtyStation extends BlockMFFSBase {
 				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {
 			return false;
 		}
-		
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem() == Items.getItem("wrench"))) {
-			return false;
-		}
-		
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem() == Items.getItem("electricWrench"))) {
-			return false;
-		}	
-		
-
+			
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemMultitool)) {
 			return false;

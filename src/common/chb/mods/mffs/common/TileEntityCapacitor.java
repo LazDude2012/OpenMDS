@@ -703,5 +703,18 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		return NetworkedFields;
 	}
 
+
+	@Override
+	public void EMPulse(int magnitude){
+		
+		if(magnitude < 0)
+			magnitude= 0;
+		
+		if(magnitude > 100)
+		   magnitude = 100;
+		
+		this.setForcePower(getForcePower() / 100 * magnitude);
+	}
+
 	
 }

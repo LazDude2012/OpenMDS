@@ -36,5 +36,10 @@ public interface IForceEnergyCapacitor
 
 	//count of paired device
 	public Short getLinketProjektor();
+	
+	//  draws Force Energy from Capacitor 
+	//  magnitude in %
+	//  if 100% Forcefield turns off until enough Force Energy available
+	public void EMPulse(int magnitude);
 
 }

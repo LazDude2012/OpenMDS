@@ -20,7 +20,6 @@
 
 package chb.mods.mffs.common;
 
-import ic2.api.Items;
 
 import java.util.Random;
 
@@ -68,16 +67,6 @@ public class BlockProjector extends BlockMFFSBase {
 		}
 		
 		
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().itemID == Items.getItem("wrench").itemID)) {
-			return false;
-		}
-		
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().itemID == Items.getItem("electricWrench").itemID)) {
-			return false;
-		}	
-
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemMultitool)) {
 			return false;
