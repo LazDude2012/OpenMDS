@@ -14,7 +14,7 @@ public class SecurityHelper {
 			if(((TileEntitySecurityStation)tileEntity).isActive())
 			{
 			 if (!(((TileEntitySecurityStation)tileEntity).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-				Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
+				 Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 				return false;
 			 }
 			}
@@ -25,7 +25,9 @@ public class SecurityHelper {
 			if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()) != null)
 			{
 				if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
+				
+						Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
+					
 					return false;
 				}
 			}
@@ -82,7 +84,7 @@ public class SecurityHelper {
 				   {
 					   if(!SecurityStation.isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))
 					   {
-							Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
+						   Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 							return false;
 					   }
 				   }

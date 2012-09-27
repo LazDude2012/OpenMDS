@@ -44,7 +44,6 @@ public class BlockSecurtyStation extends BlockMFFSBase {
 	public boolean onBlockActivated(World world, int i, int j, int k,
 			EntityPlayer entityplayer, int par6, float par7, float par8,
 			float par9){
-		if (!world.isRemote) {
 		if (entityplayer.isSneaking())
         {
 			return false;
@@ -76,10 +75,10 @@ public class BlockSecurtyStation extends BlockMFFSBase {
 			return false;
 		}
 
-
+		if (!world.isRemote)
 		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_SECSTATION, world,
 				i, j, k);
-		}
+		
 		return true;
 	}
 }

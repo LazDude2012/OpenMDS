@@ -155,30 +155,12 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 					passtrue = true;
 					break;
 					case 2:
-
-						if(generator.getSecStation_ID()!=0)
-						{
-						 passtrue = Linkgrid
-							.getWorldMap(world)
-							.getSecStation()
-							.get(generator.getSecStation_ID())
-							.isAccessGranted(
-					entityplayer.username,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
-						}
-
+						passtrue = SecurityHelper.isAccessGranted(generator, entityplayer, world);
 					break;
 					case 3:
-						if(projector.getSecStation_ID()!=0)
-						{
-						 passtrue = Linkgrid
-							.getWorldMap(world)
-							.getSecStation()
-							.get(projector.getSecStation_ID())
-							.isAccessGranted(
-					entityplayer.username,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
-						}
-
+						passtrue = SecurityHelper.isAccessGranted(projector, entityplayer, world);
 					break;
+
 					}
 
 						ItemStack  energycap = ForceFieldsync(entityplayer,world);
@@ -333,17 +315,53 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 				entity.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);
 			}
 		}else{
-			
 			if (entity instanceof EntityPlayer) {
-				((EntityPlayer) entity).setEntityHealth(0);
-				Functions.ChattoPlayer((EntityPlayer)entity,"[Force Field] Attention High Energy Field");
-				
-			}
+			ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(world).getorcreateFFStackMap(i, j, k);
 			
-		}
+			if (ffworldmap != null) {
+	
+				int First_Gen_ID = ffworldmap.getGenratorID();
+				int First_Pro_ID = ffworldmap.getProjectorID();
+
+				 TileEntityCapacitor  generator = Linkgrid.getWorldMap(world).getCapacitor().get(First_Gen_ID);
+				 TileEntityProjector  projector = Linkgrid.getWorldMap(world).getProjektor().get(First_Pro_ID);
+
+				 if(generator != null && projector!= null)
+				 {
+
+					 boolean passtrue = false;
+
+				switch(projector.getaccesstyp())
+				{
+				case 0:
+				passtrue = false;
+				break;
+				case 1:
+				passtrue = true;
+				break;
+				case 2:
+					passtrue = SecurityHelper.isAccessGranted(generator, ((EntityPlayer) entity), world);
+				break;
+				case 3:
+					passtrue = SecurityHelper.isAccessGranted(projector, ((EntityPlayer) entity), world);
+				break;
+				}
+			
+				if(!passtrue)
+				{
+					((EntityPlayer) entity).setEntityHealth(0);
 				
-		
-		
+				}else{
+					((EntityPlayer) entity).attackEntityFrom(DamageSource.generic,1);
+				}
+				Functions.ChattoPlayer((EntityPlayer)entity,"[Force Field] Attention High Energy Field");
+			 }
+			}
+		}
+			
+     }
+				
+
 	}
 	@Override
 	public int quantityDropped(Random random) {
