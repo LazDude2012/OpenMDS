@@ -26,6 +26,7 @@ import net.minecraft.src.GuiContainer;
 import org.lwjgl.opengl.GL11;
 
 import chb.mods.mffs.common.ContainerForceEnergyExtractor;
+import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.TileEntityExtractor;
 
 public class GuiExtractor extends GuiContainer {
@@ -53,9 +54,9 @@ public class GuiExtractor extends GuiContainer {
 		
 		if(tileEntity.getWorkCylce()>125)
 		{
-			 WorkCylce =  (32 * tileEntity.getWorkCylce()) / TileEntityExtractor.FORCECIUMBLOCKWORKCYLCE;
+			 WorkCylce =  (32 * tileEntity.getWorkCylce()) / ModularForceFieldSystem.ForceciumBlockWorkCylce;
 		}else{
-			 WorkCylce =  (32 * tileEntity.getWorkCylce()) / TileEntityExtractor.FORCECIUMWORKCYLCE;
+			 WorkCylce =  (32 * tileEntity.getWorkCylce()) / ModularForceFieldSystem.ForceciumWorkCylce;
 		}
 		
 		drawTexturedModalRect(w + 73,k + 30, 179,81,WorkCylce,32);

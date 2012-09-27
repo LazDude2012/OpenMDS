@@ -24,6 +24,7 @@ import chb.mods.mffs.network.NetworkHandler;
 import chb.mods.mffs.recipes.ModIndependentRecipes;
 import chb.mods.mffs.recipes.ModIndustrialcraftRecipes;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -134,6 +135,11 @@ public class ModularForceFieldSystem {
 	public static int  MobDefenseDamage;
 	public static int  DefenseStationFPpeerAttack;
 	public static Boolean forcefieldremoveonlywaterandlava;
+	
+	public static int ForceciumWorkCylce;
+	public static int ForceciumBlockWorkCylce;
+	public static int ExtractorPassForceEnergyGenerate;
+	
 
 	public static Configuration MFFSconfig;
 
@@ -172,6 +178,10 @@ public class ModularForceFieldSystem {
 			MobDefenseDamage = MFFSconfig.getOrCreateIntProperty("MobDefenseDamage", Configuration.CATEGORY_GENERAL,10).getInt(10);
 			DefenseStationFPpeerAttack = MFFSconfig.getOrCreateIntProperty("DefenseStationFPpeerAttack", Configuration.CATEGORY_GENERAL,25000).getInt(25000);
 	
+			ForceciumWorkCylce = MFFSconfig.getOrCreateIntProperty("ForceciumWorkCylce", Configuration.CATEGORY_GENERAL,125).getInt(125);
+			ForceciumBlockWorkCylce =  MFFSconfig.getOrCreateIntProperty("ForceciumBlockWorkCylce", Configuration.CATEGORY_GENERAL,1125).getInt(1125);
+			ExtractorPassForceEnergyGenerate =  MFFSconfig.getOrCreateIntProperty("ExtractorPassForceEnergyGenerate", Configuration.CATEGORY_GENERAL,8000).getInt(8000);
+			
 			MFFSForciciumBlock = new BlockForcicium(MFFSconfig.getOrCreateBlockIdProperty("MFFSForciciumBlock", 4075).getInt(4075)).setBlockName("MFFSForciciumBlock");
 			MFFSExtractor = new BlockExtractor(MFFSconfig.getOrCreateBlockIdProperty("MFFSExtractor", 4076).getInt(4076),0).setBlockName("MFFSExtractor");
 		    MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getOrCreateBlockIdProperty("MFFSMonazitOre", 4077).getInt(4077)).setBlockName("MFFSMonazitOre");
@@ -234,19 +244,28 @@ public class ModularForceFieldSystem {
 		boolean Industrialcraft = loadIndustrialcraftstuff();
 		
         if(BuildCraft && UniversalElectricity && Industrialcraft)
-           Extractor =  TileEntityExtractorAll.class;
+        { Extractor =  TileEntityExtractorAll.class;}
 		
         if(BuildCraft && UniversalElectricity && !Industrialcraft)
-            Extractor =  TileEntityExtractorBCUE.class;
+            {Extractor =  TileEntityExtractorBCUE.class;}
         
         if(BuildCraft && !UniversalElectricity && Industrialcraft)
-            Extractor =  TileEntityExtractorEUBC.class;
+        { Extractor =  TileEntityExtractorEUBC.class;}
         
         if(!BuildCraft && UniversalElectricity && Industrialcraft)
-            Extractor =  TileEntityExtractorEUUE.class;
+        {Extractor =  TileEntityExtractorEUUE.class;}
+        
+        if(!BuildCraft && !UniversalElectricity && Industrialcraft)
+            {Extractor =  TileEntityExtractorEU.class;}
+        
+        if(!BuildCraft && UniversalElectricity && !Industrialcraft)
+            {Extractor =  TileEntityExtractorUE.class; }
+        
+        if(BuildCraft && !UniversalElectricity && Industrialcraft)
+            {Extractor =  TileEntityExtractorBC.class; }
         
         if(!BuildCraft && !UniversalElectricity && !Industrialcraft)
-        	System.out.println("[ModularForceFieldSystem] ERROR: No Energy Mod found !!");
+        	{System.out.println("[ModularForceFieldSystem] ERROR: No Energy Mod found !!");}
 		
         
 		GameRegistry.registerBlock(MFFSCapacitor);
@@ -407,9 +426,9 @@ public class ModularForceFieldSystem {
 		System.out.println("[ModularForceFieldSystem] Loading module for Industrialcraft");
 		
 		try {
-			Extractor = ModularForceFieldSystem.class.getClassLoader().loadClass("chb.mods.mffs.common.TileEntityExtractorEU");
-			ModIndustrialcraftRecipes.init();
+			ModularForceFieldSystem.class.getClassLoader().loadClass("ic2.common.Ic2Items");
 			ModIndustrialcraftRecipes.register();
+			ModIndustrialcraftRecipes.init();			
 			return true;
 		} catch (Throwable t) {
 			System.out.println("[ModularForceFieldSystem] Module not loaded: Industrialcraft not found");
@@ -421,7 +440,7 @@ public class ModularForceFieldSystem {
 		System.out.println("[ModularForceFieldSystem] Loading module for Buildcraft");
 		
 		try {
-			Extractor = ModularForceFieldSystem.class.getClassLoader().loadClass("chb.mods.mffs.common.TileEntityExtractorBC");
+			ModularForceFieldSystem.class.getClassLoader().loadClass("buildcraft.core.Version");
 			return true;
 		} catch (Throwable t) {
 			System.out.println("[ModularForceFieldSystem] Module not loaded: Buildcraft not found");
@@ -433,7 +452,7 @@ public class ModularForceFieldSystem {
 		System.out.println("[ModularForceFieldSystem] Loading module for Universal Electricity");
 		
 		try {
-			Extractor = ModularForceFieldSystem.class.getClassLoader().loadClass("chb.mods.mffs.common.TileEntityExtractorUE");
+			ModularForceFieldSystem.class.getClassLoader().loadClass("chb.mods.mffs.common.TileEntityExtractorUE");
 			return true;
 		} catch (Throwable t) {
 			System.out.println("[ModularForceFieldSystem] Module not loaded: Universal Electricity not found");

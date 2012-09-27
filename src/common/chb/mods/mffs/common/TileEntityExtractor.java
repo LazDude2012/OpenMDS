@@ -20,8 +20,6 @@ import net.minecraftforge.common.ISidedInventory;
 public class TileEntityExtractor extends TileEntityMachines implements ISidedInventory
 ,INetworkHandlerListener{
 	
-	public static final int FORCECIUMWORKCYLCE  = 125;
-	public static final int FORCECIUMBLOCKWORKCYLCE = 1200;
 
 	private ItemStack inventory[];
 	
@@ -282,7 +280,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		
 		if (getStackInSlot(0) != null) {
 				if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemForcicium) {
-		    	  setMaxworkcylce(FORCECIUMWORKCYLCE);
+		    	  setMaxworkcylce(ModularForceFieldSystem.ForceciumWorkCylce);
 				  setWorkCylce(getMaxworkcylce());
 			      decrStackSize(0, 1);
 			      return true;
@@ -291,7 +289,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		
 			
 				if (inventory[0].itemID == ModularForceFieldSystem.MFFSForciciumBlock.blockID ){
-			    	  setMaxworkcylce(FORCECIUMBLOCKWORKCYLCE);
+			    	  setMaxworkcylce(ModularForceFieldSystem.ForceciumBlockWorkCylce);
 					  setWorkCylce(getMaxworkcylce());
 				      decrStackSize(0, 1);
 				      return true;
@@ -304,18 +302,40 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	
 	public void transferForceEnergy()
 	{
-		if(this.getForceEnergybuffer() >= 8000)
+		if(this.getForceEnergybuffer() > 0)
 		{	
 		if(LinkCapacitor_ID!=0)
 		{
-			TileEntityCapacitor Cap =Linkgrid.getWorldMap(worldObj).getCapacitor().get(LinkCapacitor_ID);	
-			if(Cap != null)
+			TileEntityCapacitor RemoteCap =Linkgrid.getWorldMap(worldObj).getCapacitor().get(LinkCapacitor_ID);	
+			if(RemoteCap != null)
 			{
-				if((Cap.getForcePower() + 8000) < Cap.getMaxForcePower())
-				{
-					Cap.setForcePower(Cap.getForcePower() + 8000);
-					setForceEnergybuffer(this.getForceEnergybuffer()-8000);
-				}
+			      int maxtrasferrate = ModularForceFieldSystem.ExtractorPassForceEnergyGenerate;
+			      int forceenergyspace = RemoteCap.getMaxForcePower() - RemoteCap.getForcePower();
+			      
+				  if(this.getForceEnergybuffer() > maxtrasferrate)
+				  {
+					    if(forceenergyspace > maxtrasferrate)
+					    {
+					    	RemoteCap.setForcePower(RemoteCap.getForcePower() + maxtrasferrate);
+			                this.setForceEnergybuffer(this.getForceEnergybuffer() - maxtrasferrate);		    
+					    }else{
+					    	RemoteCap.setForcePower(RemoteCap.getForcePower() + forceenergyspace);
+			                this.setForceEnergybuffer(this.getForceEnergybuffer() - forceenergyspace);	
+					    }
+		                
+				  }else{
+					  
+					    if(forceenergyspace > this.getForceEnergybuffer())
+					    {
+					    	RemoteCap.setForcePower(RemoteCap.getForcePower() + this.getForceEnergybuffer());
+			                this.setForceEnergybuffer(this.getForceEnergybuffer() - this.getForceEnergybuffer());		    
+					    }else{
+					    	RemoteCap.setForcePower(RemoteCap.getForcePower() + forceenergyspace);
+			                this.setForceEnergybuffer(this.getForceEnergybuffer() - forceenergyspace);	
+					    }
+					  
+					  
+				  }
 			}
 		}
 		}
@@ -357,7 +377,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 						
 						  setWorkEnergy(0);
 						  setWorkCylce(getWorkCylce()-1);
-						  setForceEnergybuffer(getForceEnergybuffer()+ 8000);	
+						  setForceEnergybuffer(getForceEnergybuffer()+ ModularForceFieldSystem.ExtractorPassForceEnergyGenerate);	
 					}
 				}else{
 					

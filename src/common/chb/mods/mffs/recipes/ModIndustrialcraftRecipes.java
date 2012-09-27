@@ -22,16 +22,20 @@ public class ModIndustrialcraftRecipes {
 	
 	public static void init()
 	{
+
+		if(Items.getItem("carbonPlate")!=null){
+		
+		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemupgradeexctractorboost,2),
+				new Object[] { " B ", "BAB", " B ",
+			'A',Items.getItem("overclockerUpgrade"), 'B',Items.getItem("carbonPlate")
+		});
+		
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSExtractor,1),
 				new Object[] { " B ", "CDC", " E ",
 			'B',Items.getItem("advancedCircuit"), 'C',ModularForceFieldSystem.MFFSitemForcePowerCrystal, 
 			'D',Items.getItem("advancedMachine"), 'E',Items.getItem("extractor")
 		});
 		
-		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemupgradeexctractorboost,2),
-				new Object[] { " B ", "BAB", " B ",
-			'A',Items.getItem("overclockerUpgrade"), 'B',Items.getItem("carbonPlate")
-		});
 		
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemupgradecapcap),
 				new Object[] { " A ", "ABA", " A ", 'A',
@@ -159,7 +163,8 @@ public class ModIndustrialcraftRecipes {
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorOptionDefenceStation),new Object[] { " B ", "CAC", " B ", 'A', Items.getItem("teslaCoil"), 'B',ModularForceFieldSystem.MFFSItemIDCard , 'C',Items.getItem("electronicCircuit")});
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorOptionMoobEx), new Object[] { "BCB", "DAD", "ECE", 'A', Items.getItem("teslaCoil"), 'B', Item.bone, 'C', Item.blazeRod, 'D', Item.rottenFlesh, 'E', Item.spiderEye});
 	
-		
+
+		}
 	}
 	
 }

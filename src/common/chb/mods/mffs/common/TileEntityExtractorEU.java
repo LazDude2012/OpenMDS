@@ -1,7 +1,6 @@
 package chb.mods.mffs.common;
 
 import net.minecraft.src.TileEntity;
-import net.minecraftforge.common.ISidedInventory;
 import ic2.api.Direction;
 import ic2.api.EnergyNet;
 import ic2.api.IEnergySink;
