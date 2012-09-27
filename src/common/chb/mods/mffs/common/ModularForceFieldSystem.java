@@ -261,7 +261,7 @@ public class ModularForceFieldSystem {
         if(!BuildCraft && UniversalElectricity && !Industrialcraft)
             {Extractor =  TileEntityExtractorUE.class; }
         
-        if(BuildCraft && !UniversalElectricity && Industrialcraft)
+        if(BuildCraft && !UniversalElectricity && !Industrialcraft)
             {Extractor =  TileEntityExtractorBC.class; }
         
         if(!BuildCraft && !UniversalElectricity && !Industrialcraft)
