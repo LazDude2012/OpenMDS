@@ -218,9 +218,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 			
 			if (getStackInSlot(2).getItem() instanceof IForceEnergyItems) {
 				
-				if(this.getRemote_Capacitor_ID()!= 0)
-				this.setRemote_Capacitor_ID(0);
-				
 				IForceEnergyItems ForceEnergyItem = (IForceEnergyItems) getStackInSlot(2).getItem();
 				
 				if(ForceEnergyItem.getForceEnergy(getStackInSlot(2)) < ForceEnergyItem.getMaxForceEnergy())
@@ -261,7 +258,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 					}
 			
 				}
-				return;
 			
 			}
 			
@@ -293,7 +289,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 				
 			}else{
 				this.setRemote_Capacitor_ID(0);
-				if (getStackInSlot(2).getItem() != ModularForceFieldSystem.MFFSitemcardempty) {
+				if (getStackInSlot(2).getItem() != ModularForceFieldSystem.MFFSitemcardempty && !(getStackInSlot(2).getItem() instanceof IForceEnergyItems)) {
 					dropplugins(2,this);
 				}
 			}

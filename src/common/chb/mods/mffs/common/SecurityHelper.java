@@ -21,7 +21,8 @@ public class SecurityHelper {
 		}
 		
 		if (tileEntity instanceof TileEntityCapacitor){
-			
+
+
 			if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()) != null)
 			{
 				if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
