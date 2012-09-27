@@ -23,7 +23,6 @@ public 	TileEntityExtractorEUUE()
 {
 	super();
 	addedToEnergyNet = false;
-	EnergyNet.getForWorld(worldObj).addTileEntity(this);
 	ElectricityManager.instance.registerElectricUnit(this);
 }
 

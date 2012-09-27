@@ -23,7 +23,6 @@ public 	TileEntityExtractorEUBC()
 {
 	super();
 	addedToEnergyNet = false;
-	EnergyNet.getForWorld(worldObj).addTileEntity(this);
 	powerProvider = PowerFramework.currentFramework.createPowerProvider();
 	powerProvider.configure(10, 2, (int) (super.getMaxWorkEnergy() / 2.5),(int) (super.getMaxWorkEnergy() / 2.5),(int) (super.getMaxWorkEnergy() / 2.5));
 	

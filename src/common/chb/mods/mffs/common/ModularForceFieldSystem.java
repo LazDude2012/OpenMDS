@@ -267,6 +267,7 @@ public class ModularForceFieldSystem {
         if(!BuildCraft && !UniversalElectricity && !Industrialcraft)
         	{System.out.println("[ModularForceFieldSystem] ERROR: No Energy Mod found !!");}
 		
+        System.out.println(Extractor.getName());
         
 		GameRegistry.registerBlock(MFFSCapacitor);
 		GameRegistry.registerBlock(MFFSProjector);
