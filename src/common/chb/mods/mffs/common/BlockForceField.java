@@ -47,8 +47,8 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
     public int posz;
 
 	public BlockForceField(int i) {
-		super(i, i, Material.portal);
-		setHardness(-1F);
+		super(i, i, Material.glass);
+		setBlockUnbreakable();
 		setResistance(999F);
 		setTickRandomly(true);
 	}
@@ -128,6 +128,9 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k,
 			EntityPlayer entityplayer, int par6, float par7, float par8, float par9) {
+		
+		if (world.isRemote)
+			return false;
 		
 				ForceFieldWorld wff = WorldMap.getForceFieldWorld(world);
 
@@ -272,7 +275,10 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 
     @Override
     public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {
-    
+	
+    	if (par1World.isRemote)
+			return;
+    	
 	ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(par1World).getForceFieldStackMap(WorldMap.Cordhash(par2, par3, par4));
 
 	if(ffworldmap != null)

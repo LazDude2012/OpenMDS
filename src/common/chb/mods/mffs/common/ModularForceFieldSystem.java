@@ -178,9 +178,9 @@ public class ModularForceFieldSystem {
 			MobDefenseDamage = MFFSconfig.getOrCreateIntProperty("MobDefenseDamage", Configuration.CATEGORY_GENERAL,10).getInt(10);
 			DefenseStationFPpeerAttack = MFFSconfig.getOrCreateIntProperty("DefenseStationFPpeerAttack", Configuration.CATEGORY_GENERAL,25000).getInt(25000);
 	
-			ForceciumWorkCylce = MFFSconfig.getOrCreateIntProperty("ForceciumWorkCylce", Configuration.CATEGORY_GENERAL,125).getInt(125);
-			ForceciumBlockWorkCylce =  MFFSconfig.getOrCreateIntProperty("ForceciumBlockWorkCylce", Configuration.CATEGORY_GENERAL,1125).getInt(1125);
-			ExtractorPassForceEnergyGenerate =  MFFSconfig.getOrCreateIntProperty("ExtractorPassForceEnergyGenerate", Configuration.CATEGORY_GENERAL,8000).getInt(8000);
+			ForceciumWorkCylce = MFFSconfig.getOrCreateIntProperty("ForceciumWorkCylce", Configuration.CATEGORY_GENERAL,250).getInt(250);
+			ForceciumBlockWorkCylce =  MFFSconfig.getOrCreateIntProperty("ForceciumBlockWorkCylce", Configuration.CATEGORY_GENERAL,2300).getInt(2300);
+			ExtractorPassForceEnergyGenerate =  MFFSconfig.getOrCreateIntProperty("ExtractorPassForceEnergyGenerate", Configuration.CATEGORY_GENERAL,10000).getInt(10000);
 			
 			MFFSForciciumBlock = new BlockForcicium(MFFSconfig.getOrCreateBlockIdProperty("MFFSForciciumBlock", 4075).getInt(4075)).setBlockName("MFFSForciciumBlock");
 			MFFSExtractor = new BlockExtractor(MFFSconfig.getOrCreateBlockIdProperty("MFFSExtractor", 4076).getInt(4076),0).setBlockName("MFFSExtractor");

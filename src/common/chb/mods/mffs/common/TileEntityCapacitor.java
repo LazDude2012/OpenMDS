@@ -226,7 +226,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 					int maxtransfer = ForceEnergyItem.getforceEnergyTransferMax();
 					int freeeamount = ForceEnergyItem.getMaxForceEnergy() - ForceEnergyItem.getForceEnergy(getStackInSlot(2));
 					
-					if(getCapacity() > 0)
+					if(this.getForcePower() > 0)
 					{
 
 					  if(this.getForcePower() > maxtransfer)

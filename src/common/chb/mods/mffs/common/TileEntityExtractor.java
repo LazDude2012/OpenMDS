@@ -309,7 +309,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 			TileEntityCapacitor RemoteCap =Linkgrid.getWorldMap(worldObj).getCapacitor().get(LinkCapacitor_ID);	
 			if(RemoteCap != null)
 			{
-			      int maxtrasferrate = ModularForceFieldSystem.ExtractorPassForceEnergyGenerate;
+			      int maxtrasferrate = ModularForceFieldSystem.ExtractorPassForceEnergyGenerate*2;
 			      int forceenergyspace = RemoteCap.getMaxForcePower() - RemoteCap.getForcePower();
 			      
 				  if(this.getForceEnergybuffer() > maxtrasferrate)

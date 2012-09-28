@@ -43,27 +43,32 @@ public void updateEntity() {
 	
 @Override
 public boolean demandsEnergy() {
-	if(this.MaxWorkEnergy > this.WorkEnergy)
+	if(this.getWorkEnergy()< this.MaxWorkEnergy)
 	{
 		return true;
 	}
+	
 	return false;
 }
 
 
 @Override
 public int injectEnergy(Direction directionFrom, int amount) {
- if(this.MaxWorkEnergy > this.WorkEnergy)
- {
-	 WorkEnergy =  WorkEnergy + amount;
-	 if(WorkEnergy > MaxWorkEnergy)
-	 {
-		 int rest = WorkEnergy - MaxWorkEnergy;
-		 WorkEnergy = WorkEnergy - rest;
-		 return rest;
-	 }
- } 
-   return 0;
+if(this.getWorkEnergy()< this.MaxWorkEnergy)
+{
+
+if((MaxWorkEnergy - WorkEnergy) > amount)
+{
+WorkEnergy = WorkEnergy + amount;
+return 0;
+}else{
+
+WorkEnergy = WorkEnergy + (MaxWorkEnergy - WorkEnergy);
+return 0 ; //amount- (MaxWorkEnergy - WorkEnergy);
+
+}
+}
+return amount;
 }
 
 @Override

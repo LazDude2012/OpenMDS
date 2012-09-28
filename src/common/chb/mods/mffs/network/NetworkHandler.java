@@ -226,7 +226,7 @@ public static void reflectionsetvalue(Field f,TileEntity tileEntity,ByteArrayDat
 
 public static void updateTileEntityField(TileEntity tileEntity, String varname)
 {
-	if(tileEntity instanceof TileEntityMachines)
+	if(tileEntity != null)
 	{
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
 		DataOutputStream dos = new DataOutputStream(bos);
