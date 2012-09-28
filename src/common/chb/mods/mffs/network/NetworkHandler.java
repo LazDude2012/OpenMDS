@@ -33,7 +33,7 @@ import chb.mods.mffs.common.TileEntityMachines;
 import chb.mods.mffs.common.TileEntityProjector;
 import chb.mods.mffs.common.TileEntitySecurityStation;
 import chb.mods.mffs.common.TileEntityForceField;
-
+import chb.mods.mffs.common.TileEntityConverter;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
@@ -107,6 +107,21 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 				 System.out.println(e.getLocalizedMessage());
 			 } 
 		 }
+		 
+		 
+		 if(tileEntity instanceof TileEntityConverter)
+		 {
+			 try{
+				 Field f = ReflectionHelper.findField(TileEntityConverter.class, fieldname);
+				 reflectionsetvalue(f, tileEntity,dat,fieldname);
+			 }catch(Exception e)
+			 {
+				 if(DEBUG)
+				 System.out.println(e.getLocalizedMessage());
+			 } 
+		 }
+
+		 
 
 		 if(tileEntity instanceof TileEntityProjector)
 		 {
@@ -296,6 +311,19 @@ public static void updateTileEntityField(TileEntity tileEntity, String varname)
 		System.out.println(e.getLocalizedMessage());
 	}
  }
+ 
+ if(tileEntity instanceof TileEntityConverter)
+ {
+	 try {	
+        Field f = ReflectionHelper.findField(TileEntityConverter.class, varname);
+        f.get(tileEntity);
+    	dos.writeUTF(String.valueOf(f.get(tileEntity)));
+	} catch (Exception e) {
+		if(DEBUG)
+		System.out.println(e.getLocalizedMessage());
+	}
+ }
+ 
  
  if(tileEntity instanceof TileEntityAreaDefenseStation)
  {

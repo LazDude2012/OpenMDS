@@ -62,6 +62,7 @@ public class ModularForceFieldSystem {
 	public static final int GUI_SECSTATION = 3;
 	public static final int GUI_DEFSTATION = 4;
 	public static final int GUI_EXTRACTOR = 5;
+	public static final int GUI_CONVERTER = 6;
 	
 	public static final int FORCEFIELBOCKMETA_DEFAULT = 0;
 	public static final int FORCEFIELBOCKMETA_ZAPPER = 1;
@@ -71,7 +72,8 @@ public class ModularForceFieldSystem {
 
 	public static final int PERSONALID_FULLACCESS = 2;
 	public static final int PERSONALID_LIMITEDACCESS = 1;
-
+	
+	
 	public static  int FORCEFIELDRENDER_ID =2908;
 
 	public static Block MFFSCapacitor;
@@ -82,6 +84,7 @@ public class ModularForceFieldSystem {
 	public static Block MFFSExtractor;
 	public static Block MFFSMonazitOre;
 	public static Block MFFSForciciumBlock;
+	public static Block MFFSForceEnergyConverter;
 	
 	public static Item MFFSitemForcicium;
 	public static Item MFFSitemForcePowerCrystal;
@@ -147,6 +150,7 @@ public class ModularForceFieldSystem {
     public static Map<Integer, int[]> idmetatotextur = new HashMap<Integer, int[]>();
     
     public static Class Extractor =  TileEntityExtractor.class;
+    public static Class Converter = TileEntityConverter.class;
   
 
 	@SidedProxy(clientSide = "chb.mods.mffs.client.ClientProxy", serverSide = "chb.mods.mffs.common.CommonProxy")
@@ -181,7 +185,8 @@ public class ModularForceFieldSystem {
 			ForceciumWorkCylce = MFFSconfig.getOrCreateIntProperty("ForceciumWorkCylce", Configuration.CATEGORY_GENERAL,250).getInt(250);
 			ForceciumBlockWorkCylce =  MFFSconfig.getOrCreateIntProperty("ForceciumBlockWorkCylce", Configuration.CATEGORY_GENERAL,2300).getInt(2300);
 			ExtractorPassForceEnergyGenerate =  MFFSconfig.getOrCreateIntProperty("ExtractorPassForceEnergyGenerate", Configuration.CATEGORY_GENERAL,10000).getInt(10000);
-			
+
+			MFFSForceEnergyConverter = new BlockConverter(MFFSconfig.getOrCreateBlockIdProperty("MFFSForceEnergyConverter", 4074).getInt(4074),0).setBlockName("MFFSForceEnergyConverter");
 			MFFSForciciumBlock = new BlockForcicium(MFFSconfig.getOrCreateBlockIdProperty("MFFSForciciumBlock", 4075).getInt(4075)).setBlockName("MFFSForciciumBlock");
 			MFFSExtractor = new BlockExtractor(MFFSconfig.getOrCreateBlockIdProperty("MFFSExtractor", 4076).getInt(4076),0).setBlockName("MFFSExtractor");
 		    MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getOrCreateBlockIdProperty("MFFSMonazitOre", 4077).getInt(4077)).setBlockName("MFFSMonazitOre");
@@ -277,11 +282,14 @@ public class ModularForceFieldSystem {
 		GameRegistry.registerBlock(MFFSMonazitOre);
 		GameRegistry.registerBlock(MFFSExtractor);
 		GameRegistry.registerBlock(MFFSForciciumBlock);
+		GameRegistry.registerBlock(MFFSForceEnergyConverter);
 	
 
 		OreDictionary.registerOre("ForciciumItem", MFFSitemForcicium);
 		OreDictionary.registerOre("MonazitOre", MFFSMonazitOre);
 		OreDictionary.registerOre("ForciciumBlock", MFFSForciciumBlock);
+		
+		GameRegistry.registerTileEntity(TileEntityConverter.class, "MFFSForceEnergyConverter");
 		
 		GameRegistry.registerTileEntity(Extractor, "MFFSExtractor");
 		
@@ -362,6 +370,9 @@ public class ModularForceFieldSystem {
 			Generatetexturindex(Block.cloth, meta);
 		}
 		
+	
+		
+		LanguageRegistry.instance().addNameForObject(MFFSForceEnergyConverter, "en_US", "MFFS ForceEnergyConverter");
 		LanguageRegistry.instance().addNameForObject(MFFSForciciumBlock, "en_US", "Block of Forcicium");
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradeexctractorboost, "en_US", "MFFS Extractor Booster");
 		LanguageRegistry.instance().addNameForObject(MFFSExtractor, "en_US", "MFFS Force Energy Extractor");

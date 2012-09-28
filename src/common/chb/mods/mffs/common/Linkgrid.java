@@ -36,9 +36,16 @@ public final class Linkgrid {
 		private Map<Integer, TileEntitySecurityStation> SecStation = new Hashtable<Integer, TileEntitySecurityStation>();
 		private Map<Integer, TileEntityAreaDefenseStation> DefStation = new Hashtable<Integer, TileEntityAreaDefenseStation>();
 		private Map<Integer, TileEntityExtractor> Extractor = new Hashtable<Integer, TileEntityExtractor>();
+		private Map<Integer, TileEntityConverter> Converter = new Hashtable<Integer, TileEntityConverter>();
 		private Map<Integer, TileEntityProjector> Jammer = new Hashtable<Integer, TileEntityProjector>();
 		private Map<Integer, TileEntityProjector> FieldFusion = new Hashtable<Integer, TileEntityProjector>();
 
+		
+		
+		public Map<Integer, TileEntityConverter> getConverter() {
+			return Converter;
+		}
+		
 
 		public Map<Integer, TileEntityExtractor> getExtractor() {
 			return Extractor;
@@ -111,6 +118,19 @@ public final class Linkgrid {
 			Extractor.put(tempExtractor_ID, tileEntity);
 			return tempExtractor_ID;
 		}
+		
+		
+		public int newConverter_ID(TileEntityConverter tileEntity) {
+			Random random = new Random();
+			int tempConverter_ID = random.nextInt();
+
+			while (Converter.get(tempConverter_ID) != null) {
+				tempConverter_ID = random.nextInt();
+			}
+			Converter.put(tempConverter_ID, tileEntity);
+			return tempConverter_ID;
+		}
+		
 
 		public static int myRandom(int low, int high) {
 			return (int) (Math.random() * (high - low) + low);
@@ -144,6 +164,18 @@ public final class Linkgrid {
 			}
 			
 			for (TileEntityExtractor tileentity : Extractor.values()) {
+				if (tileentity.getLinkCapacitors_ID() == Capacitors_ID) {
+					int dx = tileentity.xCoord - xCoordr;
+					int dy = tileentity.yCoord - yCoordr;
+					int dz = tileentity.zCoord - zCoordr;
+
+					if (i >= Math.sqrt(dx * dx + dy * dy + dz * dz)) {
+						counter++;
+					}
+				}
+			}
+			
+			for (TileEntityConverter tileentity : Converter.values()) {
 				if (tileentity.getLinkCapacitors_ID() == Capacitors_ID) {
 					int dx = tileentity.xCoord - xCoordr;
 					int dy = tileentity.yCoord - yCoordr;
