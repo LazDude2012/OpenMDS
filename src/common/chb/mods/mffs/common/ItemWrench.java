@@ -46,6 +46,27 @@ public class ItemWrench extends ItemMultitool  {
 		
 		TileEntity tileentity =  world.getBlockTileEntity(x,y,z);
 		
+		
+		if(tileentity instanceof TileEntityProjector)
+		{
+			if(((TileEntityProjector)tileentity).isBurnout())
+			{
+			
+				if(ForceEnergyItems.use(stack, 10000, false,player))
+				{
+					((TileEntityProjector)tileentity).setBurnout(false);
+					Functions.ChattoPlayer(player,"[MultiTool] Projector repaired");
+					return true;
+				}else{
+					
+					Functions.ChattoPlayer(player,"[MultiTool] Fail: not enough FP please charge need min 10000");
+					return false;
+				}
+				
+				
+			}
+		}
+		
 
 
 		if(tileentity instanceof IMFFS_Wrench)
@@ -84,8 +105,8 @@ public class ItemWrench extends ItemMultitool  {
 
 			}
 			}else{
-				 if(world.isRemote)
-				Functions.ChattoPlayer(player,"[MultiTool] Fail: not enough EU please charge");
+		
+				Functions.ChattoPlayer(player,"[MultiTool] Fail: not enough FP please charge need min 1000");
 			}
 		}
 		
