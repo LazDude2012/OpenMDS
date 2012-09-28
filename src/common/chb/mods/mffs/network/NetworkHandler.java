@@ -226,6 +226,8 @@ public static void reflectionsetvalue(Field f,TileEntity tileEntity,ByteArrayDat
 
 public static void updateTileEntityField(TileEntity tileEntity, String varname)
 {
+	if(tileEntity instanceof TileEntityMachines)
+	{
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
 		DataOutputStream dos = new DataOutputStream(bos);
 		int x = tileEntity.xCoord;
@@ -341,6 +343,8 @@ public static void updateTileEntityField(TileEntity tileEntity, String varname)
 
 		PacketDispatcher.sendPacketToAllAround(x, y, z, 60, tileEntity.worldObj.getWorldInfo().getDimension(), pkt);
 	}
+	
+}
 
 public static void requestInitialData(TileEntity tileEntity){
 	
