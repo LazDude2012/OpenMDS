@@ -10,6 +10,23 @@ public class SecurityHelper {
 	public static boolean isAccessGranted(TileEntity tileEntity,EntityPlayer entityplayer,World world)
 	{
 		
+		
+		if (tileEntity instanceof TileEntityConverter) {
+			
+			if(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityConverter)tileEntity).getLinkCapacitors_ID())!= null)
+			{
+			if(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityConverter)tileEntity).getLinkCapacitors_ID()).getSecStation_ID()) != null)
+			{
+				if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityConverter)tileEntity).getLinkCapacitors_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
+					return false;
+				}
+			}
+		}
+		}
+		
+
+		
 		if (tileEntity instanceof TileEntityCapacitor){
 
 
@@ -39,21 +56,8 @@ public class SecurityHelper {
 		}
 		
 		
-		if (tileEntity instanceof TileEntityConverter) {
-			
-			if(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityConverter)tileEntity).getLinkCapacitors_ID())!= null)
-			{
-			if(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityConverter)tileEntity).getLinkCapacitors_ID()).getSecStation_ID()) != null)
-			{
-				if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityConverter)tileEntity).getLinkCapacitors_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
-					return false;
-				}
-			}
-		}
-		}
-		
-		
+
+
 		if (tileEntity instanceof TileEntityProjector) {
 			
 			if(((TileEntityProjector)tileEntity).getaccesstyp()== 2)

@@ -122,6 +122,7 @@ public class ModularForceFieldSystem {
 	public static Item MFFSProjectorOptionForceFieldJammer;
 	public static Item MFFSProjectorOptionCamouflage;
 	public static Item MFFSProjectorOptionFieldFusion;
+	
 
 	public static Item MFFSProjectorFFDistance;
 	public static Item MFFSProjectorFFStrenght;
@@ -296,6 +297,7 @@ public class ModularForceFieldSystem {
 		OreDictionary.registerOre("ForciciumItem", MFFSitemForcicium);
 		OreDictionary.registerOre("MonazitOre", MFFSMonazitOre);
 		OreDictionary.registerOre("ForciciumBlock", MFFSForciciumBlock);
+		
 		
 		GameRegistry.registerTileEntity(Converter, "MFFSForceEnergyConverter");
 		

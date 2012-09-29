@@ -59,7 +59,7 @@ public class GuiConverter extends GuiContainer {
 	}
 
     public void initGui() {
-    	controlList.add(new GuiGraphicButton(0, (width / 2) + 4, (height / 2) - 47,Converter,1));
+    	controlList.add(new GuiGraphicButton(0, (width / 2) + 67, (height / 2) -76,Converter,1));
         super.initGui();
     }
 

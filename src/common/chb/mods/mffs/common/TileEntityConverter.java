@@ -32,11 +32,12 @@ import net.minecraft.src.NBTTagList;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
+import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandler;
 
 public class TileEntityConverter extends TileEntityMachines implements ISidedInventory
-,INetworkHandlerListener{
+,INetworkHandlerListener,INetworkHandlerEventListener{
 
 	private ItemStack inventory[];
     private boolean create;
@@ -274,7 +275,8 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 		super.readFromNBT(nbttagcompound);
 
 		Converter_ID = nbttagcompound.getInteger("Converter_ID");
-
+		SwitchTyp = nbttagcompound.getInteger("SwitchTyp");
+		OnOffSwitch = nbttagcompound.getBoolean("OnOffSwitch");
 		 
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		inventory = new ItemStack[getSizeInventory()];
@@ -294,7 +296,9 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 		super.writeToNBT(nbttagcompound);
 
 		nbttagcompound.setInteger("Converter_ID", Converter_ID);
-
+		nbttagcompound.setInteger("SwitchTyp", SwitchTyp);
+		nbttagcompound.setBoolean("OnOffSwitch", OnOffSwitch);
+		
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < inventory.length; i++) {
 			if (inventory[i] != null) {
@@ -390,6 +394,24 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 
 
 
+	@Override
+	public void onNetworkHandlerEvent(int event) {
+		   switch(event)
+		   {
+		   case 0:
+			if(this.getswitchtyp() == 0)
+			{
+				this.setswitchtyp(1);
+			}else{
+				this.setswitchtyp(0);
+			}
+
+		   break;
+		   }
+		
+		
+	}
+	
 
 
 	@Override

@@ -31,8 +31,6 @@ import ic2.api.Items;
 
 
 
-
-
 public class TileEntityConverterEU extends TileEntityConverter
     implements IEnergySource {
 
@@ -76,14 +74,18 @@ public class TileEntityConverterEU extends TileEntityConverter
 
     public void checkslots(boolean init) {
         if(super.getStackInSlot(1) != null) {
-            if(Block.blocksList[super.getStackInSlot(1).itemID] == Block.blocksList[Items.getItem("lvTransformer").itemID])
+        	
+        	if(Block.blocksList[super.getStackInSlot(1).itemID] == Block.blocksList[Items.getItem("lvTransformer").itemID])
+        	{
+            if(super.getStackInSlot(1).getItemDamage() == 3) //lvTransformer
                 super.setOutput(128);
 
-            if(Block.blocksList[super.getStackInSlot(1).itemID] == Block.blocksList[Items.getItem("mvTransformer").itemID])
+            if(super.getStackInSlot(1).getItemDamage() == 4) // mvTransformer
                 super.setOutput(512);
 
-            if(Block.blocksList[super.getStackInSlot(1).itemID] == Block.blocksList[Items.getItem("hvTransformer").itemID])
+            if(super.getStackInSlot(1).getItemDamage() == 5) // hvTransformer
                 super.setOutput(2047);
+        	}
         } else {
             super.setOutput(32);
         }
@@ -95,4 +97,6 @@ public class TileEntityConverterEU extends TileEntityConverter
 	public boolean emitsEnergyTo(TileEntity receiver, Direction direction) {
 		return  receiver instanceof IEnergyConductor;
 	}
+
+
 }

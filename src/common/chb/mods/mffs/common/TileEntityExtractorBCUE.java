@@ -84,7 +84,7 @@ public void onReceive(TileEntity sender, double amps, double voltage,
 
 @Override
 public double wattRequest() {
-	return getMaxWattHours();
+	return Math.ceil(this.getMaxWattHours() - this.wattHours);
 }
 
 
