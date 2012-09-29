@@ -74,7 +74,8 @@ public class TileEntityConverterEU extends TileEntityConverter
 
     public void checkslots(boolean init) {
         if(super.getStackInSlot(1) != null) {
-        	
+        	if(super.getStackInSlot(1).itemID<255)
+        	{
         	if(Block.blocksList[super.getStackInSlot(1).itemID] == Block.blocksList[Items.getItem("lvTransformer").itemID])
         	{
             if(super.getStackInSlot(1).getItemDamage() == 3) //lvTransformer
@@ -91,6 +92,7 @@ public class TileEntityConverterEU extends TileEntityConverter
         }
 
         super.checkslots(init);
+    }
     }
 
 	@Override
