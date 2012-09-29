@@ -29,7 +29,7 @@ public class BlockConverter extends BlockMFFSBase {
 			return false;
         }
 
-		TileEntityExtractor tileentity = (TileEntityExtractor) world
+		TileEntityConverter tileentity = (TileEntityConverter) world
 				.getBlockTileEntity(i, j, k);
 
 		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world))

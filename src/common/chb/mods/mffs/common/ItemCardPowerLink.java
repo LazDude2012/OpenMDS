@@ -52,6 +52,17 @@ public class ItemCardPowerLink extends Item  {
 		if (!world.isRemote) {
 			
 
+			if (tileEntity instanceof TileEntityConverter) {
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  {
+
+					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 0,"<Power-Link>");
+
+				  }
+	            }
+			
+			
+			
 			if (tileEntity instanceof TileEntityProjector) {
 			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
 			  {

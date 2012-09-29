@@ -46,6 +46,48 @@ public class ItemSwitch extends ItemMultitool {
 		TileEntity tileentity =  world
 				.getBlockTileEntity(x,y,z);
 
+		
+		if(tileentity instanceof TileEntityConverter)
+		{
+			
+			  if(SecurityHelper.isAccessGranted(tileentity, entityplayer, world))
+			  {
+
+					if(((TileEntityConverter)tileentity).getswitchtyp() == 1)
+					{
+						if(ForceEnergyItems.use(itemstack, 1000, false,entityplayer))
+						{
+					     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
+
+							if(((TileEntityConverter)tileentity).getOnOffSwitch())
+							{
+								((TileEntityConverter)tileentity).setOnOffSwitch(false);
+							}else{
+								((TileEntityConverter)tileentity).setOnOffSwitch(true);
+							}
+							
+						return true;
+						}else{
+							
+							Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: not enough EU please charge");
+							return false;
+						}
+					}else{
+					
+						Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: Wrong Mode");
+						return false;
+					}
+
+			  }
+			
+			
+		}
+		
+		
+		
+		
+		
+		
 		if(tileentity instanceof TileEntityProjector)
 
 		{
