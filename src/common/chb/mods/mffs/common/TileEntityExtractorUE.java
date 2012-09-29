@@ -92,8 +92,8 @@ public TileEntityExtractorUE(){
 
 
 	@Override
-	public double wattRequest() {
-		return getMaxWattHours();
+	public double wattRequest(){
+		return Math.ceil(this.getMaxWattHours() - this.wattHours);
 	}
 
 
@@ -116,7 +116,4 @@ public TileEntityExtractorUE(){
 	public double getMaxWattHours() {
 		return 120000;
 	}
-	
-
-	
 }
