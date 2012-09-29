@@ -52,7 +52,7 @@ public class GuiExtractor extends GuiContainer {
 		
 		int WorkCylce;
 		
-		if(tileEntity.getWorkCylce()>125)
+		if(tileEntity.getWorkCylce()>ModularForceFieldSystem.ForceciumWorkCylce)
 		{
 			 WorkCylce =  (32 * tileEntity.getWorkCylce()) / ModularForceFieldSystem.ForceciumBlockWorkCylce;
 		}else{
