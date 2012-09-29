@@ -44,6 +44,7 @@ public class BlockSecurtyStation extends BlockMFFSBase {
 	public boolean onBlockActivated(World world, int i, int j, int k,
 			EntityPlayer entityplayer, int par6, float par7, float par8,
 			float par9){
+		if (!world.isRemote){
 		if (entityplayer.isSneaking())
         {
 			return false;
@@ -54,16 +55,12 @@ public class BlockSecurtyStation extends BlockMFFSBase {
 
 		if(tileentity.isActive())
 		{
-		  
-			if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world))
-			{return false;}
-		 	
+				 if (!(tileentity.isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
+					 Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
+					return false;
+				 }
 		}
 
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {
-			return false;
-		}
 			
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemMultitool)) {
@@ -78,7 +75,7 @@ public class BlockSecurtyStation extends BlockMFFSBase {
 		if (!world.isRemote)
 		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_SECSTATION, world,
 				i, j, k);
-		
+		}
 		return true;
 	}
 }
