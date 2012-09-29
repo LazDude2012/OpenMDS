@@ -125,6 +125,7 @@ ISidedInventory, INetworkHandlerListener {
 
 	public void removefromgrid() {
 		Linkgrid.getWorldMap(worldObj).getSecStation().remove(SecurtyStation_ID);
+		dropplugins();
 	}
 
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
