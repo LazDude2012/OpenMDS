@@ -54,6 +54,7 @@ public class ItemWrench extends ItemMultitool  {
 			
 				if(ForceEnergyItems.use(stack, 10000, false,player))
 				{
+					ForceEnergyItems.use(stack, 10000, true,player);
 					((TileEntityProjector)tileentity).setBurnout(false);
 					Functions.ChattoPlayer(player,"[MultiTool] Projector repaired");
 					return true;
