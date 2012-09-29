@@ -248,29 +248,37 @@ public class ModularForceFieldSystem {
 		boolean UniversalElectricity = loadUEstuff();
 		boolean Industrialcraft = loadIndustrialcraftstuff();
 		
-        if(BuildCraft && UniversalElectricity && Industrialcraft)
-        { Extractor =  TileEntityExtractorAll.class;}
-		
+        if(BuildCraft && UniversalElectricity && Industrialcraft) {
+            Extractor = chb.mods.mffs.common.TileEntityExtractorAll.class;
+            Converter = chb.mods.mffs.common.TileEntityConverterEU.class;
+        }
+
         if(BuildCraft && UniversalElectricity && !Industrialcraft)
-            {Extractor =  TileEntityExtractorBCUE.class;}
-        
-        if(BuildCraft && !UniversalElectricity && Industrialcraft)
-        { Extractor =  TileEntityExtractorEUBC.class;}
-        
-        if(!BuildCraft && UniversalElectricity && Industrialcraft)
-        {Extractor =  TileEntityExtractorEUUE.class;}
-        
-        if(!BuildCraft && !UniversalElectricity && Industrialcraft)
-            {Extractor =  TileEntityExtractorEU.class;}
-        
+            Extractor = chb.mods.mffs.common.TileEntityExtractorBCUE.class;
+
+        if(BuildCraft && !UniversalElectricity && Industrialcraft) {
+            Extractor = chb.mods.mffs.common.TileEntityExtractorEUBC.class;
+            Converter = chb.mods.mffs.common.TileEntityConverterEU.class;
+        }
+
+        if(!BuildCraft && UniversalElectricity && Industrialcraft) {
+            Extractor = chb.mods.mffs.common.TileEntityExtractorEUUE.class;
+            Converter = chb.mods.mffs.common.TileEntityConverterEU.class;
+        }
+
+        if(!BuildCraft && !UniversalElectricity && Industrialcraft) {
+            Extractor = chb.mods.mffs.common.TileEntityExtractorEU.class;
+            Converter = chb.mods.mffs.common.TileEntityConverterEU.class;
+        }
+
         if(!BuildCraft && UniversalElectricity && !Industrialcraft)
-            {Extractor =  TileEntityExtractorUE.class; }
-        
+            Extractor = chb.mods.mffs.common.TileEntityExtractorUE.class;
+
         if(BuildCraft && !UniversalElectricity && !Industrialcraft)
-            {Extractor =  TileEntityExtractorBC.class; }
-        
+            Extractor = chb.mods.mffs.common.TileEntityExtractorBC.class;
+
         if(!BuildCraft && !UniversalElectricity && !Industrialcraft)
-        	{System.out.println("[ModularForceFieldSystem] ERROR: No Energy Mod found !!");}
+            System.out.println("[ModularForceFieldSystem] ERROR: No Energy Mod found !!");
 		
   
         
@@ -289,7 +297,7 @@ public class ModularForceFieldSystem {
 		OreDictionary.registerOre("MonazitOre", MFFSMonazitOre);
 		OreDictionary.registerOre("ForciciumBlock", MFFSForciciumBlock);
 		
-		GameRegistry.registerTileEntity(TileEntityConverter.class, "MFFSForceEnergyConverter");
+		GameRegistry.registerTileEntity(Converter, "MFFSForceEnergyConverter");
 		
 		GameRegistry.registerTileEntity(Extractor, "MFFSExtractor");
 		
@@ -372,7 +380,7 @@ public class ModularForceFieldSystem {
 		
 	
 		
-		LanguageRegistry.instance().addNameForObject(MFFSForceEnergyConverter, "en_US", "MFFS ForceEnergyConverter");
+		LanguageRegistry.instance().addNameForObject(MFFSForceEnergyConverter, "en_US", "MFFS ForceEnergy Converter");
 		LanguageRegistry.instance().addNameForObject(MFFSForciciumBlock, "en_US", "Block of Forcicium");
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradeexctractorboost, "en_US", "MFFS Extractor Booster");
 		LanguageRegistry.instance().addNameForObject(MFFSExtractor, "en_US", "MFFS Force Energy Extractor");
@@ -464,7 +472,7 @@ public class ModularForceFieldSystem {
 		System.out.println("[ModularForceFieldSystem] Loading module for Universal Electricity");
 		
 		try {
-			ModularForceFieldSystem.class.getClassLoader().loadClass("chb.mods.mffs.common.TileEntityExtractorUE");
+			ModularForceFieldSystem.class.getClassLoader().loadClass("universalelectricity.UniversalElectricity");
 			return true;
 		} catch (Throwable t) {
 			System.out.println("[ModularForceFieldSystem] Module not loaded: Universal Electricity not found");

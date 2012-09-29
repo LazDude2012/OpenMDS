@@ -18,59 +18,55 @@
     Thunderdark - initial implementation
 */
 
+
 package chb.mods.mffs.client;
 
-import org.lwjgl.opengl.GL11;
-
+import chb.mods.mffs.common.ContainerCapacitor;
 import chb.mods.mffs.common.ContainerConverter;
 import chb.mods.mffs.common.TileEntityConverter;
 import chb.mods.mffs.network.NetworkHandler;
+import java.util.List;
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
 
+import org.lwjgl.opengl.GL11;
 
 
 public class GuiConverter extends GuiContainer {
-	private TileEntityConverter Converter;
 
-	public GuiConverter(EntityPlayer player,
-			TileEntityConverter tileentity) {
-		super(new ContainerConverter(player, tileentity));
-		Converter = tileentity;
-	}
-	
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-		int textur = mc.renderEngine
-				.getTexture("/chb/mods/mffs/sprites/GuiProjector.png");
+    private TileEntityConverter Converter;
+
+    public GuiConverter(EntityPlayer player, TileEntityConverter tileentity) {
+        super(new ContainerConverter(player, tileentity));
+        Converter = tileentity;
+    }
+
+    protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+    	int textur = mc.renderEngine.getTexture("/chb/mods/mffs/sprites/GuiConvertor.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(textur);
-
 		int w = (width - xSize) / 2;
 		int k = (height - ySize) / 2;
-
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
-		int i1 = (79 * Converter.getCapacity() / 100);
-		drawTexturedModalRect(w + 8, k + 71, 176, 0, i1 + 1, 79);
-
-		}
-
+        int i1 = (79 * Converter.getCapacity()) / 100;
+        drawTexturedModalRect(w + 8, k + 71, 176, 0, i1 + 1, 79);
+    }
 
 	protected void actionPerformed(GuiButton guibutton) {
 		NetworkHandler.fireTileEntityEvent(Converter, guibutton.id);
 	}
 
-	public void initGui() {
-		controlList.add(new GuiGraphicButton(0, (width / 2) + 4, (height / 2) - 47,Converter,1));
-		controlList.add(new GuiGraphicButton(1, (width / 2) + 67, (height / 2) -76,Converter,2));
+    public void initGui() {
+    	controlList.add(new GuiGraphicButton(0, (width / 2) + 4, (height / 2) - 47,Converter,1));
+        super.initGui();
+    }
 
-		super.initGui();
-	}
-
-	@Override
-	protected void drawGuiContainerForegroundLayer() {
-		fontRenderer.drawString("MFFS Converter", 5, 5, 0x404040);
-
-	}
+    protected void drawGuiContainerForegroundLayer() {
+    	fontRenderer.drawString("MFFS Converter", 5, 5, 0x404040);
+    	fontRenderer.drawString("Force Energy", 15, 50, 0x404040);
+    	fontRenderer.drawString((new StringBuilder()).append(" ").append(Converter.getLinkPower()).toString(), 30, 60, 0x404040);
+    	fontRenderer.drawString((new StringBuilder()).append("Output:").append(Converter.getOutput()).toString(), 100, 70, 0x404040);
+    }
 }

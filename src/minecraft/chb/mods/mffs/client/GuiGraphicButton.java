@@ -28,6 +28,7 @@ import org.lwjgl.opengl.GL11;
 
 import chb.mods.mffs.common.TileEntityCapacitor;
 import chb.mods.mffs.common.TileEntityProjector;
+import chb.mods.mffs.common.TileEntityConverter;
 
 public class GuiGraphicButton extends GuiButton
 
@@ -53,6 +54,20 @@ public class GuiGraphicButton extends GuiButton
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
+            if((tileEntity instanceof TileEntityConverter) && typ == 1)
+            {
+                switch(((TileEntityConverter)tileEntity).getswitchtyp()) 
+                {
+                case 0:
+                	this.drawTexturedModalRect(this.xPosition, this.yPosition, 80, 80, this.width, this.height);
+                break;
+                case 1:
+                	this.drawTexturedModalRect(this.xPosition, this.yPosition, 64, 80, this.width, this.height);
+                break;
+                }
+                }
+            
+            
             if(tileEntity instanceof TileEntityProjector)
             {
                 if(typ == 1)

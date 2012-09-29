@@ -1,3 +1,23 @@
+/*  
+    Copyright (C) 2012 Thunderdark
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+    Contributors:
+    Thunderdark - initial implementation
+*/
+
 package chb.mods.mffs.common;
 
 import java.util.LinkedList;
@@ -20,106 +40,161 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 
 	private ItemStack inventory[];
     private boolean create;
-	private int Converter_ID;
-	private int LinkCapacitor_ID;
-	private int capacity;
-	private int linkPower;
+    private int Converter_ID;
+    private int LinkCapacitor_ID;
+    private int capacity;
+    private int linkPower;
+    private boolean linkGenerator;
+    private int SwitchTyp;
+    private boolean OnOffSwitch;
+    private int output;
 
 	
 	public TileEntityConverter() {
 		
-		inventory = new ItemStack[1];
-		create = true;
-		Converter_ID = 0;
-		LinkCapacitor_ID = 0;
-		capacity = 0;
-		linkPower = 0;
+		inventory = new ItemStack[4];
+        create = true;
+        Converter_ID = 0;
+        LinkCapacitor_ID = 0;
+        capacity = 0;
+        linkPower = 0;
+        linkGenerator = false;
+        SwitchTyp = 0;
+        OnOffSwitch = false;
+        output = 32;
     }
 
 	
-	public int getLinkPower() {
-		return linkPower;
-	}
+    public int getOutput() {
+        return output;
+    }
 
-	public void setLinkPower(int linkPower) {
-		this.linkPower = linkPower;
-	}
-	
-	
-	public int getCapacity(){
-		return capacity;
-	}
+    public void setOutput(int output) {
+        this.output = output;
+    }
 
-	
-	public void setCapacity(int Capacity){
-		this.capacity = Capacity;
-	}
-	
-	public int getLinkCapacitors_ID() {
-		return LinkCapacitor_ID;
-	}
-	
-	public void setLinkCapacitor_ID(int id){
-		this.LinkCapacitor_ID = id;
-	}
-	
-	public int getConverter_ID() {
-		return Converter_ID;
-	}
+    public boolean getOnOffSwitch() {
+        return OnOffSwitch;
+    }
+
+    public void setOnOffSwitch(boolean a) {
+        OnOffSwitch = a;
+    }
+
+    public int getswitchtyp() {
+        return SwitchTyp;
+    }
+
+    public void setswitchtyp(int a) {
+        SwitchTyp = a;
+    }
+
+    public boolean isLinkGenerator() {
+        return linkGenerator;
+    }
+
+    public void setLinkGenerator(boolean linkGenerator) {
+        this.linkGenerator = linkGenerator;
+    }
+
+    public int getLinkPower() {
+        return linkPower;
+    }
+
+    public void setLinkPower(int linkPower) {
+        this.linkPower = linkPower;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int Capacity) {
+        capacity = Capacity;
+    }
+
+    public int getLinkCapacitors_ID() {
+        return LinkCapacitor_ID;
+    }
+
+    public void setLinkCapacitor_ID(int id) {
+        LinkCapacitor_ID = id;
+    }
+
+    public int getConverter_ID() {
+        return Converter_ID;
+    }
+
+    public boolean isCreate() {
+        return create;
+    }
+
+    public void setCreate(boolean create) {
+        this.create = create;
+    }
 	
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			
-			if (create) {
-				if (Converter_ID == 0) {
-					Converter_ID = Linkgrid.getWorldMap(worldObj)
-							.newConverter_ID(this);
-				}
-				
-				
-				if (this.getLinkCapacitors_ID() != 0) {
-					try {
-						this.setLinkPower(Linkgrid.getWorldMap(worldObj)
-								.getCapacitor().get(this.getLinkCapacitors_ID())
-								.getForcePower());
-						this.setCapacity(Linkgrid.getWorldMap(worldObj)
-								.getCapacitor().get(this.getLinkCapacitors_ID())
-								.getCapacity());
-					} catch (java.lang.NullPointerException ex) {
-						this.setLinkPower(0);
-						this.setCapacity(0);
-					}
-				} else {
-					this.setLinkPower(0);
-					this.setCapacity(0);
-				}
-				
-				addtogrid();
-				checkslots(true);
-				create = false;
-			}
-		
-			if (this.getTicker() >= 20) {
-				
+            if(isCreate() && getLinkCapacitors_ID() != 0) {
+                addtogrid();
+                checkslots(true);
+                setCreate(false);
+            }
 
-				checkslots(false);
+            if(getLinkCapacitors_ID() != 0) {
+                setLinkGenerator(true);
 
-				
-				this.setTicker((short) 0);
-			}
-		
-			this.setTicker((short) (this.getTicker() + 1));
-			
-				
+                try {
+					this.setLinkPower(Linkgrid.getWorldMap(worldObj)
+							.getCapacitor().get(this.getLinkCapacitors_ID())
+							.getForcePower());
+					this.setCapacity(Linkgrid.getWorldMap(worldObj)
+							.getCapacitor().get(this.getLinkCapacitors_ID())
+							.getCapacity());
+                } catch(NullPointerException ex) {
+                    setLinkGenerator(false);
+                    setLinkPower(0);
+                    setCapacity(0);
+                }
+            } else {
+                setLinkGenerator(false);
+                setLinkPower(0);
+                setCapacity(0);
+            }
 
-		}else{
-			
-			if (create) {
-				NetworkHandler.requestInitialData(this);
-				create = false;
-			}
-		}
-	}
+			boolean powerdirekt = worldObj.isBlockGettingPowered(xCoord,
+					yCoord, zCoord);
+			boolean powerindrekt = worldObj.isBlockIndirectlyGettingPowered(
+					xCoord, yCoord, zCoord);
+
+            if(getswitchtyp() == 0)
+                setOnOffSwitch(powerdirekt || powerindrekt);
+
+            if(getOnOffSwitch() && isLinkGenerator() && getLinkPower() > 0 && !isActive())
+                setActive(true);
+
+            if((!getOnOffSwitch() || !isLinkGenerator() || getLinkPower() <= 0) && isActive())
+                setActive(false);
+
+            if(isActive())
+                Emitpower();
+
+            if(getTicker() >= 20) {
+                checkslots(false);
+                setTicker((short)0);
+            }
+
+            setTicker((short)(getTicker() + 1));
+        } else if(create) {
+            NetworkHandler.requestInitialData(this);
+            create = false;
+        }
+    }
+	
+	
+    public void Emitpower() {}
+	
 	
 	
 	public void checkslots(boolean init) {
