@@ -106,13 +106,13 @@ public abstract class ItemMultitool extends  Item  implements IForceEnergyItems{
 		@Override
 		public int getforceEnergyTransferMax() {
 			
-			return 5000;
+			return 50000;
 		}
 		
 		@Override
 		public  int getMaxForceEnergy() {
 			
-			return 100000;
+			return 1000000;
 		}
 		
 

@@ -31,12 +31,7 @@ public class ModIndependentRecipes {
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypAdvCube), new Object[] {
 			"AAA", "ABA", "AAA", 'A',
 			ModularForceFieldSystem.MFFSitemFocusmatix, 'B', ModularForceFieldSystem.MFFSProjectorTypkube });
-	
-		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemForceFieldsync),
-				new Object[] { " A ", "ABA", " A ", 'A',
-			ModularForceFieldSystem.MFFSitemFocusmatix, 'B',
-			Item.diamond });
-		
+			
 		
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypsphere),
 				new Object[] { " B ", "BAB", " B ", 'A',

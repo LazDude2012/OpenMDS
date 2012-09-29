@@ -93,7 +93,7 @@ public class ModularForceFieldSystem {
 	public static Item MFFSitemSwitch;
 	public static Item MFFSitemWrench;
 
-	public static Item MFFSitemForceFieldsync;
+	public static Item MFFSitemFieldTeleporter;
 	public static Item MFFSitemMFDidtool;
 	public static Item MFFSitemMFDdebugger;
 	public static Item MFFSitemcardempty;
@@ -198,7 +198,7 @@ public class ModularForceFieldSystem {
 
 			MFFSitemWrench= new ItemWrench(MFFSconfig.getOrCreateIntProperty("itemWrench",Configuration.CATEGORY_ITEM,11107).getInt(11107)).setItemName("itemWrench");
 			MFFSitemSwitch= new ItemSwitch(MFFSconfig.getOrCreateIntProperty("itemSwitch",Configuration.CATEGORY_ITEM,11108).getInt(11108)).setItemName("itemSwitch");
-			MFFSitemForceFieldsync= new ItemForceFieldSynchronCapacitor(MFFSconfig.getOrCreateIntProperty("itemForceFieldsync",Configuration.CATEGORY_ITEM,11109).getInt(11109)).setItemName("itemForceFieldsync");
+			MFFSitemFieldTeleporter= new ItemFieldtransporter(MFFSconfig.getOrCreateIntProperty("itemForceFieldsync",Configuration.CATEGORY_ITEM,11109).getInt(11109)).setItemName("itemForceFieldsync");
 			MFFSitemMFDidtool= new ItemPersonalIDWriter(MFFSconfig.getOrCreateIntProperty("ItemMFDIDwriter",Configuration.CATEGORY_ITEM,11110).getInt(11110)).setItemName("ItemMFDIDwriter");
 			MFFSitemMFDdebugger= new ItemDebugger(MFFSconfig.getOrCreateIntProperty("itemMFDdebugger",Configuration.CATEGORY_ITEM,11111).getInt(11111)).setItemName("itemMFDdebugger");
 			MFFSitemcardempty= new ItemCardEmpty(MFFSconfig.getOrCreateIntProperty("itemcardempty",Configuration.CATEGORY_ITEM,11115).getInt(11115)).setItemName("itemcardempty");
@@ -272,7 +272,7 @@ public class ModularForceFieldSystem {
         if(!BuildCraft && !UniversalElectricity && !Industrialcraft)
         	{System.out.println("[ModularForceFieldSystem] ERROR: No Energy Mod found !!");}
 		
-        System.out.println(Extractor.getName());
+  
         
 		GameRegistry.registerBlock(MFFSCapacitor);
 		GameRegistry.registerBlock(MFFSProjector);
@@ -386,12 +386,12 @@ public class ModularForceFieldSystem {
 		LanguageRegistry.instance().addNameForObject(MFFSProjector,"en_US", "MFFS Modular Projector");
 		LanguageRegistry.instance().addNameForObject(MFFSSecurtyStation,"en_US", "MFFS Security Station");
 		LanguageRegistry.instance().addNameForObject(MFFSitemFocusmatix,"en_US", "MFFS Projector Focus Matrix");
-		LanguageRegistry.instance().addNameForObject(MFFSitemForceFieldsync,"en_US","MFFS Force Field Synchron Capacitor");
+		LanguageRegistry.instance().addNameForObject(MFFSitemFieldTeleporter,"en_US","MFFS MultiTool <Field Teleporter>");
 		LanguageRegistry.instance().addNameForObject(MFFSitemcardempty,"en_US", "MFFS Card <blank> ");
 		LanguageRegistry.instance().addNameForObject(MFFSitemfc,"en_US", "MFFS Card <Power Link>");
 		LanguageRegistry.instance().addNameForObject(MFFSItemIDCard,"en_US", "MFFS Card <Personal ID>");
 		LanguageRegistry.instance().addNameForObject(MFFSItemSecLinkCard,"en_US", "MFFS Card <Security Station Link> ");
-		LanguageRegistry.instance().addNameForObject(MFFSitemMFDdebugger,"en_US", "MFFS Device <Debugger>");
+		LanguageRegistry.instance().addNameForObject(MFFSitemMFDdebugger,"en_US", "MFFS MultiTool <Debugger>");
 		LanguageRegistry.instance().addNameForObject(MFFSitemMFDidtool,"en_US", "MFFS MultiTool <ID-Card Coder>");
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradecaprange,"en_US","MFFS Capacitor Upgrade <Range> ");
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradecapcap,"en_US","MFFS Capacitor Upgrade <Capacity> ");

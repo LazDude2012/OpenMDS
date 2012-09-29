@@ -126,28 +126,14 @@ public class ModIndustrialcraftRecipes {
 						Items.getItem("electronicCircuit"),
 						'C', Item.redstone });
 
-		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemMFDidtool),
-				new Object[] { "DAE", " C ", "CBC", 'A',
-			Item.redstone, 'B',Items.getItem("advancedCircuit") ,
-			'C',Items.getItem("carbonPlate"),
-			'D',Items.getItem("wrench"),
-			'E',Block.lever
-		});
 
-		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemSwitch),
-				new Object[] { "DEA", " C ", "CBC", 'A',
-			Item.redstone, 'B',Items.getItem("advancedCircuit") ,
-			'C',Items.getItem("carbonPlate"),
-			'D',Items.getItem("wrench"),
-			'E',Block.lever
-		});
 
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemWrench),
-				new Object[] { "EDA", " C ", "CBC", 'A',
+				new Object[] { "ADE", "CFC", "CBC", 'A',
 			Item.redstone, 'B',Items.getItem("advancedCircuit") ,
 			'C',Items.getItem("carbonPlate"),
 			'D',Items.getItem("wrench"),
-			'E',Block.lever
+			'E',Block.lever,'F',ModularForceFieldSystem.MFFSitemForcePowerCrystal
 		});
 
 
