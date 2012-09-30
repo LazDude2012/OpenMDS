@@ -113,7 +113,7 @@ public class TECapacitorRenderer extends TileEntitySpecialRenderer {
             GL11.glDisable(GL11.GL_LIGHTING);
             fontRenderer.drawString(header, offsetX-realWidth/2, 1+offsetY-realHeight/2 + -2 * lineHeight, 1);
             fontRenderer.drawString("capacity: ", offsetX-realWidth/2, 1+offsetY-realHeight/2 + 0 * lineHeight, 1);
-            fontRenderer.drawString(String.valueOf(topview.getCapacity()).concat(" % "), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf((topview.getForcePower()*100)/topview.getMaxForcePower()).concat(" % ")), offsetY - realHeight/2-0*lineHeight, 1);
+            fontRenderer.drawString(String.valueOf(topview.getCapacity()).concat(" % "), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf(topview.getCapacity()).concat(" % ")), offsetY - realHeight/2-0*lineHeight, 1);
             fontRenderer.drawString("range: ", offsetX-realWidth/2, 1+offsetY-realHeight/2 + 1 * lineHeight, 1);
             fontRenderer.drawString(String.valueOf(topview.getTransmitRange()), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf(topview.getTransmitRange())), offsetY - realHeight/2+1*lineHeight, 1);
             fontRenderer.drawString("linked device: ", offsetX-realWidth/2, 1+offsetY-realHeight/2 + 2 * lineHeight, 1);

@@ -25,6 +25,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Random;
 
+import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
 public final class Linkgrid {
@@ -74,62 +75,70 @@ public final class Linkgrid {
 		public Map<Integer, TileEntityProjector> getFieldFusion() {
 			return FieldFusion;
 		}
-
-		public int newGenerator_ID(TileEntityCapacitor tileEntityCapacitor) {
+		
+		public int newID(TileEntity tileEntity)
+		{
 			Random random = new Random();
-			int tempCapacitor_ID = random.nextInt();
-
-			while (Capacitors.get(tempCapacitor_ID) != null) {
-				tempCapacitor_ID = random.nextInt();
+			int tempID = random.nextInt();
+			
+			if(tileEntity instanceof TileEntityAreaDefenseStation){
+				
+				while (DefStation.get(tempID) != null) {
+					tempID = random.nextInt();
+				}
+				DefStation.put(tempID, (TileEntityAreaDefenseStation) tileEntity);
+				
 			}
-			Capacitors.put(tempCapacitor_ID, tileEntityCapacitor);
-			return tempCapacitor_ID;
-		}
-
-		public int newSecStation_ID(TileEntitySecurityStation tileEntity) {
-			Random random = new Random();
-			int tempSecStation_ID = random.nextInt();
-
-			while (SecStation.get(tempSecStation_ID) != null) {
-				tempSecStation_ID = random.nextInt();
+			
+			if(tileEntity instanceof TileEntityProjector){
+				
+				while (Projektor.get(tempID) != null) {
+					tempID = random.nextInt();
+				}
+				Projektor.put(tempID, (TileEntityProjector) tileEntity);
+				
 			}
-			SecStation.put(tempSecStation_ID, tileEntity);
-			return tempSecStation_ID;
-		}
-
-		public int newDefStation_ID(TileEntityAreaDefenseStation tileEntity) {
-			Random random = new Random();
-			int tempDefStation_ID = random.nextInt();
-
-			while (DefStation.get(tempDefStation_ID) != null) {
-				tempDefStation_ID = random.nextInt();
+			
+			if(tileEntity instanceof TileEntityCapacitor){
+				
+				while (Capacitors.get(tempID) != null) {
+					tempID = random.nextInt();
+				}
+				Capacitors.put(tempID, (TileEntityCapacitor) tileEntity);
+				
 			}
-			DefStation.put(tempDefStation_ID, tileEntity);
-			return tempDefStation_ID;
+			
+			if(tileEntity instanceof TileEntitySecurityStation){
+				
+				while (SecStation.get(tempID) != null) {
+					tempID = random.nextInt();
+				}
+				SecStation.put(tempID, (TileEntitySecurityStation) tileEntity);
+				
+			}
+			
+			if(tileEntity instanceof TileEntityExtractor){
+				
+				while (Extractor.get(tempID) != null) {
+					tempID = random.nextInt();
+				}
+				Extractor.put(tempID, (TileEntityExtractor) tileEntity);
+				
+			}
+			
+			if(tileEntity instanceof TileEntityConverter){
+				
+				while (Converter.get(tempID) != null) {
+					tempID = random.nextInt();
+				}
+				Converter.put(tempID, (TileEntityConverter) tileEntity);
+				
+			}
+			
+			return tempID;
 		}
 		
-		public int newExtractor_ID(TileEntityExtractor tileEntity) {
-			Random random = new Random();
-			int tempExtractor_ID = random.nextInt();
-
-			while (Extractor.get(tempExtractor_ID) != null) {
-				tempExtractor_ID = random.nextInt();
-			}
-			Extractor.put(tempExtractor_ID, tileEntity);
-			return tempExtractor_ID;
-		}
 		
-		
-		public int newConverter_ID(TileEntityConverter tileEntity) {
-			Random random = new Random();
-			int tempConverter_ID = random.nextInt();
-
-			while (Converter.get(tempConverter_ID) != null) {
-				tempConverter_ID = random.nextInt();
-			}
-			Converter.put(tempConverter_ID, tileEntity);
-			return tempConverter_ID;
-		}
 		
 
 		public static int myRandom(int low, int high) {

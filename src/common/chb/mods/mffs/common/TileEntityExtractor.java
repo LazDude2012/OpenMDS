@@ -152,9 +152,14 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	
 	
 	public void addtogrid() {
-		Linkgrid.getWorldMap(worldObj).getExtractor()
-				.put(getExtractor_ID(), this);
+		
+		if (Extractor_ID == 0) {
+			Extractor_ID = Linkgrid.getWorldMap(worldObj)
+					.newID(this);
+		}
+		Linkgrid.getWorldMap(worldObj).getExtractor().put(Extractor_ID, this);
 	}
+	
 
 	public void removefromgrid() {
 		Linkgrid.getWorldMap(worldObj).getExtractor().remove(getExtractor_ID());
@@ -347,15 +352,13 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			
-			if (create) {
-				if (Extractor_ID == 0) {
-					Extractor_ID = Linkgrid.getWorldMap(worldObj)
-							.newExtractor_ID(this);
-				}
+			
+			if (create && this.getLinkCapacitors_ID() != 0) {
 				addtogrid();
 				checkslots(true);
 				create = false;
 			}
+
 		
 			if (this.getTicker() >= getWorkTicker()) {
 				

@@ -46,18 +46,28 @@ public class ItemDebugger extends  ItemMultitool  {
 		if (!world.isRemote) {
 			
 			
-			if (tileEntity instanceof TileEntityForceField) {
+			if (tileEntity instanceof TileEntityConverter) {
 				info.setLength(0);
-				info.append("Texurid: ").append( Arrays.toString(
-						((TileEntityForceField) tileEntity).getTexturid()));
+				info.append("Extractor: ").append(((TileEntityConverter) tileEntity).getLinkCapacitors_ID());
 				Functions.ChattoPlayer(entityplayer, info.toString());
 			}
+			if (tileEntity instanceof TileEntityCapacitor) {
+				info.setLength(0);
+				info.append("Capacitor: ").append(((TileEntityCapacitor) tileEntity).getCapacitor_ID());
+				Functions.ChattoPlayer(entityplayer, info.toString());
+			}
+			
+			
 		}else{
 			
-			if (tileEntity instanceof TileEntityForceField) {
+			if (tileEntity instanceof TileEntityConverter) {
 				info.setLength(0);
-				info.append("Texurid: ").append( Arrays.toString(
-						((TileEntityForceField) tileEntity).getTexturid()));
+				info.append("Extractor: ").append(((TileEntityConverter) tileEntity).getLinkCapacitors_ID());
+				Functions.ChattoPlayer(entityplayer, info.toString());
+			}
+			if (tileEntity instanceof TileEntityCapacitor) {
+				info.setLength(0);
+				info.append("Capacitor: ").append(((TileEntityCapacitor) tileEntity).getCapacitor_ID());
 				Functions.ChattoPlayer(entityplayer, info.toString());
 			}
 		}
@@ -69,6 +79,13 @@ public class ItemDebugger extends  ItemMultitool  {
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
+		
+		System.out.println("Capacitor:" +Linkgrid.getWorldMap(world).getCapacitor().size());
+		System.out.println("Converter:" +Linkgrid.getWorldMap(world).getConverter().size());
+		System.out.println("Extractor:" +Linkgrid.getWorldMap(world).getExtractor().size());
+		System.out.println("Projector:" +Linkgrid.getWorldMap(world).getProjektor().size());
+	
+		
 		return itemstack;
 	}
 }

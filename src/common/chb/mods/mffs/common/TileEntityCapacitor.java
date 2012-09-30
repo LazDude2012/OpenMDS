@@ -76,6 +76,16 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 	}
 	
 	
+	public boolean isCreate() {
+		return create;
+	}
+
+
+	public void setCreate(boolean create) {
+		this.create = create;
+	}
+
+
 	public int getRemote_Capacitor_ID() {
 		return Remote_Capacitor_ID;
 	}
@@ -349,8 +359,12 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 	}
 
 	public void addtogrid() {
-		Linkgrid.getWorldMap(worldObj).getCapacitor()
-				.put(getCapacitor_ID(), this);
+		
+		if (Capacitor_ID == 0) {
+			Capacitor_ID = Linkgrid.getWorldMap(worldObj)
+					.newID(this);
+		}
+		Linkgrid.getWorldMap(worldObj).getCapacitor().put(Capacitor_ID, this);
 	}
 
 	public void removefromgrid() {
@@ -417,18 +431,13 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
-			if (create) {
-				if (Capacitor_ID == 0) {
-					Capacitor_ID = Linkgrid.getWorldMap(worldObj)
-							.newGenerator_ID(this);
-					Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.put(getCapacitor_ID(), this);
-				} else {
-					Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.put(getCapacitor_ID(), this);
-				}
-				create = false;
-			}
+			
+			if (this.isCreate()) {
+				addtogrid();
+                checkslots();
+                setCreate(false);
+            }
+			
 
 			boolean powerdirekt = worldObj.isBlockGettingPowered(xCoord,
 					yCoord, zCoord);

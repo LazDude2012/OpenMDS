@@ -50,7 +50,7 @@ ISidedInventory, INetworkHandlerListener {
 
 	public TileEntitySecurityStation() {
 		inventory = new ItemStack[4];
-		SecurtyStation_ID = -1;
+		SecurtyStation_ID = 0;
 		create = true;
 		MainUser = "";
 		Multiusermod = false;
@@ -120,6 +120,11 @@ ISidedInventory, INetworkHandlerListener {
 	}
 
 	public void addtogrid() {
+		
+		if (SecurtyStation_ID == 0) {
+			SecurtyStation_ID = Linkgrid.getWorldMap(worldObj)
+					.newID(this);
+		}
 		Linkgrid.getWorldMap(worldObj).getSecStation().put(SecurtyStation_ID, this);
 	}
 
@@ -167,15 +172,7 @@ ISidedInventory, INetworkHandlerListener {
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			if (this.isCreate()) {
-				if (getSecurtyStation_ID() == -1) {
-					setSecurtyStation_ID(Linkgrid.getWorldMap(worldObj)
-							.newSecStation_ID(this));
-					Linkgrid.getWorldMap(worldObj).getSecStation()
-							.put(SecurtyStation_ID, this);
-				} else {
-					Linkgrid.getWorldMap(worldObj).getSecStation()
-							.put(SecurtyStation_ID, this);
-				}
+				addtogrid();
 				setCreate(false);
 			}
 

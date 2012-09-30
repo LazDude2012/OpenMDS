@@ -57,7 +57,7 @@ ISidedInventory,INetworkHandlerListener {
 		Random random = new Random();
 
 		ProjektorItemStacks = new ItemStack[4];
-		Defstation_ID = random.nextInt();
+		Defstation_ID = 0;
 		linkCapacitors_ID = 0;
 		linkSecStation = false;
 		linkGenerator = false;
@@ -162,8 +162,11 @@ ISidedInventory,INetworkHandlerListener {
 	// End Getter AND Setter
 
 	public void addtogrid() {
-		Linkgrid.getWorldMap(worldObj).getDefStation()
-				.put(Defstation_ID, this);
+		if (Defstation_ID == 0) {
+			Defstation_ID = Linkgrid.getWorldMap(worldObj)
+					.newID(this);
+		}
+		Linkgrid.getWorldMap(worldObj).getDefStation().put(Defstation_ID, this);
 	}
 
 	public void removefromgrid() {

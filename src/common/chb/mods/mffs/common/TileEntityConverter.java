@@ -62,7 +62,7 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
         linkGenerator = false;
         SwitchTyp = 0;
         OnOffSwitch = false;
-        output = 32;
+        output = 1;
     }
 
 	
@@ -137,8 +137,8 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			
-            if(isCreate() && getLinkCapacitors_ID() != 0) {
-                addtogrid();
+			if (this.isCreate() && this.getLinkCapacitors_ID() != 0) {
+				addtogrid();
                 checkslots(true);
                 setCreate(false);
             }
@@ -246,13 +246,17 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 	
 	
 	public void addtogrid() {
-		Linkgrid.getWorldMap(worldObj).getConverter()
-				.put(getConverter_ID(), this);
+		if (Converter_ID == 0) {
+			Converter_ID = Linkgrid.getWorldMap(worldObj)
+					.newID(this);
+		}
+		Linkgrid.getWorldMap(worldObj).getConverter().put(Converter_ID, this);
 	}
 
 	public void removefromgrid() {
 		Linkgrid.getWorldMap(worldObj).getConverter().remove(getConverter_ID());
 		dropplugins();
+		
 	}
 	
 	public void dropplugins() {

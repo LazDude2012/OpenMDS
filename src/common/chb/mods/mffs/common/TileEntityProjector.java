@@ -82,7 +82,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 		ProjektorItemStacks = new ItemStack[13];
 		linkCapacitor_ID = 0;
-		Projektor_ID = random.nextInt();
+		Projektor_ID = 0;
 		linkPower = 0;
 		forcefieldblock_meta = ModularForceFieldSystem.FORCEFIELBOCKMETA_DEFAULT;
 		ProjektorTyp = 0;
@@ -1739,8 +1739,12 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	public void addtogrid() {
-		Linkgrid.getWorldMap(worldObj).getProjektor()
-				.put(getProjektor_ID(), this);
+		
+		if (Projektor_ID == 0) {
+			Projektor_ID = Linkgrid.getWorldMap(worldObj)
+					.newID(this);
+		}
+		Linkgrid.getWorldMap(worldObj).getProjektor().put(Projektor_ID, this);
 	}
 
 	public void removefromgrid() {

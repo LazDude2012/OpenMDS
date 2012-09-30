@@ -25,7 +25,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.TileEntity;
 import ic2.api.Direction;
 import ic2.api.EnergyNet;
-import ic2.api.IEnergyConductor;
+import ic2.api.IEnergyAcceptor;
 import ic2.api.IEnergySource;
 import ic2.api.Items;
 
@@ -61,6 +61,15 @@ public class TileEntityConverterEU extends TileEntityConverter
         }
     }
 
+    @Override
+    public void invalidate() {
+    	if (addedToEnergyNet) {
+    		EnergyNet.getForWorld(worldObj).removeTileEntity(this);
+    		addedToEnergyNet = false;
+    	}
+
+    	super.invalidate();
+    }
 
     public boolean isAddedToEnergyNet() {
         return addedToEnergyNet;
@@ -79,25 +88,24 @@ public class TileEntityConverterEU extends TileEntityConverter
         	if(Block.blocksList[super.getStackInSlot(1).itemID] == Block.blocksList[Items.getItem("lvTransformer").itemID])
         	{
             if(super.getStackInSlot(1).getItemDamage() == 3) //lvTransformer
-                super.setOutput(128);
+                super.setOutput(32);
 
             if(super.getStackInSlot(1).getItemDamage() == 4) // mvTransformer
-                super.setOutput(512);
+                super.setOutput(128);
 
             if(super.getStackInSlot(1).getItemDamage() == 5) // hvTransformer
-                super.setOutput(2047);
+                super.setOutput(512);
         	}
         } else {
             super.setOutput(32);
         }
-
-        super.checkslots(init);
     }
+        super.checkslots(init);
     }
 
 	@Override
 	public boolean emitsEnergyTo(TileEntity receiver, Direction direction) {
-		return  receiver instanceof IEnergyConductor;
+		return  receiver instanceof IEnergyAcceptor;
 	}
 
 

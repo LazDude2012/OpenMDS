@@ -81,6 +81,10 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		{
 			((TileEntityExtractor)tileEntity).addtogrid();
 		}
+		if(tileEntity instanceof TileEntityConverter)
+		{
+			((TileEntityConverter)tileEntity).addtogrid();
+		}
 	}
 	@Override
 	public void breakBlock(World world, int i, int j, int k,int a,int b) {
@@ -105,6 +109,10 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		if(tileEntity instanceof TileEntityExtractor)
 		{
 			((TileEntityExtractor)tileEntity).removefromgrid();
+		}
+		if(tileEntity instanceof TileEntityConverter)
+		{
+			((TileEntityConverter)tileEntity).removefromgrid();
 		}
 		
 		world.removeBlockTileEntity(i, j, k);
