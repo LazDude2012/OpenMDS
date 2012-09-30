@@ -17,6 +17,7 @@ public class ModIndustrialcraftRecipes {
 		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSProjector);
 		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSSecurtyStation);
 		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSExtractor);
+		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSForceEnergyConverter);
 		
 	}
 	
@@ -96,6 +97,27 @@ public class ModIndustrialcraftRecipes {
 								Items.getItem("electronicCircuit"),
 								'D',
 								Items.getItem("advancedAlloy") });
+		
+		CraftingManager.getInstance()
+		.addRecipe(
+				new ItemStack(ModularForceFieldSystem.MFFSForceEnergyConverter, 1),
+				new Object[] { "ABA", "CDE", "AAA",
+						'A',
+						Items.getItem("refinedIronIngot"),
+						'B',
+						Items.getItem("frequencyTransmitter"),
+						'C',
+						ModularForceFieldSystem.MFFSitemForcePowerCrystal,
+						'D',
+						Items.getItem("advancedMachine"),
+						'E',
+						Items.getItem("glassFiberCableItem"),
+				
+				});
+		
+		
+		
+		
 
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemFocusmatix, 64),
 				new Object[] { "ACA", "CBC", "ACA", 'A',

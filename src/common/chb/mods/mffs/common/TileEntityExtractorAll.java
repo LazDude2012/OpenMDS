@@ -218,7 +218,7 @@ public int powerRequest() {
 	double workEnergyinMJ = super.getWorkEnergy()  / 2.5;
 	double MaxWorkEnergyinMj = super.getMaxWorkEnergy()  / 2.5;
 	
-	return  (int) (MaxWorkEnergyinMj - workEnergyinMJ) ;
+	return (int) Math.round(MaxWorkEnergyinMj - workEnergyinMJ) ;
 }
 
 @Override
