@@ -378,7 +378,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 					if(this.hasPowertoConvert()){
 						
-						  setWorkEnergy(0);
 						  setWorkCylce(getWorkCylce()-1);
 						  setForceEnergybuffer(getForceEnergybuffer()+ ModularForceFieldSystem.ExtractorPassForceEnergyGenerate);	
 					}

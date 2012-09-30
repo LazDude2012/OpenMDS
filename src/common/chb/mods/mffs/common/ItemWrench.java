@@ -82,13 +82,34 @@ public class ItemWrench extends ItemMultitool  {
 			if(((IMFFS_Wrench)tileentity).wrenchCanManipulate(player, side))
 			{
 		
-				
 				if(tileentity instanceof TileEntityMachines)
 				{
 			
-				
-					if(((TileEntityMachines)tileentity).isActive())
+					if(tileentity instanceof TileEntityProjector)
+					{
+					if(((TileEntityProjector)tileentity).isActive())
 					return false;
+					}
+					
+					
+					if(tileentity instanceof TileEntitySecurityStation)
+					{
+					if(((TileEntitySecurityStation)tileentity).isActive())
+					return false;
+					}
+					
+					if(tileentity instanceof TileEntityAreaDefenseStation)
+					{
+					if(((TileEntityAreaDefenseStation)tileentity).isActive())
+					return false;
+					}
+					
+					if(tileentity instanceof TileEntityConverter)
+					{
+					if(((TileEntityConverter)tileentity).isActive())
+					return false;
+					}
+					
 				}
 				
 				if(((IMFFS_Wrench)tileentity).getSide() != side )

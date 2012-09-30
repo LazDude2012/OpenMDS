@@ -87,18 +87,6 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 	@Override
 	public boolean wrenchCanManipulate(EntityPlayer entityPlayer, int side) {
 		
-
-		   if(this.active)
-		   {
-			   if (!(this instanceof TileEntityExtractor ))
-			   {
-				   return false; 
-			   }
-		   }
-		   
-		   if(this instanceof TileEntityAreaDefenseStation)
-		   {return false;}
-
 		   if(!SecurityHelper.isAccessGranted(this, entityPlayer, worldObj))
 		   {return false;}
 		   
