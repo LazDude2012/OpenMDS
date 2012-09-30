@@ -24,6 +24,7 @@ import chb.mods.mffs.network.NetworkHandler;
 import chb.mods.mffs.recipes.ModIndependentRecipes;
 import chb.mods.mffs.recipes.ModIndustrialcraftRecipes;
 
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +52,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1", dependencies = "after:IC2")
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1", dependencies="required-after:Forge@[4.1.4.272,)")
 @NetworkMod(channels = { "MFFS" },clientSideRequired = true, serverSideRequired = false,packetHandler = NetworkHandler.class)
 
 public class ModularForceFieldSystem {

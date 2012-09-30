@@ -59,6 +59,9 @@ public abstract class BlockMFFSBase extends BlockContainer {
 
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k) {
+		
+		world.removeBlockTileEntity(i, j, k);
+		
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
 
 		if(tileEntity instanceof TileEntityCapacitor)
@@ -140,24 +143,28 @@ public abstract class BlockMFFSBase extends BlockContainer {
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k,
 			EntityLiving entityliving) {
-		TileEntityMachines tileentityblock = (TileEntityMachines) world
-				.getBlockTileEntity(i, j, k);
+		
+		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
+		if(tileEntity instanceof TileEntityMachines)
+		{
+
 
 		int l = MathHelper
 				.floor_double((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
 		int i1 = Math.round(entityliving.rotationPitch);
 		if (i1 >= 65) {
-			tileentityblock.setSide( (short) 1);
+			((TileEntityMachines)tileEntity).setSide( (short) 1);
 		} else if (i1 <= -65) {
-			tileentityblock.setSide((short) 0);
+			((TileEntityMachines)tileEntity).setSide((short) 0);
 		} else if (l == 0) {
-			tileentityblock.setSide( (short) 2);
+			((TileEntityMachines)tileEntity).setSide( (short) 2);
 		} else if (l == 1) {
-			tileentityblock.setSide( (short) 5);
+			((TileEntityMachines)tileEntity).setSide( (short) 5);
 		} else if (l == 2) {
-			tileentityblock.setSide((short) 3);
+			((TileEntityMachines)tileEntity).setSide((short) 3);
 		} else if (l == 3) {
-			tileentityblock.setSide((short) 4);
+			((TileEntityMachines)tileEntity).setSide((short) 4);
+		}
 		}
 	}
 	
