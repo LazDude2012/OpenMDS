@@ -52,7 +52,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1", dependencies="required-after:Forge@[4.1.4.272,)")
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1")
 @NetworkMod(channels = { "MFFS" },clientSideRequired = true, serverSideRequired = false,packetHandler = NetworkHandler.class)
 
 public class ModularForceFieldSystem {
@@ -188,7 +188,7 @@ public class ModularForceFieldSystem {
 			ForceciumBlockWorkCylce =  MFFSconfig.getOrCreateIntProperty("ForceciumBlockWorkCylce", Configuration.CATEGORY_GENERAL,2300).getInt(2300);
 			ExtractorPassForceEnergyGenerate =  MFFSconfig.getOrCreateIntProperty("ExtractorPassForceEnergyGenerate", Configuration.CATEGORY_GENERAL,10000).getInt(10000);
 
-			MFFSForceEnergyConverter = new BlockConverter(MFFSconfig.getOrCreateBlockIdProperty("MFFSForceEnergyConverter", 4074).getInt(4074),0).setBlockName("MFFSForceEnergyConverter");
+			MFFSForceEnergyConverter = new BlockConverter(MFFSconfig.getOrCreateBlockIdProperty("MFFSForceEnergyConverter", 4083).getInt(4083),0).setBlockName("MFFSForceEnergyConverter");
 			MFFSForciciumBlock = new BlockForcicium(MFFSconfig.getOrCreateBlockIdProperty("MFFSForciciumBlock", 4075).getInt(4075)).setBlockName("MFFSForciciumBlock");
 			MFFSExtractor = new BlockExtractor(MFFSconfig.getOrCreateBlockIdProperty("MFFSExtractor", 4076).getInt(4076),0).setBlockName("MFFSExtractor");
 		    MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getOrCreateBlockIdProperty("MFFSMonazitOre", 4077).getInt(4077)).setBlockName("MFFSMonazitOre");
@@ -293,8 +293,7 @@ public class ModularForceFieldSystem {
 		GameRegistry.registerBlock(MFFSExtractor);
 		GameRegistry.registerBlock(MFFSForciciumBlock);
 		GameRegistry.registerBlock(MFFSForceEnergyConverter);
-	
-
+		
 		OreDictionary.registerOre("ForciciumItem", MFFSitemForcicium);
 		OreDictionary.registerOre("MonazitOre", MFFSMonazitOre);
 		OreDictionary.registerOre("ForciciumBlock", MFFSForciciumBlock);
