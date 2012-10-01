@@ -37,7 +37,10 @@ import chb.mods.mffs.common.TileEntityConverter;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.NetworkManager;
+import net.minecraft.src.Packet;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
@@ -69,7 +72,9 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 	case 1:
 		
 		String fieldname = dat.readUTF();
+		
 		World world = ModularForceFieldSystem.proxy.getClientWorld();
+		
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 		
 		 if(tileEntity instanceof TileEntityMachines)
@@ -369,23 +374,21 @@ public static void updateTileEntityField(TileEntity tileEntity, String varname)
 		pkt.length = bos.size();
 		pkt.isChunkDataPacket = true;
 
-		PacketDispatcher.sendPacketToAllAround(x, y, z, 60, tileEntity.worldObj.getWorldInfo().getDimension(), pkt);
+		PacketDispatcher.sendPacketToAllAround(x, y, z, 60, tileEntity.worldObj.provider.dimensionId, pkt);
 	}
 	
 }
 
-public static void requestInitialData(TileEntity tileEntity){
+public static Packet requestInitialData(TileEntity tileEntity){
 	
 
-	if(tileEntity instanceof INetworkHandlerListener)
-	{
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
 		DataOutputStream dos = new DataOutputStream(bos);
 		int x = tileEntity.xCoord;
 		int y = tileEntity.yCoord;
 		int z = tileEntity.zCoord;
 		int typ = 2; // Client -> Server
-		int Dimension = tileEntity.worldObj.getWorldInfo().getDimension();
+		int Dimension = tileEntity.worldObj.provider.dimensionId;
 	   
 		StringBuilder str = new StringBuilder();
 		
@@ -417,7 +420,8 @@ public static void requestInitialData(TileEntity tileEntity){
 		pkt.isChunkDataPacket = true;
 		
 		PacketDispatcher.sendPacketToServer(pkt);
-	}
+		return pkt;
+
 }
 
 
@@ -435,7 +439,9 @@ public static void fireTileEntityEvent(TileEntity tileEntity,int event){
 		int z = tileEntity.zCoord;
 		int typ = 3; // Client -> Server
 		
-		int Dimension = tileEntity.worldObj.getWorldInfo().getDimension();
+		
+		
+		int Dimension = tileEntity.worldObj.provider.dimensionId;
 		
 		 try {
 			dos.writeInt(x);
@@ -460,4 +466,6 @@ public static void fireTileEntityEvent(TileEntity tileEntity,int event){
 		
 	}
 }
+
+
 }

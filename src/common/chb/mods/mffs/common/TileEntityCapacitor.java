@@ -31,6 +31,7 @@ import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+import net.minecraft.src.Packet;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
@@ -479,12 +480,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 			this.setTicker((short) (this.getTicker() + 1));
 
 
-		} else {
-			if (create) {
-				NetworkHandler.requestInitialData(this);
-				create = false;
-			}
-		}
+		} 
 	}
 	
 	private void powertransfer()
@@ -720,6 +716,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		
 		this.setForcePower(getForcePower() / 100 * magnitude);
 	}
+	
+	  @Override
+	  public Packet getDescriptionPacket() {
+	    return NetworkHandler.requestInitialData(this);
+	  }
 
 	
 }

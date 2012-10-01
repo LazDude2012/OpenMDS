@@ -29,6 +29,7 @@ import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+import net.minecraft.src.Packet;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
@@ -187,9 +188,6 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
             }
 
             setTicker((short)(getTicker() + 1));
-        } else if(create) {
-            NetworkHandler.requestInitialData(this);
-            create = false;
         }
     }
 	
@@ -434,6 +432,11 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 	public Container getContainer(InventoryPlayer inventoryplayer) {
 		return new ContainerConverter(inventoryplayer.player,this);
 	}
+	
+	  @Override
+	  public Packet getDescriptionPacket() {
+	    return NetworkHandler.requestInitialData(this);
+	  }
 	
 	
 }

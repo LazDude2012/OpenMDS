@@ -30,6 +30,7 @@ import java.util.List;
 
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
 
 
@@ -94,12 +95,6 @@ private boolean init = true;
 			UpdateTextur();
 		   init = false;
 		}
-		}else{
-			if(init)
-			{
-				NetworkHandler.requestInitialData(this);
-			   init = false;
-			}
 		}
 	}
 
@@ -147,6 +142,11 @@ private boolean init = true;
 		NetworkedFields.add("texturid");
 		return NetworkedFields;
 	}
+	
+	  @Override
+	  public Packet getDescriptionPacket() {
+	    return NetworkHandler.requestInitialData(this);
+	  }
 
 
 

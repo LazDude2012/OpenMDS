@@ -35,6 +35,7 @@ import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
@@ -192,11 +193,6 @@ ISidedInventory, INetworkHandlerListener {
 				this.setTicker((short) 0);
 			}
 			this.setTicker((short) (this.getTicker() + 1));
-		} else {
-			if (this.isCreate()) {
-				NetworkHandler.requestInitialData(this);
-				this.setCreate(false);
-			}
 		}
 	}
 
@@ -409,6 +405,11 @@ ISidedInventory, INetworkHandlerListener {
 
 		return NetworkedFields;
 	}
+	
+	  @Override
+	  public Packet getDescriptionPacket() {
+	    return NetworkHandler.requestInitialData(this);
+	  }
 	
 
 

@@ -13,6 +13,7 @@ import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
@@ -398,12 +399,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 			
 				
 
-		}else{
-			
-			if (create) {
-				NetworkHandler.requestInitialData(this);
-				create = false;
-			}
 		}
 	}
 	
@@ -569,6 +564,11 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 		return NetworkedFields;
 	}
+	
+	  @Override
+	  public Packet getDescriptionPacket() {
+	    return NetworkHandler.requestInitialData(this);
+	  }
 
 
 
