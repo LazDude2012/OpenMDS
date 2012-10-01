@@ -54,9 +54,11 @@ public class BlockAreaDefenseStation extends BlockMFFSBase {
 
 		TileEntity tileentity = world.getBlockTileEntity(i, j, k);
 
+		
 		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world))
 		{return false;}
 
+		
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {
 			return false;

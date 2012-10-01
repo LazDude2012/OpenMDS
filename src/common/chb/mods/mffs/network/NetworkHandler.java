@@ -419,7 +419,6 @@ public static Packet requestInitialData(TileEntity tileEntity){
 		pkt.length = bos.size();
 		pkt.isChunkDataPacket = true;
 		
-		PacketDispatcher.sendPacketToServer(pkt);
 		return pkt;
 
 }
