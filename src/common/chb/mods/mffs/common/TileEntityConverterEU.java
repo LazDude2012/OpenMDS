@@ -95,10 +95,14 @@ public class TileEntityConverterEU extends TileEntityConverter
 
             if(super.getStackInSlot(1).getItemDamage() == 5) // hvTransformer
                 super.setOutput(512);
-        	}
+        	}else {
+                super.setOutput(1);
+            }
         } else {
-            super.setOutput(32);
+            super.setOutput(1);
         }
+    }else {
+        super.setOutput(1);
     }
         super.checkslots(init);
     }
