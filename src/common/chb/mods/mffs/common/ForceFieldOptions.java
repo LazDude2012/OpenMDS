@@ -263,8 +263,8 @@ public final class ForceFieldOptions {
 
 							if(Target.equals("human") && Linkgrid.getWorldMap(world).getSecStation().get(DefenseStation.getSecStation_ID()) != null)
 							{
-								if(!Linkgrid.getWorldMap(world).getSecStation().get(DefenseStation.getSecStation_ID()).isAccessGranted(((EntityPlayer)entityLiving).username,ModularForceFieldSystem.PERSONALID_FULLACCESS))
-									{
+								if(!SecurityHelper.isAccessGranted(DefenseStation, (EntityPlayer)entityLiving, world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS))
+								{
 									Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation.getlinkCapacitors_ID())
 									.setForcePower(Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation
 										.getlinkCapacitors_ID()).getForcePower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));

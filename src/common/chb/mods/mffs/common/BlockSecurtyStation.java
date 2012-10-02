@@ -55,10 +55,8 @@ public class BlockSecurtyStation extends BlockMFFSBase {
 
 		if(tileentity.isActive())
 		{
-				 if (!(tileentity.isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-					 Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
-					return false;
-				 }
+			if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+			{return false;}
 		}
 
 			

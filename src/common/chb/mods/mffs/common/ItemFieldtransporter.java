@@ -64,16 +64,19 @@ public class ItemFieldtransporter extends ItemMultitool{
 			switch(projector.getaccesstyp())
 			{
 			case 0:
-			passtrue = false;
+			passtrue = false;	
+			if(ModularForceFieldSystem.Admin.equals(entityplayer.username))
+			passtrue = true;
+		
 			break;
 			case 1:
 			passtrue = true;
 			break;
 			case 2:
-				passtrue = SecurityHelper.isAccessGranted(generator, entityplayer, world);
+				passtrue = SecurityHelper.isAccessGranted(generator, entityplayer, world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
 			break;
 			case 3:
-				passtrue = SecurityHelper.isAccessGranted(projector, entityplayer, world);
+				passtrue = SecurityHelper.isAccessGranted(projector, entityplayer, world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
 			break;
 
 			}

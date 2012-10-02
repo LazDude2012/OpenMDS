@@ -50,7 +50,7 @@ public class ItemCardEmpty extends Item {
 
 		if (!world.isRemote) {
 			if (tileEntity instanceof TileEntityCapacitor) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
 				  {
 
 				
@@ -65,7 +65,7 @@ public class ItemCardEmpty extends Item {
 			}
 
 			if (tileEntity instanceof TileEntitySecurityStation) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
 				  {
 
 				ItemStack newcard =   new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);

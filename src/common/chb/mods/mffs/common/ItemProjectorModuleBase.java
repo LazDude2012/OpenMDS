@@ -49,34 +49,9 @@ public class ItemProjectorModuleBase extends Item  {
 
 		if (!world.isRemote) {
 			if (tileEntity instanceof TileEntityProjector) {
-				  if(((TileEntityProjector)tileEntity).getaccesstyp()==2)
-				  {
-						TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileEntity).getLinkCapacitor_ID());
-
-						if(Generator!= null)
-						{
-						TileEntitySecurityStation SecurityStation  = Linkgrid.getWorldMap(world).getSecStation().get(Generator.getSecStation_ID());
-
-						if(SecurityStation  != null)
-						{
-							if (!(SecurityStation.isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-								return false;
-							}
-						}
-					}
-				 }
-
-				 if(((TileEntityProjector)tileEntity).getaccesstyp()==3)
-				 {
-						TileEntitySecurityStation SecurityStation  = Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityProjector)tileEntity).getSecStation_ID());
-
-						if(SecurityStation  != null)
-						{
-							if (!(SecurityStation.isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-								return false;
-							}
-						}
-				}
+				
+				if(!SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+				{return false;}
 
 				if(((TileEntityProjector)tileEntity).getStackInSlot(1)==null)
 				{

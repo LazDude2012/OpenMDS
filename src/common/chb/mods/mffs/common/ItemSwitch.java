@@ -50,7 +50,7 @@ public class ItemSwitch extends ItemMultitool {
 		if(tileentity instanceof TileEntityConverter)
 		{
 			
-			  if(SecurityHelper.isAccessGranted(tileentity, entityplayer, world))
+			  if(SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
 			  {
 
 					if(((TileEntityConverter)tileentity).getswitchtyp() == 1)
@@ -91,20 +91,9 @@ public class ItemSwitch extends ItemMultitool {
 		if(tileentity instanceof TileEntityProjector)
 
 		{
-		if(((TileEntityProjector)tileentity).getaccesstyp()== 2)
-		{
-		if(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileentity).getLinkCapacitor_ID())!= null)
-		{
-		if(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileentity).getLinkCapacitor_ID()).getSecStation_ID()) != null)
-		{
-			if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileentity).getLinkCapacitor_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-				
-				Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
-				return false;
-			}
-		}
-		}
-		}
+			
+			if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+			{return false;}
 
 			if(((TileEntityProjector)tileentity).getswitchtyp() == 1)
 			{
@@ -137,8 +126,8 @@ public class ItemSwitch extends ItemMultitool {
 		{
 			if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileentity).getSecStation_ID()) != null)
 			{
-				if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileentity).getSecStation_ID()).isAccessGranted(entityplayer.username,ModularForceFieldSystem.PERSONALID_FULLACCESS))) {
-				
+				if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+				{
 					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 					return false;
 				}

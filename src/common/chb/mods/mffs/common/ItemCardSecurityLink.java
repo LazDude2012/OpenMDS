@@ -50,7 +50,7 @@ public class ItemCardSecurityLink extends Item  {
 		if (!world.isRemote) {
 			if (tileEntity instanceof TileEntityCapacitor) {
 				
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
 				  {
 
 					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 4,"<Security Station Link>");
@@ -59,7 +59,7 @@ public class ItemCardSecurityLink extends Item  {
 			}
 
 			if (tileEntity instanceof TileEntityAreaDefenseStation) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
 				  {
 
 					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 1,"<Security Station Link>");
@@ -67,7 +67,7 @@ public class ItemCardSecurityLink extends Item  {
 			}
 
 			if (tileEntity instanceof TileEntityProjector) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
 				  {
 
 					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 12,"<Security Station Link>");

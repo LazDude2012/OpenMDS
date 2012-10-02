@@ -180,16 +180,18 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 				switch(projector.getaccesstyp())
 				{
 				case 0:
-				passtrue = false;
+					passtrue = false;	
+					if(ModularForceFieldSystem.Admin.equals(((EntityPlayer)entity).username))
+					passtrue = true;
 				break;
 				case 1:
 				passtrue = true;
 				break;
 				case 2:
-					passtrue = SecurityHelper.isAccessGranted(generator, ((EntityPlayer) entity), world);
+					passtrue = SecurityHelper.isAccessGranted(generator, ((EntityPlayer) entity), world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
 				break;
 				case 3:
-					passtrue = SecurityHelper.isAccessGranted(projector, ((EntityPlayer) entity), world);
+					passtrue = SecurityHelper.isAccessGranted(projector, ((EntityPlayer) entity), world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
 				break;
 				}
 			

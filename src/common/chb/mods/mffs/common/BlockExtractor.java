@@ -54,7 +54,7 @@ public class BlockExtractor extends BlockMFFSBase {
 		TileEntityExtractor tileentity = (TileEntityExtractor) world
 				.getBlockTileEntity(i, j, k);
 
-		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world))
+		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
 		{return false;}
 	
 		

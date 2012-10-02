@@ -31,7 +31,7 @@ public class BlockConverter extends BlockMFFSBase {
 
 		TileEntityConverter tileentity = (TileEntityConverter) world.getBlockTileEntity(i, j, k);
 
-		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world))
+		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
 		{return false;}
 	
 		

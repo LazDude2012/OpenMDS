@@ -59,7 +59,7 @@ public class BlockProjector extends BlockMFFSBase {
 		TileEntityProjector tileentity = (TileEntityProjector) world
 				.getBlockTileEntity(i, j, k);
 
-		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world))
+		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
 		{return false;}
 
 		if (entityplayer.getCurrentEquippedItem() != null

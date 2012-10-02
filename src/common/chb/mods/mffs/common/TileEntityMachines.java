@@ -88,7 +88,7 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 	@Override
 	public boolean wrenchCanManipulate(EntityPlayer entityPlayer, int side) {
 		
-		   if(!SecurityHelper.isAccessGranted(this, entityPlayer, worldObj))
+		   if(!SecurityHelper.isAccessGranted(this, entityPlayer, worldObj,ModularForceFieldSystem.PERSONALID_FULLACCESS))
 		   {return false;}
 		   
 		return true;
