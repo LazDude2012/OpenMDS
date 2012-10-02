@@ -40,10 +40,11 @@ public class ContainerForceEnergyExtractor extends Container {
 		WorkCylce = -1;
 		workdone = -1;	
 
-		addSlotToContainer(new Slot(ForceEnergyExtractor, 0, 82, 6)); // Forcecium Input 
-		addSlotToContainer(new Slot(ForceEnergyExtractor, 1, 145, 20)); // Power Link  
-		addSlotToContainer(new Slot(ForceEnergyExtractor, 2, 20, 46)); // Cap Upgrade  
-		addSlotToContainer(new Slot(ForceEnergyExtractor, 3, 39, 46)); // Overclocker
+		addSlotToContainer(new Slot(ForceEnergyExtractor, 0, 82, 6)); 
+		addSlotToContainer(new Slot(ForceEnergyExtractor, 1, 145, 20)); 
+		addSlotToContainer(new Slot(ForceEnergyExtractor, 2, 20, 46));  
+		addSlotToContainer(new Slot(ForceEnergyExtractor, 3, 39, 46)); 
+//		addSlotToContainer(new Slot(ForceEnergyExtractor, 4, 112, 6)); 
 		
 		int var3;
 

@@ -39,7 +39,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	
 	public TileEntityExtractor() {
 		
-		inventory = new ItemStack[4];
+		inventory = new ItemStack[5];
 		create = true;
 		Extractor_ID = 0;
 		LinkCapacitor_ID = 0;

@@ -70,7 +70,7 @@ public class GuiExtractor extends GuiContainer {
 
 		fontRenderer.drawString("Upgrades", 10, 30, 0x404040);
 
-		fontRenderer.drawString("Extractor", 110, 5, 0x404040);
+		fontRenderer.drawString("Extractor", 5, 15, 0x404040);
 		fontRenderer.drawString(String.valueOf(tileEntity.getForceEnergybuffer()/1000).concat("k"), 140, 69, 0x404040);
 
 		fontRenderer.drawString(String.valueOf(tileEntity.getWorkdone()).concat("%"), 23, 69, 0x404040);

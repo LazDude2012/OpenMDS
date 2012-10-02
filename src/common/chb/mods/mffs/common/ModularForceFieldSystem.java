@@ -89,6 +89,9 @@ public class ModularForceFieldSystem {
 	
 	public static Item MFFSitemForcicium;
 	public static Item MFFSitemForcePowerCrystal;
+	
+	public static Item MFFSitemdensifiedForcicium;
+	public static Item MFFSitemdepletedForcicium;
 
 	public static Item MFFSitemFocusmatix;
 	public static Item MFFSitemSwitch;
