@@ -502,7 +502,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 	@Override
 	public int getStartInventorySide(ForgeDirection side) {
-		return 1;
+		return 0;
 	}
 
 	@Override
