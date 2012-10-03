@@ -46,28 +46,29 @@ public class ItemDebugger extends  ItemMultitool  {
 		if (!world.isRemote) {
 			
 			
-			if (tileEntity instanceof TileEntityConverter) {
-				info.setLength(0);
-				info.append("Extractor: ").append(((TileEntityConverter) tileEntity).getLinkCapacitors_ID());
-				Functions.ChattoPlayer(entityplayer, info.toString());
-			}
+
 			if (tileEntity instanceof TileEntityCapacitor) {
 				info.setLength(0);
-				info.append("Capacitor: ").append(((TileEntityCapacitor) tileEntity).getCapacitor_ID());
+				info.append("Capacitor: ").append(((TileEntityCapacitor) tileEntity).getSecStation_ID());
+				Functions.ChattoPlayer(entityplayer, info.toString());
+			}
+			if (tileEntity instanceof TileEntitySecurityStation) {
+				info.setLength(0);
+				info.append("Capacitor: ").append(((TileEntitySecurityStation) tileEntity).getSecurtyStation_ID());
 				Functions.ChattoPlayer(entityplayer, info.toString());
 			}
 			
 			
 		}else{
 			
-			if (tileEntity instanceof TileEntityConverter) {
-				info.setLength(0);
-				info.append("Extractor: ").append(((TileEntityConverter) tileEntity).getLinkCapacitors_ID());
-				Functions.ChattoPlayer(entityplayer, info.toString());
-			}
 			if (tileEntity instanceof TileEntityCapacitor) {
 				info.setLength(0);
-				info.append("Capacitor: ").append(((TileEntityCapacitor) tileEntity).getCapacitor_ID());
+				info.append("Capacitor: ").append(((TileEntityCapacitor) tileEntity).getSecStation_ID());
+				Functions.ChattoPlayer(entityplayer, info.toString());
+			}
+			if (tileEntity instanceof TileEntitySecurityStation) {
+				info.setLength(0);
+				info.append("Capacitor: ").append(((TileEntitySecurityStation) tileEntity).getSecurtyStation_ID());
 				Functions.ChattoPlayer(entityplayer, info.toString());
 			}
 		}

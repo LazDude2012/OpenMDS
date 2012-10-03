@@ -121,7 +121,8 @@ private boolean init = true;
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
 		if (field.equals("texturid")) {
-			UpdateTextur();
+			worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
+			
 		}
 	}
 

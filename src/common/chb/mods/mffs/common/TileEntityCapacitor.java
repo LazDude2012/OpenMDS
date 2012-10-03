@@ -192,7 +192,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		return inventory.length;
 	}
 
-	private void checkslots() {
+	private void checkslots(boolean init) {
 		int stacksize = 0;
 		short temp_transmitrange = 8;
 		int temp_maxforcepower = 10000000;
@@ -328,12 +328,16 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 				else
 				{
 				setLinkedSecStation(false);
-				dropplugins(4,this);
+				if (!init) {
+					this.setInventorySlotContents(4, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+				}
 				}
 			} else {
 			    	SecStation_ID = 0;
 				    setLinkedSecStation(false);
-					dropplugins(4,this);
+					if (getStackInSlot(4).getItem() != ModularForceFieldSystem.MFFSitemcardempty) {
+						dropplugins(4,this);
+					}
 			}
 		} else {
 			SecStation_ID = 0;
@@ -435,7 +439,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 			
 			if (this.isCreate()) {
 				addtogrid();
-                checkslots();
+                checkslots(true);
                 setCreate(false);
             }
 			
@@ -470,7 +474,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 				   setCapacity(((getForcePower()/1000)*100)/(getMaxForcePower()/1000));
 				
 		
-				checkslots();
+				checkslots(false);
 				if(isActive())
 				{
 				powertransfer();
