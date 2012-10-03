@@ -87,16 +87,6 @@ private boolean init = true;
 		nbttagcompound.setIntArray("texturid", texturid);
 	}
 
-	@Override
-	public void updateEntity() {
-		if (worldObj.isRemote == false ) {
-		if(init)
-		{
-			UpdateTextur();
-		   init = false;
-		}
-		}
-	}
 
 	public void UpdateTextur()
 	{
@@ -131,12 +121,12 @@ private boolean init = true;
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
 		if (field.equals("texturid")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+			UpdateTextur();
 		}
 	}
 
 	@Override
-	public List<String> geFieldsforUpdate() {
+	public List<String> getFieldsforUpdate() {
 		List<String> NetworkedFields = new LinkedList<String>();
 		NetworkedFields.clear();
 		NetworkedFields.add("texturid");

@@ -691,7 +691,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 
 
 	@Override
-	public List<String> geFieldsforUpdate() {
+	public List<String> getFieldsforUpdate() {
 		List<String> NetworkedFields = new LinkedList<String>();
 		NetworkedFields.clear();
 
@@ -706,15 +706,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 
 
 	@Override
-	public void EMPulse(int magnitude){
+	public void onEMPPulse(int magnitude){
 		
-		if(magnitude < 0)
-			magnitude= 0;
-		
-		if(magnitude > 100)
-		   magnitude = 100;
-		
-		this.setForcePower(getForcePower() / 100 * magnitude);
+		this.setForcePower(this.getForcePower() / 100 * Math.min(Math.max(magnitude, 0), 100));
 	}
 	
 	  @Override

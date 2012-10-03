@@ -551,7 +551,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 
 	@Override
-	public List<String> geFieldsforUpdate() {
+	public List<String> getFieldsforUpdate() {
 		List<String> NetworkedFields = new LinkedList<String>();
 		NetworkedFields.clear();
 

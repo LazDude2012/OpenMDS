@@ -29,7 +29,7 @@ public interface INetworkHandlerListener {
 	
 	public void onNetworkHandlerUpdate(String field);
 
-	public List<String> geFieldsforUpdate();
+	public List<String> getFieldsforUpdate();
 	
 	
 }

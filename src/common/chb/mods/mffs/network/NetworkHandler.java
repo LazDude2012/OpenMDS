@@ -397,7 +397,7 @@ public static Packet requestInitialData(TileEntity tileEntity){
 	   
 		StringBuilder str = new StringBuilder();
 		
-		for(String fields : ((INetworkHandlerListener)tileEntity).geFieldsforUpdate())
+		for(String fields : ((INetworkHandlerListener)tileEntity).getFieldsforUpdate())
 		{
 			str.append(fields);
 			str.append("/");

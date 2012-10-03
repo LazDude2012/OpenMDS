@@ -334,4 +334,13 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 	public TileEntity createNewTileEntity(World world) {
 		return createTileEntity(world,0);
 	}
+	
+	
+
+ @Override
+ public void weakenForceField(World world, int x, int y, int z)
+ {
+   //TODO Disable this section of the force field for a while.
+    world.setBlockWithNotify(x, y, z, 0);
+ }
 }
