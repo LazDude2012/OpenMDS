@@ -185,10 +185,15 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 		String daten = dat.readUTF(); 
 		World serverworld = DimensionManager.getWorld(dimension);
 		TileEntity servertileEntity = serverworld.getBlockTileEntity(x, y, z);
-		
+		if(servertileEntity != null)
+		{
 		for(String varname : daten.split("/"))
 		{
 			updateTileEntityField(servertileEntity,  varname);
+		}
+		}else{
+			 if(DEBUG)
+			 System.out.println(x+"/"+y+"/"+z+":no Tileentity found !!");
 		}
 	break;
 	

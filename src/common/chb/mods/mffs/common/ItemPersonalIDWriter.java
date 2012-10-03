@@ -69,7 +69,7 @@ public class ItemPersonalIDWriter extends ItemMultitool{
 							return itemstack;
 						}else{
 							 if(world.isRemote)
-							Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: not enough EU please charge");
+							Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: not enough FP please charge");
 							return itemstack;
 						}
 					}

@@ -58,7 +58,7 @@ public class ItemCardEmpty extends Item {
 				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("CapacitorID", ((TileEntityCapacitor)tileEntity).getCapacitor_ID());
 				entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
 				
-				entityplayer.addChatMessage("[Generator] Success: <Power-Link> Card create");
+				entityplayer.addChatMessage("[Capacitor] Success: <Power-Link> Card create");
 				
 				return true;
 				 }
