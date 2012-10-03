@@ -193,6 +193,11 @@ ISidedInventory, INetworkHandlerListener {
 				this.setTicker((short) 0);
 			}
 			this.setTicker((short) (this.getTicker() + 1));
+		}else {
+			if(SecurtyStation_ID==0)
+			{
+				NetworkHandler.requestInitialData(this,true);
+			}
 		}
 	}
 
@@ -401,6 +406,8 @@ ISidedInventory, INetworkHandlerListener {
 
 		NetworkedFields.add("active");
 		NetworkedFields.add("side");
+		NetworkedFields.add("SecurtyStation_ID");
+
 
 
 		return NetworkedFields;

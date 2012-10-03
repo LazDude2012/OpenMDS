@@ -4,6 +4,9 @@ package chb.mods.mffs.common;
 import java.util.LinkedList;
 import java.util.List;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandler;
 
@@ -399,6 +402,11 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 			
 				
 
+		}else {
+			if(Extractor_ID==0)
+			{
+				NetworkHandler.requestInitialData(this,true);
+			}
 		}
 	}
 	
@@ -561,10 +569,12 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		NetworkedFields.add("WorkCylce");
 		NetworkedFields.add("WorkEnergy");
 		NetworkedFields.add("workdone");
+		NetworkedFields.add("Extractor_ID");
+		
 
 		return NetworkedFields;
 	}
-	
+	@SideOnly(Side.CLIENT)
 	  @Override
 	  public Packet getDescriptionPacket() {
 	    return NetworkHandler.requestInitialData(this);

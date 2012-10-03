@@ -184,6 +184,8 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 		int dimension = dat.readInt() ;
 		String daten = dat.readUTF(); 
 		World serverworld = DimensionManager.getWorld(dimension);
+		if(serverworld != null)
+		{
 		TileEntity servertileEntity = serverworld.getBlockTileEntity(x, y, z);
 		if(servertileEntity != null)
 		{
@@ -195,6 +197,12 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 			 if(DEBUG)
 			 System.out.println(x+"/"+y+"/"+z+":no Tileentity found !!");
 		}
+		}else{
+			 if(DEBUG)
+			 System.out.println("[Error]No world found !!");
+		}
+		
+		
 	break;
 	
 	case 3:
@@ -229,6 +237,7 @@ public static void reflectionsetvalue(Field f,TileEntity tileEntity,ByteArrayDat
 
 		 if(tileEntity instanceof TileEntityForceField)
 		 {
+			 if(fieldname.equalsIgnoreCase("texturid"))	
 			 ((TileEntityForceField)tileEntity).setTexturid(dat.readUTF());
 		 }
 		 
@@ -384,7 +393,13 @@ public static void updateTileEntityField(TileEntity tileEntity, String varname)
 	
 }
 
+
 public static Packet requestInitialData(TileEntity tileEntity){
+	return requestInitialData(tileEntity,false);
+}
+
+
+public static Packet requestInitialData(TileEntity tileEntity,boolean senddirekt){
 	
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
@@ -393,6 +408,7 @@ public static Packet requestInitialData(TileEntity tileEntity){
 		int y = tileEntity.yCoord;
 		int z = tileEntity.zCoord;
 		int typ = 2; // Client -> Server
+		
 		int Dimension = tileEntity.worldObj.provider.dimensionId;
 	   
 		StringBuilder str = new StringBuilder();
@@ -423,6 +439,9 @@ public static Packet requestInitialData(TileEntity tileEntity){
 		pkt.data = bos.toByteArray();
 		pkt.length = bos.size();
 		pkt.isChunkDataPacket = true;
+		
+		if(senddirekt)
+		PacketDispatcher.sendPacketToServer(pkt);
 		
 		return pkt;
 

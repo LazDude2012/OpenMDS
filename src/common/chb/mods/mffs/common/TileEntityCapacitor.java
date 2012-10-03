@@ -25,6 +25,9 @@ package chb.mods.mffs.common;
 import java.util.LinkedList;
 import java.util.List;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.InventoryPlayer;
@@ -484,6 +487,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 			this.setTicker((short) (this.getTicker() + 1));
 
 
+		}else {
+			if(Capacitor_ID==0)
+			{
+				NetworkHandler.requestInitialData(this,true);
+			}
 		} 
 	}
 	
@@ -705,6 +713,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		NetworkedFields.add("linketprojektor");
 		NetworkedFields.add("transmitrange");
 		NetworkedFields.add("capacity");
+		NetworkedFields.add("Capacitor_ID");
+		
 		return NetworkedFields;
 	}
 
@@ -715,10 +725,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		this.setForcePower(this.getForcePower() / 100 * Math.min(Math.max(magnitude, 0), 100));
 	}
 	
-	  @Override
-	  public Packet getDescriptionPacket() {
+	@SideOnly(Side.CLIENT)
+	@Override
+	public Packet getDescriptionPacket() {
 	    return NetworkHandler.requestInitialData(this);
-	  }
+	}
 
 	
 }

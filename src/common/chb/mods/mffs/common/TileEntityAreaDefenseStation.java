@@ -407,7 +407,12 @@ ISidedInventory,INetworkHandlerListener {
 				this.setTicker((short) 0);
 			}
 			this.setTicker((short) (this.getTicker() + 1));
-		} 
+		} else {
+			if(Defstation_ID==0)
+			{
+				NetworkHandler.requestInitialData(this,true);
+			}
+		}
 	}
 
 	public int Forcepowerneed(int blocks, boolean init) {
@@ -532,6 +537,8 @@ ISidedInventory,INetworkHandlerListener {
 		NetworkedFields.add("linkSecStation");
 		NetworkedFields.add("active");
 		NetworkedFields.add("side");
+		NetworkedFields.add("Defstation_ID");
+
 
 
 		return NetworkedFields;

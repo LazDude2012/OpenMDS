@@ -23,6 +23,9 @@ package chb.mods.mffs.common;
 import java.util.LinkedList;
 import java.util.List;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.InventoryPlayer;
@@ -188,7 +191,12 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
             }
 
             setTicker((short)(getTicker() + 1));
-        }
+        }else {
+			if(Converter_ID==0)
+			{
+				NetworkHandler.requestInitialData(this,true);
+			}
+		}
     }
 	
 	
@@ -423,7 +431,8 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 
 		NetworkedFields.add("active");
 		NetworkedFields.add("side");
-
+		NetworkedFields.add("Converter_ID");
+		
 		return NetworkedFields;
 	}
 
@@ -432,7 +441,7 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 	public Container getContainer(InventoryPlayer inventoryplayer) {
 		return new ContainerConverter(inventoryplayer.player,this);
 	}
-	
+	@SideOnly(Side.CLIENT)
 	  @Override
 	  public Packet getDescriptionPacket() {
 	    return NetworkHandler.requestInitialData(this);

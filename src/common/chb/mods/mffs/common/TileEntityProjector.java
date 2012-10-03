@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
@@ -1077,7 +1080,14 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 				this.setTicker((short) 0);
 			}
+			
 			this.setTicker((short) (this.getTicker() + 1));
+		}else{
+			if(this.getProjektor_ID()==0)
+			{
+				NetworkHandler.requestInitialData(this,true);
+			}
+			
 		}
 
 		switchdelay++;
@@ -1943,10 +1953,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		NetworkedFields.add("side");
 		NetworkedFields.add("burnout");
 		NetworkedFields.add("camoflage");
+		NetworkedFields.add("Projektor_ID");
 	
 		return NetworkedFields;
 	}
-	
+	@SideOnly(Side.CLIENT)
 	  @Override
 	  public Packet getDescriptionPacket() {
 	    return NetworkHandler.requestInitialData(this);

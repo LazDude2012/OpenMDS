@@ -28,6 +28,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Packet;
@@ -35,8 +38,9 @@ import net.minecraft.src.TileEntity;
 
 
 public class TileEntityForceField extends TileEntity implements INetworkHandlerListener{
-private int[] texturid = {180,180,180,180,180,180};
-private boolean init = true;
+private int[] texturid = {-1,-1,-1,-1,-1,-1};
+private boolean init = false;
+
 
 	public TileEntityForceField() {
 	}
@@ -65,10 +69,31 @@ private boolean init = true;
 		this.texturid[3] = Integer.parseInt(texurStringarray[3].trim());
 		this.texturid[4] = Integer.parseInt(texurStringarray[4].trim());
 		this.texturid[5] = Integer.parseInt(texurStringarray[5].trim());
-
-	
-				
+		
 	}
+	
+	
+	public void updateEntity() {
+		if (worldObj.isRemote == false) {
+			
+			if(!init)
+			{
+				UpdateTextur();
+				init = true;
+			}
+			
+		}else{
+			
+			if(texturid[0]==-1)
+		{   
+			NetworkHandler.requestInitialData(this,true);	
+		}	
+		}
+			
+			
+		}
+	
+	
 
 	public void  setTexturid(int[] texturid )
 	{
@@ -121,8 +146,7 @@ private boolean init = true;
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
 		if (field.equals("texturid")) {
-			worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
-			
+			worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);	
 		}
 	}
 
@@ -131,12 +155,14 @@ private boolean init = true;
 		List<String> NetworkedFields = new LinkedList<String>();
 		NetworkedFields.clear();
 		NetworkedFields.add("texturid");
+
 		return NetworkedFields;
 	}
 	
-	  @Override
-	  public Packet getDescriptionPacket() {
-	    return NetworkHandler.requestInitialData(this);
+	@SideOnly(Side.CLIENT)
+	@Override
+	public Packet getDescriptionPacket() {
+	   return NetworkHandler.requestInitialData(this);
 	  }
 
 
