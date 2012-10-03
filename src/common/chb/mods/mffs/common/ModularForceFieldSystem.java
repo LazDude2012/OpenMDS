@@ -178,7 +178,7 @@ public class ModularForceFieldSystem {
 			
 			Admin = MFFSconfig.getOrCreateProperty("ForceFieldMaster", Configuration.CATEGORY_GENERAL, "nobody").value;
 			forcefieldremoveonlywaterandlava = MFFSconfig.getOrCreateBooleanProperty("forcefieldremoveonlywaterandlava", Configuration.CATEGORY_GENERAL, false).getBoolean(false);
-			forcefieldtransportcost = MFFSconfig.getOrCreateIntProperty("forcefieldremoveonlywaterandlava", Configuration.CATEGORY_GENERAL, 10000).getInt(10000);
+			forcefieldtransportcost = MFFSconfig.getOrCreateIntProperty("forcefieldtransportcost", Configuration.CATEGORY_GENERAL, 10000).getInt(10000);
 			forcefieldblockcost = MFFSconfig.getOrCreateIntProperty("forcefieldblockcost", Configuration.CATEGORY_GENERAL, 1).getInt(1);
 			forcefieldblockcreatemodifier = MFFSconfig.getOrCreateIntProperty("forcefieldblockcreatemodifier", Configuration.CATEGORY_GENERAL, 10).getInt(10);
 			forcefieldblockzappermodifier = MFFSconfig.getOrCreateIntProperty("forcefieldblockzappermodifier", Configuration.CATEGORY_GENERAL, 2).getInt(2);
