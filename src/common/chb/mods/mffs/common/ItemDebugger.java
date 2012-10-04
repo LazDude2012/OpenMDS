@@ -45,8 +45,13 @@ public class ItemDebugger extends  ItemMultitool  {
 		
 		if (!world.isRemote) {
 			
+			if (tileEntity instanceof TileEntityProjector) {
+				info.setLength(0);
+				info.append("Projector: ").append(((TileEntityProjector) tileEntity).getForcefieldtextur_id(0));
+				Functions.ChattoPlayer(entityplayer, info.toString());
+			}
 			
-
+			
 			if (tileEntity instanceof TileEntityCapacitor) {
 				info.setLength(0);
 				info.append("Capacitor: ").append(((TileEntityCapacitor) tileEntity).getSecStation_ID());
@@ -60,6 +65,13 @@ public class ItemDebugger extends  ItemMultitool  {
 			
 			
 		}else{
+			
+			
+			if (tileEntity instanceof TileEntityProjector) {
+				info.setLength(0);
+				info.append("Projector: ").append(((TileEntityProjector) tileEntity).getForcefieldtextur_id(0));
+				Functions.ChattoPlayer(entityplayer, info.toString());
+			}
 			
 			if (tileEntity instanceof TileEntityCapacitor) {
 				info.setLength(0);

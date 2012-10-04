@@ -290,6 +290,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 						if (Linkgrid.getWorldMap(worldObj).getCapacitor()
 								.get(this.getRemote_Capacitor_ID()) == null) {
 							
+							if (!init)
 							this.setInventorySlotContents(2, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 							this.setRemote_Capacitor_ID(0);
 						}

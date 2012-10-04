@@ -50,14 +50,9 @@ public class GuiExtractor extends GuiContainer {
 		int Workpowerslider = (79 * tileEntity.getWorkdone() / 100);
 		drawTexturedModalRect(w + 49, k + 69, 176, 0, Workpowerslider, 6);
 		
-		int WorkCylce;
 		
-		if(tileEntity.getWorkCylce()>ModularForceFieldSystem.ForceciumWorkCylce)
-		{
-			 WorkCylce =  (32 * tileEntity.getWorkCylce()) / ModularForceFieldSystem.ForceciumBlockWorkCylce;
-		}else{
-			 WorkCylce =  (32 * tileEntity.getWorkCylce()) / ModularForceFieldSystem.ForceciumWorkCylce;
-		}
+		int WorkCylce =  (32 * tileEntity.getWorkCylce()) / ModularForceFieldSystem.ForceciumWorkCylce;
+	
 		
 		drawTexturedModalRect(w + 73,k + 30, 179,81,WorkCylce,32);
 

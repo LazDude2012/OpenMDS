@@ -24,7 +24,19 @@ public class ModIndustrialcraftRecipes {
 	public static void init()
 	{
 
+
 		if(Items.getItem("carbonPlate")!=null){
+			
+			
+			CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemForcicumCell, 1),
+			new Object[] { "AAA", "ABA", "ACA",
+				'A',Items.getItem("refinedIronIngot"),
+				'B',ModularForceFieldSystem.MFFSitemForcePowerCrystal,
+				'C', Items.getItem("advancedCircuit") 
+				});
+			
+			
+			
 		
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemupgradeexctractorboost,2),
 				new Object[] { " B ", "BAB", " B ",

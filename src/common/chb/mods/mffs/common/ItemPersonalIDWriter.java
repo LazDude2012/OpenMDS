@@ -23,6 +23,7 @@ package chb.mods.mffs.common;
 
 import java.util.List;
 
+import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
@@ -35,6 +36,45 @@ public class ItemPersonalIDWriter extends ItemMultitool{
 	public ItemPersonalIDWriter(int i) {
 		super(i,2);
 	}
+	
+	
+	
+	
+    public boolean onLeftClickEntity(ItemStack itemstack, EntityPlayer entityplayer, Entity entity) 
+    {
+    	
+    	if(entity instanceof EntityPlayer)
+    	{
+    	
+		List<Slot> slots = entityplayer.inventorySlots.inventorySlots;
+		for (Slot slot : slots) {
+			if (slot.getStack() != null) {
+				if (slot.getStack().getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
+					if(ForceEnergyItems.use(itemstack, 1000, false,entityplayer))
+					{
+				     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
+                        ItemStack IDCard= new ItemStack(ModularForceFieldSystem.MFFSItemIDCard, 1);
+                        ItemCardPersonalID.setOwner(IDCard, ((EntityPlayer)entity).username);
+                        ItemCardPersonalID.setSeclevel(IDCard, 1);
+	                    slot.putStack(IDCard);
+						
+                      
+						Functions.ChattoPlayer(entityplayer,"[MultiTool] Success: ID-Card create");
+                        return true;
+					}else{
+					
+						Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: not enough FP please charge");
+						 return true;
+					}
+				}
+			}
+		}
+	
+		Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: need MFFS Card <blank> in  Inventory");
+        return true;
+    	}
+    	return false;
+    }
 
 
 	@Override

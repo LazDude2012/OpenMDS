@@ -295,14 +295,17 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 			      return true;
 				}
 				
-		
-			
-				if (inventory[0].itemID == ModularForceFieldSystem.MFFSForciciumBlock.blockID ){
-			    	  setMaxworkcylce(ModularForceFieldSystem.ForceciumBlockWorkCylce);
-					  setWorkCylce(getMaxworkcylce());
-				      decrStackSize(0, 1);
+				if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemForcicumCell) {
+					
+					if(((ItemForcicumCell)getStackInSlot(0).getItem()).useForcecium(1, getStackInSlot(0)))
+					{
+				    	  setMaxworkcylce(ModularForceFieldSystem.ForceciumCellWorkCylce);
+						  setWorkCylce(getMaxworkcylce());
+					}
 				      return true;
 					}
+
+		
 			}
 		}
 		

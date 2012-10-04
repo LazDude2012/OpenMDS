@@ -10,12 +10,8 @@ public class ModIndependentRecipes {
 	
 	public static void init()
 	{
-		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSForciciumBlock, 1),
-				new Object[] { "AAA", "AAA", "AAA", 'A',ModularForceFieldSystem.MFFSitemForcicium});
-		
-		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemForcicium,9),new Object[] { new ItemStack(ModularForceFieldSystem.MFFSForciciumBlock) });
-		
-		
+
+
 		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemcardempty),new Object[] { new ItemStack(ModularForceFieldSystem.MFFSitemfc) });
 		
 		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemcardempty),new Object[] { new ItemStack(ModularForceFieldSystem.MFFSItemIDCard) });

@@ -84,9 +84,9 @@ public class ModularForceFieldSystem {
 	public static Block MFFSFieldblock;
 	public static Block MFFSExtractor;
 	public static Block MFFSMonazitOre;
-	public static Block MFFSForciciumBlock;
 	public static Block MFFSForceEnergyConverter;
 	
+	public static Item MFFSitemForcicumCell;
 	public static Item MFFSitemForcicium;
 	public static Item MFFSitemForcePowerCrystal;
 	
@@ -145,7 +145,7 @@ public class ModularForceFieldSystem {
 	public static Boolean forcefieldremoveonlywaterandlava;
 	
 	public static int ForceciumWorkCylce;
-	public static int ForceciumBlockWorkCylce;
+	public static int ForceciumCellWorkCylce;
 	public static int ExtractorPassForceEnergyGenerate;
 	
 
@@ -188,11 +188,10 @@ public class ModularForceFieldSystem {
 			DefenseStationFPpeerAttack = MFFSconfig.getOrCreateIntProperty("DefenseStationFPpeerAttack", Configuration.CATEGORY_GENERAL,25000).getInt(25000);
 	
 			ForceciumWorkCylce = MFFSconfig.getOrCreateIntProperty("ForceciumWorkCylce", Configuration.CATEGORY_GENERAL,250).getInt(250);
-			ForceciumBlockWorkCylce =  MFFSconfig.getOrCreateIntProperty("ForceciumBlockWorkCylce", Configuration.CATEGORY_GENERAL,2300).getInt(2300);
+			ForceciumCellWorkCylce =  MFFSconfig.getOrCreateIntProperty("ForceciumBlockWorkCylce", Configuration.CATEGORY_GENERAL,230).getInt(230);
 			ExtractorPassForceEnergyGenerate =  MFFSconfig.getOrCreateIntProperty("ExtractorPassForceEnergyGenerate", Configuration.CATEGORY_GENERAL,10000).getInt(10000);
 
 			MFFSForceEnergyConverter = new BlockConverter(MFFSconfig.getOrCreateBlockIdProperty("MFFSForceEnergyConverter", 4083).getInt(4083),0).setBlockName("MFFSForceEnergyConverter");
-			MFFSForciciumBlock = new BlockForcicium(MFFSconfig.getOrCreateBlockIdProperty("MFFSForciciumBlock", 4075).getInt(4075)).setBlockName("MFFSForciciumBlock");
 			MFFSExtractor = new BlockExtractor(MFFSconfig.getOrCreateBlockIdProperty("MFFSExtractor", 4076).getInt(4076),0).setBlockName("MFFSExtractor");
 		    MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getOrCreateBlockIdProperty("MFFSMonazitOre", 4077).getInt(4077)).setBlockName("MFFSMonazitOre");
 			MFFSDefenceStation = new BlockAreaDefenseStation(MFFSconfig.getOrCreateBlockIdProperty("MFFSDefenceStation", 4078).getInt(4078),0).setBlockName("MFFSDefenceStation");
@@ -235,6 +234,8 @@ public class ModularForceFieldSystem {
 			MFFSProjectorOptionFieldFusion= new ItemProjectorOptionFieldFusion(MFFSconfig.getOrCreateIntProperty("itemProjectorOptionFieldFusion",Configuration.CATEGORY_ITEM,11143).getInt(11143)).setItemName("itemProjectorOptionFieldFusion");
 			MFFSitemForcePowerCrystal= new ItemForcePowerCrystal(MFFSconfig.getOrCreateIntProperty("itemForcePowerCrystal",Configuration.CATEGORY_ITEM,11145).getInt(11145)).setItemName("itemForcePowerCrystal");
 			MFFSitemForcicium= new ItemForcicium(MFFSconfig.getOrCreateIntProperty("itemForcicium",Configuration.CATEGORY_ITEM,11144).getInt(11144)).setItemName("itemForcicium");
+			MFFSitemForcicumCell= new ItemForcicumCell(MFFSconfig.getOrCreateIntProperty("itemForcicumCell",Configuration.CATEGORY_ITEM,11146).getInt(11146)).setItemName("itemForcicumCell");
+			
 			
 			
 		} catch (Exception e) {
@@ -294,12 +295,11 @@ public class ModularForceFieldSystem {
 		GameRegistry.registerBlock(MFFSDefenceStation);
 		GameRegistry.registerBlock(MFFSMonazitOre);
 		GameRegistry.registerBlock(MFFSExtractor);
-		GameRegistry.registerBlock(MFFSForciciumBlock);
 		GameRegistry.registerBlock(MFFSForceEnergyConverter);
 		
 		OreDictionary.registerOre("ForciciumItem", MFFSitemForcicium);
 		OreDictionary.registerOre("MonazitOre", MFFSMonazitOre);
-		OreDictionary.registerOre("ForciciumBlock", MFFSForciciumBlock);
+
 		
 		
 		GameRegistry.registerTileEntity(Converter, "MFFSForceEnergyConverter");
@@ -386,10 +386,10 @@ public class ModularForceFieldSystem {
 	
 		
 		LanguageRegistry.instance().addNameForObject(MFFSForceEnergyConverter, "en_US", "MFFS ForceEnergy Converter");
-		LanguageRegistry.instance().addNameForObject(MFFSForciciumBlock, "en_US", "Block of Forcicium");
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradeexctractorboost, "en_US", "MFFS Extractor Booster");
 		LanguageRegistry.instance().addNameForObject(MFFSExtractor, "en_US", "MFFS Force Energy Extractor");
 		LanguageRegistry.instance().addNameForObject(MFFSMonazitOre,"en_US", "Monazit");
+		LanguageRegistry.instance().addNameForObject(MFFSitemForcicumCell,"en_US", "MFFS compact Forcicum Cell");
 		LanguageRegistry.instance().addNameForObject(MFFSitemForcicium,"en_US", "Forcicium");
 		LanguageRegistry.instance().addNameForObject(MFFSitemForcePowerCrystal,"en_US", "MFFS Force Energy Crystal");
 		LanguageRegistry.instance().addNameForObject(MFFSitemSwitch,"en_US", "MFFS MultiTool <Switch>");

@@ -38,7 +38,7 @@ import net.minecraft.src.TileEntity;
 
 
 public class TileEntityForceField extends TileEntity implements INetworkHandlerListener{
-private int[] texturid = {-1,-1,-1,-1,-1,-1};
+private int[] texturid = {-76,-76,-76,-76,-76,-76};
 private boolean init = false;
 
 
@@ -84,7 +84,7 @@ private boolean init = false;
 			
 		}else{
 			
-			if(texturid[0]==-1)
+			if(texturid[0]==-76)
 		{   
 			NetworkHandler.requestInitialData(this,true);	
 		}	
