@@ -722,8 +722,10 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 
 	@Override
 	public void onEMPPulse(int magnitude){
-		
+		 if(ModularForceFieldSystem.influencedbyothermods)
+		 {
 		this.setForcePower(this.getForcePower() / 100 * Math.min(Math.max(magnitude, 0), 100));
+		 }
 	}
 	
 	@SideOnly(Side.CLIENT)
