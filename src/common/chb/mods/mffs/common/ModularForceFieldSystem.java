@@ -144,6 +144,8 @@ public class ModularForceFieldSystem {
 	public static int  DefenseStationFPpeerAttack;
 	public static Boolean forcefieldremoveonlywaterandlava;
 	
+	public static Boolean influencedbyothermods;
+	
 	public static int ForceciumWorkCylce;
 	public static int ForceciumCellWorkCylce;
 	public static int ExtractorPassForceEnergyGenerate;
@@ -156,6 +158,7 @@ public class ModularForceFieldSystem {
     
     public static Class Extractor =  TileEntityExtractor.class;
     public static Class Converter = TileEntityConverter.class;
+  
   
 
 	@SidedProxy(clientSide = "chb.mods.mffs.client.ClientProxy", serverSide = "chb.mods.mffs.common.CommonProxy")
@@ -177,6 +180,7 @@ public class ModularForceFieldSystem {
 			MFFSconfig.load();
 			
 			Admin = MFFSconfig.getOrCreateProperty("ForceFieldMaster", Configuration.CATEGORY_GENERAL, "nobody").value;
+			influencedbyothermods =  MFFSconfig.getOrCreateBooleanProperty("influencedbyothermods", Configuration.CATEGORY_GENERAL, false).getBoolean(false);
 			forcefieldremoveonlywaterandlava = MFFSconfig.getOrCreateBooleanProperty("forcefieldremoveonlywaterandlava", Configuration.CATEGORY_GENERAL, false).getBoolean(false);
 			forcefieldtransportcost = MFFSconfig.getOrCreateIntProperty("forcefieldtransportcost", Configuration.CATEGORY_GENERAL, 10000).getInt(10000);
 			forcefieldblockcost = MFFSconfig.getOrCreateIntProperty("forcefieldblockcost", Configuration.CATEGORY_GENERAL, 1).getInt(1);
@@ -188,7 +192,7 @@ public class ModularForceFieldSystem {
 			DefenseStationFPpeerAttack = MFFSconfig.getOrCreateIntProperty("DefenseStationFPpeerAttack", Configuration.CATEGORY_GENERAL,25000).getInt(25000);
 	
 			ForceciumWorkCylce = MFFSconfig.getOrCreateIntProperty("ForceciumWorkCylce", Configuration.CATEGORY_GENERAL,250).getInt(250);
-			ForceciumCellWorkCylce =  MFFSconfig.getOrCreateIntProperty("ForceciumBlockWorkCylce", Configuration.CATEGORY_GENERAL,230).getInt(230);
+			ForceciumCellWorkCylce =  MFFSconfig.getOrCreateIntProperty("ForceciumCellWorkCylce", Configuration.CATEGORY_GENERAL,230).getInt(230);
 			ExtractorPassForceEnergyGenerate =  MFFSconfig.getOrCreateIntProperty("ExtractorPassForceEnergyGenerate", Configuration.CATEGORY_GENERAL,10000).getInt(10000);
 
 			MFFSForceEnergyConverter = new BlockConverter(MFFSconfig.getOrCreateBlockIdProperty("MFFSForceEnergyConverter", 4083).getInt(4083),0).setBlockName("MFFSForceEnergyConverter");

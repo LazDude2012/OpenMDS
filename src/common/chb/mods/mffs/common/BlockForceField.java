@@ -324,7 +324,9 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 	public TileEntity createTileEntity(World world, int meta) {
 		if(meta == ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE)
 		{
-			return new TileEntityForceField();
+			
+				return new TileEntityForceField();
+
 		}
 
 		return null;
@@ -340,7 +342,9 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
  @Override
  public void weakenForceField(World world, int x, int y, int z)
  {
-   //TODO Disable this section of the force field for a while.
+   if(ModularForceFieldSystem.influencedbyothermods)
+   {
     world.setBlockWithNotify(x, y, z, 0);
+   }
  }
 }

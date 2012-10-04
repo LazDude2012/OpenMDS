@@ -559,6 +559,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 		if (getStackInSlot(5) != null) {
 			if (getStackInSlot(5).getItem() == ModularForceFieldSystem.MFFSProjectorFFDistance) {
+				
+	
+				
 				switch(getProjektor_Typ())
 				{
 				case 1:setForceField_distance(getStackInSlot(5).stackSize);break;
@@ -569,6 +572,13 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				case 6:setForceField_distance(getStackInSlot(5).stackSize);break;
 				case 7:setForceField_distance(getStackInSlot(5).stackSize);break;
 				}
+				
+				if(this.isOptioncamouflage() && this.getForceField_distance() > 30)
+				{
+					setForceField_distance(30);
+				}
+				
+				
 			} else {
 				dropplugins(5,this);
 			}
