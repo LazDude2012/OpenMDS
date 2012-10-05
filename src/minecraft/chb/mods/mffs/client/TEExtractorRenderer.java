@@ -117,7 +117,7 @@ public class TEExtractorRenderer extends TileEntitySpecialRenderer {
             fontRenderer.drawString("WC left:", offsetX-realWidth/2, 1+offsetY-realHeight/2 +1 * lineHeight, 1);
             fontRenderer.drawString(String.valueOf(topview.getWorkCylce()), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf(topview.getWorkCylce())), offsetY - realHeight/2+1*lineHeight, 1);
             fontRenderer.drawString("FE Cap:", offsetX-realWidth/2, 1+offsetY-realHeight/2 + 2 * lineHeight, 1);
-            fontRenderer.drawString(String.valueOf(topview.getForceEnergybuffer()/1000).concat("k"), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf(topview.getForceEnergybuffer()/1000).concat("k")), offsetY - realHeight/2+2*lineHeight, 1);
+            fontRenderer.drawString(String.valueOf(topview.getCapacity()).concat("%"), offsetX+realWidth/2-offsetX-fontRenderer.getStringWidth(String.valueOf(topview.getCapacity()).concat("%")), offsetY - realHeight/2+2*lineHeight, 1);
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glDepthMask(true);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

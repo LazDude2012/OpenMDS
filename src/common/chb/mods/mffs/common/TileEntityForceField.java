@@ -27,6 +27,7 @@ import chb.mods.mffs.network.NetworkHandler;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -38,9 +39,22 @@ import net.minecraft.src.TileEntity;
 
 
 public class TileEntityForceField extends TileEntity implements INetworkHandlerListener{
+	
+private Random random = new Random();
 private int[] texturid = {-76,-76,-76,-76,-76,-76};
-private boolean init = false;
+private int Ticker = 0 ;
 
+
+
+
+
+	public int getTicker() {
+	return Ticker;
+}
+
+public void setTicker(int ticker) {
+	Ticker = ticker;
+}
 
 	public TileEntityForceField() {
 	}
@@ -70,27 +84,45 @@ private boolean init = false;
 		this.texturid[4] = Integer.parseInt(texurStringarray[4].trim());
 		this.texturid[5] = Integer.parseInt(texurStringarray[5].trim());
 		
+		this.setTicker((short) 0);
+		
 	}
 	
 	
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			
-			if(!init)
-			{
-				UpdateTextur();
-				init = true;
+			
+			
+			if (this.getTicker() >= 20) {
+			
+				if(texturid[0] == -76)
+				{
+					UpdateTextur();
+				}
+
+				this.setTicker((short) 0);
 			}
 			
+			this.setTicker((short) (this.getTicker() + 1));
+				
 		}else{
 			
-			if(texturid[0]==-76)
-		{   
-			NetworkHandler.requestInitialData(this,true);	
-		}	
+			
+			if (this.getTicker() >= 20+random.nextInt(20)) {
+				
+				if(texturid[0] == -76)
+				{
+					NetworkHandler.requestInitialData(this, true);
+				}
+
+				this.setTicker((short) 0);
+			}
+			
+			this.setTicker((short) (this.getTicker() + 1));
+	
+			
 		}
-			
-			
 		}
 	
 	
@@ -145,6 +177,9 @@ private boolean init = false;
 
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
+		
+		this.setTicker((short) 0);
+		
 		if (field.equals("texturid")) {
 			worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);	
 		}
@@ -159,11 +194,7 @@ private boolean init = false;
 		return NetworkedFields;
 	}
 	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public Packet getDescriptionPacket() {
-	   return NetworkHandler.requestInitialData(this);
-	  }
+
 
 
 

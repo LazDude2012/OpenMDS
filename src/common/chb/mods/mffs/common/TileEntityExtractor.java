@@ -38,6 +38,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	private int workTicker;
 	private int workdone;
 	private int maxworkcylce;
+	private int capacity;
 	
 	
 	public TileEntityExtractor() {
@@ -53,11 +54,24 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		WorkCylce = 0;
 		workTicker = 20;
 		maxworkcylce = 125;
+		capacity = 0;
 	}
 	
 	
 	
 	
+	public int getCapacity(){
+		return capacity;
+	}
+
+	
+	public void setCapacity(int Capacity){
+		if(this.capacity != Capacity)
+		{
+		this.capacity = Capacity;
+		NetworkHandler.updateTileEntityField(this, "capacity");
+		}
+	}
 	
 	public int getMaxworkcylce() {
 		return maxworkcylce;
@@ -72,8 +86,10 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	}
 
 	public void setWorkdone(int workdone) {
+		if(this.workdone != workdone){
 		this.workdone = workdone;
 		NetworkHandler.updateTileEntityField(this,"workdone");
+		}
 	}
 
 	
@@ -122,15 +138,17 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 	public void setForceEnergybuffer(int forceEnergybuffer) {
 		ForceEnergybuffer = forceEnergybuffer;
-		NetworkHandler.updateTileEntityField(this,"ForceEnergybuffer");
+		
 	}
 
 
 
 	public void setWorkCylce(int i)
 	{
+		if(this.WorkCylce != i){
 		this.WorkCylce = i;
 		NetworkHandler.updateTileEntityField(this,"WorkCylce");
+		}
 	}
 	
 	public int getWorkCylce(){
@@ -375,6 +393,9 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 				if(this.getWorkdone() != getWorkEnergy() * 100 / getMaxWorkEnergy())
 				setWorkdone( getWorkEnergy() * 100 / getMaxWorkEnergy());
 				
+				if(this.getCapacity() != (getForceEnergybuffer()*100)/getMaxForceEnergyBuffer())
+					   setCapacity((getForceEnergybuffer()*100)/getMaxForceEnergyBuffer());
+				
 				checkslots(false);
 				if(this.hasfreeForceEnergyStorage() && this.hasStufftoConvert())
 				{
@@ -408,7 +429,14 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		}else {
 			if(Extractor_ID==0)
 			{
-				NetworkHandler.requestInitialData(this,true);
+				if (this.getTicker() >= 20+random.nextInt(20)) {
+					
+					NetworkHandler.requestInitialData(this,true);
+
+					this.setTicker((short) 0);
+				}
+				
+				this.setTicker((short) (this.getTicker() + 1));
 			}
 		}
 	}
@@ -540,6 +568,9 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
+		
+	
+	
 		if (field.equals("side")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
@@ -549,7 +580,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		if (field.equals("WorkCylce")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
-		if (field.equals("ForceEnergybuffer")) {
+		if (field.equals("capacity")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("workdone")) {
@@ -568,20 +599,16 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 		NetworkedFields.add("active");
 		NetworkedFields.add("side");
-		NetworkedFields.add("ForceEnergybuffer");
+		NetworkedFields.add("capacity");
 		NetworkedFields.add("WorkCylce");
 		NetworkedFields.add("WorkEnergy");
 		NetworkedFields.add("workdone");
 		NetworkedFields.add("Extractor_ID");
-		
+
 
 		return NetworkedFields;
 	}
-	@SideOnly(Side.CLIENT)
-	  @Override
-	  public Packet getDescriptionPacket() {
-	    return NetworkHandler.requestInitialData(this);
-	  }
+
 
 
 

@@ -573,10 +573,10 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				case 7:setForceField_distance(getStackInSlot(5).stackSize);break;
 				}
 				
-				if(this.isOptioncamouflage() && this.getForceField_distance() > 30)
-				{
-					setForceField_distance(30);
-				}
+//				if(this.isOptioncamouflage() && this.getForceField_distance() > 30)
+//				{
+//					setForceField_distance(30);
+//				}
 				
 				
 			} else {
@@ -1093,9 +1093,19 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			
 			this.setTicker((short) (this.getTicker() + 1));
 		}else{
+			
 			if(this.getProjektor_ID()==0)
 			{
-				NetworkHandler.requestInitialData(this,true);
+				
+				if (this.getTicker() >= 20+random.nextInt(20)) {
+					
+					NetworkHandler.requestInitialData(this,true);
+
+					this.setTicker((short) 0);
+				}
+				
+				this.setTicker((short) (this.getTicker() + 1));
+				
 			}
 			
 		}
@@ -1941,6 +1951,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
 		
+		
 		if (field.equals("side")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
@@ -1950,6 +1961,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		if (field.equals("ProjektorTyp")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
+		
 		
 	}
 
@@ -1967,10 +1979,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	
 		return NetworkedFields;
 	}
-	@SideOnly(Side.CLIENT)
-	  @Override
-	  public Packet getDescriptionPacket() {
-	    return NetworkHandler.requestInitialData(this);
-	  }
+
 	
 }

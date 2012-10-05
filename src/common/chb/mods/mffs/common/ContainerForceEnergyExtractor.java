@@ -32,6 +32,7 @@ public class ContainerForceEnergyExtractor extends Container {
 	private EntityPlayer player;
 	private int WorkCylce;
 	private int workdone;
+	private int ForceEnergybuffer;
 	
 	public ContainerForceEnergyExtractor(EntityPlayer player,
 			TileEntityExtractor tileentity) {
@@ -98,6 +99,15 @@ public class ContainerForceEnergyExtractor extends Container {
 		case 1:
 			ForceEnergyExtractor.setWorkCylce(j);
 			break;
+			
+		case 2:
+			ForceEnergyExtractor.setForceEnergybuffer((ForceEnergyExtractor.getForceEnergybuffer() & 0xffff0000)
+							| j);
+			break;
+		case 3:
+			ForceEnergyExtractor.setForceEnergybuffer((ForceEnergyExtractor.getForceEnergybuffer() & 0xffff)
+							| (j << 16));
+			break;
              
        }
 	}
@@ -119,12 +129,20 @@ public class ContainerForceEnergyExtractor extends Container {
 				icrafting.updateCraftingInventoryInfo(this, 1,
 						ForceEnergyExtractor.getWorkCylce());
 			}
+			
+			if (ForceEnergybuffer != ForceEnergyExtractor.getForceEnergybuffer()) {
+				icrafting.updateCraftingInventoryInfo(this, 2,
+						ForceEnergyExtractor.getForceEnergybuffer() & 0xffff);
+				icrafting.updateCraftingInventoryInfo(this, 3,
+						ForceEnergyExtractor.getForceEnergybuffer() >>> 16);
+			}
 
 
 		}
 
 		workdone = ForceEnergyExtractor.getWorkdone();
 		WorkCylce = ForceEnergyExtractor.getWorkCylce();
+		ForceEnergybuffer = ForceEnergyExtractor.getForceEnergybuffer();
 
 
 	}

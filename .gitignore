@@ -16,8 +16,8 @@
 
 !/src/common/chb/
 !/src/minecraft/chb/
-!/src/minecraft/mcmod.info
-!/src/minecraft/versioninfo
+!/src/common/mcmod.info
+!/src/common/versioninfo
 
 *.bat
 *.sh

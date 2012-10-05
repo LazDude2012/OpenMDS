@@ -410,7 +410,14 @@ ISidedInventory,INetworkHandlerListener {
 		} else {
 			if(Defstation_ID==0)
 			{
-				NetworkHandler.requestInitialData(this,true);
+				if (this.getTicker() >= 20+random.nextInt(20)) {
+					
+					NetworkHandler.requestInitialData(this,true);
+
+					this.setTicker((short) 0);
+				}
+				
+				this.setTicker((short) (this.getTicker() + 1));
 			}
 		}
 	}
@@ -523,6 +530,9 @@ ISidedInventory,INetworkHandlerListener {
 	
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
+		
+		
+		
 		if (field.equals("active")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}

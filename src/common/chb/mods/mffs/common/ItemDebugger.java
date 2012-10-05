@@ -54,7 +54,7 @@ public class ItemDebugger extends  ItemMultitool  {
 			
 			if (tileEntity instanceof TileEntityCapacitor) {
 				info.setLength(0);
-				info.append("Capacitor: ").append(((TileEntityCapacitor) tileEntity).getSecStation_ID());
+				info.append("Capacitor: ").append(((TileEntityCapacitor) tileEntity).getCapacitor_ID());
 				Functions.ChattoPlayer(entityplayer, info.toString());
 			}
 			if (tileEntity instanceof TileEntitySecurityStation) {
@@ -75,7 +75,7 @@ public class ItemDebugger extends  ItemMultitool  {
 			
 			if (tileEntity instanceof TileEntityCapacitor) {
 				info.setLength(0);
-				info.append("Capacitor: ").append(((TileEntityCapacitor) tileEntity).getSecStation_ID());
+				info.append("Capacitor: ").append(((TileEntityCapacitor) tileEntity).getCapacitor_ID());
 				Functions.ChattoPlayer(entityplayer, info.toString());
 			}
 			if (tileEntity instanceof TileEntitySecurityStation) {

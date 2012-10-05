@@ -20,6 +20,8 @@
 
 package chb.mods.mffs.common;
 
+import java.util.Random;
+
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
@@ -37,6 +39,7 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 	private boolean active;
 	private int side;
 	private short ticker;
+	protected Random random = new Random();
 
 	public TileEntityMachines()
 

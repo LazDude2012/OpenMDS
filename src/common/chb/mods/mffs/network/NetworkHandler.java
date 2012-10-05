@@ -71,11 +71,15 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 	{
 	case 1:
 		
+		
+		
 		String fieldname = dat.readUTF();
 		
 		World world = ModularForceFieldSystem.proxy.getClientWorld();
 		
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		
+//		System.out.println(tileEntity+"Bekommt daten"+fieldname);
 		
 		 if(tileEntity instanceof TileEntityMachines)
 		 {
@@ -187,6 +191,9 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 		if(serverworld != null)
 		{
 		TileEntity servertileEntity = serverworld.getBlockTileEntity(x, y, z);
+		
+//		System.out.println(servertileEntity+"Stellt daten zusammen");
+		
 		if(servertileEntity != null)
 		{
 		for(String varname : daten.split("/"))
@@ -260,6 +267,9 @@ public static void reflectionsetvalue(Field f,TileEntity tileEntity,ByteArrayDat
 
 public static void updateTileEntityField(TileEntity tileEntity, String varname)
 {
+	
+//	System.out.println(tileEntity+"Ubertragt daten"+varname);
+	
 	if(tileEntity != null)
 	{
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
@@ -401,7 +411,10 @@ public static Packet requestInitialData(TileEntity tileEntity){
 
 public static Packet requestInitialData(TileEntity tileEntity,boolean senddirekt){
 	
-
+         
+//	System.out.println(tileEntity+"Braucht InitDaten");
+	
+	
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
 		DataOutputStream dos = new DataOutputStream(bos);
 		int x = tileEntity.xCoord;

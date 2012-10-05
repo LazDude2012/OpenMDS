@@ -194,7 +194,14 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
         }else {
 			if(Converter_ID==0)
 			{
-				NetworkHandler.requestInitialData(this,true);
+				if (this.getTicker() >= 20+random.nextInt(20)) {
+					
+					NetworkHandler.requestInitialData(this,true);
+
+					this.setTicker((short) 0);
+				}
+				
+				this.setTicker((short) (this.getTicker() + 1));
 			}
 		}
     }
@@ -393,6 +400,8 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 	
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
+		
+		
 		if (field.equals("side")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
@@ -441,11 +450,7 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 	public Container getContainer(InventoryPlayer inventoryplayer) {
 		return new ContainerConverter(inventoryplayer.player,this);
 	}
-	@SideOnly(Side.CLIENT)
-	  @Override
-	  public Packet getDescriptionPacket() {
-	    return NetworkHandler.requestInitialData(this);
-	  }
+
 	
 	
 }

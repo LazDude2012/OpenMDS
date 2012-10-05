@@ -130,8 +130,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 
 	
 	public void setCapacity(int Capacity){
+		if(this.capacity != Capacity)
+		{
 		this.capacity = Capacity;
 		NetworkHandler.updateTileEntityField(this, "capacity");
+		}
 	}
 
 	public Container getContainer(InventoryPlayer inventoryplayer) {
@@ -160,8 +163,10 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 	}
 
 	public void setLinketprojektor(Short linketprojektor) {
+		if(this.linketprojektor != linketprojektor){
 		this.linketprojektor = linketprojektor;
 		NetworkHandler.updateTileEntityField(this, "linketprojektor");
+		}
 	}
 
 	@Override
@@ -179,8 +184,10 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 	}
 
 	public void setTransmitrange(short transmitrange) {
+		if(this.transmitrange != transmitrange){
 		this.transmitrange = transmitrange;
 		NetworkHandler.updateTileEntityField(this, "transmitrange");
+		}
 	}
 
 	public int getTransmitRange() {
@@ -489,9 +496,19 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 
 
 		}else {
+			
+			
+			
 			if(Capacitor_ID==0)
 			{
-				NetworkHandler.requestInitialData(this,true);
+			
+				if (this.getTicker() >= 20 + random.nextInt(20)) {
+					
+					NetworkHandler.requestInitialData(this,true);
+					this.setTicker((short) 0);
+				}
+				
+				this.setTicker((short) (this.getTicker() + 1));
 			}
 		} 
 	}
@@ -684,6 +701,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
+		
+	
+		
 		if (field.equals("side")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
@@ -728,11 +748,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		 }
 	}
 	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public Packet getDescriptionPacket() {
-	    return NetworkHandler.requestInitialData(this);
-	}
 
 	
 }
