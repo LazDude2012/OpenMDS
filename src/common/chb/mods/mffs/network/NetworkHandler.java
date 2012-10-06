@@ -192,7 +192,6 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 		{
 		TileEntity servertileEntity = serverworld.getBlockTileEntity(x, y, z);
 		
-//		System.out.println(servertileEntity+"Stellt daten zusammen");
 		
 		if(servertileEntity != null)
 		{
@@ -227,6 +226,33 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 		
 		
 	break;		
+	case 10:
+		
+		int Dim =dat.readInt() ;
+		String Corrdinsaten = dat.readUTF(); 
+		
+		World worldserver = DimensionManager.getWorld(Dim);
+	
+		if(worldserver != null)
+		{
+			
+		for(String varname : Corrdinsaten.split("#"))
+		{
+
+		 if(!varname.isEmpty())	
+		 {
+		 String[] corr =varname.split("/");
+		 TileEntity servertileEntity = worldserver.getBlockTileEntity(Integer.parseInt(corr[2].trim()), Integer.parseInt(corr[1].trim()),Integer.parseInt(corr[0].trim()));
+		 if(servertileEntity != null)
+		 {
+			 updateTileEntityField(servertileEntity,  "texturid");
+		 }
+		 }
+		}
+		}
+		
+	break;
+	
 	}
 	
 
@@ -409,6 +435,46 @@ public static Packet requestInitialData(TileEntity tileEntity){
 }
 
 
+public static void requestForceFieldInitialData(int Dimension, String corridnaten){
+	
+	
+	 try {
+		 
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
+		DataOutputStream dos = new DataOutputStream(bos);
+		
+		dos.writeInt(0);
+		dos.writeInt(0);
+		dos.writeInt(0);
+		dos.writeInt(10);
+		dos.writeInt(Dimension);
+		dos.writeUTF(corridnaten);
+
+		Packet250CustomPayload pkt = new Packet250CustomPayload();
+		pkt.channel = "MFFS";
+		pkt.data = bos.toByteArray();
+		pkt.length = bos.size();
+		pkt.isChunkDataPacket = false;
+		
+		PacketDispatcher.sendPacketToServer(pkt);
+		
+		
+	
+		} catch (Exception e) {
+			if(true)
+			System.out.println(e.getLocalizedMessage());
+		}
+	
+	
+}
+
+
+
+
+
+
+
+
 public static Packet requestInitialData(TileEntity tileEntity,boolean senddirekt){
 	
          
@@ -451,7 +517,7 @@ public static Packet requestInitialData(TileEntity tileEntity,boolean senddirekt
 		pkt.channel = "MFFS";
 		pkt.data = bos.toByteArray();
 		pkt.length = bos.size();
-		pkt.isChunkDataPacket = true;
+		pkt.isChunkDataPacket = false;
 		
 		if(senddirekt)
 		PacketDispatcher.sendPacketToServer(pkt);

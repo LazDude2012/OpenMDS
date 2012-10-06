@@ -498,10 +498,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 						this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 					}
 				}
-			} else {
-				if (getStackInSlot(0).getItem() != ModularForceFieldSystem.MFFSitemcardempty) {
-					dropplugins(0,this);
-				}
 			}
 		} else {
 			setLinkCapacitor_ID(0);
@@ -550,7 +546,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
 			} else {
 				if(getProjektor_Typ()!= 0) {setProjektor_Typ(0);}
-				dropplugins(1,this);
 			}
 		} else {
 			if(getProjektor_Typ()!= 0) {setProjektor_Typ(0);}
@@ -1840,6 +1835,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
+		
 		ProjektorItemStacks[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
 			itemstack.stackSize = getInventoryStackLimit();
@@ -1980,5 +1976,78 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		return NetworkedFields;
 	}
 
-	
+	@Override
+	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
+		
+		if(!this.isActive())
+		{
+		switch(Slot)
+		{
+		case 0:
+			if(par1ItemStack.getItem() instanceof ItemCardPowerLink)
+			return true;
+		break;
+		
+		case 1:
+			if(par1ItemStack.getItem() instanceof ItemProjectorModuleBase )
+			return true;
+		break;
+		
+		case 2:
+		case 3:
+		case 4:
+			if(par1ItemStack.getItem() instanceof ItemProjectorOptionBlockBreaker ||
+			   par1ItemStack.getItem() instanceof ItemProjectorOptionCamoflage ||
+			   par1ItemStack.getItem() instanceof ItemProjectorOptionFieldFusion ||
+			   par1ItemStack.getItem() instanceof ItemProjectorOptionDefenseStation ||
+			   par1ItemStack.getItem() instanceof ItemProjectorOptionFieldManipulator ||
+			   par1ItemStack.getItem() instanceof ItemProjectorOptionForceFieldJammer ||
+			   par1ItemStack.getItem() instanceof ItemProjectorOptionMobDefence ||
+			   par1ItemStack.getItem() instanceof ItemProjectorOptionSponge ||
+			   par1ItemStack.getItem() instanceof ItemProjectorOptionTouchDamage )
+			return true;
+		break;
+		
+		case 5:
+			if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorDistance )
+				
+				if(this.getProjektor_Typ() != 0 &&  this.getProjektor_Typ() != 7 )
+				return true;
+		break;
+		
+		case 6:
+			if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorStrength )
+				
+				if(this.getProjektor_Typ() != 0 &&  this.getProjektor_Typ() != 2 && this.getProjektor_Typ() != 4)
+				return true;
+		break;
+		
+		case 7:
+		case 8:
+		case 9:
+		case 10:
+			if(par1ItemStack.getItem() instanceof ItemProjectorFocusMatrix )
+			{
+				if(this.getProjektor_Typ() != 0 &&  this.getProjektor_Typ() != 3 && this.getProjektor_Typ() != 5)
+				return true;
+			}
+			
+		break;
+		
+		case 12:
+			if(par1ItemStack.getItem() instanceof ItemCardSecurityLink )
+			return true;
+		break;
+		
+		
+		}
+		
+		}
+		
+		if(Slot == 11 && this.isOptioncamouflage())
+		return true;
+		
+		
+		return false;
+	}
 }

@@ -34,9 +34,9 @@ public class ContainerSecurityStation extends Container {
 		SecStation = tileentity;
 		this.player = player;
 
-		addSlotToContainer(new Slot(SecStation, 1, 43, 26)); // MasterCard
-		addSlotToContainer(new Slot(SecStation, 2, 137, 26)); // Full Coder
-		addSlotToContainer(new Slot(SecStation, 3, 119, 62)); // First Option Slot
+		addSlotToContainer(new SlotHelper(SecStation, 1, 43, 26)); // MasterCard
+		addSlotToContainer(new SlotHelper(SecStation, 2, 137, 26)); // Full Coder
+		addSlotToContainer(new SlotHelper(SecStation, 3, 119, 62)); // First Option Slot
 
 		int var3;
 

@@ -246,10 +246,6 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 						this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 					}
 				}
-			} else {
-				if (getStackInSlot(0).getItem() != ModularForceFieldSystem.MFFSitemcardempty) {
-					dropplugins(0,this);
-				}
 			}
 		} else {
 		    this.setLinkCapacitor_ID(0);
@@ -451,6 +447,20 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 		return new ContainerConverter(inventoryplayer.player,this);
 	}
 
-	
+	@Override
+	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
+		
+		switch(Slot)
+		{
+		case 0:
+			if(par1ItemStack.getItem() instanceof ItemCardPowerLink)
+		    return true;
+		break;
+		
+		
+		}
+		
+		return false;
+	}
 	
 }

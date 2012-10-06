@@ -20,9 +20,7 @@
 
 package chb.mods.mffs.common;
 
-import chb.mods.mffs.network.INetworkHandlerEventListener;
-import chb.mods.mffs.network.INetworkHandlerListener;
-import chb.mods.mffs.network.NetworkHandler;
+import chb.mods.mffs.network.*;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -43,9 +41,6 @@ public class TileEntityForceField extends TileEntity implements INetworkHandlerL
 private Random random = new Random();
 private int[] texturid = {-76,-76,-76,-76,-76,-76};
 private int Ticker = 0 ;
-
-
-
 
 
 	public int getTicker() {
@@ -92,28 +87,29 @@ public void setTicker(int ticker) {
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			
-			
-			
 			if (this.getTicker() >= 20) {
-			
+				
 				if(texturid[0] == -76)
 				{
 					UpdateTextur();
+
 				}
 
 				this.setTicker((short) 0);
 			}
 			
 			this.setTicker((short) (this.getTicker() + 1));
+
 				
 		}else{
 			
 			
-			if (this.getTicker() >= 20+random.nextInt(20)) {
+			if (this.getTicker() >= 20 + random.nextInt(20)) {
 				
 				if(texturid[0] == -76)
 				{
-					NetworkHandler.requestInitialData(this, true);
+					FoeceFieldUpdatehandler.getWorldMap(ModularForceFieldSystem.proxy.getClientWorld()).addto(xCoord, yCoord, zCoord);
+
 				}
 
 				this.setTicker((short) 0);
@@ -121,7 +117,7 @@ public void setTicker(int ticker) {
 			
 			this.setTicker((short) (this.getTicker() + 1));
 	
-			
+
 		}
 		}
 	
@@ -129,8 +125,11 @@ public void setTicker(int ticker) {
 
 	public void  setTexturid(int[] texturid )
 	{
+		if(this.texturid != texturid)
+		{
 		this.texturid = texturid;
-		NetworkHandler.updateTileEntityField(this, "texturid");
+		FoeceFieldUpdatehandler.getWorldMap(ModularForceFieldSystem.proxy.getClientWorld()).addto(xCoord, yCoord, zCoord);
+		}
 	}
 
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
@@ -159,11 +158,10 @@ public void setTicker(int ticker) {
 				if(projector != null)
 				{
 					setTexturid(projector.getForcefieldtextur_id());
-					worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
+
 				}
-			}else{worldObj.setBlockWithNotify(this.xCoord, this.yCoord,this.zCoord, 0);}
-	}else{
-		worldObj.setBlockWithNotify(this.xCoord, this.yCoord,this.zCoord, 0);}
+			}
+	}
 	}
 
 
@@ -178,10 +176,9 @@ public void setTicker(int ticker) {
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
 		
-		this.setTicker((short) 0);
 		
 		if (field.equals("texturid")) {
-			worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);	
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);	
 		}
 	}
 

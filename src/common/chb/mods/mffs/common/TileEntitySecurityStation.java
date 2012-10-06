@@ -227,7 +227,6 @@ ISidedInventory, INetworkHandlerListener {
 			}else{
 
 				setMainUser("");
-				dropplugins(1);
 			}
 		}else{
 
@@ -242,8 +241,6 @@ ISidedInventory, INetworkHandlerListener {
 				{
 					Card.setSeclevel(getStackInSlot(2),ModularForceFieldSystem.PERSONALID_FULLACCESS);
 				}
-			}else{
-				dropplugins(2);
 			}
 		}
 
@@ -252,7 +249,6 @@ ISidedInventory, INetworkHandlerListener {
 					&& this.getMainUser()!="") {
 				this.setMultiusermod(true);
 		}else{
-			dropplugins(3);
 			this.setMultiusermod(false);
 		}
 		}else{
@@ -424,6 +420,28 @@ ISidedInventory, INetworkHandlerListener {
 	}
 	
 	
-
+	@Override
+	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
+		
+		switch(Slot)
+		{
+		case 1:
+			if(par1ItemStack.getItem() instanceof ItemCardPersonalID)
+				return true;
+		break;
+		case 2:
+			if(par1ItemStack.getItem() instanceof ItemCardPersonalID)
+				return true;
+		break;
+		case 3:
+			if(par1ItemStack.getItem() instanceof ItemSecurityStationExternalIDReader)
+				return true;
+		break;
+		
+		
+		}
+		
+		return false;
+	}
 
 }

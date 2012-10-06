@@ -41,11 +41,11 @@ public class ContainerAreaDefenseStation extends Container {
 		defstation = tileentity;
 		this.player = player;
 
-		addSlotToContainer(new Slot(defstation, 0, 10, 44));
-		addSlotToContainer(new Slot(defstation, 1, 10, 19));
+		addSlotToContainer(new SlotHelper(defstation, 0, 10, 44));
+		addSlotToContainer(new SlotHelper(defstation, 1, 10, 19));
 
-		addSlotToContainer(new Slot(defstation, 2, 128, 13));
-		addSlotToContainer(new Slot(defstation, 3, 128, 44));
+		addSlotToContainer(new SlotHelper(defstation, 2, 128, 13));
+		addSlotToContainer(new SlotHelper(defstation, 3, 128, 44));
 
 		int var3;
 

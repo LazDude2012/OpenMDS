@@ -239,10 +239,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 						this.setInventorySlotContents(1, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 					}
 				}
-			} else {
-				if (getStackInSlot(1).getItem() != ModularForceFieldSystem.MFFSitemcardempty) {
-					dropplugins(1,this);
-				}
 			}
 		} else {
 		    this.setLinkCapacitor_ID(0);
@@ -255,7 +251,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 				
 			 }else{
 				 setMaxForceEnergyBuffer(1000000);
-				 dropplugins(2,this);
 			 }
 			}else{
 				setMaxForceEnergyBuffer(1000000);
@@ -266,11 +261,10 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		
 				setWorkTicker(20 - getStackInSlot(3).stackSize);
 			
-			
-				
+	
 			}else{
 				setWorkTicker(20);
-				dropplugins(3,this);
+		
 			}
 		}else{
 			setWorkTicker(20);
@@ -610,6 +604,33 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	}
 
 
-
+	@Override
+	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
+		
+		switch(Slot)
+		{
+		case 0:
+			if(par1ItemStack.getItem() instanceof ItemForcicium || par1ItemStack.getItem() instanceof ItemForcicumCell )
+			return true;
+		break;
+		
+		case 1:
+			if(par1ItemStack.getItem() instanceof  ItemCardPowerLink)
+			return true;
+		break;
+		
+		case 2:
+			if(par1ItemStack.getItem() instanceof  ItemCapacitorUpgradeCapacity)
+			return true;
+		break;
+		
+		case 3:
+			if(par1ItemStack.getItem() instanceof  ItemExtractorUpgradeBooster)
+			return true;
+		break;
+		
+		}
+		return false;
+	}
 
 }

@@ -21,6 +21,7 @@
 package chb.mods.mffs.common;
 
 import chb.mods.mffs.network.NetworkHandler;
+import chb.mods.mffs.network.FoeceFieldUpdatehandler;
 import chb.mods.mffs.recipes.ModIndependentRecipes;
 import chb.mods.mffs.recipes.ModIndustrialcraftRecipes;
 
@@ -43,6 +44,7 @@ import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -51,6 +53,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
 
 @Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1")
 @NetworkMod(channels = { "MFFS" },clientSideRequired = true, serverSideRequired = false,packetHandler = NetworkHandler.class)
@@ -170,15 +173,21 @@ public class ModularForceFieldSystem {
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event) {
 		
+	
 		
 	     MinecraftForge.EVENT_BUS.register(this);
 	     MinecraftForge.EVENT_BUS.register(proxy);
+	     
+	     
+	     TickRegistry.registerScheduledTickHandler(new FoeceFieldUpdatehandler(), Side.CLIENT);
+	     
 
 		MFFSconfig = new Configuration(event.getSuggestedConfigurationFile());
 		event.getModMetadata().version = Versioninfo.version();
 		try {
 			MFFSconfig.load();
 			
+	
 			Admin = MFFSconfig.getOrCreateProperty("ForceFieldMaster", Configuration.CATEGORY_GENERAL, "nobody").value;
 			influencedbyothermods =  MFFSconfig.getOrCreateBooleanProperty("influencedbyothermods", Configuration.CATEGORY_GENERAL, false).getBoolean(false);
 			forcefieldremoveonlywaterandlava = MFFSconfig.getOrCreateBooleanProperty("forcefieldremoveonlywaterandlava", Configuration.CATEGORY_GENERAL, false).getBoolean(false);
@@ -290,6 +299,8 @@ public class ModularForceFieldSystem {
         if(!BuildCraft && !UniversalElectricity && !Industrialcraft)
             System.out.println("[ModularForceFieldSystem] ERROR: No Energy Mod found !!");
 		
+        
+       
   
         
 		GameRegistry.registerBlock(MFFSCapacitor);
@@ -321,6 +332,8 @@ public class ModularForceFieldSystem {
 				"MFFSForceField");
 		
 	
+		
+		
 
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 
@@ -433,6 +446,8 @@ public class ModularForceFieldSystem {
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorOptionFieldFusion ,"en_US","MFFS Projector Upgrade <Field Fusion>");
 
 		GameRegistry.registerWorldGenerator(new MFFSWorldGenerator());
+		
+		
 	}
 
 	@PostInit

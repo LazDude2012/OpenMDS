@@ -160,6 +160,19 @@ public final class Linkgrid {
 				}
 			}
 
+			for (TileEntityCapacitor tileentity : Capacitors.values()) {
+				if (tileentity.getRemote_Capacitor_ID() == Capacitors_ID) {
+					int dx = tileentity.xCoord - xCoordr;
+					int dy = tileentity.yCoord - yCoordr;
+					int dz = tileentity.zCoord - zCoordr;
+
+					if (i >= Math.sqrt(dx * dx + dy * dy + dz * dz)) {
+						counter++;
+					}
+				}
+			}
+			
+			
 			for (TileEntityAreaDefenseStation tileentity : DefStation.values()) {
 				if (tileentity.getlinkCapacitors_ID() == Capacitors_ID) {
 					int dx = tileentity.xCoord - xCoordr;

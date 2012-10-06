@@ -124,6 +124,10 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 		return side;
 	}
 	
+	
+	public abstract boolean isItemValid(ItemStack par1ItemStack, int Slot);
+
+	
 
 }
 

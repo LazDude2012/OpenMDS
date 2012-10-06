@@ -47,24 +47,24 @@ public class ContainerProjector extends Container {
 		capacity = -1;
 		camoflage = false;
 
-		addSlotToContainer(new Slot(projectorentity, 0, 11, 41)); // Linkcard
-		addSlotToContainer(new Slot(projectorentity, 1, 11, 18)); // Typ Slot
+		addSlotToContainer(new SlotHelper(projectorentity, 0, 11, 41)); // Linkcard
+		addSlotToContainer(new SlotHelper(projectorentity, 1, 11, 18)); // Typ Slot
 
-		addSlotToContainer(new Slot(projectorentity, 2, 120, 62)); // OptionSlot
-		addSlotToContainer(new Slot(projectorentity, 3, 138, 62)); // OptionSlot
-		addSlotToContainer(new Slot(projectorentity, 4, 156, 62)); // OptionSlot
+		addSlotToContainer(new SlotHelper(projectorentity, 2, 120, 62)); // OptionSlot
+		addSlotToContainer(new SlotHelper(projectorentity, 3, 138, 62)); // OptionSlot
+		addSlotToContainer(new SlotHelper(projectorentity, 4, 156, 62)); // OptionSlot
 
-		addSlotToContainer(new Slot(projectorentity, 6, 155, 44)); // StreghtSlot
-		addSlotToContainer(new Slot(projectorentity, 5, 119, 44)); // DistancetSlot
+		addSlotToContainer(new SlotHelper(projectorentity, 6, 155, 44)); // StreghtSlot
+		addSlotToContainer(new SlotHelper(projectorentity, 5, 119, 44)); // DistancetSlot
 
-		addSlotToContainer(new Slot(projectorentity, 7, 137, 8)); // Focus up
-		addSlotToContainer(new Slot(projectorentity, 8, 137, 42)); // Focus down
-		addSlotToContainer(new Slot(projectorentity, 9, 154, 25)); // Focus right
-		addSlotToContainer(new Slot(projectorentity, 10, 120, 25)); // Focus left
+		addSlotToContainer(new SlotHelper(projectorentity, 7, 137, 8)); // Focus up
+		addSlotToContainer(new SlotHelper(projectorentity, 8, 137, 42)); // Focus down
+		addSlotToContainer(new SlotHelper(projectorentity, 9, 154, 25)); // Focus right
+		addSlotToContainer(new SlotHelper(projectorentity, 10, 120, 25)); // Focus left
 
-		addSlotToContainer(new Slot(projectorentity, 11, 137, 25)); // Centerslot
+		addSlotToContainer(new SlotHelper(projectorentity, 11, 137, 25)); // Centerslot
 
-		addSlotToContainer(new Slot(projectorentity, 12, 92, 18)); // SecCard
+		addSlotToContainer(new SlotHelper(projectorentity, 12, 92, 18)); // SecCard
 
 		int var3;
 

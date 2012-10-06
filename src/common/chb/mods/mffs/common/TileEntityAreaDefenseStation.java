@@ -251,10 +251,6 @@ ISidedInventory,INetworkHandlerListener {
 	 	    	setlinkCapacitors_ID(0);
 	 	    	this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 				}
-			} else {
-				if (getStackInSlot(0).getItem() != ModularForceFieldSystem.MFFSitemcardempty) {
-					dropplugins(0,this);
-				}
 			}
 		} else {
 			setLinkGenerator(false);
@@ -287,9 +283,6 @@ ISidedInventory,INetworkHandlerListener {
 			} else {
 				if(this.islinkSecStation())
 				    setlinkSecStation(false);
-				if (getStackInSlot(1).getItem() != ModularForceFieldSystem.MFFSItemSecLinkCard) {
-					dropplugins(1,this);
-				}
 			}
 		} else {
 			if(this.islinkSecStation())
@@ -313,12 +306,6 @@ ISidedInventory,INetworkHandlerListener {
         	this.setOptionMobDefense(false);
         }
 
-		if(getStackInSlot(2).getItem() != ModularForceFieldSystem.MFFSProjectorOptionDefenceStation
-		&& getStackInSlot(2).getItem() != ModularForceFieldSystem.MFFSProjectorOptionMoobEx		)
-		{
-			this.dropplugins(2, this);
-			setCanwork(false);
-		}
 		}else{
 			setCanwork(false);
 		}
@@ -326,8 +313,6 @@ ISidedInventory,INetworkHandlerListener {
 		if (getStackInSlot(3) != null) {
 			if (getStackInSlot(3).getItem() == ModularForceFieldSystem.MFFSProjectorFFDistance) {
 				setDistance(getStackInSlot(3).stackSize+1);
-			} else {
-				dropplugins(3,this);
 			}
 		} else {
 			setDistance(0);
@@ -555,10 +540,32 @@ ISidedInventory,INetworkHandlerListener {
 	}
 
 
-	  @Override
-	  public Packet getDescriptionPacket() {
-	    return NetworkHandler.requestInitialData(this);
-	  }
+
+	@Override
+	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
+		
+		switch(Slot)
+		{
+		case 0:
+		     if(par1ItemStack.getItem() instanceof ItemCardPowerLink)
+	        	return true;	
+		break;
+		case 1:
+			if(par1ItemStack.getItem() instanceof ItemCardSecurityLink)
+				return true;		
+		break;
+		case 2:
+			if(par1ItemStack.getItem() instanceof ItemProjectorOptionDefenseStation || par1ItemStack.getItem() instanceof ItemProjectorOptionMobDefence)
+				return true;
+		break;
+		case 3:
+			if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorDistance)
+				return true;	
+		break;
+		}
+		
+		return false;
+	}
 
 
 
