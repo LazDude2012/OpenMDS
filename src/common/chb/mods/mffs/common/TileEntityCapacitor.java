@@ -211,27 +211,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemupgradecapcap) {
 				temp_maxforcepower += (2000000 * getStackInSlot(0).stackSize);
 			}
-			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemupgradecaprange) {
-				stacksize = getStackInSlot(0).stackSize;
-			}
-
-			if (getStackInSlot(0).getItem() != ModularForceFieldSystem.MFFSitemupgradecapcap
-					&& getStackInSlot(0).getItem() != ModularForceFieldSystem.MFFSitemupgradecaprange) {
-				dropplugins(0,this);
-			}
 		}
 
 		if (getStackInSlot(1) != null) {
-			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSitemupgradecapcap) {
-				temp_maxforcepower += (2000000 * getStackInSlot(1).stackSize);
-			}
 			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSitemupgradecaprange) {
 				stacksize += getStackInSlot(1).stackSize;
-			}
-
-			if (getStackInSlot(1).getItem() != ModularForceFieldSystem.MFFSitemupgradecapcap
-					&& getStackInSlot(1).getItem() != ModularForceFieldSystem.MFFSitemupgradecaprange) {
-				dropplugins(1,this);
 			}
 		}
 		
@@ -282,43 +266,49 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 			
 			}
 			
-			
+		
 			
 			if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSitemfc) {
-				if (this.getCapacitor_ID()!= NBTTagCompoundHelper.getTAGfromItemstack(
+				if (getRemote_Capacitor_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
 						getStackInSlot(2)).getInteger("CapacitorID")) {
-				
-					if (this.getRemote_Capacitor_ID()!= NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(2)).getInteger("CapacitorID")) {
-						
-						this.setRemote_Capacitor_ID(NBTTagCompoundHelper.getTAGfromItemstack(
+					setRemote_Capacitor_ID(NBTTagCompoundHelper.getTAGfromItemstack(
 							getStackInSlot(2)).getInteger("CapacitorID"));
-						
-						if (Linkgrid.getWorldMap(worldObj).getCapacitor()
-								.get(this.getRemote_Capacitor_ID()) == null) {
-							
-							if (!init)
-							this.setInventorySlotContents(2, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-							this.setRemote_Capacitor_ID(0);
-						}
-		
-					}
-				
-				}else{
-					dropplugins(2,this);
-					this.setRemote_Capacitor_ID(0);
 				}
+
+				if (Linkgrid.getWorldMap(worldObj).getCapacitor()
+						.get(this.getRemote_Capacitor_ID()) != null) {
+					int transmit = Linkgrid.getWorldMap(worldObj)
+							.getCapacitor().get(this.getRemote_Capacitor_ID())
+							.getTransmitRange();
+					int gen_x = Linkgrid.getWorldMap(worldObj).getCapacitor()
+							.get(this.getRemote_Capacitor_ID()).xCoord
+							- this.xCoord;
+					int gen_y = Linkgrid.getWorldMap(worldObj).getCapacitor()
+							.get(this.getRemote_Capacitor_ID()).yCoord
+							- this.yCoord;
+					int gen_z = Linkgrid.getWorldMap(worldObj).getCapacitor()
+							.get(this.getRemote_Capacitor_ID()).zCoord
+							- this.zCoord;
+
+					if (Math.sqrt(gen_x * gen_x + gen_y * gen_y + gen_z * gen_z) <= transmit) {
+					
+					} else {
+						setRemote_Capacitor_ID(0);
+						
+					}
+				} else {
+					setRemote_Capacitor_ID(0);
 				
-			}else{
-				this.setRemote_Capacitor_ID(0);
-				if (getStackInSlot(2).getItem() != ModularForceFieldSystem.MFFSitemcardempty && !(getStackInSlot(2).getItem() instanceof IForceEnergyItems)) {
-					dropplugins(2,this);
+					if (!init) {
+						this.setInventorySlotContents(2, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+					}
 				}
 			}
+		 else {
+			setRemote_Capacitor_ID(0);
+			}
 		}
-		
-		
-		
+			
 
 
 		if (getStackInSlot(4) != null) {
@@ -746,6 +736,34 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		 {
 		this.setForcePower(this.getForcePower() / 100 * Math.min(Math.max(magnitude, 0), 100));
 		 }
+	}
+	
+	
+	@Override
+	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
+		
+		switch(Slot)
+		{
+		case 0:
+			if(par1ItemStack.getItem() instanceof  ItemCapacitorUpgradeCapacity)
+			return true;
+		break;
+		case 1:
+			if(par1ItemStack.getItem() instanceof  ItemCapacitorUpgradeRange)
+			return true;
+		break;	
+		case 2:
+			if(par1ItemStack.getItem() instanceof  IForceEnergyItems || par1ItemStack.getItem() instanceof  ItemCardPowerLink)
+			return true;
+		break;	
+		case 4:
+			if(par1ItemStack.getItem() instanceof  ItemCardSecurityLink)
+			return true;
+		break;	
+
+		}
+		
+		return false;
 	}
 	
 
