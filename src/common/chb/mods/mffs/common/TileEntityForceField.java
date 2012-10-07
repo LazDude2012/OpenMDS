@@ -121,27 +121,25 @@ public void setTicker(int ticker) {
 
 	public void  setTexturid(int[] texturid )
 	{
+		try{
 		if(this.texturid != texturid)
 		{
 		this.texturid = texturid;
 		ForceFieldServerUpdatehandler.getWorldMap(worldObj).addto(xCoord, yCoord, zCoord, texturid, worldObj.provider.dimensionId);
 		}
+		}catch(Exception ex)
+		{
+//			System.out.println("[MFFS] Crash Catch:" + ex.getMessage());
+		}
 	}
 
-//	public void readFromNBT(NBTTagCompound nbttagcompound) {
-//		super.readFromNBT(nbttagcompound);
-//		texturid = nbttagcompound.getIntArray("texturid");
-//	}
-//
-//	public void writeToNBT(NBTTagCompound nbttagcompound) {
-//		super.writeToNBT(nbttagcompound);
-//
-//		nbttagcompound.setIntArray("texturid", texturid);
-//	}
 
 
 	public void UpdateTextur()
 	{
+		if (worldObj.isRemote == false) {
+			
+		
 		ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(worldObj).getForceFieldStackMap(WorldMap.Cordhash(this.xCoord, this.yCoord, this.zCoord));
 
 		if(ffworldmap != null)
@@ -157,6 +155,7 @@ public void setTicker(int ticker) {
 
 				}
 			}
+		}
 	}
 	}
 

@@ -1980,8 +1980,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
 		
-		if(!this.isActive())
-		{
 		switch(Slot)
 		{
 		case 0:
@@ -2042,8 +2040,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		
 		
 		}
-		
-		}
+
 		
 		if(Slot == 11 && this.isOptioncamouflage())
 		return true;

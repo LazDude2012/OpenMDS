@@ -59,6 +59,10 @@ public class ItemForcicumCell extends  Item {
     @Override
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int par4, boolean par5)
     {
+    	
+		if (world.isRemote==false)
+			{
+    	
     	if(getForceciumlevel(itemStack) < getMaxForceciumlevel())
     	{
         	if(entity instanceof EntityPlayer)
@@ -113,12 +117,12 @@ public class ItemForcicumCell extends  Item {
     			}
     		}
         	}
-    		
+    	
     		
     	}
     	
     	itemStack.setItemDamage(getItemDamage(itemStack));
-
+    }
     }
 	
     @Override
