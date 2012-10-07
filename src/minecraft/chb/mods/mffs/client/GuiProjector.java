@@ -29,7 +29,7 @@ import org.lwjgl.opengl.GL11;
 
 import chb.mods.mffs.common.ContainerProjector;
 import chb.mods.mffs.common.TileEntityProjector;
-import chb.mods.mffs.network.NetworkHandler;
+import chb.mods.mffs.network.NetworkHandlerClient;
 
 public class GuiProjector extends GuiContainer {
 	private TileEntityProjector projector;
@@ -79,7 +79,7 @@ public class GuiProjector extends GuiContainer {
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandler.fireTileEntityEvent(projector, guibutton.id);
+		NetworkHandlerClient.fireTileEntityEvent(projector, guibutton.id);
 	}
 
 	public void initGui() {

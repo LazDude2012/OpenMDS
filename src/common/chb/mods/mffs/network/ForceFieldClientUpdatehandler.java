@@ -11,13 +11,13 @@ import net.minecraft.src.World;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.TickType;
 
-public final class FoeceFieldUpdatehandler implements IScheduledTickHandler{
+public final class ForceFieldClientUpdatehandler implements IScheduledTickHandler{
 	
 	private static Map WorldForcedield = new HashMap();
 	
 	
 	@Override
-	public void tickStart(EnumSet<TickType> type, Object... tickData) {
+	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
 		
 		
 		
@@ -37,14 +37,14 @@ public final class FoeceFieldUpdatehandler implements IScheduledTickHandler{
 		}
 		
 		
-		
-		NetworkHandler.requestForceFieldInitialData(ModularForceFieldSystem.proxy.getClientWorld().provider.dimensionId, str.toString());
+		if(str.length()> 0)
+		NetworkHandlerClient.requestForceFieldInitialData(ModularForceFieldSystem.proxy.getClientWorld().provider.dimensionId, str.toString());
 		str.setLength(0);
 		
 	}
 
 	@Override
-	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+	public void tickStart(EnumSet<TickType> type, Object... tickData) {
 		
 	}
 
@@ -55,7 +55,7 @@ public final class FoeceFieldUpdatehandler implements IScheduledTickHandler{
 
 	@Override
 	public String getLabel() {
-		return "Global Ticker";
+		return "ForceField Client Ticker";
 	}
 
 	@Override

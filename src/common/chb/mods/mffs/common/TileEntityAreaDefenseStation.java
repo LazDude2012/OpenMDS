@@ -22,7 +22,8 @@ package chb.mods.mffs.common;
 
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
-import chb.mods.mffs.network.NetworkHandler;
+import chb.mods.mffs.network.NetworkHandlerClient;
+import chb.mods.mffs.network.NetworkHandlerServer;
 
 
 import java.util.LinkedList;
@@ -141,7 +142,7 @@ ISidedInventory,INetworkHandlerListener {
 
 	public void setlinkSecStation(boolean b) {
 		this.linkSecStation = b;
-		NetworkHandler.updateTileEntityField(this, "linkSecStation");
+		NetworkHandlerServer.updateTileEntityField(this, "linkSecStation");
 	}
 
 	public int getLinkPower() {
@@ -397,7 +398,7 @@ ISidedInventory,INetworkHandlerListener {
 			{
 				if (this.getTicker() >= 20+random.nextInt(20)) {
 					
-					NetworkHandler.requestInitialData(this,true);
+					NetworkHandlerClient.requestInitialData(this,true);
 
 					this.setTicker((short) 0);
 				}

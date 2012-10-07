@@ -52,7 +52,7 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 
 
 
-public class NetworkHandler implements IPacketHandler{
+public class NetworkHandlerClient implements IPacketHandler{
 
 private static final boolean DEBUG = false;
 
@@ -65,21 +65,70 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 	int y = dat.readInt();
 	int z = dat.readInt();
 	int typ = dat.readInt(); 
-	
+	World world = ModularForceFieldSystem.proxy.getClientWorld();
 
 	switch(typ)
 	{
+	case 100:
+	
+		
+		String DataPacket = dat.readUTF();
+		
+		for(String blockupdate : DataPacket.split(">"))
+		{
+		  if(blockupdate.length() > 0)
+		  {
+			  String[] splitttextur = blockupdate.split("#");
+			  String[] Texturid = splitttextur[1].split("/");
+			  String[] Dim = splitttextur[0].split("<");
+			  String[] Corrdinaten = Dim[1].split("/");
+			  
+			  if(Integer.parseInt(Dim[0].trim()) == world.provider.dimensionId)
+			  {
+				  if (world.getChunkFromBlockCoords(Integer.parseInt(Corrdinaten[0].trim()), Integer.parseInt(Corrdinaten[2].trim())).isChunkLoaded)
+				  {
+					  TileEntity te = world.getBlockTileEntity(Integer.parseInt(Corrdinaten[0].trim()), Integer.parseInt(Corrdinaten[1].trim()), Integer.parseInt(Corrdinaten[2].trim()));
+					  if(te instanceof TileEntityForceField)
+					  {
+						  ((TileEntityForceField)te).setTexturid(Texturid);
+		  
+					  }
+				  }
+			  }
+			  
+			  
+//			  System.out.println(Dim[0]);
+//			  System.out.println(Corrdinaten[0]);
+//			  System.out.println(Corrdinaten[1]);
+//			  System.out.println(Corrdinaten[2]);
+//			  System.out.println(Texturid[0]);
+//			  System.out.println(Texturid[1]);
+//			  System.out.println(Texturid[2]);
+//			  System.out.println(Texturid[3]);
+//			  System.out.println(Texturid[4]);
+//			  System.out.println(Texturid[5]);
+//			  System.out.println("-------------------------");
+			  
+		  }
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+	break;
 	case 1:
 		
 		
 		
 		String fieldname = dat.readUTF();
-		
-		World world = ModularForceFieldSystem.proxy.getClientWorld();
+
 		
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 		
-//		System.out.println(tileEntity+"Bekommt daten"+fieldname);
 		
 		 if(tileEntity instanceof TileEntityMachines)
 		 {
@@ -167,93 +216,10 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 				 System.out.println(e.getLocalizedMessage());
 			 } 
 		 }
-		 
-		 if(tileEntity instanceof TileEntityForceField)
-		 {
-			 try{
-				 Field f = ReflectionHelper.findField(TileEntityForceField.class, fieldname);
-				 reflectionsetvalue(f, tileEntity,dat,fieldname);
-			 }catch(Exception e)
-			 {
-				 if(DEBUG)
-				 System.out.println(e.getLocalizedMessage());
-			 } 
-		 }
-		 
-		
+		 		
 		 
 	break;
-	case 2:
-		
-		int dimension = dat.readInt() ;
-		String daten = dat.readUTF(); 
-		World serverworld = DimensionManager.getWorld(dimension);
-		if(serverworld != null)
-		{
-		TileEntity servertileEntity = serverworld.getBlockTileEntity(x, y, z);
-		
-		
-		if(servertileEntity != null)
-		{
-		for(String varname : daten.split("/"))
-		{
-			updateTileEntityField(servertileEntity,  varname);
-		}
-		}else{
-			 if(DEBUG)
-			 System.out.println(x+"/"+y+"/"+z+":no Tileentity found !!");
-		}
-		}else{
-			 if(DEBUG)
-			 System.out.println("[Error]No world found !!");
-		}
-		
-		
-	break;
-	
-	case 3:
-		int dimension2 = dat.readInt() ;
-		int evt = dat.readInt() ;
-		
-		World serverworld2 = DimensionManager.getWorld(dimension2);
-		TileEntity servertileEntity2 = serverworld2.getBlockTileEntity(x, y, z);
-		
-		if(servertileEntity2 instanceof INetworkHandlerEventListener)
-		{
-			((INetworkHandlerEventListener)servertileEntity2).onNetworkHandlerEvent(evt);
-			
-		}
-		
-		
-	break;		
-	case 10:
-		
-		int Dim =dat.readInt() ;
-		String Corrdinsaten = dat.readUTF(); 
-		
-		World worldserver = DimensionManager.getWorld(Dim);
-	
-		if(worldserver != null)
-		{
-			
-		for(String varname : Corrdinsaten.split("#"))
-		{
-
-		 if(!varname.isEmpty())	
-		 {
-		 String[] corr =varname.split("/");
-		 TileEntity servertileEntity = worldserver.getBlockTileEntity(Integer.parseInt(corr[2].trim()), Integer.parseInt(corr[1].trim()),Integer.parseInt(corr[0].trim()));
-		 if(servertileEntity != null)
-		 {
-			 updateTileEntityField(servertileEntity,  "texturid");
-		 }
-		 }
-		}
-		}
-		
-	break;
-	
-	}
+ }
 	
 
 	 
@@ -268,11 +234,6 @@ public static void reflectionsetvalue(Field f,TileEntity tileEntity,ByteArrayDat
 		 if(f.getType().equals(java.lang.Short.TYPE)){f.setShort(tileEntity, Short.parseShort(dat.readUTF()));}
 		 if(f.getType().equals(java.lang.Float.TYPE)){f.setFloat(tileEntity, Float.parseFloat(dat.readUTF()));}
 
-		 if(tileEntity instanceof TileEntityForceField)
-		 {
-			 if(fieldname.equalsIgnoreCase("texturid"))	
-			 ((TileEntityForceField)tileEntity).setTexturid(dat.readUTF());
-		 }
 		 
 		 if(tileEntity instanceof INetworkHandlerListener )
 		 {
@@ -287,149 +248,6 @@ public static void reflectionsetvalue(Field f,TileEntity tileEntity,ByteArrayDat
 
 
 
-
-
-
-
-public static void updateTileEntityField(TileEntity tileEntity, String varname)
-{
-	
-//	System.out.println(tileEntity+"Ubertragt daten"+varname);
-	
-	if(tileEntity != null)
-	{
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
-		DataOutputStream dos = new DataOutputStream(bos);
-		int x = tileEntity.xCoord;
-		int y = tileEntity.yCoord;
-		int z = tileEntity.zCoord;
-		int typ = 1; // Server -> Client
-
-		 try {
-			dos.writeInt(x);
-			dos.writeInt(y);
-			dos.writeInt(z);
-			dos.writeInt(typ);
-			dos.writeUTF(varname);
-			
-			} catch (Exception e) {
-				if(DEBUG)
-				System.out.println(e.getLocalizedMessage());
-			}
-		
- if(tileEntity instanceof TileEntityMachines)
-  {
-	 try {
-	        Field f = ReflectionHelper.findField(TileEntityMachines.class, varname);
-	        f.get(tileEntity);
-	    	dos.writeUTF(String.valueOf(f.get(tileEntity)));
-		} catch (Exception e) {
-			if(DEBUG)
-			System.out.println(e.getLocalizedMessage());
-		}
-  }
-		
-		
- if(tileEntity instanceof TileEntityProjector)
- {
-	
-	 try {	
-        Field f = ReflectionHelper.findField(TileEntityProjector.class, varname);
-        f.get(tileEntity);
-    	dos.writeUTF(String.valueOf(f.get(tileEntity)));
-	} catch (Exception e) {
-		if(DEBUG)
-		System.out.println(e.getLocalizedMessage());
-	}
- }
- 
- if(tileEntity instanceof TileEntityCapacitor)
- {
-	 try {	
-        Field f = ReflectionHelper.findField(TileEntityCapacitor.class, varname);
-        f.get(tileEntity);
-    	dos.writeUTF(String.valueOf(f.get(tileEntity)));
-	} catch (Exception e) {
-		if(DEBUG)
-		System.out.println(e.getLocalizedMessage());
-	}
- }
- 
- if(tileEntity instanceof TileEntityExtractor)
- {
-	 try {	
-        Field f = ReflectionHelper.findField(TileEntityExtractor.class, varname);
-        f.get(tileEntity);
-    	dos.writeUTF(String.valueOf(f.get(tileEntity)));
-	} catch (Exception e) {
-		if(DEBUG)
-		System.out.println(e.getLocalizedMessage());
-	}
- }
- 
- if(tileEntity instanceof TileEntityConverter)
- {
-	 try {	
-        Field f = ReflectionHelper.findField(TileEntityConverter.class, varname);
-        f.get(tileEntity);
-    	dos.writeUTF(String.valueOf(f.get(tileEntity)));
-	} catch (Exception e) {
-		if(DEBUG)
-		System.out.println(e.getLocalizedMessage());
-	}
- }
- 
- 
- if(tileEntity instanceof TileEntityAreaDefenseStation)
- {
-	 try {	
-        Field f = ReflectionHelper.findField(TileEntityAreaDefenseStation.class, varname);
-        f.get(tileEntity);
-    	dos.writeUTF(String.valueOf(f.get(tileEntity)));
-	} catch (Exception e) {
-		if(DEBUG)
-		System.out.println(e.getLocalizedMessage());
-	}
- }
- 
- if(tileEntity instanceof TileEntitySecurityStation)
- {
-	 try {	
-        Field f = ReflectionHelper.findField(TileEntitySecurityStation.class, varname);
-        f.get(tileEntity);
-    	dos.writeUTF(String.valueOf(f.get(tileEntity)));
-	} catch (Exception e) {
-		if(DEBUG)
-		System.out.println(e.getLocalizedMessage());
-	}
- }
- 
- if(tileEntity instanceof TileEntityForceField)
- {
-	 try {	
-        Field f = ReflectionHelper.findField(TileEntityForceField.class, varname);
-        f.get(tileEntity);
-    	dos.writeUTF(Arrays.toString((int[]) f.get(tileEntity)));
-	} catch (Exception e) {
-		if(DEBUG)
-		System.out.println(e.getStackTrace());
-	}
- }
- 
- 
-
-		Packet250CustomPayload pkt = new Packet250CustomPayload();
-		pkt.channel = "MFFS";
-		pkt.data = bos.toByteArray();
-		pkt.length = bos.size();
-		pkt.isChunkDataPacket = true;
-
-		PacketDispatcher.sendPacketToAllAround(x, y, z, 60, tileEntity.worldObj.provider.dimensionId, pkt);
-	}
-	
-}
-
-
 public static Packet requestInitialData(TileEntity tileEntity){
 	return requestInitialData(tileEntity,false);
 }
@@ -440,7 +258,7 @@ public static void requestForceFieldInitialData(int Dimension, String corridnate
 	
 	 try {
 		 
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(63000);
 		DataOutputStream dos = new DataOutputStream(bos);
 		
 		dos.writeInt(0);

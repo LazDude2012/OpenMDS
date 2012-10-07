@@ -8,7 +8,8 @@ import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
 import chb.mods.mffs.network.INetworkHandlerListener;
-import chb.mods.mffs.network.NetworkHandler;
+import chb.mods.mffs.network.NetworkHandlerClient;
+import chb.mods.mffs.network.NetworkHandlerServer;
 
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
@@ -69,7 +70,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		if(this.capacity != Capacity)
 		{
 		this.capacity = Capacity;
-		NetworkHandler.updateTileEntityField(this, "capacity");
+		NetworkHandlerServer.updateTileEntityField(this, "capacity");
 		}
 	}
 	
@@ -88,7 +89,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	public void setWorkdone(int workdone) {
 		if(this.workdone != workdone){
 		this.workdone = workdone;
-		NetworkHandler.updateTileEntityField(this,"workdone");
+		NetworkHandlerServer.updateTileEntityField(this,"workdone");
 		}
 	}
 
@@ -147,7 +148,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	{
 		if(this.WorkCylce != i){
 		this.WorkCylce = i;
-		NetworkHandler.updateTileEntityField(this,"WorkCylce");
+		NetworkHandlerServer.updateTileEntityField(this,"WorkCylce");
 		}
 	}
 	
@@ -425,7 +426,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 			{
 				if (this.getTicker() >= 20+random.nextInt(20)) {
 					
-					NetworkHandler.requestInitialData(this,true);
+					NetworkHandlerClient.requestInitialData(this,true);
 
 					this.setTicker((short) 0);
 				}

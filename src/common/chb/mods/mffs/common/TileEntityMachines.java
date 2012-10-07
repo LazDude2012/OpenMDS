@@ -32,7 +32,8 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
 import chb.mods.mffs.api.IMFFS_Wrench;
-import chb.mods.mffs.network.NetworkHandler;
+import chb.mods.mffs.network.NetworkHandlerClient;
+import chb.mods.mffs.network.NetworkHandlerServer;
 
 public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wrench{
 	
@@ -107,7 +108,7 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 	@Override
 	public void setSide(int i) {
 		side = i;
-		NetworkHandler.updateTileEntityField(this, "side");
+		NetworkHandlerServer.updateTileEntityField(this, "side");
 	}
 
 	public boolean isActive() {
@@ -116,7 +117,7 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 
 	public void setActive(boolean flag) {
 		active = flag;
-		NetworkHandler.updateTileEntityField(this, "active");
+		NetworkHandlerServer.updateTileEntityField(this, "active");
 	}
 	
 	@Override

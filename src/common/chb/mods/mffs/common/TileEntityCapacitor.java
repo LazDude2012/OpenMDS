@@ -41,7 +41,8 @@ import net.minecraftforge.common.ISidedInventory;
 import chb.mods.mffs.api.IForceEnergyCapacitor;
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
-import chb.mods.mffs.network.NetworkHandler;
+import chb.mods.mffs.network.NetworkHandlerClient;
+import chb.mods.mffs.network.NetworkHandlerServer;
 
 public class TileEntityCapacitor extends TileEntityMachines implements
 ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEnergyCapacitor{
@@ -133,7 +134,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		if(this.capacity != Capacity)
 		{
 		this.capacity = Capacity;
-		NetworkHandler.updateTileEntityField(this, "capacity");
+		NetworkHandlerServer.updateTileEntityField(this, "capacity");
 		}
 	}
 
@@ -165,7 +166,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 	public void setLinketprojektor(Short linketprojektor) {
 		if(this.linketprojektor != linketprojektor){
 		this.linketprojektor = linketprojektor;
-		NetworkHandler.updateTileEntityField(this, "linketprojektor");
+		NetworkHandlerServer.updateTileEntityField(this, "linketprojektor");
 		}
 	}
 
@@ -186,7 +187,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 	public void setTransmitrange(short transmitrange) {
 		if(this.transmitrange != transmitrange){
 		this.transmitrange = transmitrange;
-		NetworkHandler.updateTileEntityField(this, "transmitrange");
+		NetworkHandlerServer.updateTileEntityField(this, "transmitrange");
 		}
 	}
 
@@ -494,7 +495,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 			
 				if (this.getTicker() >= 20 + random.nextInt(20)) {
 					
-					NetworkHandler.requestInitialData(this,true);
+					NetworkHandlerClient.requestInitialData(this,true);
 					this.setTicker((short) 0);
 				}
 				

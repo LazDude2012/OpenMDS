@@ -20,8 +20,10 @@
 
 package chb.mods.mffs.common;
 
-import chb.mods.mffs.network.NetworkHandler;
-import chb.mods.mffs.network.FoeceFieldUpdatehandler;
+import chb.mods.mffs.network.ForceFieldServerUpdatehandler;
+import chb.mods.mffs.network.NetworkHandlerClient;
+import chb.mods.mffs.network.NetworkHandlerServer;
+import chb.mods.mffs.network.ForceFieldClientUpdatehandler;
 import chb.mods.mffs.recipes.ModIndependentRecipes;
 import chb.mods.mffs.recipes.ModIndustrialcraftRecipes;
 
@@ -46,6 +48,7 @@ import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.asm.SideOnly;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -56,7 +59,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
 @Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1")
-@NetworkMod(channels = { "MFFS" },clientSideRequired = true, serverSideRequired = false,packetHandler = NetworkHandler.class)
+@NetworkMod(clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
 
 public class ModularForceFieldSystem {
 	
@@ -179,7 +182,8 @@ public class ModularForceFieldSystem {
 	     MinecraftForge.EVENT_BUS.register(proxy);
 	     
 	     
-	     TickRegistry.registerScheduledTickHandler(new FoeceFieldUpdatehandler(), Side.CLIENT);
+	     TickRegistry.registerScheduledTickHandler(new ForceFieldClientUpdatehandler(), Side.CLIENT);
+	     TickRegistry.registerScheduledTickHandler(new ForceFieldServerUpdatehandler(), Side.SERVER);
 	     
 
 		MFFSconfig = new Configuration(event.getSuggestedConfigurationFile());
@@ -406,7 +410,7 @@ public class ModularForceFieldSystem {
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradeexctractorboost, "en_US", "MFFS Extractor Booster");
 		LanguageRegistry.instance().addNameForObject(MFFSExtractor, "en_US", "MFFS Force Energy Extractor");
 		LanguageRegistry.instance().addNameForObject(MFFSMonazitOre,"en_US", "Monazit");
-		LanguageRegistry.instance().addNameForObject(MFFSitemForcicumCell,"en_US", "MFFS compact Forcicum Cell");
+		LanguageRegistry.instance().addNameForObject(MFFSitemForcicumCell,"en_US", "MFFS compact Forcicium Cell");
 		LanguageRegistry.instance().addNameForObject(MFFSitemForcicium,"en_US", "Forcicium");
 		LanguageRegistry.instance().addNameForObject(MFFSitemForcePowerCrystal,"en_US", "MFFS Force Energy Crystal");
 		LanguageRegistry.instance().addNameForObject(MFFSitemSwitch,"en_US", "MFFS MultiTool <Switch>");

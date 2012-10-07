@@ -24,7 +24,7 @@ package chb.mods.mffs.client;
 import chb.mods.mffs.common.ContainerCapacitor;
 import chb.mods.mffs.common.ContainerConverter;
 import chb.mods.mffs.common.TileEntityConverter;
-import chb.mods.mffs.network.NetworkHandler;
+import chb.mods.mffs.network.NetworkHandlerClient;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
@@ -55,7 +55,7 @@ public class GuiConverter extends GuiContainer {
     }
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandler.fireTileEntityEvent(Converter, guibutton.id);
+		NetworkHandlerClient.fireTileEntityEvent(Converter, guibutton.id);
 	}
 
     public void initGui() {

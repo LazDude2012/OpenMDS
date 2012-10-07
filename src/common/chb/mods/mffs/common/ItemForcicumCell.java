@@ -1,5 +1,7 @@
 package chb.mods.mffs.common;
 
+import ic2.api.Items;
+
 import java.util.List;
 
 import net.minecraft.src.CreativeTabs;
@@ -14,7 +16,7 @@ import net.minecraft.src.World;
 
 public class ItemForcicumCell extends  Item {
 	
-	
+	private boolean ic = false;
 	
 	protected ItemForcicumCell(int id) {
 		super(id);
@@ -22,6 +24,12 @@ public class ItemForcicumCell extends  Item {
 		setMaxStackSize(1);
 		setMaxDamage(100);
 		setCreativeTab(CreativeTabs.tabMaterials);
+		
+		if(Items.getItem("matter") != null)
+		{
+			ic = true;
+		}
+		
 	}
 	
 	@Override
@@ -72,8 +80,36 @@ public class ItemForcicumCell extends  Item {
     						slot.putStack(null);
     						
     					}
+    					break;
     					
     				}
+    				
+    			
+    				if(ic)
+    				{
+    			    if (slot.getStack().getItem() == Items.getItem("matter").getItem()) {
+    			    
+    			    	if(getForceciumlevel(itemStack) <= 995)
+    			    	{	
+    			    	setForceciumlevel(itemStack,getForceciumlevel(itemStack)+5);
+    			    	
+       					if(slot.getStack().stackSize > 1)
+    					{
+       					 ItemStack matter= new ItemStack(Items.getItem("matter").getItem(), slot.getStack().stackSize-1);
+       					 slot.putStack(matter);
+    					}else{
+    					
+    						slot.putStack(null);
+    						
+    					}
+    			    	}
+       					break;
+    			    }
+    				}
+    				
+    				
+    				
+    				
     			}
     		}
         	}
@@ -108,7 +144,7 @@ public class ItemForcicumCell extends  Item {
 	
 	public  int getMaxForceciumlevel() {
 		
-		return 999;
+		return 1000;
 	}
 	
 	

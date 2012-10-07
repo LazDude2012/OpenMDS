@@ -22,6 +22,8 @@ package chb.mods.mffs.common;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.common.Side;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IInventory;

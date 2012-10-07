@@ -36,7 +36,7 @@ import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
 
 
-public class TileEntityForceField extends TileEntity implements INetworkHandlerListener{
+public class TileEntityForceField extends TileEntity {
 	
 private Random random = new Random();
 private int[] texturid = {-76,-76,-76,-76,-76,-76};
@@ -64,21 +64,17 @@ public void setTicker(int ticker) {
 		return texturid[l];
 	}
 	
-	public void  setTexturid(String texturid )
+	public void  setTexturid(String[] remotetextur )
 	{
 	
-		texturid = texturid.replace("[", "");
-		texturid = texturid.replace("]", "");
-		String[] texurStringarray = texturid.split(",");	
-
-	
-		this.texturid[0] = Integer.parseInt(texurStringarray[0].trim());
-		this.texturid[1] = Integer.parseInt(texurStringarray[1].trim());
-		this.texturid[2] = Integer.parseInt(texurStringarray[2].trim());
-		this.texturid[3] = Integer.parseInt(texurStringarray[3].trim());
-		this.texturid[4] = Integer.parseInt(texurStringarray[4].trim());
-		this.texturid[5] = Integer.parseInt(texurStringarray[5].trim());
+		this.texturid[0] = Integer.parseInt(remotetextur[0].trim());
+		this.texturid[1] = Integer.parseInt(remotetextur[1].trim());
+		this.texturid[2] = Integer.parseInt(remotetextur[2].trim());
+		this.texturid[3] = Integer.parseInt(remotetextur[3].trim());
+		this.texturid[4] = Integer.parseInt(remotetextur[4].trim());
+		this.texturid[5] = Integer.parseInt(remotetextur[5].trim());
 		
+		worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		this.setTicker((short) 0);
 		
 	}
@@ -108,7 +104,7 @@ public void setTicker(int ticker) {
 				
 				if(texturid[0] == -76)
 				{
-					FoeceFieldUpdatehandler.getWorldMap(ModularForceFieldSystem.proxy.getClientWorld()).addto(xCoord, yCoord, zCoord);
+					ForceFieldClientUpdatehandler.getWorldMap(ModularForceFieldSystem.proxy.getClientWorld()).addto(xCoord, yCoord, zCoord);
 
 				}
 
@@ -128,20 +124,20 @@ public void setTicker(int ticker) {
 		if(this.texturid != texturid)
 		{
 		this.texturid = texturid;
-		FoeceFieldUpdatehandler.getWorldMap(ModularForceFieldSystem.proxy.getClientWorld()).addto(xCoord, yCoord, zCoord);
+		ForceFieldServerUpdatehandler.getWorldMap(worldObj).addto(xCoord, yCoord, zCoord, texturid, worldObj.provider.dimensionId);
 		}
 	}
 
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		texturid = nbttagcompound.getIntArray("texturid");
-	}
-
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
-
-		nbttagcompound.setIntArray("texturid", texturid);
-	}
+//	public void readFromNBT(NBTTagCompound nbttagcompound) {
+//		super.readFromNBT(nbttagcompound);
+//		texturid = nbttagcompound.getIntArray("texturid");
+//	}
+//
+//	public void writeToNBT(NBTTagCompound nbttagcompound) {
+//		super.writeToNBT(nbttagcompound);
+//
+//		nbttagcompound.setIntArray("texturid", texturid);
+//	}
 
 
 	public void UpdateTextur()
@@ -172,27 +168,6 @@ public void setTicker(int ticker) {
 
 	public void setMaxStackSize(int arg0) {
 	}
-
-	@Override
-	public void onNetworkHandlerUpdate(String field) {
-		
-		
-		if (field.equals("texturid")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);	
-		}
-	}
-
-	@Override
-	public List<String> getFieldsforUpdate() {
-		List<String> NetworkedFields = new LinkedList<String>();
-		NetworkedFields.clear();
-		NetworkedFields.add("texturid");
-
-		return NetworkedFields;
-	}
-	
-
-
 
 
 }

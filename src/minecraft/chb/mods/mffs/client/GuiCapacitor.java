@@ -29,7 +29,7 @@ import org.lwjgl.opengl.GL11;
 
 import chb.mods.mffs.common.ContainerCapacitor;
 import chb.mods.mffs.common.TileEntityCapacitor;
-import chb.mods.mffs.network.NetworkHandler;
+import chb.mods.mffs.network.NetworkHandlerClient;
 
 public class GuiCapacitor extends GuiContainer {
 	private TileEntityCapacitor Core;
@@ -72,7 +72,7 @@ public class GuiCapacitor extends GuiContainer {
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandler.fireTileEntityEvent(Core, guibutton.id);
+		NetworkHandlerClient.fireTileEntityEvent(Core, guibutton.id);
 	}
 
 	public void initGui() {

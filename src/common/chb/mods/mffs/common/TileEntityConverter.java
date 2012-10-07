@@ -38,7 +38,7 @@ import net.minecraftforge.common.ISidedInventory;
 
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
-import chb.mods.mffs.network.NetworkHandler;
+import chb.mods.mffs.network.NetworkHandlerClient;
 
 public class TileEntityConverter extends TileEntityMachines implements ISidedInventory
 ,INetworkHandlerListener,INetworkHandlerEventListener{
@@ -196,7 +196,7 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 			{
 				if (this.getTicker() >= 20+random.nextInt(20)) {
 					
-					NetworkHandler.requestInitialData(this,true);
+					NetworkHandlerClient.requestInitialData(this,true);
 
 					this.setTicker((short) 0);
 				}

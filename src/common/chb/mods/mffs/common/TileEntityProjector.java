@@ -48,7 +48,8 @@ import net.minecraftforge.common.ISidedInventory;
 import chb.mods.mffs.api.IModularProjector;
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
-import chb.mods.mffs.network.NetworkHandler;
+import chb.mods.mffs.network.NetworkHandlerClient;
+import chb.mods.mffs.network.NetworkHandlerServer;
 
 public class TileEntityProjector extends TileEntityMachines implements IModularProjector,
 ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
@@ -205,7 +206,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	public void setProjektor_Typ(int ProjektorTyp) {
 		this.ProjektorTyp = ProjektorTyp;
 
-		NetworkHandler.updateTileEntityField(this, "ProjektorTyp");
+		NetworkHandlerServer.updateTileEntityField(this, "ProjektorTyp");
 	}
 
 	public int getForceField_strength() {
@@ -341,7 +342,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 	public void setBurnout(boolean b) {
 		burnout = b;
-		NetworkHandler.updateTileEntityField(this, "burnout");
+		NetworkHandlerServer.updateTileEntityField(this, "burnout");
 	}
 
 	public boolean isJammeractive() {
@@ -1094,7 +1095,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				
 				if (this.getTicker() >= 20+random.nextInt(20)) {
 					
-					NetworkHandler.requestInitialData(this,true);
+					NetworkHandlerClient.requestInitialData(this,true);
 
 					this.setTicker((short) 0);
 				}
