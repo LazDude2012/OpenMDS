@@ -453,14 +453,14 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 		switch(Slot)
 		{
 		case 0:
-			if(par1ItemStack.getItem() instanceof ItemCardPowerLink)
-		    return true;
+			if(!(par1ItemStack.getItem() instanceof ItemCardPowerLink))
+		    return false;
 		break;
 		
 		
 		}
 		
-		return false;
+		return true;
 	}
 	
 }

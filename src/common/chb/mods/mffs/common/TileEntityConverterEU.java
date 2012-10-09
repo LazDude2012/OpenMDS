@@ -55,7 +55,7 @@ public class TileEntityConverterEU extends TileEntityConverter
             TileEntityCapacitor powercource = (TileEntityCapacitor)Linkgrid.getWorldMap(worldObj).getCapacitor().get(((Object) (Integer.valueOf(super.getLinkCapacitors_ID()))));
 
             if(powercource != null)
-                powercource.setForcePower(powercource.getForcePower() - (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 4000) * (super.getOutput() - a));
+                powercource.setForcePower(powercource.getForcePower() - (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 3000) * (super.getOutput() - a));
             else
                 System.out.println("[MFFS ERROR]Linked Capacitor not found");
         }

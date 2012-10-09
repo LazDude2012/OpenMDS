@@ -104,7 +104,7 @@ public class ModIndustrialcraftRecipes {
 								'A',
 								Items.getItem("advancedMachine"),
 								'B',
-								Items.getItem("teleporter"),
+								Items.getItem("frequencyTransmitter"),
 								'C',
 								Items.getItem("electronicCircuit"),
 								'D',
