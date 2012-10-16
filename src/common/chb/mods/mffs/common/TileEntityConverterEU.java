@@ -50,12 +50,12 @@ public class TileEntityConverterEU extends TileEntityConverter
     }
 
     public void Emitpower() {
-        if(super.getLinkPower() > (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 4000) * super.getOutput()) {
+        if(super.getLinkPower() > (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000) * super.getOutput()) {
             int a = EnergyNet.getForWorld(worldObj).emitEnergyFrom(((IEnergySource) (this)), super.getOutput());
             TileEntityCapacitor powercource = (TileEntityCapacitor)Linkgrid.getWorldMap(worldObj).getCapacitor().get(((Object) (Integer.valueOf(super.getLinkCapacitors_ID()))));
 
             if(powercource != null)
-                powercource.setForcePower(powercource.getForcePower() - (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 3000) * (super.getOutput() - a));
+                powercource.setForcePower(powercource.getForcePower() - (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000) * (super.getOutput() - a));
             else
                 System.out.println("[MFFS ERROR]Linked Capacitor not found");
         }

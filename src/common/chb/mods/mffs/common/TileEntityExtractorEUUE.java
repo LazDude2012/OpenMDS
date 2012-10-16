@@ -64,7 +64,7 @@ return 0 ; //amount- (MaxWorkEnergy - WorkEnergy);
 
 }
 }
-return amount;
+return 0;
 }
 
 @Override

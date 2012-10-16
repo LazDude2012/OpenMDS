@@ -104,11 +104,6 @@ public class ItemWrench extends ItemMultitool  {
 					return false;
 					}
 					
-					if(tileentity instanceof TileEntityConverter)
-					{
-					if(((TileEntityConverter)tileentity).isActive())
-					return false;
-					}
 					
 				}
 				
