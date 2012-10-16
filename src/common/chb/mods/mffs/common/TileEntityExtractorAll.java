@@ -69,11 +69,11 @@ return 0;
 }else{
 
 WorkEnergy = WorkEnergy + (MaxWorkEnergy - WorkEnergy);
-return 0; //amount- (MaxWorkEnergy - WorkEnergy);
+return 0 ; //amount- (MaxWorkEnergy - WorkEnergy);
 
 }
 }
-return amount;
+return 0;
 }
 
 @Override
