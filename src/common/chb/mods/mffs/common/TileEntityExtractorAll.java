@@ -9,7 +9,8 @@ import ic2.api.EnergyNet;
 import ic2.api.IEnergySink;
 import universalelectricity.electricity.ElectricityManager;
 import universalelectricity.implement.IElectricityReceiver;
-import universalelectricity.implement.IElectricityStorage;
+import universalelectricity.implement.IJouleStorage;
+
 import buildcraft.api.gates.IOverrideDefaultTriggers;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.power.IPowerProvider;
@@ -17,7 +18,7 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerFramework;
 
 public class TileEntityExtractorAll extends TileEntityExtractor implements 
-IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IElectricityReceiver,IElectricityStorage{
+IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IElectricityReceiver,IJouleStorage{
 
 	private IPowerProvider powerProvider;
 	private double wattHours = 0;
@@ -68,7 +69,7 @@ return 0;
 }else{
 
 WorkEnergy = WorkEnergy + (MaxWorkEnergy - WorkEnergy);
-return 0 ; //amount- (MaxWorkEnergy - WorkEnergy);
+return 0; //amount- (MaxWorkEnergy - WorkEnergy);
 
 }
 }
@@ -152,7 +153,7 @@ public void onReceive(TileEntity sender, double amps, double voltage,
 
 @Override
 public double wattRequest() {
-	return getMaxWattHours();
+	return Math.ceil(this.getMaxJoules() - this.wattHours);
 }
 
 
@@ -162,17 +163,17 @@ public boolean canReceiveFromSide(ForgeDirection side) {
 }
 
 @Override
-public double getWattHours(Object... data) {
+public double getJoules(Object... data) {
 	return wattHours;
 }
 
 @Override
-public void setWattHours(double wattHours, Object... data) {
+public void setJoules(double wattHours, Object... data) {
 	this.wattHours = wattHours;
 }
 
 @Override
-public double getMaxWattHours() {
+public double getMaxJoules() {
 	return 120000;
 }
 

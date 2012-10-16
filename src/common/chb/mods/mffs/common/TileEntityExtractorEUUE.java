@@ -9,11 +9,11 @@ import ic2.api.EnergyNet;
 import ic2.api.IEnergySink;
 import universalelectricity.electricity.ElectricityManager;
 import universalelectricity.implement.IElectricityReceiver;
-import universalelectricity.implement.IElectricityStorage;
+import universalelectricity.implement.IJouleStorage;
 
 
 public class TileEntityExtractorEUUE extends TileEntityExtractor implements 
-IEnergySink,IElectricityReceiver,IElectricityStorage{
+IEnergySink,IElectricityReceiver,IJouleStorage{
 
 	
 	private double wattHours = 0;
@@ -144,7 +144,7 @@ public void onReceive(TileEntity sender, double amps, double voltage,
 
 @Override
 public double wattRequest() {
-	return Math.ceil(this.getMaxWattHours() - this.wattHours);
+	return Math.ceil(this.getMaxJoules() - this.wattHours);
 }
 
 
@@ -154,17 +154,17 @@ public boolean canReceiveFromSide(ForgeDirection side) {
 }
 
 @Override
-public double getWattHours(Object... data) {
+public double getJoules(Object... data) {
 	return wattHours;
 }
 
 @Override
-public void setWattHours(double wattHours, Object... data) {
+public void setJoules(double wattHours, Object... data) {
 	this.wattHours = wattHours;
 }
 
 @Override
-public double getMaxWattHours() {
+public double getMaxJoules() {
 	return 120000;
 }
 

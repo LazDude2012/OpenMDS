@@ -23,9 +23,9 @@ import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import universalelectricity.electricity.ElectricityManager;
 import universalelectricity.implement.IElectricityReceiver;
-import universalelectricity.implement.IElectricityStorage;
+import universalelectricity.implement.IJouleStorage;
 
-public class TileEntityExtractorUE extends TileEntityExtractor implements IElectricityReceiver,IElectricityStorage{
+public class TileEntityExtractorUE extends TileEntityExtractor implements IElectricityReceiver,IJouleStorage{
 
 	private double wattHours = 0;
 	
@@ -92,8 +92,8 @@ public TileEntityExtractorUE(){
 
 
 	@Override
-	public double wattRequest(){
-		return Math.ceil(this.getMaxWattHours() - this.wattHours);
+	public double wattRequest() {
+		return Math.ceil(this.getMaxJoules() - this.wattHours);
 	}
 
 
@@ -103,17 +103,17 @@ public TileEntityExtractorUE(){
 	}
 
 	@Override
-	public double getWattHours(Object... data) {
+	public double getJoules(Object... data) {
 		return wattHours;
 	}
 
 	@Override
-	public void setWattHours(double wattHours, Object... data) {
+	public void setJoules(double wattHours, Object... data) {
 		this.wattHours = wattHours;
 	}
 
 	@Override
-	public double getMaxWattHours() {
+	public double getMaxJoules() {
 		return 120000;
 	}
 }
