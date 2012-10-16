@@ -314,8 +314,8 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 					{
 				    	  setMaxworkcylce(ModularForceFieldSystem.ForceciumCellWorkCylce);
 						  setWorkCylce(getMaxworkcylce());
+						  return true;
 					}
-				      return true;
 					}
 
 		
