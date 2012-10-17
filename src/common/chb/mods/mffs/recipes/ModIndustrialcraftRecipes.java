@@ -183,6 +183,8 @@ public class ModIndustrialcraftRecipes {
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorOptionDefenceStation),new Object[] { " B ", "CAC", " B ", 'A', Items.getItem("teslaCoil"), 'B',ModularForceFieldSystem.MFFSItemIDCard , 'C',Items.getItem("electronicCircuit")});
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorOptionMoobEx), new Object[] { "BCB", "DAD", "ECE", 'A', Items.getItem("teslaCoil"), 'B', Item.bone, 'C', Item.blazeRod, 'D', Item.rottenFlesh, 'E', Item.spiderEye});
 	
+		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemForcicium,16), new Object[] { " AA", "A  ", " A ", 'A', Items.getItem("matter") });
+		
 
 		}
 	}

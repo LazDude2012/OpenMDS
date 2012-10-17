@@ -87,14 +87,8 @@ public class BlockExtractor extends BlockMFFSBase {
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		
-		try {
-			return (TileEntity) ModularForceFieldSystem.Extractor.newInstance();
-		} catch (Exception e) {
-			
-			System.out.println("[ModularForceFieldSystem][Error] Extractor TileEntity fail");
-			return null;
-		} 
+
+          return new TileEntityExtractor();
 		
 	}
 	

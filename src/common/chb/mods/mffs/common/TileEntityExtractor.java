@@ -1,8 +1,22 @@
 package chb.mods.mffs.common;
 
 
+import ic2.api.Direction;
+import ic2.api.EnergyNet;
+import ic2.api.IEnergySink;
+
 import java.util.LinkedList;
 import java.util.List;
+
+import universalelectricity.electricity.ElectricityManager;
+import universalelectricity.implement.IElectricityReceiver;
+import universalelectricity.implement.IJouleStorage;
+
+import buildcraft.api.gates.IOverrideDefaultTriggers;
+import buildcraft.api.gates.ITrigger;
+import buildcraft.api.power.IPowerProvider;
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerFramework;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -23,7 +37,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntityExtractor extends TileEntityMachines implements ISidedInventory
-,INetworkHandlerListener{
+,INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IElectricityReceiver,IJouleStorage{
 	
 
 	private ItemStack inventory[];
@@ -40,6 +54,13 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	private int workdone;
 	private int maxworkcylce;
 	private int capacity;
+	private IPowerProvider powerProvider;
+	private boolean addedToEnergyNet;
+	private double wattHours = 0;
+	
+	private boolean Industriecraftfound = true;
+	private boolean Buildcraftfound;
+	private boolean Universalelectricityfound;
 	
 	
 	public TileEntityExtractor() {
@@ -56,6 +77,27 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		workTicker = 20;
 		maxworkcylce = 125;
 		capacity = 0;
+		addedToEnergyNet = false;
+		
+		try{
+		powerProvider = PowerFramework.currentFramework.createPowerProvider();
+		powerProvider.configure(10, 2, (int) (getMaxWorkEnergy() / 2.5),(int) (getMaxWorkEnergy() / 2.5),(int) (getMaxWorkEnergy() / 2.5));
+		Buildcraftfound = true;
+		}catch(NullPointerException ex)
+		{
+			Buildcraftfound = false;
+		}
+		
+		try{
+		ElectricityManager.instance.registerElectricUnit(this);
+		Universalelectricityfound= true;
+		}catch(NoClassDefFoundError ex)
+		{
+			Universalelectricityfound = false;
+		}
+		
+	
+		
 	}
 	
 	
@@ -366,9 +408,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		}
 	}
 	
-	public void converMJtoWorkEnergy(){}
-	public void converUEtoWorkEnergy(){}
-	
+
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			
@@ -378,11 +418,21 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 				checkslots(true);
 				create = false;
 			}
+			
+			if (!addedToEnergyNet && Industriecraftfound) {
+				try{
+				EnergyNet.getForWorld(worldObj).addTileEntity(this);
+				addedToEnergyNet = true;
+				}catch(Exception ex){Industriecraftfound = false;}
+				}
 
 		
 			if (this.getTicker() >= getWorkTicker()) {
 				
+				if(Buildcraftfound)
 				converMJtoWorkEnergy();
+				
+				if(Universalelectricityfound)
 				converUEtoWorkEnergy();	
 				
 				if(this.getWorkdone() != getWorkEnergy() * 100 / getMaxWorkEnergy())
@@ -632,6 +682,184 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		
 		}
 		return false;
+	}
+	
+	
+	@Override
+	public boolean demandsEnergy() {
+		if(this.getWorkEnergy()< this.MaxWorkEnergy)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+
+
+	@Override
+	public int injectEnergy(Direction directionFrom, int amount) {
+	if(this.getWorkEnergy()< this.MaxWorkEnergy)
+	{
+
+	if((MaxWorkEnergy - WorkEnergy) > amount)
+	{
+	WorkEnergy = WorkEnergy + amount;
+	return 0;
+	}else{
+
+	WorkEnergy = WorkEnergy + (MaxWorkEnergy - WorkEnergy);
+	return 0 ; //amount- (MaxWorkEnergy - WorkEnergy);
+
+	}
+	}
+	return 0;
+	}
+
+	@Override
+	public void invalidate() {
+		if (addedToEnergyNet) {
+			EnergyNet.getForWorld(worldObj).removeTileEntity(this);
+			addedToEnergyNet = false;
+		}
+
+		super.invalidate();
+	}
+
+	@Override
+	public boolean isAddedToEnergyNet() {
+		return addedToEnergyNet;
+	}
+
+	@Override
+	public boolean acceptsEnergyFrom(TileEntity tileentity, Direction direction) {
+		return true;
+	}
+
+
+	public void converMJtoWorkEnergy(){
+		
+		if(this.getWorkEnergy() < this.getMaxWorkEnergy())
+		{
+	      float use = powerProvider.useEnergy(1, (float) (this.getMaxWorkEnergy() - this.getWorkEnergy() / 2.5), true);
+		  
+	      if(getWorkEnergy() + (use *2.5) > getMaxWorkEnergy())
+	      {
+	    	     setWorkEnergy(getMaxWorkEnergy()); 
+	      }else{
+	             setWorkEnergy((int) (getWorkEnergy() + (use *2.5)));
+	      }
+		  
+
+		}
+		
+	}
+
+	@Override
+	public void setPowerProvider(IPowerProvider provider) {
+		this.powerProvider = provider;
+	}
+
+	@Override
+	public IPowerProvider getPowerProvider() {
+		return powerProvider;
+	}
+
+
+	@Override
+	public void doWork() {}
+
+
+	@Override
+	public int powerRequest() {
+		
+		double workEnergyinMJ = getWorkEnergy()  / 2.5;
+		double MaxWorkEnergyinMj = getMaxWorkEnergy()  / 2.5;
+
+		return (int) Math.round(MaxWorkEnergyinMj - workEnergyinMJ) ;
+		
+	}
+
+	@Override
+	public LinkedList<ITrigger> getTriggers() {
+		return null;
+	}
+	
+
+	public void converUEtoWorkEnergy(){
+		
+		if(this.getWorkEnergy() < this.getMaxWorkEnergy())
+		{
+		  
+	      if(getWorkEnergy() + (wattHours/30) > getMaxWorkEnergy())
+	      {
+	    	     setWorkEnergy(getMaxWorkEnergy()); 
+	    	     wattHours = 0;
+	      }else{
+	             setWorkEnergy((int) (getWorkEnergy() + (wattHours/30)));
+	             wattHours = 0;
+	      }
+		  
+
+		}
+
+	}
+
+	@Override
+	public void onDisable(int duration) {
+		}
+
+
+	@Override
+	public boolean isDisabled() {
+		return false;
+	}
+
+
+	@Override
+	public boolean canConnect(ForgeDirection side) {
+		return true;
+	}
+
+
+	@Override
+	public double getVoltage() {
+		return 120;
+	}
+
+
+	@Override
+	public void onReceive(TileEntity sender, double amps, double voltage,
+			ForgeDirection side) {
+
+		wattHours = wattHours +(amps*voltage);
+		
+	}	
+
+
+	@Override
+	public double wattRequest() {
+		return Math.ceil(this.getMaxJoules() - this.wattHours);
+	}
+
+
+	@Override
+	public boolean canReceiveFromSide(ForgeDirection side) {
+		return true;
+	}
+
+	@Override
+	public double getJoules(Object... data) {
+		return wattHours;
+	}
+
+	@Override
+	public void setJoules(double wattHours, Object... data) {
+		this.wattHours = wattHours;
+	}
+
+	@Override
+	public double getMaxJoules() {
+		return 120000;
 	}
 
 }

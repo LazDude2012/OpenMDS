@@ -66,13 +66,7 @@ public class BlockConverter extends BlockMFFSBase {
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 		
-		try {
-			return (TileEntity) ModularForceFieldSystem.Converter.newInstance();
-		} catch (Exception e) {
-			
-			System.out.println("[ModularForceFieldSystem][Error] Converter TileEntity fail");
-			return null;
-		} 
+         return new TileEntityConverter();
 		
 	}
 

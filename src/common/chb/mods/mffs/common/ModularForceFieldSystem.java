@@ -58,8 +58,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1.7.0.31")
-@NetworkMod(versionBounds = "[2.1.7.0.31]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1.7.0.32")
+@NetworkMod(versionBounds = "[2.1.7.0.32]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
 
 public class ModularForceFieldSystem {
 	
@@ -162,10 +162,6 @@ public class ModularForceFieldSystem {
 	public static String Admin;
     public static Map<Integer, int[]> idmetatotextur = new HashMap<Integer, int[]>();
     
-    public static Class Extractor =  TileEntityExtractor.class;
-    public static Class Converter = TileEntityConverter.class;
-  
-  
 
 	@SidedProxy(clientSide = "chb.mods.mffs.client.ClientProxy", serverSide = "chb.mods.mffs.common.CommonProxy")
     public static CommonProxy proxy;
@@ -266,47 +262,10 @@ public class ModularForceFieldSystem {
 	public void load(FMLInitializationEvent evt) {
 		
 		ModIndependentRecipes.init();
+		ModIndustrialcraftRecipes.register();
+		ModIndustrialcraftRecipes.init();		
 		
-		boolean BuildCraft = loadbuildcaftstuff();
-		boolean UniversalElectricity = loadUEstuff();
-		boolean Industrialcraft = loadIndustrialcraftstuff();
-		
-        if(BuildCraft && UniversalElectricity && Industrialcraft) {
-            Extractor = chb.mods.mffs.common.TileEntityExtractorAll.class;
-            Converter = chb.mods.mffs.common.TileEntityConverterEU.class;
-        }
 
-        if(BuildCraft && UniversalElectricity && !Industrialcraft)
-            Extractor = chb.mods.mffs.common.TileEntityExtractorBCUE.class;
-
-        if(BuildCraft && !UniversalElectricity && Industrialcraft) {
-            Extractor = chb.mods.mffs.common.TileEntityExtractorEUBC.class;
-            Converter = chb.mods.mffs.common.TileEntityConverterEU.class;
-        }
-
-        if(!BuildCraft && UniversalElectricity && Industrialcraft) {
-            Extractor = chb.mods.mffs.common.TileEntityExtractorEUUE.class;
-            Converter = chb.mods.mffs.common.TileEntityConverterEU.class;
-        }
-
-        if(!BuildCraft && !UniversalElectricity && Industrialcraft) {
-            Extractor = chb.mods.mffs.common.TileEntityExtractorEU.class;
-            Converter = chb.mods.mffs.common.TileEntityConverterEU.class;
-        }
-
-        if(!BuildCraft && UniversalElectricity && !Industrialcraft)
-            Extractor = chb.mods.mffs.common.TileEntityExtractorUE.class;
-
-        if(BuildCraft && !UniversalElectricity && !Industrialcraft)
-            Extractor = chb.mods.mffs.common.TileEntityExtractorBC.class;
-
-        if(!BuildCraft && !UniversalElectricity && !Industrialcraft)
-            System.out.println("[ModularForceFieldSystem] ERROR: No Energy Mod found !!");
-		
-        
-       
-  
-        
 		GameRegistry.registerBlock(MFFSCapacitor);
 		GameRegistry.registerBlock(MFFSProjector);
 		GameRegistry.registerBlock(MFFSSecurtyStation);
@@ -321,9 +280,9 @@ public class ModularForceFieldSystem {
 
 		
 		
-		GameRegistry.registerTileEntity(Converter, "MFFSForceEnergyConverter");
+		GameRegistry.registerTileEntity(TileEntityConverter.class, "MFFSForceEnergyConverter");
 		
-		GameRegistry.registerTileEntity(Extractor, "MFFSExtractor");
+		GameRegistry.registerTileEntity(TileEntityExtractor.class, "MFFSExtractor");
 		
 		GameRegistry.registerTileEntity(TileEntityAreaDefenseStation.class, "MFFSDefenceStation");
 		GameRegistry
@@ -409,7 +368,7 @@ public class ModularForceFieldSystem {
 		LanguageRegistry.instance().addNameForObject(MFFSForceEnergyConverter, "en_US", "MFFS ForceEnergy Converter");
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradeexctractorboost, "en_US", "MFFS Extractor Booster");
 		LanguageRegistry.instance().addNameForObject(MFFSExtractor, "en_US", "MFFS Force Energy Extractor");
-		LanguageRegistry.instance().addNameForObject(MFFSMonazitOre,"en_US", "Monazit");
+		LanguageRegistry.instance().addNameForObject(MFFSMonazitOre,"en_US", "Monazit Ore");
 		LanguageRegistry.instance().addNameForObject(MFFSitemForcicumCell,"en_US", "MFFS compact Forcicium Cell");
 		LanguageRegistry.instance().addNameForObject(MFFSitemForcicium,"en_US", "Forcicium");
 		LanguageRegistry.instance().addNameForObject(MFFSitemForcePowerCrystal,"en_US", "MFFS Force Energy Crystal");
@@ -467,46 +426,6 @@ public class ModularForceFieldSystem {
 		idmetatotextur.put(block.blockID + meta*1000, index);
 	}
 	
-	
-	
-	
-	public static boolean loadIndustrialcraftstuff() {
-		System.out.println("[ModularForceFieldSystem] Loading module for Industrialcraft");
-		
-		try {
-			ModularForceFieldSystem.class.getClassLoader().loadClass("ic2.common.Ic2Items");
-			ModIndustrialcraftRecipes.register();
-			ModIndustrialcraftRecipes.init();			
-			return true;
-		} catch (Throwable t) {
-			System.out.println("[ModularForceFieldSystem] Module not loaded: Industrialcraft not found");
-			return false;
-		}
-	}
-	
-	public static boolean loadbuildcaftstuff() {
-		System.out.println("[ModularForceFieldSystem] Loading module for Buildcraft");
-		
-		try {
-			ModularForceFieldSystem.class.getClassLoader().loadClass("buildcraft.core.Version");
-			return true;
-		} catch (Throwable t) {
-			System.out.println("[ModularForceFieldSystem] Module not loaded: Buildcraft not found");
-			return false;
-		}
-	}
-	
-	public static boolean loadUEstuff() {
-		System.out.println("[ModularForceFieldSystem] Loading module for Universal Electricity");
-		
-		try {
-			ModularForceFieldSystem.class.getClassLoader().loadClass("universalelectricity.UniversalElectricity");
-			return true;
-		} catch (Throwable t) {
-			System.out.println("[ModularForceFieldSystem] Module not loaded: Universal Electricity not found");
-			return false;
-		}
-	}
 	
 		
 }

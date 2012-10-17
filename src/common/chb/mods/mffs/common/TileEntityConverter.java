@@ -20,12 +20,19 @@
 
 package chb.mods.mffs.common;
 
+import ic2.api.Direction;
+import ic2.api.EnergyNet;
+import ic2.api.IEnergyAcceptor;
+import ic2.api.IEnergySource;
+import ic2.api.Items;
+
 import java.util.LinkedList;
 import java.util.List;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
+import net.minecraft.src.Block;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.InventoryPlayer;
@@ -33,6 +40,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.Packet;
+import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
@@ -41,7 +49,7 @@ import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
 
 public class TileEntityConverter extends TileEntityMachines implements ISidedInventory
-,INetworkHandlerListener,INetworkHandlerEventListener{
+,INetworkHandlerListener,INetworkHandlerEventListener,IEnergySource{
 
 	private ItemStack inventory[];
     private boolean create;
@@ -53,7 +61,8 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
     private int SwitchTyp;
     private boolean OnOffSwitch;
     private int output;
-
+    private boolean addedToEnergyNet;
+    private boolean Industriecraftfound = true;
 	
 	public TileEntityConverter() {
 		
@@ -67,6 +76,7 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
         SwitchTyp = 0;
         OnOffSwitch = false;
         output = 1;
+        addedToEnergyNet = false;
     }
 
 	
@@ -141,6 +151,13 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			
+			if (!addedToEnergyNet && Industriecraftfound) {
+				try{
+				EnergyNet.getForWorld(worldObj).addTileEntity(this);
+				addedToEnergyNet = true;
+				}catch(Exception ex){Industriecraftfound = false;}
+				}
+			
 			if (this.isCreate() && this.getLinkCapacitors_ID() != 0) {
 				addtogrid();
                 checkslots(true);
@@ -206,11 +223,7 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 		}
     }
 	
-	
-    public void Emitpower() {}
-	
-	
-	
+
 	public void checkslots(boolean init) {
 		if (getStackInSlot(0) != null) {
 			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemfc) {
@@ -250,6 +263,29 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 		} else {
 		    this.setLinkCapacitor_ID(0);
 		}
+		
+        if(this.getStackInSlot(1) != null) {
+        	if(this.getStackInSlot(1).itemID<4096)
+        	{
+        	if(Block.blocksList[this.getStackInSlot(1).itemID] == Block.blocksList[Items.getItem("lvTransformer").itemID])
+        	{
+            if(this.getStackInSlot(1).getItemDamage() == 3) //lvTransformer
+            	this.setOutput(32);
+
+            if(this.getStackInSlot(1).getItemDamage() == 4) // mvTransformer
+            	this.setOutput(128);
+
+            if(this.getStackInSlot(1).getItemDamage() == 5) // hvTransformer
+            	this.setOutput(512);
+        	}else {
+        		this.setOutput(1);
+            }
+        } else {
+        	this.setOutput(1);
+        }
+    }else {
+    	this.setOutput(1);
+    }
 		
 	}
 	
@@ -425,6 +461,47 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 		   }
 		
 		
+	}
+	
+    public void Emitpower() {
+    	if(Industriecraftfound){
+        if(getLinkPower() > (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000) *getOutput()) {
+            int a = EnergyNet.getForWorld(worldObj).emitEnergyFrom(((IEnergySource) (this)), getOutput());
+            TileEntityCapacitor powercource = (TileEntityCapacitor)Linkgrid.getWorldMap(worldObj).getCapacitor().get(((Object) (Integer.valueOf(getLinkCapacitors_ID()))));
+
+            if(powercource != null)
+                powercource.setForcePower(powercource.getForcePower() - (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000) * (getOutput() - a));
+            else
+                System.out.println("[MFFS ERROR]Linked Capacitor not found");
+        }
+      }
+    }
+
+    @Override
+    public void invalidate() {
+    	if (addedToEnergyNet) {
+    		EnergyNet.getForWorld(worldObj).removeTileEntity(this);
+    		addedToEnergyNet = false;
+    	}
+
+    	super.invalidate();
+    }
+
+    public boolean isAddedToEnergyNet() {
+        return addedToEnergyNet;
+    }
+
+
+
+    public int getMaxEnergyOutput() {
+        return Integer.MAX_VALUE;
+    }
+
+
+
+	@Override
+	public boolean emitsEnergyTo(TileEntity receiver, Direction direction) {
+		return  receiver instanceof IEnergyAcceptor;
 	}
 	
 
