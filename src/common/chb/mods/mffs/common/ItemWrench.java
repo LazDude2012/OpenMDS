@@ -21,6 +21,7 @@
 package chb.mods.mffs.common;
 
 import ic2.api.IWrenchable;
+import net.minecraft.src.Block;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
@@ -46,7 +47,6 @@ public class ItemWrench extends ItemMultitool  {
 		
 		
 		TileEntity tileentity =  world.getBlockTileEntity(x,y,z);
-		
 		
 		if(tileentity instanceof TileEntityProjector)
 		{
@@ -142,7 +142,7 @@ public class ItemWrench extends ItemMultitool  {
 					return true;
 				}else{
 					
-		            world.spawnEntityInWorld(new EntityItem(world,x,y,z, new ItemStack(tileentity.getBlockType())));
+		            world.spawnEntityInWorld(new EntityItem(world,x,y,z, new ItemStack(Block.blocksList[world.getBlockId(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord)]) ));
 		            world.setBlockWithNotify(x, y, z, 0);
 				}
 

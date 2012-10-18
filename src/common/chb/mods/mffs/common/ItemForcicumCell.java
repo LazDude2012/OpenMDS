@@ -17,6 +17,7 @@ import net.minecraft.src.World;
 public class ItemForcicumCell extends  Item {
 	
 	private boolean ic = false;
+	private boolean aktiv =  false;
 	
 	protected ItemForcicumCell(int id) {
 		super(id);
@@ -62,6 +63,9 @@ public class ItemForcicumCell extends  Item {
     	
 		if (world.isRemote==false)
 			{
+			
+		if(aktiv)
+		{
     	
     	if(getForceciumlevel(itemStack) < getMaxForceciumlevel())
     	{
@@ -123,6 +127,7 @@ public class ItemForcicumCell extends  Item {
     	
     	itemStack.setItemDamage(getItemDamage(itemStack));
     }
+	}
     }
 	
     @Override
@@ -171,5 +176,26 @@ public class ItemForcicumCell extends  Item {
     	}
        return 0;
     }
+    
+	@Override
+	public ItemStack onItemRightClick(ItemStack itemstack, World world,
+			EntityPlayer entityplayer) {
+		if (world.isRemote==false)
+		{
+       if(!aktiv)
+       {
+    	   aktiv= true;
+    	   entityplayer.addChatMessage("[ForcicumCell] Aktive");
+       }else{
+    	   aktiv= false;
+    	   entityplayer.addChatMessage("[ForcicumCell] Inaktive");
+       }
+		
+		
+		
+		}
+		return itemstack;
+	}
+	
 	
 }

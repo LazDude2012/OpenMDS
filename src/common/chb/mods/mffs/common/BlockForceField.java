@@ -25,6 +25,7 @@ import java.util.Random;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
+import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
@@ -111,6 +112,75 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
     {
         return false;
     }
+	
+	
+	@Override
+	 public void onNeighborBlockChange(World world, int x, int y, int z, int blockid) {
+		if(blockid  != ModularForceFieldSystem.MFFSFieldblock.blockID)
+	    {
+			for(int x1 = -1 ;x1<=1; x1++){
+				for(int y1 = -1 ;y1<=1; y1++){
+					for(int z1 = -1 ;z1<=1; z1++){
+					if(world.getBlockId(x+x1, y+y1,z+z1)!= ModularForceFieldSystem.MFFSFieldblock.blockID )
+					{
+						if(world.getBlockId(x+x1, y+y1,z+z1)==0)
+						{
+							breakBlock(world, x+x1, y+y1, z+z1,0,0);
+						}
+					}
+			}
+		}
+	}
+		}
+	 }
+
+	@Override
+	public void breakBlock(World world, int i, int j, int k,int a,int b){
+		ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(world).getForceFieldStackMap(WorldMap.Cordhash(i, j, k));
+		
+		if (ffworldmap != null) {
+				if(!ffworldmap.isEmpty()) {
+					TileEntityProjector Projector  =	Linkgrid.getWorldMap(world).getProjektor().get(ffworldmap.getProjectorID());
+			if(Projector != null){
+				if(!Projector.isActive()){
+					ffworldmap.removebyProjector(ffworldmap.getProjectorID());
+				}else{
+					world.setBlockAndMetadataWithNotify(i, j, k,ModularForceFieldSystem.MFFSFieldblock.blockID,ffworldmap.getTyp());
+					world.markBlockAsNeedsUpdate(i, j, k);
+					ffworldmap.setSync(true);
+
+					TileEntity tileEntity = Linkgrid.getWorldMap(world).getCapacitor().get(ffworldmap.getGenratorID());
+					if (tileEntity instanceof TileEntityCapacitor && tileEntity != null) {
+						if (ffworldmap.getTyp() == 1) {
+							((TileEntityCapacitor) tileEntity).Energylost(ModularForceFieldSystem.forcefieldblockcost* ModularForceFieldSystem.forcefieldblockcreatemodifier);
+						} else {
+							((TileEntityCapacitor) tileEntity).Energylost(ModularForceFieldSystem.forcefieldblockcost* ModularForceFieldSystem.forcefieldblockcreatemodifier* ModularForceFieldSystem.forcefieldblockzappermodifier);
+						}
+				}
+			}
+			}
+		}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
     @Override
@@ -148,7 +218,6 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) {
 		return AxisAlignedBB.getBoundingBox((float) i, j, (float) k, (float) (i + 0), j + 0, (float) (k + 0));
 	}
-    
     
 
     
@@ -197,10 +266,9 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 			
 				if(!passtrue)
 				{
-
-					((EntityPlayer) entity).setPositionAndUpdate(((EntityPlayer) entity).getSpawnChunk().posX,((EntityPlayer) entity).getSpawnChunk().posY,((EntityPlayer) entity).getSpawnChunk().posZ);
 					
-				
+					((EntityPlayer) entity).setPositionAndUpdate(((EntityPlayer) entity).getSpawnChunk().posX,((EntityPlayer) entity).getSpawnChunk().posY,((EntityPlayer) entity).getSpawnChunk().posZ);
+
 				}else{
 					((EntityPlayer) entity).attackEntityFrom(DamageSource.generic,1);
 				}
