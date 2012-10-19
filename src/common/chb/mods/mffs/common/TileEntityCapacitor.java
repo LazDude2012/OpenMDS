@@ -24,10 +24,14 @@ package chb.mods.mffs.common;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+
+import com.google.common.collect.Sets;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
+import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.InventoryPlayer;
@@ -43,6 +47,10 @@ import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
 import chb.mods.mffs.network.NetworkHandlerServer;
+
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.minecraftforge.common.ForgeChunkManager.Type;
 
 public class TileEntityCapacitor extends TileEntityMachines implements
 ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEnergyCapacitor{
@@ -372,6 +380,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 					.newID(this);
 		}
 		Linkgrid.getWorldMap(worldObj).getCapacitor().put(Capacitor_ID, this);
+		
+		registerChunkLoading();
+
 	}
 
 	public void removefromgrid() {
@@ -766,6 +777,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		
 		return false;
 	}
+	
+
+	
+
+	
 	
 
 	

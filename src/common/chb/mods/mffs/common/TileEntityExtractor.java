@@ -223,6 +223,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 					.newID(this);
 		}
 		Linkgrid.getWorldMap(worldObj).getExtractor().put(Extractor_ID, this);
+		
 	}
 	
 

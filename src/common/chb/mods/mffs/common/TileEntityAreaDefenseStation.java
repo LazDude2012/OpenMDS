@@ -169,6 +169,8 @@ ISidedInventory,INetworkHandlerListener {
 					.newID(this);
 		}
 		Linkgrid.getWorldMap(worldObj).getDefStation().put(Defstation_ID, this);
+		
+		registerChunkLoading();
 	}
 
 	public void removefromgrid() {

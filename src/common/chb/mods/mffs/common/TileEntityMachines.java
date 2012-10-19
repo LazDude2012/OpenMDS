@@ -24,6 +24,7 @@ import ic2.api.IWrenchable;
 
 import java.util.Random;
 
+import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
@@ -33,9 +34,15 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import chb.mods.mffs.api.IMFFS_Wrench;
 import chb.mods.mffs.network.NetworkHandlerClient;
 import chb.mods.mffs.network.NetworkHandlerServer;
+
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.minecraftforge.common.ForgeChunkManager.Type;
 
 public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wrench,IWrenchable{
 	
@@ -43,6 +50,7 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 	private int side;
 	private short ticker;
 	protected Random random = new Random();
+	protected Ticket chunkTicket;
 
 	public TileEntityMachines()
 
@@ -157,6 +165,42 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 		return 1;
 	}
 	
+	public void forceChunkLoading(Ticket ticket) {
+	    if (chunkTicket == null)
+	    {
+	     chunkTicket = ticket;
+	    }
+	     ChunkCoordIntPair Chunk = new ChunkCoordIntPair(xCoord >> 4, zCoord >> 4); 
+	     ForgeChunkManager.forceChunk(ticket, Chunk);
+	     }
+	
+	protected void registerChunkLoading()
+	{
+		
+		if (chunkTicket == null)
+		{
+		chunkTicket = ForgeChunkManager.requestTicket(ModularForceFieldSystem.instance, worldObj, Type.NORMAL);
+		}
+		if (chunkTicket == null)
+		{
+			System.out.println("[ModularForceFieldSystem]no free Chunkloaders available");
+			return;
+		}
+		
+		chunkTicket.getModData().setInteger("MaschineX", xCoord);
+		chunkTicket.getModData().setInteger("MaschineY", yCoord);
+		chunkTicket.getModData().setInteger("MaschineZ", zCoord);
+		ForgeChunkManager.forceChunk(chunkTicket, new ChunkCoordIntPair(xCoord >> 4, zCoord >> 4));
+		
+		forceChunkLoading(chunkTicket);
+		
+	}
+	
+	@Override
+    public void invalidate() {
+    ForgeChunkManager.releaseTicket(chunkTicket);
+    super.invalidate();
+    }
 	
 	
 	public abstract boolean isItemValid(ItemStack par1ItemStack, int Slot);

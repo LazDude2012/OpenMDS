@@ -30,14 +30,21 @@ import chb.mods.mffs.recipes.ModIndustrialcraftRecipes;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+
+import com.google.common.collect.Lists;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLLog;
@@ -58,8 +65,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1.7.0.33")
-@NetworkMod(versionBounds = "[2.1.7.0.33]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1.7.0.34")
+@NetworkMod(versionBounds = "[2.1.7.0.34]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
 
 public class ModularForceFieldSystem {
 	
@@ -414,9 +421,46 @@ public class ModularForceFieldSystem {
 	}
 
 	@PostInit
-	public void modsLoaded(FMLPostInitializationEvent evt) {
-				
+	public void postInit(FMLPostInitializationEvent evt) {
+    ForgeChunkManager.setForcedChunkLoadingCallback(instance,new MFFSChunkloadCallback());
+    }
+	
+	
+	public class MFFSChunkloadCallback implements ForgeChunkManager.OrderedLoadingCallback
+	{
+		@Override
+		public void ticketsLoaded(List<Ticket> tickets, World world) {
+			for (Ticket ticket : tickets)
+			{
+				int MaschineX = ticket.getModData().getInteger("MaschineX");
+				int MaschineY = ticket.getModData().getInteger("MaschineY");
+				int MaschineZ = ticket.getModData().getInteger("MaschineZ");
+				TileEntityMachines Machines = (TileEntityMachines) world.getBlockTileEntity(MaschineX, MaschineY, MaschineZ);
+				Machines.forceChunkLoading(ticket);
+
+			}
+		}
+
+		@Override
+		public List<Ticket> ticketsLoaded(List<Ticket> tickets, World world, int maxTicketCount) {
+			List<Ticket> validTickets = Lists.newArrayList();
+			for (Ticket ticket : tickets)
+			{
+				int MaschineX = ticket.getModData().getInteger("MaschineX");
+				int MaschineY = ticket.getModData().getInteger("MaschineY");
+				int MaschineZ = ticket.getModData().getInteger("MaschineZ");
+
+				TileEntity tileEntity = world.getBlockTileEntity(MaschineX, MaschineY, MaschineZ);
+				if(tileEntity instanceof TileEntityMachines)
+				{
+					validTickets.add(ticket);
+				}
+			}
+			return validTickets;
+		}
+
 	}
+	
 
 	private void Generatetexturindex(Block block, int meta)
 	{
