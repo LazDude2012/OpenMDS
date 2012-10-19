@@ -127,6 +127,10 @@ ISidedInventory, INetworkHandlerListener {
 					.newID(this);
 		}
 		Linkgrid.getWorldMap(worldObj).getSecStation().put(SecurtyStation_ID, this);
+		
+		
+		registerChunkLoading();
+		
 	}
 
 	public void removefromgrid() {
@@ -348,6 +352,12 @@ ISidedInventory, INetworkHandlerListener {
 	}
 
 	public boolean isAccessGranted(String username, int Level) {
+
+		if(!isActive())
+		{
+			return true;
+		}
+		
 		if(username.equalsIgnoreCase(ModularForceFieldSystem.Admin))
 		{
 			return true;
@@ -356,6 +366,9 @@ ISidedInventory, INetworkHandlerListener {
 		if (this.MainUser.equals(username)) {
 			return true;
 		}
+		
+		
+		
 
 		if(this.isMultiusermod())
 		{
