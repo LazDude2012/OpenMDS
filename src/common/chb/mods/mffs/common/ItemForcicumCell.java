@@ -185,10 +185,10 @@ public class ItemForcicumCell extends  Item {
        if(!aktiv)
        {
     	   aktiv= true;
-    	   entityplayer.addChatMessage("[ForcicumCell] Aktive");
+    	   entityplayer.addChatMessage("[Forcicum Cell] Active");
        }else{
     	   aktiv= false;
-    	   entityplayer.addChatMessage("[ForcicumCell] Inaktive");
+    	   entityplayer.addChatMessage("[Forcicum Cell] Inactive");
        }
 		
 		
