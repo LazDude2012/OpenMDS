@@ -94,6 +94,9 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		}catch(NoClassDefFoundError ex)
 		{
 			Universalelectricityfound = false;
+		}catch(NoSuchMethodError ex)
+		{
+			Universalelectricityfound = false;
 		}
 		
 	

@@ -266,8 +266,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 			
 				if(!passtrue)
 				{
-					
-					((EntityPlayer) entity).setPositionAndUpdate(((EntityPlayer) entity).getSpawnChunk().posX,((EntityPlayer) entity).getSpawnChunk().posY,((EntityPlayer) entity).getSpawnChunk().posZ);
+					((EntityPlayer) entity).setEntityHealth(0);
 
 				}else{
 					((EntityPlayer) entity).attackEntityFrom(DamageSource.generic,1);
