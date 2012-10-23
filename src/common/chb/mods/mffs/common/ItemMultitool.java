@@ -97,7 +97,7 @@ public abstract class ItemMultitool extends  Item  implements IForceEnergyItems{
 	    
 
 	    @Override
-	    public void addInformation(ItemStack itemStack, List info)
+	    public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b)
 	    {
 	        String tooltip = String.format( "%d FE/%d FE ",getForceEnergy(itemStack),getMaxForceEnergy());
 	        info.add(tooltip);

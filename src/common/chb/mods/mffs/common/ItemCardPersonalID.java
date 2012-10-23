@@ -22,6 +22,7 @@ package chb.mods.mffs.common;
 
 import java.util.List;
 
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
@@ -91,7 +92,7 @@ public class ItemCardPersonalID extends Item implements IPersonalIDCard{
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, List info)
+    public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b)
     {
             String tooltip = String.format( "Owner: %s ", NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getString("name") );
             info.add(tooltip);

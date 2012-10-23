@@ -49,7 +49,7 @@ public class GuiAreaDefenseStation extends GuiContainer {
 		drawTexturedModalRect(w + 8, k + 71, 176, 0, i1 + 1, 79);
 	}
 @Override
-	protected void drawGuiContainerForegroundLayer() {
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRenderer.drawString("MFFS Defence Station", 5, 5, 0x404040);
 		fontRenderer.drawString((new StringBuilder()).append("FP: ").append(DefenceStation.getLinkPower()).toString(), 30, 50, 0x404040);
 

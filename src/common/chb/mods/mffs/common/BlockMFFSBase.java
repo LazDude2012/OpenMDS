@@ -121,10 +121,7 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		world.removeBlockTileEntity(i, j, k);
 	}
 
-	@Override
-	protected int damageDropped(int i) {
-		return i;
-	}
+
 
 	public int idDropped(int i, Random random) {
 		return blockID;

@@ -39,7 +39,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.NetworkManager;
+import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
@@ -57,7 +57,8 @@ public class NetworkHandlerServer implements IPacketHandler{
 private static final boolean DEBUG = false;
 
 @Override
-public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, Player player) {
+public void onPacketData(INetworkManager manager,Packet250CustomPayload packet, Player player) {
+
 	
 
 	ByteArrayDataInput dat = ByteStreams.newDataInput(packet.data);

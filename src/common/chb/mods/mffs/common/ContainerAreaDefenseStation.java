@@ -119,7 +119,7 @@ public class ContainerAreaDefenseStation extends Container {
 		return defstation.isUseableByPlayer(entityplayer);
 	}
 	@Override
-	public ItemStack transferStackInSlot(int i) {
+	public ItemStack func_82846_b(EntityPlayer p,int i) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
@@ -131,7 +131,7 @@ public class ContainerAreaDefenseStation extends Container {
 				slot.onSlotChanged();
 			}
 			if (itemstack1.stackSize != itemstack.stackSize) {
-				slot.onPickupFromSlot(itemstack1);
+				slot.onSlotChanged();
 			} else {
 				return null;
 			}

@@ -131,7 +131,7 @@ public class ItemForcicumCell extends  Item {
     }
 	
     @Override
-    public void addInformation(ItemStack itemStack, List info)
+    public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b)
     {
         String tooltip = String.format( "%d / %d  Forcicum  ",getForceciumlevel(itemStack),getMaxForceciumlevel());
         info.add(tooltip);

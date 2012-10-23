@@ -89,7 +89,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		}
 		
 		try{
-		ElectricityManager.instance.registerElectricUnit(this);
+		
 		Universalelectricityfound= true;
 		}catch(NoClassDefFoundError ex)
 		{

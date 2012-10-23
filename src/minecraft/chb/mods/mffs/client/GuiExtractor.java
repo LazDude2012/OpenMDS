@@ -60,7 +60,7 @@ public class GuiExtractor extends GuiContainer {
 		drawTexturedModalRect(w + 137,k + 40,219,80,32,ForceEnergy);
 	}
 	@Override
-	protected void drawGuiContainerForegroundLayer() {
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRenderer.drawString("Force Energy", 5, 5, 0x404040);
 
 		fontRenderer.drawString("Upgrades", 10, 30, 0x404040);

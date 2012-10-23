@@ -39,7 +39,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.NetworkManager;
+import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
@@ -57,7 +57,7 @@ public class NetworkHandlerClient implements IPacketHandler{
 private static final boolean DEBUG = false;
 
 @Override
-public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, Player player) {
+public void onPacketData(INetworkManager manager,Packet250CustomPayload packet, Player player) {
 	
 
 	ByteArrayDataInput dat = ByteStreams.newDataInput(packet.data);
@@ -96,18 +96,6 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 				  }
 			  }
 			  
-			  
-//			  System.out.println(Dim[0]);
-//			  System.out.println(Corrdinaten[0]);
-//			  System.out.println(Corrdinaten[1]);
-//			  System.out.println(Corrdinaten[2]);
-//			  System.out.println(Texturid[0]);
-//			  System.out.println(Texturid[1]);
-//			  System.out.println(Texturid[2]);
-//			  System.out.println(Texturid[3]);
-//			  System.out.println(Texturid[4]);
-//			  System.out.println(Texturid[5]);
-//			  System.out.println("-------------------------");
 			  
 		  }
 		}
@@ -386,6 +374,7 @@ public static void fireTileEntityEvent(TileEntity tileEntity,int event){
 		
 	}
 }
+
 
 
 }

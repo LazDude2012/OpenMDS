@@ -90,7 +90,7 @@ public class GuiProjector extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer() {
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRenderer.drawString("MFFS Projector", 5, 5, 0x404040);
 		fontRenderer.drawString(
 				(new StringBuilder()).append(" ")
