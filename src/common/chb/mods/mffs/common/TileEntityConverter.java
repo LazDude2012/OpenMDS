@@ -296,6 +296,7 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 					.newID(this);
 		}
 		Linkgrid.getWorldMap(worldObj).getConverter().put(Converter_ID, this);
+		registerChunkLoading();
 	}
 
 	public void removefromgrid() {
