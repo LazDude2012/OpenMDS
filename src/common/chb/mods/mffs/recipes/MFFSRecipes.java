@@ -2,30 +2,67 @@ package chb.mods.mffs.recipes;
 
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import ic2.api.ExplosionWhitelist;
+import ic2.api.Ic2Recipes;
 import ic2.api.Items;
 import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
-public class ModIndustrialcraftRecipes {
+public class MFFSRecipes {
 
-	public static void register()
-	{
-		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSDefenceStation);
-		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSCapacitor);
-		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSProjector);
-		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSSecurtyStation);
-		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSExtractor);
-		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSForceEnergyConverter);
-		
-	}
 	
 	public static void init()
 	{
+		
+		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemcardempty),new Object[] { new ItemStack(ModularForceFieldSystem.MFFSitemfc) });
+		
+		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemcardempty),new Object[] { new ItemStack(ModularForceFieldSystem.MFFSItemIDCard) });
+		
+		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemcardempty),new Object[] { new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard) });
+
+		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemForcePowerCrystal), new Object[] { "BBB", "BAB", "BBB", 'A', Item.diamond,'B', ModularForceFieldSystem.MFFSitemForcicium});
+		
+		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypcontainment), new Object[] {
+			"AAA", "ABA", "AAA", 'B',
+			ModularForceFieldSystem.MFFSitemFocusmatix, 'A', Block.obsidian });
+
+		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypAdvCube), new Object[] {
+			"AAA", "ABA", "AAA", 'A',
+			ModularForceFieldSystem.MFFSitemFocusmatix, 'B', ModularForceFieldSystem.MFFSProjectorTypkube });
+			
+		
+		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypsphere),
+				new Object[] { " B ", "BAB", " B ", 'A',
+			ModularForceFieldSystem.MFFSitemFocusmatix, 'B',
+						Block.obsidian });
+		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypkube), new Object[] {
+				"B B", " A ", "B B", 'A',
+				ModularForceFieldSystem.MFFSitemFocusmatix, 'B', Block.obsidian });
+		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypwall), new Object[] {
+				"AA ", "AA ", "BB ", 'A',
+				ModularForceFieldSystem.MFFSitemFocusmatix, 'B', Block.obsidian });
+		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypdeflector),
+				new Object[] { "AAA", "ABA", "AAA", 'A',
+			ModularForceFieldSystem.MFFSitemFocusmatix, 'B',
+						Block.obsidian });
+		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTyptube), new Object[] {
+				"AAA", " B ", "AAA", 'A',
+				ModularForceFieldSystem.MFFSitemFocusmatix, 'B', Block.obsidian });
+
+		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorFFStrenght),
+				new Object[] { "AAA", "AAA", "AAA", 'A',
+			ModularForceFieldSystem.MFFSitemFocusmatix });
+		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorFFDistance),
+				new Object[] { "AAA", "   ", "AAA", 'A',
+			ModularForceFieldSystem.MFFSitemFocusmatix });
 
 
 		if(Items.getItem("carbonPlate")!=null){
+			
+			
+			Ic2Recipes.addMaceratorRecipe(new ItemStack(ModularForceFieldSystem.MFFSMonazitOre, 1), new ItemStack(ModularForceFieldSystem.MFFSitemForcicium, 10));
+			Ic2Recipes.addMatterAmplifier(new ItemStack(ModularForceFieldSystem.MFFSitemForcicium, 1), 50000);
 			
 			
 			CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemForcicumCell, 1),
