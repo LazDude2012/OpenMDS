@@ -24,9 +24,9 @@ import chb.mods.mffs.network.ForceFieldServerUpdatehandler;
 import chb.mods.mffs.network.NetworkHandlerClient;
 import chb.mods.mffs.network.NetworkHandlerServer;
 import chb.mods.mffs.network.ForceFieldClientUpdatehandler;
-import chb.mods.mffs.recipes.ModIndependentRecipes;
-import chb.mods.mffs.recipes.ModIndustrialcraftRecipes;
+import chb.mods.mffs.recipes.MFFSRecipes;
 
+import ic2.api.ExplosionWhitelist;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -65,8 +65,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.1.7.0.35")
-@NetworkMod(versionBounds = "[2.1.7.0.35]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.2.8.0.1")
+@NetworkMod(versionBounds = "[2.2.8.0.1]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
 
 public class ModularForceFieldSystem {
 	
@@ -144,6 +144,8 @@ public class ModularForceFieldSystem {
 	public static Item MFFSProjectorFFDistance;
 	public static Item MFFSProjectorFFStrenght;
 	public static Item MFFSSecStationexidreader;
+	
+	public static int MonazitOreworldamount;
 
 	public static int forcefieldblockcost;
 	public static int forcefieldblockcreatemodifier;
@@ -194,7 +196,10 @@ public class ModularForceFieldSystem {
 		try {
 			MFFSconfig.load();
 			
+			
 	
+			MonazitOreworldamount = MFFSconfig.get("MonazitOreWorldGen", Configuration.CATEGORY_GENERAL, 4).getInt(4);
+			
 			Admin = MFFSconfig.get("ForceFieldMaster", Configuration.CATEGORY_GENERAL, "nobody").value;
 			influencedbyothermods =  MFFSconfig.get("influencedbyothermods", Configuration.CATEGORY_GENERAL, false).getBoolean(false);
 			forcefieldremoveonlywaterandlava = MFFSconfig.get("forcefieldremoveonlywaterandlava", Configuration.CATEGORY_GENERAL, false).getBoolean(false);
@@ -269,11 +274,8 @@ public class ModularForceFieldSystem {
 	@Init
 	public void load(FMLInitializationEvent evt) {
 		
-		ModIndependentRecipes.init();
-		ModIndustrialcraftRecipes.register();
-		ModIndustrialcraftRecipes.init();		
-		
-
+		MFFSRecipes.init();
+	
 		GameRegistry.registerBlock(MFFSCapacitor);
 		GameRegistry.registerBlock(MFFSProjector);
 		GameRegistry.registerBlock(MFFSSecurtyStation);
@@ -303,7 +305,12 @@ public class ModularForceFieldSystem {
 				"MFFSForceField");
 		
 	
-		
+		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSDefenceStation);
+		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSCapacitor);
+		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSProjector);
+		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSSecurtyStation);
+		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSExtractor);
+		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSForceEnergyConverter);
 		
 
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
