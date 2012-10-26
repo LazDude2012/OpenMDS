@@ -42,6 +42,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 	private ItemStack inventory[];
 	
+	private int workmode = 0;
     private boolean create;
 	private int Extractor_ID;
 	protected int WorkEnergy;
@@ -79,6 +80,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		capacity = 0;
 		addedToEnergyNet = false;
 		
+		
 		try{
 		powerProvider = PowerFramework.currentFramework.createPowerProvider();
 		powerProvider.configure(10, 2, (int) (getMaxWorkEnergy() / 2.5),(int) (getMaxWorkEnergy() / 2.5),(int) (getMaxWorkEnergy() / 2.5));
@@ -102,6 +104,8 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	
 		
 	}
+	
+	
 	
 	
 	
@@ -252,6 +256,9 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	
 	
 	public void checkslots(boolean init) {
+		
+
+		
 		if (getStackInSlot(1) != null) {
 			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSitemfc) {
 				if (getLinkCapacitors_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
@@ -316,6 +323,18 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		}else{
 			setWorkTicker(20);
 		}
+		
+		if (getStackInSlot(4) != null) {
+			if (getStackInSlot(4).getItem() == ModularForceFieldSystem.MFFSitemForcicumCell) {
+				
+				workmode = 1;
+				setMaxWorkEnergy(200000);
+			}
+			}else{
+				workmode = 0;
+				setMaxWorkEnergy(4000);			
+			}
+		
 		
 	}
 	
@@ -433,6 +452,10 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		
 			if (this.getTicker() >= getWorkTicker()) {
 				
+				checkslots(false);
+				
+				if(workmode==0)
+				{
 				if(Buildcraftfound)
 				converMJtoWorkEnergy();
 				
@@ -445,7 +468,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 				if(this.getCapacity() != (getForceEnergybuffer()*100)/getMaxForceEnergyBuffer())
 					   setCapacity((getForceEnergybuffer()*100)/getMaxForceEnergyBuffer());
 				
-				checkslots(false);
 				if(this.hasfreeForceEnergyStorage() && this.hasStufftoConvert())
 				{
 							
@@ -470,7 +492,34 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 				
 				this.setTicker((short) 0);
 			}
+			}
+			
+			if(workmode==1)
+			{
+				if(this.getWorkCylce() > 0){setWorkCylce(0);}
+			    
+				if(this.getWorkdone() != getWorkEnergy() * 100 / getMaxWorkEnergy())
+					setWorkdone( getWorkEnergy() * 100 / getMaxWorkEnergy());
+				
+				if(Buildcraftfound)
+				converMJtoWorkEnergy();
+				
+				if(Universalelectricityfound)
+				converUEtoWorkEnergy();
+				
 		
+			   	if(((ItemForcicumCell)getStackInSlot(4).getItem()).getForceciumlevel(getStackInSlot(4)) < ((ItemForcicumCell)getStackInSlot(4).getItem()).getMaxForceciumlevel())
+				{
+	             if(this.hasPowertoConvert()){
+	            	 
+	                         ((ItemForcicumCell)getStackInSlot(4).getItem()).setForceciumlevel(getStackInSlot(4),((ItemForcicumCell)getStackInSlot(4).getItem()).getForceciumlevel(getStackInSlot(4))+1);
+
+						 }
+						}
+
+				
+				this.setTicker((short) 0);
+			}
 			this.setTicker((short) (this.getTicker() + 1));
 			
 				
@@ -665,7 +714,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		switch(Slot)
 		{
 		case 0:
-			if(par1ItemStack.getItem() instanceof ItemForcicium || par1ItemStack.getItem() instanceof ItemForcicumCell )
+			if((par1ItemStack.getItem() instanceof ItemForcicium || par1ItemStack.getItem() instanceof ItemForcicumCell) && getStackInSlot(4) == null)
 			return true;
 		break;
 		
@@ -681,6 +730,11 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		
 		case 3:
 			if(par1ItemStack.getItem() instanceof  ItemExtractorUpgradeBooster)
+			return true;
+		break;
+		
+		case 4:
+			if(par1ItemStack.getItem() instanceof  ItemForcicumCell && getStackInSlot(0) == null)
 			return true;
 		break;
 		

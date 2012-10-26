@@ -45,7 +45,7 @@ public class ContainerForceEnergyExtractor extends Container {
 		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 1, 145, 20)); 
 		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 2, 20, 46));  
 		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 3, 39, 46)); 
-//		addSlotToContainer(new Slot(ForceEnergyExtractor, 4, 112, 6)); 
+		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 4, 112, 6)); 
 		
 		int var3;
 
