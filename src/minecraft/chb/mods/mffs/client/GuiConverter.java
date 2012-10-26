@@ -42,7 +42,7 @@ public class GuiConverter extends GuiContainer {
         super(new ContainerConverter(player, tileentity));
         Converter = tileentity;
     }
-
+    @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
     	int textur = mc.renderEngine.getTexture("/chb/mods/mffs/sprites/GuiConvertor.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -62,8 +62,8 @@ public class GuiConverter extends GuiContainer {
     	controlList.add(new GuiGraphicButton(0, (width / 2) + 67, (height / 2) -76,Converter,1));
         super.initGui();
     }
-
-    protected void drawGuiContainerForegroundLayer() {
+    @Override
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
     	fontRenderer.drawString("MFFS Converter", 5, 5, 0x404040);
     	fontRenderer.drawString("Force Energy", 15, 50, 0x404040);
     	fontRenderer.drawString((new StringBuilder()).append(" ").append(Converter.getLinkPower()).toString(), 30, 60, 0x404040);
