@@ -286,7 +286,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 				if(getRemote_Capacitor_ID() == Capacitor_ID)
 				{
 					setRemote_Capacitor_ID(0);
-					dropplugins(2,this);
 				}
 
 				if (Linkgrid.getWorldMap(worldObj).getCapacitor()
