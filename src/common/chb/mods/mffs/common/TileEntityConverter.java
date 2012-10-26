@@ -79,7 +79,9 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
         addedToEnergyNet = false;
     }
 
-	
+
+
+    
     public int getOutput() {
         return output;
     }
@@ -267,6 +269,8 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
         if(this.getStackInSlot(1) != null) {
         	if(this.getStackInSlot(1).itemID<4096)
         	{
+        	if(Items.getItem("lvTransformer") != null)
+        	{
         	if(Block.blocksList[this.getStackInSlot(1).itemID] == Block.blocksList[Items.getItem("lvTransformer").itemID])
         	{
             if(this.getStackInSlot(1).getItemDamage() == 3) //lvTransformer
@@ -282,10 +286,14 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
             }
         } else {
         	this.setOutput(1);
+        	dropplugins(1,this);
         }
     }else {
     	this.setOutput(1);
     }
+    }else {
+    this.setOutput(1);
+        }
 		
 	}
 	
