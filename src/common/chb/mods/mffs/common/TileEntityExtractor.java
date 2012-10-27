@@ -465,6 +465,8 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 				if(this.getWorkdone() != getWorkEnergy() * 100 / getMaxWorkEnergy())
 				setWorkdone( getWorkEnergy() * 100 / getMaxWorkEnergy());
 				
+				if(getWorkdone() > 100){setWorkdone(100);}
+				
 				if(this.getCapacity() != (getForceEnergybuffer()*100)/getMaxForceEnergyBuffer())
 					   setCapacity((getForceEnergybuffer()*100)/getMaxForceEnergyBuffer());
 				
@@ -492,11 +494,11 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 				
 				this.setTicker((short) 0);
 			}
-			}
+			
 			
 			if(workmode==1)
 			{
-				if(this.getWorkCylce() > 0){setWorkCylce(0);}
+				
 			    
 				if(this.getWorkdone() != getWorkEnergy() * 100 / getMaxWorkEnergy())
 					setWorkdone( getWorkEnergy() * 100 / getMaxWorkEnergy());
@@ -510,20 +512,28 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		
 			   	if(((ItemForcicumCell)getStackInSlot(4).getItem()).getForceciumlevel(getStackInSlot(4)) < ((ItemForcicumCell)getStackInSlot(4).getItem()).getMaxForceciumlevel())
 				{
+			      if (isActive() != true) {
+					setActive(true);
+					}	
 	             if(this.hasPowertoConvert()){
 	            	 
 	                         ((ItemForcicumCell)getStackInSlot(4).getItem()).setForceciumlevel(getStackInSlot(4),((ItemForcicumCell)getStackInSlot(4).getItem()).getForceciumlevel(getStackInSlot(4))+1);
 
 						 }
+						}else{
+							
+					if (isActive() != false) {
+						setActive(false);
 						}
+							
+					}
 
 				
 				this.setTicker((short) 0);
 			}
-			this.setTicker((short) (this.getTicker() + 1));
+			}	
 			
-				
-
+			this.setTicker((short) (this.getTicker() + 1));
 		}else {
 			if(Extractor_ID==0)
 			{
