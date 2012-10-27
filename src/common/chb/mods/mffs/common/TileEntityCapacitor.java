@@ -320,6 +320,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		 else {
 			setRemote_Capacitor_ID(0);
 			}
+		}else{
+			setRemote_Capacitor_ID(0);
 		}
 			
 
@@ -566,7 +568,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		}
 		break;		
 		case 2:
-		if(getCapacity() > 0 && RemoteCap.getCapacity() != 100)
+		if(getForcePower() > 0 && RemoteCap.getCapacity() != 100)
 		{
 
 		  if(this.getForcePower() > maxtrasferrate)
