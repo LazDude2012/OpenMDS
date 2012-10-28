@@ -152,17 +152,20 @@ public class MFFSRecipes {
 		CraftingManager.getInstance()
 		.addRecipe(
 				new ItemStack(ModularForceFieldSystem.MFFSForceEnergyConverter, 1),
-				new Object[] { "ABA", "CDE", "AAA",
+				new Object[] { "ADA", "BEC", "AFA",
 						'A',
 						Items.getItem("refinedIronIngot"),
 						'B',
 						Items.getItem("frequencyTransmitter"),
 						'C',
-						ModularForceFieldSystem.MFFSitemForcePowerCrystal,
-						'D',
-						Items.getItem("advancedMachine"),
-						'E',
 						Items.getItem("glassFiberCableItem"),
+						'D',
+						Items.getItem("lvTransformer"),
+						'E',
+						Items.getItem("mvTransformer"),
+						'F',
+						Items.getItem("hvTransformer"),
+						
 				
 				});
 		

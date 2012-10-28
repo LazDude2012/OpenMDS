@@ -59,14 +59,22 @@ public class GuiConverter extends GuiContainer {
 	}
 
     public void initGui() {
-    	controlList.add(new GuiGraphicButton(0, (width / 2) + 67, (height / 2) -76,Converter,1));
+    	controlList.add(new GuiGraphicButton(0, (width / 2) + 67, (height / 2) -80,Converter,1));
+    	controlList.add(new GuiButton(1, (width / 2) + 12, (height / 2) -60,12,16,"1"));
+    	controlList.add(new GuiButton(2, (width / 2) + 12, (height / 2) -25,12,16,"1"));
+    	
+    	controlList.add(new GuiButton(3, (width / 2) + 24, (height / 2) -60,16,16,"10"));
+    	controlList.add(new GuiButton(4, (width / 2) + 24, (height / 2) -25,16,16,"10"));
+    	
+    	controlList.add(new GuiButton(5, (width / 2) + 40, (height / 2) -60,22,16,"100"));
+    	controlList.add(new GuiButton(6, (width / 2) + 40, (height / 2) -25,22,16,"100"));
+    	
         super.initGui();
     }
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-    	fontRenderer.drawString("MFFS Converter", 5, 5, 0x404040);
-    	fontRenderer.drawString("Force Energy", 15, 50, 0x404040);
-    	fontRenderer.drawString((new StringBuilder()).append(" ").append(Converter.getLinkPower()).toString(), 30, 60, 0x404040);
-    	fontRenderer.drawString((new StringBuilder()).append("Output:").append(Converter.getOutput()).toString(), 100, 70, 0x404040);
+    	fontRenderer.drawString("MFFS FE -> EU Converter", 5, 5, 0x404040);
+    	fontRenderer.drawString((new StringBuilder()).append("FE: ").append(Converter.getLinkPower()).toString(), 10, 60, 0x404040);
+    	fontRenderer.drawString((new StringBuilder()).append("Output: ").append(Converter.getOutput()).append(" EU").toString(), 90, 45, 0x404040);
     }
 }

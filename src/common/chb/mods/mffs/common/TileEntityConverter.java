@@ -16,7 +16,7 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common;
 
@@ -48,191 +48,193 @@ import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
 
-public class TileEntityConverter extends TileEntityMachines implements ISidedInventory
-,INetworkHandlerListener,INetworkHandlerEventListener,IEnergySource{
+public class TileEntityConverter extends TileEntityMachines implements
+		ISidedInventory, INetworkHandlerListener, INetworkHandlerEventListener,
+		IEnergySource {
 
 	private ItemStack inventory[];
-    private boolean create;
-    private int Converter_ID;
-    private int LinkCapacitor_ID;
-    private int capacity;
-    private int linkPower;
-    private boolean linkGenerator;
-    private int SwitchTyp;
-    private boolean OnOffSwitch;
-    private int output;
-    private boolean addedToEnergyNet;
-    private boolean Industriecraftfound = true;
-	
+	private boolean create;
+	private int Converter_ID;
+	private int LinkCapacitor_ID;
+	private int capacity;
+	private int linkPower;
+	private boolean linkGenerator;
+	private int SwitchTyp;
+	private boolean OnOffSwitch;
+	private int output;
+	private boolean addedToEnergyNet;
+	private boolean Industriecraftfound = true;
+
 	public TileEntityConverter() {
-		
+
 		inventory = new ItemStack[4];
-        create = true;
-        Converter_ID = 0;
-        LinkCapacitor_ID = 0;
-        capacity = 0;
-        linkPower = 0;
-        linkGenerator = false;
-        SwitchTyp = 0;
-        OnOffSwitch = false;
-        output = 1;
-        addedToEnergyNet = false;
-    }
+		create = true;
+		Converter_ID = 0;
+		LinkCapacitor_ID = 0;
+		capacity = 0;
+		linkPower = 0;
+		linkGenerator = false;
+		SwitchTyp = 0;
+		OnOffSwitch = false;
+		output = 1;
+		addedToEnergyNet = false;
+	}
 
+	public int getOutput() {
+		return output;
+	}
 
+	public void setOutput(int output) {
+		this.output = output;
+	}
 
-    
-    public int getOutput() {
-        return output;
-    }
+	public boolean getOnOffSwitch() {
+		return OnOffSwitch;
+	}
 
-    public void setOutput(int output) {
-        this.output = output;
-    }
+	public void setOnOffSwitch(boolean a) {
+		OnOffSwitch = a;
+	}
 
-    public boolean getOnOffSwitch() {
-        return OnOffSwitch;
-    }
+	public int getswitchtyp() {
+		return SwitchTyp;
+	}
 
-    public void setOnOffSwitch(boolean a) {
-        OnOffSwitch = a;
-    }
+	public void setswitchtyp(int a) {
+		SwitchTyp = a;
+	}
 
-    public int getswitchtyp() {
-        return SwitchTyp;
-    }
+	public boolean isLinkGenerator() {
+		return linkGenerator;
+	}
 
-    public void setswitchtyp(int a) {
-        SwitchTyp = a;
-    }
+	public void setLinkGenerator(boolean linkGenerator) {
+		this.linkGenerator = linkGenerator;
+	}
 
-    public boolean isLinkGenerator() {
-        return linkGenerator;
-    }
+	public int getLinkPower() {
+		return linkPower;
+	}
 
-    public void setLinkGenerator(boolean linkGenerator) {
-        this.linkGenerator = linkGenerator;
-    }
+	public void setLinkPower(int linkPower) {
+		this.linkPower = linkPower;
+	}
 
-    public int getLinkPower() {
-        return linkPower;
-    }
+	public int getCapacity() {
+		return capacity;
+	}
 
-    public void setLinkPower(int linkPower) {
-        this.linkPower = linkPower;
-    }
+	public void setCapacity(int Capacity) {
+		capacity = Capacity;
+	}
 
-    public int getCapacity() {
-        return capacity;
-    }
+	public int getLinkCapacitors_ID() {
+		return LinkCapacitor_ID;
+	}
 
-    public void setCapacity(int Capacity) {
-        capacity = Capacity;
-    }
+	public void setLinkCapacitor_ID(int id) {
+		LinkCapacitor_ID = id;
+	}
 
-    public int getLinkCapacitors_ID() {
-        return LinkCapacitor_ID;
-    }
+	public int getConverter_ID() {
+		return Converter_ID;
+	}
 
-    public void setLinkCapacitor_ID(int id) {
-        LinkCapacitor_ID = id;
-    }
+	public boolean isCreate() {
+		return create;
+	}
 
-    public int getConverter_ID() {
-        return Converter_ID;
-    }
+	public void setCreate(boolean create) {
+		this.create = create;
+	}
 
-    public boolean isCreate() {
-        return create;
-    }
-
-    public void setCreate(boolean create) {
-        this.create = create;
-    }
-	
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
-			
+
 			if (!addedToEnergyNet && Industriecraftfound) {
-				try{
-				EnergyNet.getForWorld(worldObj).addTileEntity(this);
-				addedToEnergyNet = true;
-				}catch(Exception ex){Industriecraftfound = false;}
+				try {
+					EnergyNet.getForWorld(worldObj).addTileEntity(this);
+					addedToEnergyNet = true;
+				} catch (Exception ex) {
+					Industriecraftfound = false;
 				}
-			
+			}
+
 			if (this.isCreate() && this.getLinkCapacitors_ID() != 0) {
 				addtogrid();
-                checkslots(true);
-                setCreate(false);
-            }
+				checkslots(true);
+				setCreate(false);
+			}
 
-            if(getLinkCapacitors_ID() != 0) {
-                setLinkGenerator(true);
+			if (getLinkCapacitors_ID() != 0) {
+				setLinkGenerator(true);
 
-                try {
+				try {
 					this.setLinkPower(Linkgrid.getWorldMap(worldObj)
 							.getCapacitor().get(this.getLinkCapacitors_ID())
 							.getForcePower());
 					this.setCapacity(Linkgrid.getWorldMap(worldObj)
 							.getCapacitor().get(this.getLinkCapacitors_ID())
 							.getCapacity());
-                } catch(NullPointerException ex) {
-                    setLinkGenerator(false);
-                    setLinkPower(0);
-                    setCapacity(0);
-                }
-            } else {
-                setLinkGenerator(false);
-                setLinkPower(0);
-                setCapacity(0);
-            }
+				} catch (NullPointerException ex) {
+					setLinkGenerator(false);
+					setLinkPower(0);
+					setCapacity(0);
+				}
+			} else {
+				setLinkGenerator(false);
+				setLinkPower(0);
+				setCapacity(0);
+			}
 
 			boolean powerdirekt = worldObj.isBlockGettingPowered(xCoord,
 					yCoord, zCoord);
 			boolean powerindrekt = worldObj.isBlockIndirectlyGettingPowered(
 					xCoord, yCoord, zCoord);
 
-            if(getswitchtyp() == 0)
-                setOnOffSwitch(powerdirekt || powerindrekt);
+			if (getswitchtyp() == 0)
+				setOnOffSwitch(powerdirekt || powerindrekt);
 
-            if(getOnOffSwitch() && isLinkGenerator() && getLinkPower() > 0 && !isActive())
-                setActive(true);
+			if (getOnOffSwitch() && isLinkGenerator() && getLinkPower() > 0
+					&& !isActive())
+				setActive(true);
 
-            if((!getOnOffSwitch() || !isLinkGenerator() || getLinkPower() <= 0) && isActive())
-                setActive(false);
+			if ((!getOnOffSwitch() || !isLinkGenerator() || getLinkPower() <= 0)
+					&& isActive())
+				setActive(false);
 
-            if(isActive())
-                Emitpower();
+			if (isActive())
+				Emitpower();
 
-            if(getTicker() >= 20) {
-                checkslots(false);
-                setTicker((short)0);
-            }
+			if (getTicker() >= 20) {
+				checkslots(false);
+				setTicker((short) 0);
+			}
 
-            setTicker((short)(getTicker() + 1));
-        }else {
-			if(Converter_ID==0)
-			{
-				if (this.getTicker() >= 20+random.nextInt(20)) {
-					
-					NetworkHandlerClient.requestInitialData(this,true);
+			setTicker((short) (getTicker() + 1));
+		} else {
+			if (Converter_ID == 0) {
+				if (this.getTicker() >= 20 + random.nextInt(20)) {
+
+					NetworkHandlerClient.requestInitialData(this, true);
 
 					this.setTicker((short) 0);
 				}
-				
+
 				this.setTicker((short) (this.getTicker() + 1));
 			}
 		}
-    }
-	
+	}
 
 	public void checkslots(boolean init) {
 		if (getStackInSlot(0) != null) {
 			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemfc) {
-				if (getLinkCapacitors_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
-						getStackInSlot(0)).getInteger("CapacitorID")) {
-					setLinkCapacitor_ID(NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(0)).getInteger("CapacitorID"));
+				if (getLinkCapacitors_ID() != NBTTagCompoundHelper
+						.getTAGfromItemstack(getStackInSlot(0)).getInteger(
+								"CapacitorID")) {
+					setLinkCapacitor_ID(NBTTagCompoundHelper
+							.getTAGfromItemstack(getStackInSlot(0)).getInteger(
+									"CapacitorID"));
 				}
 
 				if (Linkgrid.getWorldMap(worldObj).getCapacitor()
@@ -258,50 +260,20 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 				} else {
 					setLinkCapacitor_ID(0);
 					if (!init) {
-						this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+						this.setInventorySlotContents(0, new ItemStack(
+								ModularForceFieldSystem.MFFSitemcardempty));
 					}
 				}
 			}
 		} else {
-		    this.setLinkCapacitor_ID(0);
+			this.setLinkCapacitor_ID(0);
 		}
-		
-        if(this.getStackInSlot(1) != null) {
-        	if(this.getStackInSlot(1).itemID<4096)
-        	{
-        	if(Items.getItem("lvTransformer") != null)
-        	{
-        	if(Block.blocksList[this.getStackInSlot(1).itemID] == Block.blocksList[Items.getItem("lvTransformer").itemID])
-        	{
-            if(this.getStackInSlot(1).getItemDamage() == 3) //lvTransformer
-            	this.setOutput(32);
 
-            if(this.getStackInSlot(1).getItemDamage() == 4) // mvTransformer
-            	this.setOutput(128);
-
-            if(this.getStackInSlot(1).getItemDamage() == 5) // hvTransformer
-            	this.setOutput(512);
-        	}else {
-        		this.setOutput(1);
-            }
-        } else {
-        	this.setOutput(1);
-        	dropplugins(1,this);
-        }
-    }else {
-    	this.setOutput(1);
-    }
-    }else {
-    this.setOutput(1);
-        }
-		
 	}
-	
-	
+
 	public void addtogrid() {
 		if (Converter_ID == 0) {
-			Converter_ID = Linkgrid.getWorldMap(worldObj)
-					.newID(this);
+			Converter_ID = Linkgrid.getWorldMap(worldObj).newID(this);
 		}
 		Linkgrid.getWorldMap(worldObj).getConverter().put(Converter_ID, this);
 		registerChunkLoading();
@@ -310,15 +282,15 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 	public void removefromgrid() {
 		Linkgrid.getWorldMap(worldObj).getConverter().remove(getConverter_ID());
 		dropplugins();
-		
+
 	}
-	
+
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
-			dropplugins(a,this);
+			dropplugins(a, this);
 		}
 	}
-	
+
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
 			return false;
@@ -327,15 +299,15 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
 		}
 	}
-	
-	
+
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 
+		output = nbttagcompound.getInteger("output");
 		Converter_ID = nbttagcompound.getInteger("Converter_ID");
 		SwitchTyp = nbttagcompound.getInteger("SwitchTyp");
 		OnOffSwitch = nbttagcompound.getBoolean("OnOffSwitch");
-		 
+
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		inventory = new ItemStack[getSizeInventory()];
 		for (int i = 0; i < nbttaglist.tagCount(); i++) {
@@ -349,14 +321,14 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 		}
 	}
 
-
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 
+		nbttagcompound.setInteger("output", output);
 		nbttagcompound.setInteger("Converter_ID", Converter_ID);
 		nbttagcompound.setInteger("SwitchTyp", SwitchTyp);
 		nbttagcompound.setBoolean("OnOffSwitch", OnOffSwitch);
-		
+
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < inventory.length; i++) {
 			if (inventory[i] != null) {
@@ -369,7 +341,7 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 
 		nbttagcompound.setTag("Items", nbttaglist);
 	}
-	
+
 	public ItemStack getStackInSlot(int i) {
 		return inventory[i];
 	}
@@ -385,14 +357,14 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 	public int getSizeInventory() {
 		return inventory.length;
 	}
-	
+
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		inventory[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
 			itemstack.stackSize = getInventoryStackLimit();
 		}
 	}
-	
+
 	public ItemStack decrStackSize(int i, int j) {
 		if (inventory[i] != null) {
 			if (inventory[i].stackSize <= j) {
@@ -409,7 +381,7 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 			return null;
 		}
 	}
-	
+
 	@Override
 	public ItemStack getStackInSlotOnClosing(int var1) {
 		return null;
@@ -424,25 +396,22 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 	public int getSizeInventorySide(ForgeDirection side) {
 		return 1;
 	}
-	
-	
+
 	public ItemStack[] getContents() {
 		return inventory;
 	}
-	
+
 	@Override
 	public void openChest() {
 	}
 
 	@Override
-	public void closeChest(){ 
+	public void closeChest() {
 	}
-	
-	
+
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
-		
-		
+
 		if (field.equals("side")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
@@ -452,68 +421,107 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 
 	}
 
-
-
 	@Override
 	public void onNetworkHandlerEvent(int event) {
-		   switch(event)
-		   {
-		   case 0:
-			if(this.getswitchtyp() == 0)
-			{
+
+		if (event == 0) {
+			if (this.getswitchtyp() == 0) {
 				this.setswitchtyp(1);
-			}else{
+			} else {
 				this.setswitchtyp(0);
 			}
+		}
 
-		   break;
-		   }
-		
-		
+		if (!this.isActive()) {
+			switch (event) {
+			case 1:
+				if (output < 2046) {
+					output++;
+				}
+				break;
+			case 2:
+				if (output > 1) {
+					output--;
+				}
+				break;
+			case 3:
+				if (output + 10 > 2048) {
+					output = 2048;
+				} else {
+					output += 10;
+				}
+				break;
+			case 4:
+				if (output - 10 < 1) {
+					output = 1;
+				} else {
+					output -= 10;
+				}
+				break;
+			case 5:
+				if (output + 100 > 2048) {
+					output = 2048;
+				} else {
+					output += 100;
+				}
+				break;
+			case 6:
+				if (output - 100 < 1) {
+					output = 1;
+				} else {
+					output -= 100;
+				}
+				break;
+			}
+		}
+
 	}
-	
-    public void Emitpower() {
-    	if(Industriecraftfound){
-        if(getLinkPower() > (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000) *getOutput()) {
-            int a = EnergyNet.getForWorld(worldObj).emitEnergyFrom(((IEnergySource) (this)), getOutput());
-            TileEntityCapacitor powercource = (TileEntityCapacitor)Linkgrid.getWorldMap(worldObj).getCapacitor().get(((Object) (Integer.valueOf(getLinkCapacitors_ID()))));
 
-            if(powercource != null)
-                powercource.setForcePower(powercource.getForcePower() - (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000) * (getOutput() - a));
-            else
-                System.out.println("[MFFS ERROR]Linked Capacitor not found");
-        }
-      }
-    }
+	public void Emitpower() {
+		if (Industriecraftfound) {
+			if (getLinkPower() > (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000)
+					* getOutput()) {
+				int a = EnergyNet.getForWorld(worldObj).emitEnergyFrom(
+						((IEnergySource) (this)), getOutput());
+				TileEntityCapacitor powercource = (TileEntityCapacitor) Linkgrid
+						.getWorldMap(worldObj)
+						.getCapacitor()
+						.get(((Object) (Integer.valueOf(getLinkCapacitors_ID()))));
 
-    @Override
-    public void invalidate() {
-    	if (addedToEnergyNet) {
-    		EnergyNet.getForWorld(worldObj).removeTileEntity(this);
-    		addedToEnergyNet = false;
-    	}
+				if (powercource != null)
+					powercource
+							.setForcePower(powercource.getForcePower()
+									- (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000)
+									* (getOutput() - a));
+				else
+					System.out
+							.println("[MFFS ERROR]Linked Capacitor not found");
+			}
+		}
+	}
 
-    	super.invalidate();
-    }
+	@Override
+	public void invalidate() {
+		if (addedToEnergyNet) {
+			EnergyNet.getForWorld(worldObj).removeTileEntity(this);
+			addedToEnergyNet = false;
+		}
 
-    public boolean isAddedToEnergyNet() {
-        return addedToEnergyNet;
-    }
+		super.invalidate();
+	}
 
+	public boolean isAddedToEnergyNet() {
+		return addedToEnergyNet;
+	}
 
-
-    public int getMaxEnergyOutput() {
-        return Integer.MAX_VALUE;
-    }
-
-
+	public int getMaxEnergyOutput() {
+		return Integer.MAX_VALUE;
+	}
 
 	@Override
 	public boolean emitsEnergyTo(TileEntity receiver, Direction direction) {
-		return  receiver instanceof IEnergyAcceptor;
+		return receiver instanceof IEnergyAcceptor;
 	}
-	
-
 
 	@Override
 	public List<String> getFieldsforUpdate() {
@@ -523,30 +531,27 @@ public class TileEntityConverter extends TileEntityMachines implements ISidedInv
 		NetworkedFields.add("active");
 		NetworkedFields.add("side");
 		NetworkedFields.add("Converter_ID");
-		
+
 		return NetworkedFields;
 	}
 
-
 	@Override
 	public Container getContainer(InventoryPlayer inventoryplayer) {
-		return new ContainerConverter(inventoryplayer.player,this);
+		return new ContainerConverter(inventoryplayer.player, this);
 	}
 
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
-		
-		switch(Slot)
-		{
+
+		switch (Slot) {
 		case 0:
-			if(!(par1ItemStack.getItem() instanceof ItemCardPowerLink))
-		    return false;
-		break;
-		
-		
+			if (!(par1ItemStack.getItem() instanceof ItemCardPowerLink))
+				return false;
+			break;
+
 		}
-		
+
 		return true;
 	}
-	
+
 }

@@ -46,7 +46,7 @@ public class ContainerConverter extends Container {
         output = -1;
 	
 		addSlotToContainer(new SlotHelper(Capacitor, 0, 11, 25));
-		addSlotToContainer(new SlotHelper(Capacitor, 1, 125, 38));
+		//addSlotToContainer(new SlotHelper(Capacitor, 1, 125, 38));
 	
 		int var3;
 
