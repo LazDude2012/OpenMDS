@@ -65,8 +65,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.2.8.0.3")
-@NetworkMod(versionBounds = "[2.2.8.0.3]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.2.8.0.4")
+@NetworkMod(versionBounds = "[2.2.8.0.4]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
 
 public class ModularForceFieldSystem {
 	
@@ -365,6 +365,7 @@ public class ModularForceFieldSystem {
 		Generatetexturindex(Block.stoneBrick, 0);
 		Generatetexturindex(Block.stoneBrick, 1);
 		Generatetexturindex(Block.stoneBrick, 2);
+		
 
 		for(int meta = 0; meta< 4; meta++) {
 			Generatetexturindex(Block.planks, meta);

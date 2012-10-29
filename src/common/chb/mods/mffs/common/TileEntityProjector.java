@@ -569,11 +569,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				case 7:setForceField_distance(getStackInSlot(5).stackSize);break;
 				}
 				
-//				if(this.isOptioncamouflage() && this.getForceField_distance() > 30)
-//				{
-//					setForceField_distance(30);
-//				}
-				
 				
 			} else {
 				dropplugins(5,this);
@@ -1377,7 +1372,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 						int dy = (yCoord + y1) - yCoord;
 						int dz = (zCoord + z1) - zCoord;
 
-						double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+						int dist = (int) Math.round(Math.sqrt(dx * dx + dy * dy + dz * dz));
 
 						if (dist <= getForceField_distance() && dist > (getForceField_distance() - getForceField_strength())
 								&& ((yCoord + y1) >= 0)) {
