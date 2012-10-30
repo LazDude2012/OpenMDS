@@ -16,17 +16,19 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common;
 
+import chb.mods.mffs.api.ISecurityLinkCard;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
-public class ItemCardSecurityLink extends Item  {
+public class ItemCardSecurityLink extends Item implements ISecurityLinkCard {
 	private StringBuffer info = new StringBuffer();
 
 	public ItemCardSecurityLink(int i) {
@@ -34,47 +36,101 @@ public class ItemCardSecurityLink extends Item  {
 		setIconIndex(19);
 		setMaxStackSize(1);
 	}
+
 	@Override
 	public String getTextureFile() {
 		return "/chb/mods/mffs/sprites/items.png";
 	}
+
 	@Override
 	public boolean isRepairable() {
 		return false;
 	}
+
 	@Override
-	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer,
-			World world, int i, int j, int k, int l) {
+	public boolean isSecurityCardValidity(ItemStack itemstack, World world) {
+
+		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper
+				.getTAGfromItemstack(itemstack);
+		if (nbtTagCompound != null) {
+
+			TileEntitySecurityStation secstation = Linkgrid.getWorldMap(world)
+					.getSecStation()
+					.get(nbtTagCompound.getInteger("Secstation_ID"));
+			if (secstation != null) {
+				return true;
+			}
+
+		}
+
+		return false;
+	}
+
+	public boolean isAccessGranted(ItemStack itemstack,
+			EntityPlayer entityplayer, World world, int accessmode,
+			boolean AccessErrorMessage) {
+		
+		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper
+				.getTAGfromItemstack(itemstack);
+		if (nbtTagCompound != null) {
+
+			TileEntitySecurityStation secstation = Linkgrid.getWorldMap(world)
+					.getSecStation()
+					.get(nbtTagCompound.getInteger("Secstation_ID"));
+			
+			if (secstation != null) {
+
+				if (!secstation.isAccessGranted(entityplayer.username,
+						accessmode)) {
+					if (AccessErrorMessage)
+						Functions.ChattoPlayer(entityplayer,
+								"[MFFS SecurityStation] access denied for "
+										+ entityplayer.username);
+					return false;
+				}
+
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onItemUseFirst(ItemStack itemstack,
+			EntityPlayer entityplayer, World world, int i, int j, int k, int l) {
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
 
 		if (!world.isRemote) {
 			if (tileEntity instanceof TileEntityCapacitor) {
-				
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
-				  {
 
-					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 4,"<Security Station Link>");
-					  
-				  }
+				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
+						world, ModularForceFieldSystem.PERSONALID_FULLACCESS)) {
+
+					return Functions.setIteminSlot(itemstack, entityplayer,
+							tileEntity, 4, "<Security Station Link>");
+
+				}
 			}
 
 			if (tileEntity instanceof TileEntityAreaDefenseStation) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
-				  {
+				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
+						world, ModularForceFieldSystem.PERSONALID_FULLACCESS)) {
 
-					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 1,"<Security Station Link>");
-			}
+					return Functions.setIteminSlot(itemstack, entityplayer,
+							tileEntity, 1, "<Security Station Link>");
+				}
 			}
 
 			if (tileEntity instanceof TileEntityProjector) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
-				  {
+				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
+						world, ModularForceFieldSystem.PERSONALID_FULLACCESS)) {
 
-					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 12,"<Security Station Link>");
+					return Functions.setIteminSlot(itemstack, entityplayer,
+							tileEntity, 12, "<Security Station Link>");
 				}
 			}
 		}
 
-	return false;
-}
+		return false;
+	}
+
 }
