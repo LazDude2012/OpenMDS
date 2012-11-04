@@ -11,6 +11,30 @@ public class SecurityHelper {
 	{
 		
 		
+		if (tileEntity instanceof TileEntitySecStorage) {
+			
+			if(((TileEntitySecStorage)tileEntity).getStackInSlot(0) !=null)
+			{
+			if(((TileEntitySecStorage)tileEntity).getStackInSlot(0).getItem() instanceof ItemCardSecurityLink)
+			{
+				ItemCardSecurityLink card = (ItemCardSecurityLink) ((TileEntitySecStorage)tileEntity).getStackInSlot(0).getItem();
+				
+				if(card.isAccessGranted(((TileEntitySecStorage)tileEntity).getStackInSlot(0), entityplayer, world, ModularForceFieldSystem.PERSONALID_FULLACCESS, true))
+				{
+					return true;
+				}
+			}
+			}else{
+				
+				return true;
+				
+			}
+
+				return false;
+			
+		}
+		
+		
 		
 		
 		if (tileEntity instanceof TileEntitySecurityStation) {
@@ -21,11 +45,6 @@ public class SecurityHelper {
 				}
 			}
 
-		
-		
-		
-		
-		
 		
 		if (tileEntity instanceof TileEntityConverter) {
 			
