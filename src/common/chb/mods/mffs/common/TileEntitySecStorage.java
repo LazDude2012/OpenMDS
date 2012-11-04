@@ -20,6 +20,17 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 		inventory = new ItemStack[60];
 
 	}
+	
+	public void dropplugins() {
+		for (int a = 0; a < this.inventory.length; a++) {
+			dropplugins(a,this);
+		}
+	}
+	
+	
+	public void removefromgrid() {
+		dropplugins();
+	}
 
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);

@@ -140,6 +140,7 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 	@Override
 	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side) {
 		if(side == getFacing()){return false;}
+		if(this instanceof TileEntitySecStorage){return false;}
 		if(this.active){return false;}
 		
 		return wrenchCanManipulate(entityPlayer, side);

@@ -13,6 +13,7 @@ public class BlockSecurtyStorage extends BlockMFFSBase {
 		super(i, texturindex);
 		setRequiresSelfNotify();
 		setCreativeTab(CreativeTabs.tabBlock);
+		setBlockUnbreakable();
 		
 	}
 
@@ -42,7 +43,7 @@ public class BlockSecurtyStorage extends BlockMFFSBase {
 			{
 				ItemCardSecurityLink card = (ItemCardSecurityLink) tileentity.getStackInSlot(0).getItem();
 				
-				if(card.isAccessGranted(tileentity.getStackInSlot(0), entityplayer, world, 1, true))
+				if(card.isAccessGranted(tileentity.getStackInSlot(0), entityplayer, world, ModularForceFieldSystem.PERSONALID_FULLACCESS, true))
 				{
 					if (!world.isRemote)
 						entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_SECSTORAGE, world,
