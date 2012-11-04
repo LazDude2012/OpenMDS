@@ -118,6 +118,11 @@ public abstract class BlockMFFSBase extends BlockContainer {
 			((TileEntityConverter)tileEntity).removefromgrid();
 		}
 		
+		if(tileEntity instanceof TileEntitySecStorage)
+		{
+			((TileEntitySecStorage)tileEntity).removefromgrid();
+		}
+		
 		world.removeBlockTileEntity(i, j, k);
 	}
 
