@@ -15,8 +15,6 @@ public class MFFSRecipes {
 	public static void init()
 	{
 		
-		
-		
 		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemcardempty),new Object[] { new ItemStack(ModularForceFieldSystem.MFFSitemfc) });
 		
 		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemcardempty),new Object[] { new ItemStack(ModularForceFieldSystem.MFFSItemIDCard) });
@@ -167,6 +165,18 @@ public class MFFSRecipes {
 						Items.getItem("hvTransformer"),
 						
 				
+				});
+		
+		
+		CraftingManager.getInstance()
+		.addRecipe(
+				new ItemStack(ModularForceFieldSystem.MFFSSecurtyStorage, 1),
+				new Object[] { "AAA", "ABA", "AAA",
+						'A',
+						Items.getItem("refinedIronIngot"),
+						'B',
+						Items.getItem("electronicCircuit"),
+
 				});
 		
 		

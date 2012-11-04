@@ -27,6 +27,7 @@ import chb.mods.mffs.client.GuiAreaDefenseStation;
 import chb.mods.mffs.client.GuiCapacitor;
 import chb.mods.mffs.client.GuiExtractor;
 import chb.mods.mffs.client.GuiProjector;
+import chb.mods.mffs.client.GuiSecStorage;
 import chb.mods.mffs.client.GuiSecurityStation;
 import chb.mods.mffs.client.GuiConverter;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -39,6 +40,7 @@ public class CommonProxy implements IGuiHandler {
 	public static final int GUI_DEFSTATION = 4;
 	public static final int GUI_EXTRACTOR = 5;
 	public static final int GUI_CONVERTER = 6;
+	public static final int GUI_SECSTORAGE = 7;
 	
 
 	public void registerRenderInformation()
@@ -83,6 +85,11 @@ public class CommonProxy implements IGuiHandler {
 			return new GuiConverter(player,
 					te == null ? new TileEntityConverter()
 							: ((TileEntityConverter) te));
+			
+		case GUI_SECSTORAGE:
+			return new GuiSecStorage(player,
+					te == null ? new TileEntitySecStorage()
+							: ((TileEntitySecStorage) te));
 		
 		}
 		return null;
@@ -122,7 +129,13 @@ public class CommonProxy implements IGuiHandler {
 				return new ContainerConverter(player,
 						te == null ? new TileEntityConverter()
 								: ((TileEntityConverter) te));
+			case GUI_SECSTORAGE:
+				return new ContainerSecStorage(player,
+						te == null ? new TileEntitySecStorage()
+								: ((TileEntitySecStorage) te));
 			}
+			
+			
 			return null;
 		}
 	}
