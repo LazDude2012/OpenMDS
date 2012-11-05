@@ -27,12 +27,10 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
-public class ItemProjectorOptionTouchDamage extends Item  {
+public class ItemProjectorOptionTouchDamage extends ItemProjectorOptionBase  {
 	public ItemProjectorOptionTouchDamage(int i) {
 		super(i);
 		setIconIndex(36);
-		setMaxStackSize(1);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

@@ -14,7 +14,7 @@ import net.minecraft.src.Slot;
 import net.minecraft.src.World;
 
 
-public class ItemForcicumCell extends  Item {
+public class ItemForcicumCell extends ItemMFFSBase {
 	
 	private boolean ic = false;
 	private boolean aktiv =  false;
@@ -24,7 +24,6 @@ public class ItemForcicumCell extends  Item {
 		setIconIndex(98);
 		setMaxStackSize(1);
 		setMaxDamage(100);
-		setCreativeTab(CreativeTabs.tabMaterials);
 		
 		if(Items.getItem("matter") != null)
 		{

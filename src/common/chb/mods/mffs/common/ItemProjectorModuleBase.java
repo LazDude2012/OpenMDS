@@ -27,11 +27,10 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
-public class ItemProjectorModuleBase extends Item  {
+public class ItemProjectorModuleBase extends ItemMFFSBase  {
 	public ItemProjectorModuleBase(int i) {
 		super(i);
 		setMaxStackSize(1);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

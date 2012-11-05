@@ -45,7 +45,7 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		setResistance(25F);
 		setStepSound(soundMetalFootstep);
 		setRequiresSelfNotify();
-		setCreativeTab(CreativeTabs.tabBlock);
+		setCreativeTab(ModularForceFieldSystem.MFFSTab);
 	}
 
 	@Override

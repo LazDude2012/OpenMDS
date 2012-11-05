@@ -38,6 +38,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
+import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
@@ -87,6 +88,8 @@ public class ModularForceFieldSystem {
 
 	public static final int PERSONALID_FULLACCESS = 2;
 	public static final int PERSONALID_LIMITEDACCESS = 1;
+	
+	public static CreativeTabs MFFSTab;
 	
 	
 	public static  int FORCEFIELDRENDER_ID =2908;
@@ -198,7 +201,7 @@ public class ModularForceFieldSystem {
 		try {
 			MFFSconfig.load();
 			
-			
+			MFFSTab = new MFFSCreativeTab(CreativeTabs.getNextID(), "MFFS");
 	
 			MonazitOreworldamount = MFFSconfig.get( Configuration.CATEGORY_GENERAL,"MonazitOreWorldGen", 4).getInt(4);
 			
@@ -288,11 +291,10 @@ public class ModularForceFieldSystem {
 		GameRegistry.registerBlock(MFFSExtractor);
 		GameRegistry.registerBlock(MFFSForceEnergyConverter);
 		GameRegistry.registerBlock(MFFSSecurtyStorage);
-	
-		
+			
 		OreDictionary.registerOre("ForciciumItem", MFFSitemForcicium);
 		OreDictionary.registerOre("MonazitOre", MFFSMonazitOre);
-
+		
 		GameRegistry.addSmelting(ModularForceFieldSystem.MFFSMonazitOre.blockID, new ItemStack(ModularForceFieldSystem.MFFSitemForcicium,5),0.5F);
 		
 
@@ -431,6 +433,7 @@ public class ModularForceFieldSystem {
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorTypAdvCube,"en_US","MFFS Projector Module <Adv.Cube>");
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorOptionCamouflage ,"en_US","MFFS Projector Upgrade <Camouflage>");
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorOptionFieldFusion ,"en_US","MFFS Projector Upgrade <Field Fusion>");
+		LanguageRegistry.instance().addStringLocalization("itemGroup.MFFS", "en_US", "Modular Force Field System");
 
 		GameRegistry.registerWorldGenerator(new MFFSWorldGenerator());
 		

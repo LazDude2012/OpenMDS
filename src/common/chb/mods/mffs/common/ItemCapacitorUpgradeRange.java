@@ -23,12 +23,11 @@ package chb.mods.mffs.common;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
 
-public class ItemCapacitorUpgradeRange extends Item  {
+public class ItemCapacitorUpgradeRange extends ItemMFFSBase  {
 	public ItemCapacitorUpgradeRange(int i) {
 		super(i);
 		setIconIndex(33);
 		setMaxStackSize(9);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 
 	public String getTextureFile() {

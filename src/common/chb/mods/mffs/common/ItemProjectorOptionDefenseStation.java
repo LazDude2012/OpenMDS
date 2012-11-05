@@ -27,12 +27,10 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
-public class ItemProjectorOptionDefenseStation extends Item  {
+public class ItemProjectorOptionDefenseStation extends ItemProjectorOptionBase  {
 	public ItemProjectorOptionDefenseStation(int i) {
 		super(i);
 		setIconIndex(39);
-		setMaxStackSize(1);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {
