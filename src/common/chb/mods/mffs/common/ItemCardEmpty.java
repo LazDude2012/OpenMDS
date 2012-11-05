@@ -27,12 +27,11 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
-public class ItemCardEmpty extends Item {
+public class ItemCardEmpty extends ItemMFFSBase {
 	public ItemCardEmpty(int i) {
 		super(i);
 		setIconIndex(16);
 		setMaxStackSize(1);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

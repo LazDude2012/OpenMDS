@@ -23,12 +23,11 @@ package chb.mods.mffs.common;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
 
-public class ItemProjectorFocusMatrix extends Item  {
+public class ItemProjectorFocusMatrix extends ItemMFFSBase  {
 	public ItemProjectorFocusMatrix(int i) {
 		super(i);
 		setIconIndex(66);
 		setMaxStackSize(64);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 
 	public String getTextureFile() {

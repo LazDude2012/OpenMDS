@@ -23,12 +23,11 @@ package chb.mods.mffs.common;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
 
-public class ItemSecurityStationExternalIDReader extends Item  {
+public class ItemSecurityStationExternalIDReader extends ItemMFFSBase  {
 	public ItemSecurityStationExternalIDReader(int i) {
 		super(i);
 		setIconIndex(5);
 		setMaxStackSize(1);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

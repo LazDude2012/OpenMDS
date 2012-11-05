@@ -27,12 +27,10 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
-public class ItemProjectorOptionForceFieldJammer extends Item {
+public class ItemProjectorOptionForceFieldJammer extends ItemProjectorOptionBase {
 	public ItemProjectorOptionForceFieldJammer(int i) {
 		super(i);
 		setIconIndex(41);
-		setMaxStackSize(1);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

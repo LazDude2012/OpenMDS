@@ -30,7 +30,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 
-public abstract class ItemMultitool extends  Item  implements IForceEnergyItems{
+public abstract class ItemMultitool extends  ItemMFFSBase  implements IForceEnergyItems{
 	private int typ;
 
 	protected ItemMultitool(int id,int typ) {
@@ -39,7 +39,6 @@ public abstract class ItemMultitool extends  Item  implements IForceEnergyItems{
 		setIconIndex(typ);
 		setMaxStackSize(1);
 		setMaxDamage(100);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 
 	@Override

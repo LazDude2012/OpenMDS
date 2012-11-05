@@ -27,12 +27,10 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
-public class ItemProjectorOptionFieldManipulator extends Item  {
+public class ItemProjectorOptionFieldManipulator extends ItemProjectorOptionBase  {
 	public ItemProjectorOptionFieldManipulator(int i) {
 		super(i);
 		setIconIndex(34);
-		setMaxStackSize(1);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

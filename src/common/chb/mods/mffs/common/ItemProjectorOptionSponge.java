@@ -27,12 +27,10 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
-public class ItemProjectorOptionSponge extends Item  {
+public class ItemProjectorOptionSponge extends ItemProjectorOptionBase  {
 	public ItemProjectorOptionSponge(int i) {
 		super(i);
 		setIconIndex(35);
-		setMaxStackSize(1);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

@@ -12,9 +12,7 @@ public class BlockSecurtyStorage extends BlockMFFSBase {
 	public BlockSecurtyStorage(int i, int texturindex) {
 		super(i, texturindex);
 		setRequiresSelfNotify();
-		setCreativeTab(CreativeTabs.tabBlock);
-		setBlockUnbreakable();
-		
+		setBlockUnbreakable();	
 	}
 
 	@Override

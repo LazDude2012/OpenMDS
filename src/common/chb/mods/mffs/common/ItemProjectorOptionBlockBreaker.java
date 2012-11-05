@@ -27,12 +27,10 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
-public class ItemProjectorOptionBlockBreaker extends Item  {
+public class ItemProjectorOptionBlockBreaker extends ItemProjectorOptionBase  {
 	public ItemProjectorOptionBlockBreaker(int i) {
 		super(i);
 		setIconIndex(38);
-		setMaxStackSize(1);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 
 	public String getTextureFile() {

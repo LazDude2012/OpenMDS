@@ -27,12 +27,10 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
-public class ItemProjectorOptionCamoflage extends Item {
+public class ItemProjectorOptionCamoflage extends ItemProjectorOptionBase {
 	public ItemProjectorOptionCamoflage(int i) {
 		super(i);
 		setIconIndex(42);
-		setMaxStackSize(1);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

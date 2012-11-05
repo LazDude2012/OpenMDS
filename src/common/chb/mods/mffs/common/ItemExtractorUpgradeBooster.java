@@ -23,12 +23,11 @@ package chb.mods.mffs.common;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
 
-public class ItemExtractorUpgradeBooster extends Item  {
+public class ItemExtractorUpgradeBooster extends ItemMFFSBase  {
 	public ItemExtractorUpgradeBooster(int i) {
 		super(i);
 		setIconIndex(37);
 		setMaxStackSize(19);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {
