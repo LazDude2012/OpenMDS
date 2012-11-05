@@ -66,8 +66,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.2.8.0.7")
-@NetworkMod(versionBounds = "[2.2.8.0.7]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.2.8.0.8")
+@NetworkMod(versionBounds = "[2.2.8.0.8]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
 
 public class ModularForceFieldSystem {
 	
@@ -165,6 +165,7 @@ public class ModularForceFieldSystem {
 	public static Boolean forcefieldremoveonlywaterandlava;
 	
 	public static Boolean influencedbyothermods;
+	public static Boolean adventuremap;
 	
 	public static int ForceciumWorkCylce;
 	public static int ForceciumCellWorkCylce;
@@ -207,6 +208,7 @@ public class ModularForceFieldSystem {
 			
 			Admin = MFFSconfig.get(Configuration.CATEGORY_GENERAL,"ForceFieldMaster",  "nobody").value;
 			influencedbyothermods =  MFFSconfig.get(Configuration.CATEGORY_GENERAL,"influencedbyothermods", false).getBoolean(false);
+			adventuremap =  MFFSconfig.get(Configuration.CATEGORY_GENERAL,"adventuremap", false).getBoolean(false);
 			forcefieldremoveonlywaterandlava = MFFSconfig.get(Configuration.CATEGORY_GENERAL,"forcefieldremoveonlywaterandlava", false).getBoolean(false);
 			
 			forcefieldtransportcost = MFFSconfig.get(Configuration.CATEGORY_GENERAL,"forcefieldtransportcost",  10000).getInt(10000);

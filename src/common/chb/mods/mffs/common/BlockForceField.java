@@ -200,7 +200,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
     	
 	ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(par1World).getForceFieldStackMap(WorldMap.Cordhash(par2, par3, par4));
 
-	if(ffworldmap != null)
+	if(ffworldmap != null && !ModularForceFieldSystem.adventuremap)
 	{
 		 par5EntityPlayer.attackEntityFrom(DamageSource.generic,10);
 		 Functions.ChattoPlayer((EntityPlayer)par5EntityPlayer,"[Force Field] Attention High Energy Field");

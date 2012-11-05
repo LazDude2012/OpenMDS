@@ -364,6 +364,13 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 			return true;
 			
 		}else{
+			
+		if(ModularForceFieldSystem.adventuremap)
+		{
+	    	 setMaxworkcylce(ModularForceFieldSystem.ForceciumCellWorkCylce);
+			 setWorkCylce(getMaxworkcylce());
+			 return true;
+		}
 		
 		if (getStackInSlot(0) != null) {
 				if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemForcicium) {
