@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -27,26 +27,25 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 
 public class ContainerForceEnergyExtractor extends Container {
-	
 	private TileEntityExtractor ForceEnergyExtractor;
 	private EntityPlayer player;
 	private int WorkCylce;
 	private int workdone;
 	private int ForceEnergybuffer;
-	
+
 	public ContainerForceEnergyExtractor(EntityPlayer player,
 			TileEntityExtractor tileentity) {
 		ForceEnergyExtractor = tileentity;
 		this.player = player;
 		WorkCylce = -1;
-		workdone = -1;	
+		workdone = -1;
 
-		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 0, 82, 6)); 
-		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 1, 145, 20)); 
-		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 2, 20, 46));  
-		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 3, 39, 46)); 
-		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 4, 112, 6)); 
-		
+		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 0, 82, 6)); //Forcicum
+		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 1, 145, 20)); //Powerlink
+		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 2, 20, 46));  //Cap upgrade
+		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 3, 39, 46)); //Boost upgrade
+		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 4, 112, 6)); //Forcicum cell
+
 		int var3;
 
 		for (var3 = 0; var3 < 3; ++var3) {
@@ -69,7 +68,7 @@ public class ContainerForceEnergyExtractor extends Container {
 		return ForceEnergyExtractor.isUseableByPlayer(entityplayer);
 	}
 	@Override
-	public ItemStack func_82846_b(EntityPlayer p,int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
@@ -88,8 +87,7 @@ public class ContainerForceEnergyExtractor extends Container {
 		}
 		return itemstack;
 	}
-	
-	
+
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
 		case 0:
@@ -99,7 +97,7 @@ public class ContainerForceEnergyExtractor extends Container {
 		case 1:
 			ForceEnergyExtractor.setWorkCylce(j);
 			break;
-			
+
 		case 2:
 			ForceEnergyExtractor.setForceEnergybuffer((ForceEnergyExtractor.getForceEnergybuffer() & 0xffff0000)
 							| j);
@@ -108,11 +106,9 @@ public class ContainerForceEnergyExtractor extends Container {
 			ForceEnergyExtractor.setForceEnergybuffer((ForceEnergyExtractor.getForceEnergybuffer() & 0xffff)
 							| (j << 16));
 			break;
-             
        }
 	}
-	
-	
+
 	@Override
 	public void updateCraftingResults() {
 		super.updateCraftingResults();
@@ -120,7 +116,6 @@ public class ContainerForceEnergyExtractor extends Container {
 		for (int i = 0; i < crafters.size(); i++) {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
-			
 			if (workdone != ForceEnergyExtractor.getWorkdone()) {
 				icrafting.updateCraftingInventoryInfo(this, 0,
 						ForceEnergyExtractor.getWorkdone());
@@ -129,23 +124,17 @@ public class ContainerForceEnergyExtractor extends Container {
 				icrafting.updateCraftingInventoryInfo(this, 1,
 						ForceEnergyExtractor.getWorkCylce());
 			}
-			
+
 			if (ForceEnergybuffer != ForceEnergyExtractor.getForceEnergybuffer()) {
 				icrafting.updateCraftingInventoryInfo(this, 2,
 						ForceEnergyExtractor.getForceEnergybuffer() & 0xffff);
 				icrafting.updateCraftingInventoryInfo(this, 3,
 						ForceEnergyExtractor.getForceEnergybuffer() >>> 16);
 			}
-
-
 		}
 
 		workdone = ForceEnergyExtractor.getWorkdone();
 		WorkCylce = ForceEnergyExtractor.getWorkCylce();
 		ForceEnergybuffer = ForceEnergyExtractor.getForceEnergybuffer();
-
-
 	}
-	
-	
 }

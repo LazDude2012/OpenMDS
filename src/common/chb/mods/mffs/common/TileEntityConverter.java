@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
  */
@@ -51,7 +51,6 @@ import chb.mods.mffs.network.NetworkHandlerClient;
 public class TileEntityConverter extends TileEntityMachines implements
 		ISidedInventory, INetworkHandlerListener, INetworkHandlerEventListener,
 		IEnergySource {
-
 	private ItemStack inventory[];
 	private boolean create;
 	private int Converter_ID;
@@ -66,7 +65,6 @@ public class TileEntityConverter extends TileEntityMachines implements
 	private boolean Industriecraftfound = true;
 
 	public TileEntityConverter() {
-
 		inventory = new ItemStack[4];
 		create = true;
 		Converter_ID = 0;
@@ -150,7 +148,6 @@ public class TileEntityConverter extends TileEntityMachines implements
 
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
-
 			if (!addedToEnergyNet && Industriecraftfound) {
 				try {
 					EnergyNet.getForWorld(worldObj).addTileEntity(this);
@@ -215,7 +212,6 @@ public class TileEntityConverter extends TileEntityMachines implements
 		} else {
 			if (Converter_ID == 0) {
 				if (this.getTicker() >= 20 + random.nextInt(20)) {
-
 					NetworkHandlerClient.requestInitialData(this, true);
 
 					this.setTicker((short) 0);
@@ -253,7 +249,6 @@ public class TileEntityConverter extends TileEntityMachines implements
 							- this.zCoord;
 
 					if (Math.sqrt(gen_x * gen_x + gen_y * gen_y + gen_z * gen_z) <= transmit) {
-
 					} else {
 						setLinkCapacitor_ID(0);
 					}
@@ -268,7 +263,6 @@ public class TileEntityConverter extends TileEntityMachines implements
 		} else {
 			this.setLinkCapacitor_ID(0);
 		}
-
 	}
 
 	public void addtogrid() {
@@ -282,7 +276,6 @@ public class TileEntityConverter extends TileEntityMachines implements
 	public void removefromgrid() {
 		Linkgrid.getWorldMap(worldObj).getConverter().remove(getConverter_ID());
 		dropplugins();
-
 	}
 
 	public void dropplugins() {
@@ -411,19 +404,16 @@ public class TileEntityConverter extends TileEntityMachines implements
 
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
-
 		if (field.equals("side")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("active")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
-
 	}
 
 	@Override
 	public void onNetworkHandlerEvent(int event) {
-
 		if (event == 0) {
 			if (this.getswitchtyp() == 0) {
 				this.setswitchtyp(1);
@@ -474,7 +464,6 @@ public class TileEntityConverter extends TileEntityMachines implements
 				break;
 			}
 		}
-
 	}
 
 	public void Emitpower() {
@@ -542,16 +531,18 @@ public class TileEntityConverter extends TileEntityMachines implements
 
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
-
 		switch (Slot) {
 		case 0:
 			if (!(par1ItemStack.getItem() instanceof ItemCardPowerLink))
 				return false;
 			break;
-
 		}
 
 		return true;
 	}
 
+	@Override
+	public int getSlotStackLimit(int Slot){
+		return 1;
+	}
 }

@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -28,10 +28,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import chb.mods.mffs.api.IPersonalIDCard;
 
-
-
 public class ItemCardPersonalID extends Item implements IPersonalIDCard{
-	
 	public ItemCardPersonalID(int i) {
 		super(i);
 		setIconIndex(18);
@@ -52,15 +49,11 @@ public class ItemCardPersonalID extends Item implements IPersonalIDCard{
 	{
 	return true;
 	}
-	
-	
 
     public static  void setOwner(ItemStack itemStack, String username)
     {
-       
        NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
        nbtTagCompound.setString("name", username);
-
     }
 
     public  static void setSeclevel(ItemStack itemStack,int SecLevel)
@@ -71,7 +64,6 @@ public class ItemCardPersonalID extends Item implements IPersonalIDCard{
 
     public int getSecLevel(ItemStack itemstack)
     {
-   
     	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
     	if(nbtTagCompound != null)
     	{
@@ -79,7 +71,7 @@ public class ItemCardPersonalID extends Item implements IPersonalIDCard{
     	}
        return 0;
     }
-    
+
     public String getUsername(ItemStack itemstack)
     {
     	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
@@ -88,7 +80,6 @@ public class ItemCardPersonalID extends Item implements IPersonalIDCard{
     		return nbtTagCompound.getString("name") ;
     	}
        return "nobody";
-    	
     }
 
     @Override
@@ -103,13 +94,13 @@ public class ItemCardPersonalID extends Item implements IPersonalIDCard{
             switch(SecLevel)
             {
             case ModularForceFieldSystem.PERSONALID_LIMITEDACCESS:
-            	SecLeveldesc = "Restricted ForceField Enter Only";
+            	SecLeveldesc = "Restricted, ForceField Bypass Only";
             break;
             case ModularForceFieldSystem.PERSONALID_FULLACCESS:
             	SecLeveldesc = "Full Access";
             break;
             default:
-            	SecLeveldesc = "ERROR Please re-coding";
+            	SecLeveldesc = "ERROR Please re-encode";
             break;
             }
             tooltip = String.format( "Security Level: %s ", SecLeveldesc );

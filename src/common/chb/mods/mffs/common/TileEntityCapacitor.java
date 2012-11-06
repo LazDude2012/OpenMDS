@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,14 +13,12 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
 
 package chb.mods.mffs.common;
-
-
 
 import java.util.LinkedList;
 import java.util.List;
@@ -54,7 +52,6 @@ import net.minecraftforge.common.ForgeChunkManager.Type;
 
 public class TileEntityCapacitor extends TileEntityMachines implements
 ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEnergyCapacitor{
-	
 	private ItemStack inventory[];
 	private int forcePower;
 	private int maxforcepower;
@@ -85,19 +82,15 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		SwitchTyp = 0;
 		OnOffSwitch = false;
 		Powerlinkmode= 0;
-	
 	}
-	
-	
+
 	public boolean isCreate() {
 		return create;
 	}
 
-
 	public void setCreate(boolean create) {
 		this.create = create;
 	}
-
 
 	public int getRemote_Capacitor_ID() {
 		return Remote_Capacitor_ID;
@@ -110,7 +103,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 	public int getPowerlinkmode() {
 		return Powerlinkmode;
 	}
-
 
 	public void setPowerlinkmode(int powerlinkmode) {
 		Powerlinkmode = powerlinkmode;
@@ -137,7 +129,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		return capacity;
 	}
 
-	
 	public void setCapacity(int Capacity){
 		if(this.capacity != Capacity)
 		{
@@ -166,7 +157,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 	public int getMaxForcePower() {
 		return maxforcepower;
 	}
-	
+
 	public Short getLinketProjektor() {
 		return linketprojektor;
 	}
@@ -182,7 +173,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 	public int getForcePower() {
 		return forcePower;
 	}
-	
 
 	public void setForcePower(int f) {
 		forcePower = f;
@@ -227,56 +217,44 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 				stacksize += getStackInSlot(1).stackSize;
 			}
 		}
-		
+
 		if (getStackInSlot(2) != null) {
-			
 			if (getStackInSlot(2).getItem() instanceof IForceEnergyItems) {
-				
 				IForceEnergyItems ForceEnergyItem = (IForceEnergyItems) getStackInSlot(2).getItem();
-				
+
 				if(ForceEnergyItem.getForceEnergy(getStackInSlot(2)) < ForceEnergyItem.getMaxForceEnergy())
 				{
-					
 					int maxtransfer = ForceEnergyItem.getforceEnergyTransferMax();
 					int freeeamount = ForceEnergyItem.getMaxForceEnergy() - ForceEnergyItem.getForceEnergy(getStackInSlot(2));
-					
+
 					if(this.getForcePower() > 0)
 					{
-
 					  if(this.getForcePower() > maxtransfer)
 					  {
 						    if(freeeamount > maxtransfer)
 						    {
 						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+maxtransfer);
-				                this.setForcePower(this.getForcePower() - maxtransfer);		    
+				                this.setForcePower(this.getForcePower() - maxtransfer);
 						    }else{
 						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+freeeamount);
-				                this.setForcePower(this.getForcePower() - freeeamount);	
+				                this.setForcePower(this.getForcePower() - freeeamount);
 						    }
-			                
 					  }else{
-						  
 						    if(freeeamount > this.getForcePower())
 						    {
 						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+this.getForcePower());
-				                this.setForcePower(this.getForcePower() - this.getForcePower());		    
+				                this.setForcePower(this.getForcePower() - this.getForcePower());
 						    }else{
 						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+freeeamount);
-				                this.setForcePower(this.getForcePower() - freeeamount);	
+				                this.setForcePower(this.getForcePower() - freeeamount);
 						    }
-						  
-						  
 					  }
-					  
+
 					  getStackInSlot(2).setItemDamage(ForceEnergyItem.getItemDamage(getStackInSlot(2)));
 					}
-			
 				}
-			
 			}
-			
-		
-			
+
 			if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSitemfc) {
 				if (getRemote_Capacitor_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
 						getStackInSlot(2)).getInteger("CapacitorID")) {
@@ -304,14 +282,12 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 							- this.zCoord;
 
 					if (Math.sqrt(gen_x * gen_x + gen_y * gen_y + gen_z * gen_z) <= transmit) {
-					
 					} else {
 						setRemote_Capacitor_ID(0);
-						
 					}
 				} else {
 					setRemote_Capacitor_ID(0);
-				
+
 					if (!init) {
 						this.setInventorySlotContents(2, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 					}
@@ -323,8 +299,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		}else{
 			setRemote_Capacitor_ID(0);
 		}
-			
-
 
 		if (getStackInSlot(4) != null) {
 			if (getStackInSlot(4).getItem() == ModularForceFieldSystem.MFFSItemSecLinkCard) {
@@ -380,15 +354,13 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 	}
 
 	public void addtogrid() {
-		
 		if (Capacitor_ID == 0) {
 			Capacitor_ID = Linkgrid.getWorldMap(worldObj)
 					.newID(this);
 		}
 		Linkgrid.getWorldMap(worldObj).getCapacitor().put(Capacitor_ID, this);
-		
-		registerChunkLoading();
 
+		registerChunkLoading();
 	}
 
 	public void removefromgrid() {
@@ -405,7 +377,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		transmitrange = nbttagcompound.getInteger("transmitrange");
 		Capacitor_ID = nbttagcompound.getInteger("Capacitor_ID");
 		Powerlinkmode = nbttagcompound.getInteger("Powerlinkmode");
-	
+
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		inventory = new ItemStack[getSizeInventory()];
 		for (int i = 0; i < nbttaglist.tagCount(); i++) {
@@ -429,7 +401,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		nbttagcompound.setInteger("transmitrange", transmitrange);
 		nbttagcompound.setInteger("Capacitor_ID", Capacitor_ID);
 		nbttagcompound.setInteger("Powerlinkmode", Powerlinkmode);
-	
 
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < inventory.length; i++) {
@@ -455,13 +426,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
-			
 			if (this.isCreate()) {
 				addtogrid();
                 checkslots(true);
                 setCreate(false);
             }
-			
 
 			boolean powerdirekt = worldObj.isBlockGettingPowered(xCoord,
 					yCoord, zCoord);
@@ -484,15 +453,12 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 			}
 
 			if (this.getTicker() == 10) {
-				
 				if(this.getLinketProjektor() != (short) Linkgrid.getWorldMap(worldObj).condevisec(getCapacitor_ID(), xCoord, yCoord, zCoord,getTransmitRange()))
 				setLinketprojektor((short) Linkgrid.getWorldMap(worldObj).condevisec(getCapacitor_ID(), xCoord, yCoord, zCoord,getTransmitRange()));
-				
-				
+
 				if(this.getCapacity() != ((getForcePower()/1000)*100)/(getMaxForcePower()/1000))
 				   setCapacity(((getForcePower()/1000)*100)/(getMaxForcePower()/1000));
-				
-		
+
 				checkslots(false);
 				if(isActive())
 				{
@@ -501,104 +467,86 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 				this.setTicker((short) 0);
 			}
 			this.setTicker((short) (this.getTicker() + 1));
-
-
 		}else {
-			
-			
-			
 			if(Capacitor_ID==0)
 			{
-			
 				if (this.getTicker() >= 20 + random.nextInt(20)) {
-					
 					NetworkHandlerClient.requestInitialData(this,true);
 					this.setTicker((short) 0);
 				}
-				
+
 				this.setTicker((short) (this.getTicker() + 1));
 			}
-		} 
+		}
 	}
-	
+
 	private void powertransfer()
 	{
-		
 		if(getRemote_Capacitor_ID()!= 0)
 		{
-	    TileEntityCapacitor RemoteCap = Linkgrid.getWorldMap(worldObj).getCapacitor().get(getRemote_Capacitor_ID());	
-	    
+	    TileEntityCapacitor RemoteCap = Linkgrid.getWorldMap(worldObj).getCapacitor().get(getRemote_Capacitor_ID());
+
 	    if(RemoteCap != null)
-	    {	    	
-	    	
+	    {
 	      int maxtrasferrate = this.getMaxForcePower() / 120;
 	      int forceenergyspace = RemoteCap.getMaxForcePower() - RemoteCap.getForcePower();
-	      	    	
+
 		switch(this.getPowerlinkmode())
 		{
 		case 0:
 		if(getCapacity() >= 90 && RemoteCap.getCapacity() != 100)
 		{
-			
 		    if(forceenergyspace > maxtrasferrate)
 		    {
 		    	RemoteCap.setForcePower(RemoteCap.getForcePower() + maxtrasferrate);
-                this.setForcePower(this.getForcePower() - maxtrasferrate);		    
+                this.setForcePower(this.getForcePower() - maxtrasferrate);
 		    }else{
 		    	RemoteCap.setForcePower(RemoteCap.getForcePower() + forceenergyspace);
-                this.setForcePower(this.getForcePower() - forceenergyspace);	
+                this.setForcePower(this.getForcePower() - forceenergyspace);
 		    }
-			
 		}
 		break;
 		case 1:
-		if(RemoteCap.getCapacity() < this.getCapacity())	
+		if(RemoteCap.getCapacity() < this.getCapacity())
 		{
 			int balancevaue = this.getForcePower()- RemoteCap.getForcePower();
-			
+
 		    if(balancevaue > maxtrasferrate)
 		    {
 		    	RemoteCap.setForcePower(RemoteCap.getForcePower() + maxtrasferrate);
-                this.setForcePower(this.getForcePower() - maxtrasferrate);		    
+                this.setForcePower(this.getForcePower() - maxtrasferrate);
 		    }else{
 		    	RemoteCap.setForcePower(RemoteCap.getForcePower() + balancevaue);
-                this.setForcePower(this.getForcePower() - balancevaue);	
+                this.setForcePower(this.getForcePower() - balancevaue);
 		    }
-			
 		}
-		break;		
+		break;
 		case 2:
 		if(getForcePower() > 0 && RemoteCap.getCapacity() != 100)
 		{
-
 		  if(this.getForcePower() > maxtrasferrate)
 		  {
 			    if(forceenergyspace > maxtrasferrate)
 			    {
 			    	RemoteCap.setForcePower(RemoteCap.getForcePower() + maxtrasferrate);
-	                this.setForcePower(this.getForcePower() - maxtrasferrate);		    
+	                this.setForcePower(this.getForcePower() - maxtrasferrate);
 			    }else{
 			    	RemoteCap.setForcePower(RemoteCap.getForcePower() + forceenergyspace);
-	                this.setForcePower(this.getForcePower() - forceenergyspace);	
+	                this.setForcePower(this.getForcePower() - forceenergyspace);
 			    }
-                
 		  }else{
-			  
 			    if(forceenergyspace > this.getForcePower())
 			    {
 			    	RemoteCap.setForcePower(RemoteCap.getForcePower() + this.getForcePower());
-	                this.setForcePower(this.getForcePower() - this.getForcePower());		    
+	                this.setForcePower(this.getForcePower() - this.getForcePower());
 			    }else{
 			    	RemoteCap.setForcePower(RemoteCap.getForcePower() + forceenergyspace);
-	                this.setForcePower(this.getForcePower() - forceenergyspace);	
+	                this.setForcePower(this.getForcePower() - forceenergyspace);
 			    }
-			  
-			  
 		  }
-
-		}		
+		}
 		break;
-		}	
+		}
 		}
 		}
 	}
@@ -646,13 +594,10 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		return null;
 	}
 
-
-
 	@Override
 	public void openChest() {
 	}
-	
-	
+
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
 			return false;
@@ -661,8 +606,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
 		}
 	}
-	
-
 
 	public ItemStack[] getContents() {
 		return inventory;
@@ -693,7 +636,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 				this.setswitchtyp(0);
 			}
 		break;
-		
+
 		case 1:
 			if(this.getPowerlinkmode() != 2)
 			{
@@ -702,16 +645,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 				this.setPowerlinkmode(0);
 			}
 		break;
-
 		}
 	}
 
-
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
-		
-	
-		
 		if (field.equals("side")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
@@ -727,9 +665,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		if (field.equals("capacity")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
-		
 	}
-
 
 	@Override
 	public List<String> getFieldsforUpdate() {
@@ -743,10 +679,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		NetworkedFields.add("transmitrange");
 		NetworkedFields.add("capacity");
 		NetworkedFields.add("Capacitor_ID");
-		
+
 		return NetworkedFields;
 	}
-
 
 	@Override
 	public void onEMPPulse(int magnitude){
@@ -755,11 +690,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		this.setForcePower(this.getForcePower() / 100 * Math.min(Math.max(magnitude, 0), 100));
 		 }
 	}
-	
-	
+
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
-		
 		switch(Slot)
 		{
 		case 0:
@@ -769,26 +702,30 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		case 1:
 			if(par1ItemStack.getItem() instanceof  ItemCapacitorUpgradeRange)
 			return true;
-		break;	
+		break;
 		case 2:
 			if(par1ItemStack.getItem() instanceof  IForceEnergyItems || par1ItemStack.getItem() instanceof  ItemCardPowerLink)
 			return true;
-		break;	
+		break;
 		case 4:
 			if(par1ItemStack.getItem() instanceof  ItemCardSecurityLink)
 			return true;
-		break;	
-
+		break;
 		}
-		
+
 		return false;
 	}
-	
 
-	
-
-	
-	
-
-	
+	@Override
+	public int getSlotStackLimit(int Slot){
+		switch(Slot){
+		case 0: //Range upgrade
+			return 9;
+		case 1: //Cap upgrade
+			return 9;
+		case 2: //Link/power item
+			return 64;
+		}
+		return 1;
+	}
 }

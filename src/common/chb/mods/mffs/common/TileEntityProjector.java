@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,13 +13,12 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
 
 package chb.mods.mffs.common;
-
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -106,16 +105,13 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 	// Start Getter AND Setter
 
-	
 	public int getCapacity(){
 		return capacity;
 	}
 
-	
 	public void setCapacity(int Capacity){
 		this.capacity = Capacity;
 	}
-	
 
 	public boolean getOnOffSwitch() {
 		return OnOffSwitch;
@@ -131,7 +127,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 	public void setswitchtyp(int a) {
 	   this.SwitchTyp = a;
-
 	}
 
 	public boolean isLinkedSecStation() {
@@ -152,7 +147,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 	public void setaccesstyp(int accesstyp) {
 		this.accesstyp = accesstyp;
-
 	}
 
 	public int getForcefieldtextur_id(int l) {
@@ -511,7 +505,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 					if(getProjektor_Typ()!= 1) {setProjektor_Typ(1);}
 					setforcefieldblock_meta(ModularForceFieldSystem.FORCEFIELBOCKMETA_DEFAULT);
 					setOptionBlockdropper(true);
-					
 				}
 				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTypdeflector) {
 					if(getProjektor_Typ()!= 2) {setProjektor_Typ(2);}
@@ -555,9 +548,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 		if (getStackInSlot(5) != null) {
 			if (getStackInSlot(5).getItem() == ModularForceFieldSystem.MFFSProjectorFFDistance) {
-				
-	
-				
 				switch(getProjektor_Typ())
 				{
 				case 1:setForceField_distance(getStackInSlot(5).stackSize);break;
@@ -568,8 +558,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				case 6:setForceField_distance(getStackInSlot(5).stackSize);break;
 				case 7:setForceField_distance(getStackInSlot(5).stackSize);break;
 				}
-				
-				
 			} else {
 				dropplugins(5,this);
 			}
@@ -1066,7 +1054,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				}
 			}
 
-
 			if (this.getTicker() == 20) {
 				checkslots(false);
 
@@ -1081,24 +1068,19 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 				this.setTicker((short) 0);
 			}
-			
+
 			this.setTicker((short) (this.getTicker() + 1));
 		}else{
-			
 			if(this.getProjektor_ID()==0)
 			{
-				
 				if (this.getTicker() >= 20+random.nextInt(20)) {
-					
 					NetworkHandlerClient.requestInitialData(this,true);
 
 					this.setTicker((short) 0);
 				}
-				
+
 				this.setTicker((short) (this.getTicker() + 1));
-				
 			}
-			
 		}
 
 		switchdelay++;
@@ -1756,7 +1738,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	public void addtogrid() {
-		
 		if (Projektor_ID == 0) {
 			Projektor_ID = Linkgrid.getWorldMap(worldObj)
 					.newID(this);
@@ -1831,7 +1812,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		
 		ProjektorItemStacks[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
 			itemstack.stackSize = getInventoryStackLimit();
@@ -1890,8 +1870,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		return new ContainerProjector(inventoryplayer.player, this);
 	}
 
-
-
 	public ItemStack[] getContents() {
 		return ProjektorItemStacks;
 	}
@@ -1911,7 +1889,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 	@Override
 	public void onNetworkHandlerEvent(int event) {
-		
 		   switch(event)
 		   {
 		   case 0:
@@ -1937,13 +1914,10 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 		   break;
 		   }
-		
 	}
 
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
-		
-		
 		if (field.equals("side")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
@@ -1953,8 +1927,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		if (field.equals("ProjektorTyp")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
-		
-		
 	}
 
 	@Override
@@ -1968,25 +1940,24 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		NetworkedFields.add("burnout");
 		NetworkedFields.add("camoflage");
 		NetworkedFields.add("Projektor_ID");
-	
+
 		return NetworkedFields;
 	}
 
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
-		
 		switch(Slot)
 		{
 		case 0:
 			if(par1ItemStack.getItem() instanceof ItemCardPowerLink)
 			return true;
 		break;
-		
+
 		case 1:
 			if(par1ItemStack.getItem() instanceof ItemProjectorModuleBase )
 			return true;
 		break;
-		
+
 		case 2:
 		case 3:
 		case 4:
@@ -2001,21 +1972,21 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			   par1ItemStack.getItem() instanceof ItemProjectorOptionTouchDamage )
 			return true;
 		break;
-		
+
 		case 5:
 			if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorDistance )
-				
+
 				if(this.getProjektor_Typ() != 0 &&  this.getProjektor_Typ() != 7 )
 				return true;
 		break;
-		
+
 		case 6:
 			if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorStrength )
-				
+
 				if(this.getProjektor_Typ() != 0 &&  this.getProjektor_Typ() != 2 && this.getProjektor_Typ() != 4)
 				return true;
 		break;
-		
+
 		case 7:
 		case 8:
 		case 9:
@@ -2025,22 +1996,34 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				if(this.getProjektor_Typ() != 0 &&  this.getProjektor_Typ() != 3 && this.getProjektor_Typ() != 5)
 				return true;
 			}
-			
+
 		break;
-		
+
 		case 12:
 			if(par1ItemStack.getItem() instanceof ItemCardSecurityLink )
 			return true;
 		break;
-		
-		
 		}
 
-		
 		if(Slot == 11 && this.isOptioncamouflage())
 		return true;
-		
-		
+
 		return false;
+	}
+	@Override
+	public int getSlotStackLimit(int Slot){
+		switch(Slot){
+		case 5: //Distance Slot
+		case 6: //Strength Slot
+			return 64;
+
+		case 7: //Focus Up
+		case 8: //Focus Down
+		case 9: //Focus right
+		case 10: //Focus left
+			return 64;
+		}
+
+		return 1;
 	}
 }

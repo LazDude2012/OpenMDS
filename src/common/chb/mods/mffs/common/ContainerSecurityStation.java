@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -60,7 +60,7 @@ public class ContainerSecurityStation extends Container {
 		return SecStation.isUseableByPlayer(entityplayer);
 	}
 	@Override
-	public ItemStack func_82846_b(EntityPlayer p,int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {

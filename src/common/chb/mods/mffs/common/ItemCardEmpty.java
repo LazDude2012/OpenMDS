@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,13 +13,14 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
 
 package chb.mods.mffs.common;
 
+import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
@@ -31,7 +32,7 @@ public class ItemCardEmpty extends ItemMFFSBase {
 	public ItemCardEmpty(int i) {
 		super(i);
 		setIconIndex(16);
-		setMaxStackSize(1);
+		setMaxStackSize(16);
 	}
 	@Override
 	public String getTextureFile() {
@@ -43,39 +44,46 @@ public class ItemCardEmpty extends ItemMFFSBase {
 	}
 
 	@Override
-	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer,
-			World world, int i, int j, int k, int l) {
+	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer,
+			World world, int i, int j, int k, int l, float par8, float par9, float par10) {
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
 
-		if (!world.isRemote) {
-			if (tileEntity instanceof TileEntityCapacitor) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
-				  {
-
-				
-				ItemStack newcard =  new ItemStack(ModularForceFieldSystem.MFFSitemfc);
+		if (tileEntity instanceof TileEntityCapacitor) {
+			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS)) {
+				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSitemfc);
 				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("CapacitorID", ((TileEntityCapacitor)tileEntity).getCapacitor_ID());
-				entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
-				
+				//entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
+
+				if (--itemstack.stackSize<=0) {
+					entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
+				} else if (!entityplayer.inventory.addItemStackToInventory(newcard))
+					entityplayer.dropPlayerItem(newcard);
+
+				if (world.isRemote)
 				entityplayer.addChatMessage("[Capacitor] Success: <Power-Link> Card create");
-				
-				return true;
-				 }
-			}
 
-			if (tileEntity instanceof TileEntitySecurityStation) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
-				  {
-
-				ItemStack newcard =   new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
-				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Secstation_ID", ((TileEntitySecurityStation)tileEntity).getSecurtyStation_ID());
-				entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
-				
-				Functions.ChattoPlayer(entityplayer, "[Security Station] Success: <Security Station Link>  Card create");
 				return true;
-				 }
-			}
+			 }
 		}
+
+		if (tileEntity instanceof TileEntitySecurityStation) {
+			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS)) {
+				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
+				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Secstation_ID", ((TileEntitySecurityStation)tileEntity).getSecurtyStation_ID());
+				//entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
+
+				if (--itemstack.stackSize<=0) {
+					entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
+				} else if (!entityplayer.inventory.addItemStackToInventory(newcard))
+					entityplayer.dropPlayerItem(newcard);
+
+				if (world.isRemote)
+				Functions.ChattoPlayer(entityplayer, "[Security Station] Success: <Security Station Link>  Card create");
+
+				return true;
+			 }
+		}
+
 		return false;
 	}
 }

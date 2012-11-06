@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -41,11 +41,11 @@ public class ContainerAreaDefenseStation extends Container {
 		defstation = tileentity;
 		this.player = player;
 
-		addSlotToContainer(new SlotHelper(defstation, 0, 10, 44));
-		addSlotToContainer(new SlotHelper(defstation, 1, 10, 19));
+		addSlotToContainer(new SlotHelper(defstation, 0, 10, 44)); //Power Link
+		addSlotToContainer(new SlotHelper(defstation, 1, 10, 19)); //Security Link
 
-		addSlotToContainer(new SlotHelper(defstation, 2, 128, 13));
-		addSlotToContainer(new SlotHelper(defstation, 3, 128, 44));
+		addSlotToContainer(new SlotHelper(defstation, 2, 128, 13)); //Defense mod
+		addSlotToContainer(new SlotHelper(defstation, 3, 128, 44)); //Distance mod
 
 		int var3;
 
@@ -119,7 +119,7 @@ public class ContainerAreaDefenseStation extends Container {
 		return defstation.isUseableByPlayer(entityplayer);
 	}
 	@Override
-	public ItemStack func_82846_b(EntityPlayer p,int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {

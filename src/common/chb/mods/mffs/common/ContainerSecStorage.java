@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -27,32 +27,25 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 
 public class ContainerSecStorage extends Container {
-
-
 	private EntityPlayer player;
-	private TileEntitySecStorage SecStorage;	
-	
+	private TileEntitySecStorage SecStorage;
+
 	public ContainerSecStorage(EntityPlayer player,
 			TileEntitySecStorage tileentity) {
-
 		SecStorage = tileentity;
 		this.player = player;
 
-	
-		addSlotToContainer(new SlotHelper(SecStorage, 0, 12, 6));
-
+		addSlotToContainer(new SlotHelper(SecStorage, 0, 12, 6)); //Security link
 
 		int var3;
 		int var4;
-		
+
 		for (var3 = 0; var3 < 6; ++var3) {
 			for (var4 = 0; var4 < 9; ++var4) {
 				this.addSlotToContainer(new SlotHelper(SecStorage, (var4 + var3 * 9)+1,
 						12 + var4 * 18, 25 + var3 * 18));
 			}
 		}
-		
-		
 
 		for (var3 = 0; var3 < 3; ++var3) {
 			for (var4 = 0; var4 < 9; ++var4) {
@@ -65,22 +58,17 @@ public class ContainerSecStorage extends Container {
 			this.addSlotToContainer(new Slot(player.inventory, var3, 12 + var3 * 18, 195));
 		}
 	}
-	
-	
-
-
 
     public EntityPlayer getPlayer() {
     	return player;
     }
-	
-	
+
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return SecStorage.isUseableByPlayer(entityplayer);
 	}
-	
+
 	@Override
-	public ItemStack func_82846_b(EntityPlayer p,int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
@@ -99,5 +87,4 @@ public class ContainerSecStorage extends Container {
 		}
 		return itemstack;
 	}
-
 }
