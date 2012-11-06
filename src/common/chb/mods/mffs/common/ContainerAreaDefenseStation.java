@@ -119,7 +119,7 @@ public class ContainerAreaDefenseStation extends Container {
 		return defstation.isUseableByPlayer(entityplayer);
 	}
 	@Override
-	public ItemStack func_82846_b(EntityPlayer p,int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
