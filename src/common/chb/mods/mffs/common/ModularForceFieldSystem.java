@@ -20,6 +20,7 @@
 
 package chb.mods.mffs.common;
 
+import buildcraft.api.transport.PipeManager;
 import chb.mods.mffs.network.ForceFieldServerUpdatehandler;
 import chb.mods.mffs.network.NetworkHandlerClient;
 import chb.mods.mffs.network.NetworkHandlerServer;
@@ -200,6 +201,7 @@ public class ModularForceFieldSystem {
 	     TickRegistry.registerScheduledTickHandler(new ForceFieldServerUpdatehandler(), Side.SERVER);
 	     
 
+	     
 		MFFSconfig = new Configuration(event.getSuggestedConfigurationFile());
 		event.getModMetadata().version = Versioninfo.version();
 		try {
@@ -236,7 +238,7 @@ public class ModularForceFieldSystem {
 			MFFSProjector = new BlockProjector(MFFSconfig.getBlock("MFFSProjector", 685).getInt(685),0).setBlockName("MFFSProjector");
 			MFFSFieldblock = new BlockForceField(MFFSconfig.getBlock("MFFSFieldblock", 683).getInt(683));
 			MFFSSecurtyStorage = new BlockSecurtyStorage(MFFSconfig.getBlock("MFFSSecurtyStorage", 684).getInt(684),0).setBlockName("MFFSSecurtyStorage");
-			MFFSAdvSecurtyStation = new BlockAdvSecurtyStation(MFFSconfig.getBlock("MFFSAdvSecurtyStation", 688).getInt(688),0).setBlockName("MFFSAdvSecurtyStation");
+			MFFSAdvSecurtyStation = new BlockAdvSecurtyStation(MFFSconfig.getBlock("MFFSAdvSecurtyStation", 689).getInt(689),0).setBlockName("MFFSAdvSecurtyStation");
 			
 			MFFSitemWrench= new ItemWrench(MFFSconfig.getItem(Configuration.CATEGORY_ITEM,"itemWrench",11107).getInt(11107)).setItemName("itemWrench");
 			MFFSitemSwitch= new ItemSwitch(MFFSconfig.getItem(Configuration.CATEGORY_ITEM,"itemSwitch",11108).getInt(11108)).setItemName("itemSwitch");

@@ -119,6 +119,16 @@ public class ItemCardSecurityLink extends Item implements ISecurityLinkCard {
 							tileEntity, 1, "<Security Station Link>");
 				}
 			}
+			
+			if (tileEntity instanceof TileEntitySecStorage) {
+				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
+						world, ModularForceFieldSystem.PERSONALID_FULLACCESS)) {
+
+					return Functions.setIteminSlot(itemstack, entityplayer,
+							tileEntity, 0, "<Security Station Link>");
+				}
+			}
+			
 
 			if (tileEntity instanceof TileEntityProjector) {
 				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
