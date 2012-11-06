@@ -80,6 +80,10 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		{
 			((TileEntitySecurityStation)tileEntity).addtogrid();
 		}
+		if(tileEntity instanceof TileEntityAdvSecurityStation)
+		{
+			((TileEntityAdvSecurityStation)tileEntity).addtogrid();
+		}
 		if(tileEntity instanceof TileEntityExtractor)
 		{
 			((TileEntityExtractor)tileEntity).addtogrid();
@@ -108,6 +112,10 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		if(tileEntity instanceof TileEntitySecurityStation)
 		{
 			((TileEntitySecurityStation)tileEntity).removefromgrid();
+		}
+		if(tileEntity instanceof TileEntityAdvSecurityStation)
+		{
+			((TileEntityAdvSecurityStation)tileEntity).removefromgrid();
 		}
 		if(tileEntity instanceof TileEntityExtractor)
 		{
@@ -168,6 +176,8 @@ public abstract class BlockMFFSBase extends BlockContainer {
 			((TileEntityMachines)tileEntity).setSide((short) 4);
 		}
 		}
+		
+		
 	}
 	
 	@Override

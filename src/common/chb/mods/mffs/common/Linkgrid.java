@@ -35,6 +35,7 @@ public final class Linkgrid {
 		private Map<Integer, TileEntityProjector> Projektor = new Hashtable<Integer, TileEntityProjector>();
 		private Map<Integer, TileEntityCapacitor> Capacitors = new Hashtable<Integer, TileEntityCapacitor>();
 		private Map<Integer, TileEntitySecurityStation> SecStation = new Hashtable<Integer, TileEntitySecurityStation>();
+		private Map<Integer, TileEntityAdvSecurityStation> AdvSecStation = new Hashtable<Integer, TileEntityAdvSecurityStation>();
 		private Map<Integer, TileEntityAreaDefenseStation> DefStation = new Hashtable<Integer, TileEntityAreaDefenseStation>();
 		private Map<Integer, TileEntityExtractor> Extractor = new Hashtable<Integer, TileEntityExtractor>();
 		private Map<Integer, TileEntityConverter> Converter = new Hashtable<Integer, TileEntityConverter>();
@@ -58,6 +59,10 @@ public final class Linkgrid {
 
 		public Map<Integer, TileEntityCapacitor> getCapacitor() {
 			return Capacitors;
+		}
+		
+		public Map<Integer, TileEntityAdvSecurityStation> getAdvSecStation() {
+			return AdvSecStation;
 		}
 
 		public Map<Integer, TileEntitySecurityStation> getSecStation() {
@@ -114,6 +119,15 @@ public final class Linkgrid {
 					tempID = random.nextInt();
 				}
 				SecStation.put(tempID, (TileEntitySecurityStation) tileEntity);
+				
+			}
+			
+			if(tileEntity instanceof TileEntityAdvSecurityStation){
+				
+				while (AdvSecStation.get(tempID) != null) {
+					tempID = random.nextInt();
+				}
+				AdvSecStation.put(tempID, (TileEntityAdvSecurityStation) tileEntity);
 				
 			}
 			
