@@ -20,6 +20,7 @@
 
 package chb.mods.mffs.common;
 
+import buildcraft.api.transport.PipeManager;
 import chb.mods.mffs.network.ForceFieldServerUpdatehandler;
 import chb.mods.mffs.network.NetworkHandlerClient;
 import chb.mods.mffs.network.NetworkHandlerServer;
@@ -66,8 +67,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.2.8.0.8")
-@NetworkMod(versionBounds = "[2.2.8.0.8]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.2.8.0.9")
+@NetworkMod(versionBounds = "[2.2.8.0.9]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
 
 public class ModularForceFieldSystem {
 	
@@ -79,6 +80,7 @@ public class ModularForceFieldSystem {
 	public static final int GUI_EXTRACTOR = 5;
 	public static final int GUI_CONVERTER = 6;
 	public static final int GUI_SECSTORAGE = 7;
+	public static final int GUI_ADVSECSTATION = 8;
 	
 	public static final int FORCEFIELBOCKMETA_DEFAULT = 0;
 	public static final int FORCEFIELBOCKMETA_ZAPPER = 1;
@@ -103,6 +105,8 @@ public class ModularForceFieldSystem {
 	public static Block MFFSMonazitOre;
 	public static Block MFFSForceEnergyConverter;
 	public static Block MFFSSecurtyStorage;
+	
+	public static Block MFFSAdvSecurtyStation;
 	
 	public static Item MFFSitemForcicumCell;
 	public static Item MFFSitemForcicium;
@@ -197,6 +201,7 @@ public class ModularForceFieldSystem {
 	     TickRegistry.registerScheduledTickHandler(new ForceFieldServerUpdatehandler(), Side.SERVER);
 	     
 
+	     
 		MFFSconfig = new Configuration(event.getSuggestedConfigurationFile());
 		event.getModMetadata().version = Versioninfo.version();
 		try {
@@ -228,11 +233,12 @@ public class ModularForceFieldSystem {
 			MFFSExtractor = new BlockExtractor(MFFSconfig.getBlock("MFFSExtractor", 682).getInt(682),0).setBlockName("MFFSExtractor");
 		    MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getBlock("MFFSMonazitOre", 688).getInt(688)).setBlockName("MFFSMonazitOre");
 			MFFSDefenceStation = new BlockAreaDefenseStation(MFFSconfig.getBlock("MFFSDefenceStation", 681).getInt(681),0).setBlockName("MFFSDefenceStation");
-			MFFSSecurtyStation = new BlockSecurtyStation(MFFSconfig.getBlock("MFFSSecurtyStation", 4079).getInt(4079),0).setBlockName("MFFSSecurtyStation");
+			MFFSSecurtyStation = new BlockSecurtyStation(MFFSconfig.getBlock("MFFSSecurtyStation", 686).getInt(686),0).setBlockName("MFFSSecurtyStation");
 			MFFSCapacitor = new BlockCapacitor(MFFSconfig.getBlock("MFFSCapacitor", 680).getInt(680),0).setBlockName("MFFSCapacitor");
 			MFFSProjector = new BlockProjector(MFFSconfig.getBlock("MFFSProjector", 685).getInt(685),0).setBlockName("MFFSProjector");
 			MFFSFieldblock = new BlockForceField(MFFSconfig.getBlock("MFFSFieldblock", 683).getInt(683));
 			MFFSSecurtyStorage = new BlockSecurtyStorage(MFFSconfig.getBlock("MFFSSecurtyStorage", 684).getInt(684),0).setBlockName("MFFSSecurtyStorage");
+			MFFSAdvSecurtyStation = new BlockAdvSecurtyStation(MFFSconfig.getBlock("MFFSAdvSecurtyStation", 689).getInt(689),0).setBlockName("MFFSAdvSecurtyStation");
 			
 			MFFSitemWrench= new ItemWrench(MFFSconfig.getItem(Configuration.CATEGORY_ITEM,"itemWrench",11107).getInt(11107)).setItemName("itemWrench");
 			MFFSitemSwitch= new ItemSwitch(MFFSconfig.getItem(Configuration.CATEGORY_ITEM,"itemSwitch",11108).getInt(11108)).setItemName("itemSwitch");
@@ -293,12 +299,15 @@ public class ModularForceFieldSystem {
 		GameRegistry.registerBlock(MFFSExtractor);
 		GameRegistry.registerBlock(MFFSForceEnergyConverter);
 		GameRegistry.registerBlock(MFFSSecurtyStorage);
+		GameRegistry.registerBlock(MFFSAdvSecurtyStation);
+	
 			
 		OreDictionary.registerOre("ForciciumItem", MFFSitemForcicium);
 		OreDictionary.registerOre("MonazitOre", MFFSMonazitOre);
 		
 		GameRegistry.addSmelting(ModularForceFieldSystem.MFFSMonazitOre.blockID, new ItemStack(ModularForceFieldSystem.MFFSitemForcicium,5),0.5F);
 		
+		GameRegistry.registerTileEntity(TileEntityAdvSecurityStation.class, "MFFSAdvSecurtyStation");
 
 		GameRegistry.registerTileEntity(TileEntitySecStorage.class, "MFFSSecurtyStorage");
 		
@@ -324,7 +333,8 @@ public class ModularForceFieldSystem {
 		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSExtractor);
 		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSForceEnergyConverter);
 		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSSecurtyStorage);
-
+		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSAdvSecurtyStation);
+		
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 
 		proxy.registerRenderInformation();
@@ -391,7 +401,7 @@ public class ModularForceFieldSystem {
 			Generatetexturindex(Block.cloth, meta);
 		}
 		
-	
+		LanguageRegistry.instance().addNameForObject(MFFSAdvSecurtyStation,"en_US", "MFFS Security Station");
 		LanguageRegistry.instance().addNameForObject(MFFSSecurtyStorage, "en_US", "MFFS Security Storage");
 		LanguageRegistry.instance().addNameForObject(MFFSForceEnergyConverter, "en_US", "MFFS ForceEnergy to EU Converter");
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradeexctractorboost, "en_US", "MFFS Extractor Booster");

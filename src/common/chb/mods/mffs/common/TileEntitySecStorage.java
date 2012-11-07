@@ -1,19 +1,30 @@
 package chb.mods.mffs.common;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import chb.mods.mffs.network.INetworkHandlerListener;
+import buildcraft.api.transport.IExtractionHandler;
+import buildcraft.api.transport.IPipe;
+import buildcraft.api.transport.PipeManager;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
+import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
-public class TileEntitySecStorage extends TileEntityMachines implements ISidedInventory{
+public class TileEntitySecStorage extends TileEntityMachines implements ISidedInventory,INetworkHandlerListener,IExtractionHandler{
+
 	private ItemStack inventory[];
 
 	public TileEntitySecStorage() {
 		inventory = new ItemStack[60];
+		PipeManager.registerExtractionHandler(this);
+
 	}
 
 	public void dropplugins() {
@@ -21,6 +32,39 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 			dropplugins(a,this);
 		}
 	}
+
+	
+	public void updateEntity() {
+		if (worldObj.isRemote == false) {
+			
+			if (getTicker() >= 20) {
+				setTicker((short) 0);
+			
+			if (getStackInSlot(0) != null) {
+				if (getStackInSlot(0).getItem() instanceof ItemCardSecurityLink) {
+					
+					ItemCardSecurityLink card = (ItemCardSecurityLink) getStackInSlot(0).getItem();
+					
+					if(((ItemCardSecurityLink)card).isSecurityCardValidity(getStackInSlot(0),worldObj))
+					{
+						if(this.isActive()!=true)
+						this.setActive(true);
+						return;
+					}
+				}
+			}
+			
+			if(this.isActive()!=false)
+			this.setActive(false);
+			return;
+			
+		}
+		setTicker((short) (getTicker() + 1));
+
+			
+		}
+	}
+
 
 	public void removefromgrid() {
 		dropplugins();
@@ -119,7 +163,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 
 	@Override
 	public int getSizeInventorySide(ForgeDirection side) {
-		return 1;
+		return 54;
 	}
 
 	public ItemStack[] getContents() {
@@ -155,4 +199,34 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 	public int getSlotStackLimit(int Slot){
 		return 1;
 	}
+	
+	public boolean canExtractItems(IPipe pipe, World world, int i, int j, int k) {
+		return !this.isActive();
+	}
+
+	@Override
+	public boolean canExtractLiquids(IPipe pipe, World world, int i, int j,
+			int k) {
+		return false;
+	}
+
+	@Override
+	public List<String> getFieldsforUpdate() {
+		List<String> NetworkedFields = new LinkedList<String>();
+		NetworkedFields.clear();
+
+		NetworkedFields.add("active");
+
+		return NetworkedFields;
+	}
+	
+	@Override
+	public void onNetworkHandlerUpdate(String field) {
+
+		if (field.equals("active")) {
+			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		}
+
+	}
+
 }

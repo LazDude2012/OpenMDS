@@ -23,6 +23,7 @@ package chb.mods.mffs.common;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import chb.mods.mffs.client.GuiAdvSecurityStation;
 import chb.mods.mffs.client.GuiAreaDefenseStation;
 import chb.mods.mffs.client.GuiCapacitor;
 import chb.mods.mffs.client.GuiExtractor;
@@ -41,7 +42,7 @@ public class CommonProxy implements IGuiHandler {
 	public static final int GUI_EXTRACTOR = 5;
 	public static final int GUI_CONVERTER = 6;
 	public static final int GUI_SECSTORAGE = 7;
-	
+	public static final int GUI_ADVSECSTATION = 8;
 
 	public void registerRenderInformation()
 {
@@ -90,6 +91,11 @@ public class CommonProxy implements IGuiHandler {
 			return new GuiSecStorage(player,
 					te == null ? new TileEntitySecStorage()
 							: ((TileEntitySecStorage) te));
+			
+		case GUI_ADVSECSTATION:
+			return new GuiAdvSecurityStation(player,
+					te == null ? new TileEntityAdvSecurityStation()
+							: ((TileEntityAdvSecurityStation) te));
 		
 		}
 		return null;
@@ -133,6 +139,10 @@ public class CommonProxy implements IGuiHandler {
 				return new ContainerSecStorage(player,
 						te == null ? new TileEntitySecStorage()
 								: ((TileEntitySecStorage) te));
+			case GUI_ADVSECSTATION:
+				return new ContainerAdvSecurityStation(player,
+						te == null ? new TileEntityAdvSecurityStation()
+								: ((TileEntityAdvSecurityStation) te));
 			}
 			
 			
