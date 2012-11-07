@@ -136,7 +136,7 @@ public class MFFSRecipes {
 								Items.getItem("advancedAlloy") });
 		CraftingManager.getInstance()
 				.addRecipe(
-						new ItemStack(ModularForceFieldSystem.MFFSSecurtyStation, 1),
+						new ItemStack(ModularForceFieldSystem.MFFSAdvSecurtyStation, 1),
 						new Object[] { "DCD", "CAC", "DBD",
 								'A',
 								Items.getItem("advancedMachine"),

@@ -72,7 +72,7 @@ public class GuiCapacitor extends GuiContainer {
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandlerClient.fireTileEntityEvent(Core, guibutton.id);
+		NetworkHandlerClient.fireTileEntityEvent(Core, String.valueOf(guibutton.id));
 	}
 
 	public void initGui() {

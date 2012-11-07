@@ -79,7 +79,7 @@ public class GuiProjector extends GuiContainer {
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandlerClient.fireTileEntityEvent(projector, guibutton.id);
+		NetworkHandlerClient.fireTileEntityEvent(projector, String.valueOf(guibutton.id));
 	}
 
 	public void initGui() {

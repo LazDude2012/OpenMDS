@@ -55,7 +55,7 @@ public class BlockAdvSecurtyStation extends BlockMFFSBase {
 
 		if(tileentity.isActive())
 		{
-			if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+			if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"CSR"))
 			{return false;}
 		}
 

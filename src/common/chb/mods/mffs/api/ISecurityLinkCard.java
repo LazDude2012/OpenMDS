@@ -12,7 +12,14 @@ public interface ISecurityLinkCard {
 	 *Input:  itemstack    = instanceof SecurityLinkCard(Item) use getStackInSlot() for get
 	 *        entityplayer = Player who Request Access
 	 *        world        = the current world ;-)
-	 *        accessmode   = need min. accessmode 1 = Limited Access / 2 = Full Access 
+	 *       
+	 *       accessmode
+	 *       ForceField Bypass =  "FFB"
+     *       Edit MFFS Block = "EB"
+     *       Config Security Rights = "CSR)"
+     *       Stay Right =  "SR"
+     *       Open Secure Storage = "OSS"
+     *       
 	 *        AccessErrorMessage =  if true write Error Massage on function return false
 	 *        
 	 *Output:  True =  Access Granted or (!on Error in Function!) // use isSecurityCardValidity for Check SecurityLinkCard Validity
@@ -20,7 +27,7 @@ public interface ISecurityLinkCard {
 	 */
 	
 
-	 public boolean isAccessGranted(ItemStack itemstack, EntityPlayer entityplayer,World world, int accessmode,boolean AccessErrorMessage);
+	 public boolean isAccessGranted(ItemStack itemstack, EntityPlayer entityplayer,World world, String accessmode,boolean AccessErrorMessage);
 	
 		/**
 		 * Simple Check of SecurtiyCard Validity

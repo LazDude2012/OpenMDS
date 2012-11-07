@@ -75,7 +75,6 @@ public class ModularForceFieldSystem {
 	
 	public static final int GUI_CAPACITOR= 1;
 	public static final int GUI_PROJECTOR = 2;
-	public static final int GUI_SECSTATION = 3;
 	public static final int GUI_DEFSTATION = 4;
 	public static final int GUI_EXTRACTOR = 5;
 	public static final int GUI_CONVERTER = 6;
@@ -88,8 +87,6 @@ public class ModularForceFieldSystem {
 	public static final int FORCEFIELBOCKMETA_CONTAIMENT= 3;
 	public static final int FORCEFIELBOCKMETA_CAMOFLAGE= 4;
 
-	public static final int PERSONALID_FULLACCESS = 2;
-	public static final int PERSONALID_LIMITEDACCESS = 1;
 	
 	public static CreativeTabs MFFSTab;
 	
@@ -98,7 +95,6 @@ public class ModularForceFieldSystem {
 
 	public static Block MFFSCapacitor;
 	public static Block MFFSProjector;
-	public static Block MFFSSecurtyStation;
 	public static Block MFFSDefenceStation;
 	public static Block MFFSFieldblock;
 	public static Block MFFSExtractor;
@@ -233,12 +229,11 @@ public class ModularForceFieldSystem {
 			MFFSExtractor = new BlockExtractor(MFFSconfig.getBlock("MFFSExtractor", 682).getInt(682),0).setBlockName("MFFSExtractor");
 		    MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getBlock("MFFSMonazitOre", 688).getInt(688)).setBlockName("MFFSMonazitOre");
 			MFFSDefenceStation = new BlockAreaDefenseStation(MFFSconfig.getBlock("MFFSDefenceStation", 681).getInt(681),0).setBlockName("MFFSDefenceStation");
-			MFFSSecurtyStation = new BlockSecurtyStation(MFFSconfig.getBlock("MFFSSecurtyStation", 686).getInt(686),0).setBlockName("MFFSSecurtyStation");
 			MFFSCapacitor = new BlockCapacitor(MFFSconfig.getBlock("MFFSCapacitor", 680).getInt(680),0).setBlockName("MFFSCapacitor");
 			MFFSProjector = new BlockProjector(MFFSconfig.getBlock("MFFSProjector", 685).getInt(685),0).setBlockName("MFFSProjector");
 			MFFSFieldblock = new BlockForceField(MFFSconfig.getBlock("MFFSFieldblock", 683).getInt(683));
 			MFFSSecurtyStorage = new BlockSecurtyStorage(MFFSconfig.getBlock("MFFSSecurtyStorage", 684).getInt(684),0).setBlockName("MFFSSecurtyStorage");
-			MFFSAdvSecurtyStation = new BlockAdvSecurtyStation(MFFSconfig.getBlock("MFFSAdvSecurtyStation", 689).getInt(689),0).setBlockName("MFFSAdvSecurtyStation");
+			MFFSAdvSecurtyStation = new BlockAdvSecurtyStation(MFFSconfig.getBlock("MFFSAdvSecurtyStation", 686).getInt(686),0).setBlockName("MFFSAdvSecurtyStation");
 			
 			MFFSitemWrench= new ItemWrench(MFFSconfig.getItem(Configuration.CATEGORY_ITEM,"itemWrench",11107).getInt(11107)).setItemName("itemWrench");
 			MFFSitemSwitch= new ItemSwitch(MFFSconfig.getItem(Configuration.CATEGORY_ITEM,"itemSwitch",11108).getInt(11108)).setItemName("itemSwitch");
@@ -292,7 +287,6 @@ public class ModularForceFieldSystem {
 	
 		GameRegistry.registerBlock(MFFSCapacitor);
 		GameRegistry.registerBlock(MFFSProjector);
-		GameRegistry.registerBlock(MFFSSecurtyStation);
 		GameRegistry.registerBlock(MFFSFieldblock);
 		GameRegistry.registerBlock(MFFSDefenceStation);
 		GameRegistry.registerBlock(MFFSMonazitOre);
@@ -320,8 +314,6 @@ public class ModularForceFieldSystem {
 				.registerTileEntity(TileEntityCapacitor.class, "MFFSCapacitor");
 		GameRegistry
 				.registerTileEntity(TileEntityProjector.class, "MFFSProjector");
-		GameRegistry.registerTileEntity(TileEntitySecurityStation.class,
-				"MFFSSecurtyStation");
 		GameRegistry.registerTileEntity(TileEntityForceField.class,
 				"MFFSForceField");
 		
@@ -329,7 +321,6 @@ public class ModularForceFieldSystem {
 		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSDefenceStation);
 		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSCapacitor);
 		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSProjector);
-		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSSecurtyStation);
 		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSExtractor);
 		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSForceEnergyConverter);
 		ExplosionWhitelist.addWhitelistedBlock(ModularForceFieldSystem.MFFSSecurtyStorage);
@@ -415,7 +406,6 @@ public class ModularForceFieldSystem {
 		LanguageRegistry.instance().addNameForObject(MFFSDefenceStation,"en_US", "MFFS Area Defense Station");
 		LanguageRegistry.instance().addNameForObject(MFFSCapacitor,"en_US", "MFFS Force Energy Capacitor");
 		LanguageRegistry.instance().addNameForObject(MFFSProjector,"en_US", "MFFS Modular Projector");
-		LanguageRegistry.instance().addNameForObject(MFFSSecurtyStation,"en_US", "MFFS Security Station");
 		LanguageRegistry.instance().addNameForObject(MFFSitemFocusmatix,"en_US", "MFFS Projector Focus Matrix");
 		LanguageRegistry.instance().addNameForObject(MFFSitemFieldTeleporter,"en_US","MFFS MultiTool <Field Teleporter>");
 		LanguageRegistry.instance().addNameForObject(MFFSitemcardempty,"en_US", "MFFS Card <blank> ");

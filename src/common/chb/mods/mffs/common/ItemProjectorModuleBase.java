@@ -48,7 +48,7 @@ public class ItemProjectorModuleBase extends ItemMFFSBase  {
 
 		if (!world.isRemote) {
 			if (tileEntity instanceof TileEntityProjector) {
-				if(!SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+				if(!SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
 				{return false;}
 
 				if(((TileEntityProjector)tileEntity).getStackInSlot(1)==null)

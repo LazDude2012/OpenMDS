@@ -73,10 +73,10 @@ public class ItemFieldtransporter extends ItemMultitool{
 			passtrue = true;
 			break;
 			case 2:
-				passtrue = SecurityHelper.isAccessGranted(generator, entityplayer, world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
+				passtrue = SecurityHelper.isAccessGranted(generator, entityplayer, world,"FFB");
 			break;
 			case 3:
-				passtrue = SecurityHelper.isAccessGranted(projector, entityplayer, world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
+				passtrue = SecurityHelper.isAccessGranted(projector, entityplayer, world,"FFB");
 			break;
 
 			}

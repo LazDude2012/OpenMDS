@@ -54,7 +54,7 @@ public class ItemCardSecurityLink extends Item implements ISecurityLinkCard {
 				.getTAGfromItemstack(itemstack);
 		if (nbtTagCompound != null) {
 
-			TileEntitySecurityStation secstation = Linkgrid.getWorldMap(world)
+			TileEntityAdvSecurityStation secstation = Linkgrid.getWorldMap(world)
 					.getSecStation()
 					.get(nbtTagCompound.getInteger("Secstation_ID"));
 			if (secstation != null) {
@@ -67,21 +67,21 @@ public class ItemCardSecurityLink extends Item implements ISecurityLinkCard {
 	}
 
 	public boolean isAccessGranted(ItemStack itemstack,
-			EntityPlayer entityplayer, World world, int accessmode,
+			EntityPlayer entityplayer, World world, String string,
 			boolean AccessErrorMessage) {
 		
 		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper
 				.getTAGfromItemstack(itemstack);
 		if (nbtTagCompound != null) {
 
-			TileEntitySecurityStation secstation = Linkgrid.getWorldMap(world)
+			TileEntityAdvSecurityStation secstation = Linkgrid.getWorldMap(world)
 					.getSecStation()
 					.get(nbtTagCompound.getInteger("Secstation_ID"));
 			
 			if (secstation != null) {
 
 				if (!secstation.isAccessGranted(entityplayer.username,
-						accessmode)) {
+						string)) {
 					if (AccessErrorMessage)
 						Functions.ChattoPlayer(entityplayer,
 								"[MFFS SecurityStation] access denied for "
@@ -103,7 +103,7 @@ public class ItemCardSecurityLink extends Item implements ISecurityLinkCard {
 			if (tileEntity instanceof TileEntityCapacitor) {
 
 				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
-						world, ModularForceFieldSystem.PERSONALID_FULLACCESS)) {
+						world, "EB")) {
 
 					return Functions.setIteminSlot(itemstack, entityplayer,
 							tileEntity, 4, "<Security Station Link>");
@@ -113,7 +113,7 @@ public class ItemCardSecurityLink extends Item implements ISecurityLinkCard {
 
 			if (tileEntity instanceof TileEntityAreaDefenseStation) {
 				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
-						world, ModularForceFieldSystem.PERSONALID_FULLACCESS)) {
+						world, "EB")) {
 
 					return Functions.setIteminSlot(itemstack, entityplayer,
 							tileEntity, 1, "<Security Station Link>");
@@ -122,7 +122,7 @@ public class ItemCardSecurityLink extends Item implements ISecurityLinkCard {
 			
 			if (tileEntity instanceof TileEntitySecStorage) {
 				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
-						world, ModularForceFieldSystem.PERSONALID_FULLACCESS)) {
+						world, "EB")) {
 
 					return Functions.setIteminSlot(itemstack, entityplayer,
 							tileEntity, 0, "<Security Station Link>");
@@ -132,7 +132,7 @@ public class ItemCardSecurityLink extends Item implements ISecurityLinkCard {
 
 			if (tileEntity instanceof TileEntityProjector) {
 				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
-						world, ModularForceFieldSystem.PERSONALID_FULLACCESS)) {
+						world, "EB")) {
 
 					return Functions.setIteminSlot(itemstack, entityplayer,
 							tileEntity, 12, "<Security Station Link>");

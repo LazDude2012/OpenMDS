@@ -33,9 +33,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import chb.mods.mffs.common.ContainerAdvSecurityStation;
-import chb.mods.mffs.common.ContainerSecurityStation;
 import chb.mods.mffs.common.TileEntityAdvSecurityStation;
-import chb.mods.mffs.common.TileEntitySecurityStation;
+import chb.mods.mffs.network.NetworkHandlerClient;
 
 public class GuiAdvSecurityStation extends GuiContainer {
 	private TileEntityAdvSecurityStation tileEntity;
@@ -44,12 +43,11 @@ public class GuiAdvSecurityStation extends GuiContainer {
 	
 	
 	static {
-		flags.add("Intra Linking");
-		flags.add("Generate Platform");
-		flags.add("Maintain Momentum");
-		flags.add("Disarm");
-		flags.add("Following");
-		flags.add("Following2");
+		flags.add("ForceField Bypass (FFB)");
+		flags.add("Edit MFFS Block (EB)");
+		flags.add("Config Security Rights (CSR)");
+		flags.add("Stay Right (SR)");
+		flags.add("Open Secure Storage (OSS)");
 	}
 
 	public GuiAdvSecurityStation(EntityPlayer player,
@@ -116,8 +114,9 @@ public class GuiAdvSecurityStation extends GuiContainer {
 	@Override
 	protected void mouseClicked(int i, int j, int k) {
 		super.mouseClicked(i, j, k);
+		
 		if (hovertext != null) {
-			tileEntity.setLinkOption(hovertext, !tileEntity.getLinkOption(hovertext));
+			NetworkHandlerClient.fireTileEntityEvent(tileEntity, hovertext);
 		}
 	}
 	

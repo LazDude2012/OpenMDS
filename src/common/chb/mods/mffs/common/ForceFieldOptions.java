@@ -191,20 +191,20 @@ public final class ForceFieldOptions {
 							TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkCapacitor_ID());
 							if(Generator != null)
 							{
-							TileEntitySecurityStation SecurityStation = Linkgrid.getWorldMap(world).getSecStation().get(Generator.getSecStation_ID());
+							TileEntityAdvSecurityStation SecurityStation = Linkgrid.getWorldMap(world).getSecStation().get(Generator.getSecStation_ID());
 
 							if(SecurityStation != null)
 							{
-							killswitch = !SecurityStation.isAccessGranted(((EntityPlayer)entityLiving).username,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
+							killswitch = !SecurityStation.isAccessGranted(((EntityPlayer)entityLiving).username,"SR");
 							}
 							}
 							}
 						if(projector.getaccesstyp()==3)
 						{
-							TileEntitySecurityStation SecurityStation = Linkgrid.getWorldMap(world).getSecStation().get(projector.getSecStation_ID());
+							TileEntityAdvSecurityStation SecurityStation = Linkgrid.getWorldMap(world).getSecStation().get(projector.getSecStation_ID());
 							if(SecurityStation != null)
 							{
-							killswitch = !SecurityStation.isAccessGranted(((EntityPlayer)entityLiving).username,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
+							killswitch = !SecurityStation.isAccessGranted(((EntityPlayer)entityLiving).username,"SR");
 							}
 						}
 
@@ -269,7 +269,7 @@ public final class ForceFieldOptions {
 
 							if(Target.equals("human") && Linkgrid.getWorldMap(world).getSecStation().get(DefenseStation.getSecStation_ID()) != null)
 							{
-								if(!SecurityHelper.isAccessGranted(DefenseStation, (EntityPlayer)entityLiving, world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS))
+								if(!SecurityHelper.isAccessGranted(DefenseStation, (EntityPlayer)entityLiving, world,"SR"))
 								{
 									Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation.getlinkCapacitors_ID())
 									.setForcePower(Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation

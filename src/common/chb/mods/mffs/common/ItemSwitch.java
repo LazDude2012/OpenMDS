@@ -50,7 +50,7 @@ public class ItemSwitch extends ItemMultitool {
 		if(tileentity instanceof TileEntityConverter)
 		{
 			
-			  if(SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+			  if(SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
 			  {
 
 					if(((TileEntityConverter)tileentity).getswitchtyp() == 1)
@@ -92,7 +92,7 @@ public class ItemSwitch extends ItemMultitool {
 
 		{
 			
-			if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+			if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
 			{return false;}
 
 			if(((TileEntityProjector)tileentity).getswitchtyp() == 1)
@@ -126,7 +126,7 @@ public class ItemSwitch extends ItemMultitool {
 		{
 			if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileentity).getSecStation_ID()) != null)
 			{
-				if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+				if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
 				{
 					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 					return false;

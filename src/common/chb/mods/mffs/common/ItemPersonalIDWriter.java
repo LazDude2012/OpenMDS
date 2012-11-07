@@ -47,8 +47,7 @@ public class ItemPersonalIDWriter extends ItemMultitool{
 				     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
                         ItemStack IDCard= new ItemStack(ModularForceFieldSystem.MFFSItemIDCard, 1);
                         ItemCardPersonalID.setOwner(IDCard, ((EntityPlayer)entity).username);
-                        ItemCardPersonalID.setSeclevel(IDCard, 1);
-
+                    
                         if (--stack.stackSize<=0) {
         					slot.putStack(IDCard);
         				} else if (!entityplayer.inventory.addItemStackToInventory(IDCard))
@@ -93,8 +92,7 @@ public class ItemPersonalIDWriter extends ItemMultitool{
 					     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
                             ItemStack IDCard= new ItemStack(ModularForceFieldSystem.MFFSItemIDCard, 1);
                             ItemCardPersonalID.setOwner(IDCard, entityplayer.username);
-                            ItemCardPersonalID.setSeclevel(IDCard, 1);
-
+   
                             if (--stack.stackSize<=0) {
             					slot.putStack(IDCard);
             				} else if (!entityplayer.inventory.addItemStackToInventory(IDCard))

@@ -266,10 +266,10 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 				passtrue = true;
 				break;
 				case 2:
-					passtrue = SecurityHelper.isAccessGranted(generator, ((EntityPlayer) entity), world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
+					passtrue = SecurityHelper.isAccessGranted(generator, ((EntityPlayer) entity), world,"FFB");
 				break;
 				case 3:
-					passtrue = SecurityHelper.isAccessGranted(projector, ((EntityPlayer) entity), world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
+					passtrue = SecurityHelper.isAccessGranted(projector, ((EntityPlayer) entity), world,"FFB");
 				break;
 				}
 			

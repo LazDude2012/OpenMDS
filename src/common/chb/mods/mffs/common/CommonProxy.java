@@ -29,7 +29,6 @@ import chb.mods.mffs.client.GuiCapacitor;
 import chb.mods.mffs.client.GuiExtractor;
 import chb.mods.mffs.client.GuiProjector;
 import chb.mods.mffs.client.GuiSecStorage;
-import chb.mods.mffs.client.GuiSecurityStation;
 import chb.mods.mffs.client.GuiConverter;
 import cpw.mods.fml.common.network.IGuiHandler;
 
@@ -37,7 +36,6 @@ public class CommonProxy implements IGuiHandler {
 	
 	public static final int GUI_CAPACITOR = 1;
 	public static final int GUI_PROJECTOR = 2;
-	public static final int GUI_SECSTATION = 3;
 	public static final int GUI_DEFSTATION = 4;
 	public static final int GUI_EXTRACTOR = 5;
 	public static final int GUI_CONVERTER = 6;
@@ -68,10 +66,7 @@ public class CommonProxy implements IGuiHandler {
 			return new GuiProjector(player,
 					te == null ? new TileEntityProjector()
 							: ((TileEntityProjector) te));
-		case GUI_SECSTATION:
-			return new GuiSecurityStation(player,
-					te == null ? new TileEntitySecurityStation()
-							: ((TileEntitySecurityStation) te));
+
 		case GUI_DEFSTATION:
 			return new GuiAreaDefenseStation(player,
 					te == null ? new TileEntityAreaDefenseStation()
@@ -118,10 +113,6 @@ public class CommonProxy implements IGuiHandler {
 				return new ContainerProjector(player,
 						te == null ? new TileEntityProjector()
 								: ((TileEntityProjector) te));
-			case GUI_SECSTATION:
-				return new ContainerSecurityStation(player,
-						te == null ? new TileEntitySecurityStation()
-								: ((TileEntitySecurityStation) te));
 
 			case GUI_DEFSTATION:
 					return new ContainerAreaDefenseStation(player,

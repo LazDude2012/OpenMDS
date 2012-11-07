@@ -22,26 +22,38 @@ package chb.mods.mffs.common;
 
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.ICrafting;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 
 public class ContainerAdvSecurityStation extends Container {
 	private TileEntityAdvSecurityStation SecStation;
 	private EntityPlayer player;
+	private boolean rights[]= { false, false, false, false, false,false};
 
 	public ContainerAdvSecurityStation(EntityPlayer player,
 			TileEntityAdvSecurityStation tileentity) {
 		SecStation = tileentity;
 		this.player = player;
 
-		addSlotToContainer(new SlotHelper(SecStation, 1, 43, 26)); // MasterCard
-		addSlotToContainer(new SlotHelper(SecStation, 2, 137, 26)); // Full Coder
-		addSlotToContainer(new SlotHelper(SecStation, 3, 119, 62)); // First Option Slot
+		
+		addSlotToContainer(new SlotHelper(SecStation, 0, -27, 2)); // MasterCard
+		addSlotToContainer(new SlotHelper(SecStation, 1, -20, 60)); //  Coder Coder
 
 		int var3;
+		int var4;
+		
+		
+		for (var3 = 0; var3 < 9; ++var3) {
+			for (var4 = 0; var4 < 4; ++var4) {
+				this.addSlotToContainer(new SlotHelper(SecStation, (var4 + var3 * 4)+2,
+						136 + var4 * 18, 1 + var3 * 18));
+			}
+		}
+
 
 		for (var3 = 0; var3 < 3; ++var3) {
-			for (int var4 = 0; var4 < 9; ++var4) {
+			for ( var4 = 0; var4 < 9; ++var4) {
 				this.addSlotToContainer(new Slot(player.inventory, var4 + var3 * 9 + 9,
 						-32 + var4 * 18, 109 + var3 * 18));
 			}
@@ -80,4 +92,53 @@ public class ContainerAdvSecurityStation extends Container {
 		}
 		return itemstack;
 	}
+	
+	
+	
+	@Override
+	public void updateCraftingResults() {
+		super.updateCraftingResults();
+
+		for (int i = 0; i < crafters.size(); i++) {
+			ICrafting icrafting = (ICrafting) crafters.get(i);
+
+
+			for(int a = 0; a< 5 ;a++)
+			{
+			if (rights[a] != SecStation.getRights(a)) {
+				if(SecStation.getRights(a))
+				{
+					icrafting.updateCraftingInventoryInfo(this, a, 1);
+				}else{
+					icrafting.updateCraftingInventoryInfo(this, a, 0);
+				}
+			}
+
+			}
+			
+		}
+		
+	for(int a = 0; a< 5 ;a++)
+	{
+		rights[a] = SecStation.getRights(a);
+	}
+	
+	}
+	
+	@Override
+	public void updateProgressBar(int i, int j) {
+		
+		if(j==1){SecStation.setRights(i,true);}
+		else{SecStation.setRights(i,false);}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

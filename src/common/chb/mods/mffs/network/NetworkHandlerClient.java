@@ -26,12 +26,12 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import chb.mods.mffs.common.ModularForceFieldSystem;
+import chb.mods.mffs.common.TileEntityAdvSecurityStation;
 import chb.mods.mffs.common.TileEntityAreaDefenseStation;
 import chb.mods.mffs.common.TileEntityCapacitor;
 import chb.mods.mffs.common.TileEntityExtractor;
 import chb.mods.mffs.common.TileEntityMachines;
 import chb.mods.mffs.common.TileEntityProjector;
-import chb.mods.mffs.common.TileEntitySecurityStation;
 import chb.mods.mffs.common.TileEntityForceField;
 import chb.mods.mffs.common.TileEntityConverter;
 
@@ -193,10 +193,10 @@ public void onPacketData(INetworkManager manager,Packet250CustomPayload packet, 
 			 } 
 		 }
 		 
-		 if(tileEntity instanceof TileEntitySecurityStation)
+		 if(tileEntity instanceof TileEntityAdvSecurityStation)
 		 {
 			 try{
-				 Field f = ReflectionHelper.findField(TileEntitySecurityStation.class, fieldname);
+				 Field f = ReflectionHelper.findField(TileEntityAdvSecurityStation.class, fieldname);
 				 reflectionsetvalue(f, tileEntity,dat,fieldname);
 			 }catch(Exception e)
 			 {
@@ -333,7 +333,7 @@ public static Packet requestInitialData(TileEntity tileEntity,boolean senddirekt
 }
 
 
-public static void fireTileEntityEvent(TileEntity tileEntity,int event){
+public static void fireTileEntityEvent(TileEntity tileEntity,String event){
 	
 	
 	if(tileEntity instanceof INetworkHandlerEventListener)
@@ -357,7 +357,7 @@ public static void fireTileEntityEvent(TileEntity tileEntity,int event){
 			dos.writeInt(z);
 			dos.writeInt(typ);
 			dos.writeInt(Dimension);
-			dos.writeInt(event);
+			dos.writeUTF(event);
 		
 			} catch (Exception e) {
 				if(DEBUG)

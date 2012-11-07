@@ -41,7 +41,7 @@ public class BlockSecurtyStorage extends BlockMFFSBase {
 			{
 				ItemCardSecurityLink card = (ItemCardSecurityLink) tileentity.getStackInSlot(0).getItem();
 				
-				if(card.isAccessGranted(tileentity.getStackInSlot(0), entityplayer, world, ModularForceFieldSystem.PERSONALID_FULLACCESS, true))
+				if(card.isAccessGranted(tileentity.getStackInSlot(0), entityplayer, world, "OSS", true))
 				{
 					if (!world.isRemote)
 						entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_SECSTORAGE, world,

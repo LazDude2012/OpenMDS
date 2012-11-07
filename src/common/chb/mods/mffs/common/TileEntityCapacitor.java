@@ -71,7 +71,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		inventory = new ItemStack[5];
 		transmitrange = 8;
 		SecStation_ID = 0;
-		forcePower = 0;
+		forcePower = 1000000;
 		maxforcepower = 10000000;
 		Capacitor_ID = 0;
 		Remote_Capacitor_ID = 0;
@@ -625,8 +625,10 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 	}
 
 	@Override
-	public void onNetworkHandlerEvent(int event) {
-		switch(event)
+	public void onNetworkHandlerEvent(String event) {
+		
+		
+		switch(Integer.parseInt(event))
 		{
 		case 0:
 			if(this.getswitchtyp() == 0)
@@ -728,4 +730,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		}
 		return 1;
 	}
+
+
 }

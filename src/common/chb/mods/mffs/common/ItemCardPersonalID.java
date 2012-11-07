@@ -26,9 +26,8 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
-import chb.mods.mffs.api.IPersonalIDCard;
 
-public class ItemCardPersonalID extends Item implements IPersonalIDCard{
+public class ItemCardPersonalID extends Item{
 	public ItemCardPersonalID(int i) {
 		super(i);
 		setIconIndex(18);
@@ -49,6 +48,25 @@ public class ItemCardPersonalID extends Item implements IPersonalIDCard{
 	{
 	return true;
 	}
+	
+	
+	public static void setlegitimac(ItemStack itemStack,String right, boolean value)
+	{
+		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
+		 nbtTagCompound.setBoolean(right, value);
+	}
+	
+	
+    public boolean getlegitimac(ItemStack itemstack,String right)
+    {
+    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
+    	if(nbtTagCompound != null)
+    	{
+    		return nbtTagCompound.getBoolean(right);
+    	}
+       return false;
+    }
+	
 
     public static  void setOwner(ItemStack itemStack, String username)
     {
@@ -56,21 +74,6 @@ public class ItemCardPersonalID extends Item implements IPersonalIDCard{
        nbtTagCompound.setString("name", username);
     }
 
-    public  static void setSeclevel(ItemStack itemStack,int SecLevel)
-    {
-        NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-        nbtTagCompound.setInteger("SecLevel", SecLevel);
-    }
-
-    public int getSecLevel(ItemStack itemstack)
-    {
-    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
-    	if(nbtTagCompound != null)
-    	{
-    		return nbtTagCompound.getInteger("SecLevel");
-    	}
-       return 0;
-    }
 
     public String getUsername(ItemStack itemstack)
     {
@@ -88,22 +91,22 @@ public class ItemCardPersonalID extends Item implements IPersonalIDCard{
             String tooltip = String.format( "Owner: %s ", NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getString("name") );
             info.add(tooltip);
 
-            int SecLevel = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getInteger("SecLevel");
-            String SecLeveldesc ="";
+            
+            
+            boolean FFB = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getBoolean("FFB");
+            boolean EB = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getBoolean("EB");
+            boolean CSR = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getBoolean("CSR");
+            boolean SR = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getBoolean("SR");
+            boolean OSS = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getBoolean("OSS");
+            
+            info.add("Access Level:");
+            
 
-            switch(SecLevel)
-            {
-            case ModularForceFieldSystem.PERSONALID_LIMITEDACCESS:
-            	SecLeveldesc = "Restricted, ForceField Bypass Only";
-            break;
-            case ModularForceFieldSystem.PERSONALID_FULLACCESS:
-            	SecLeveldesc = "Full Access";
-            break;
-            default:
-            	SecLeveldesc = "ERROR Please re-encode";
-            break;
-            }
-            tooltip = String.format( "Security Level: %s ", SecLeveldesc );
-            info.add(tooltip);
+            if(FFB)info.add("ForceField Bypass (FFB)");
+            if(EB)info.add("Edit MFFS Block (EB)");
+            if(CSR)info.add("Config Security Rights (CSR)");
+            if(SR)info.add("Stay Right (SR)");
+            if(OSS)info.add("Open Secure Storage (OSS)");
+
     }
 }

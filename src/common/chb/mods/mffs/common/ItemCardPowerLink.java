@@ -53,7 +53,7 @@ public class ItemCardPowerLink extends Item  {
 			
 
 			if (tileEntity instanceof TileEntityConverter) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
 				  {
 
 					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 0,"<Power-Link>");
@@ -64,7 +64,7 @@ public class ItemCardPowerLink extends Item  {
 			
 			
 			if (tileEntity instanceof TileEntityProjector) {
-			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
 			  {
 
 				  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 0,"<Power-Link>");
@@ -73,7 +73,7 @@ public class ItemCardPowerLink extends Item  {
             }
 			
 			if (tileEntity instanceof TileEntityExtractor ) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
 				  {
 				
 						if(((TileEntityExtractor)tileEntity).getStackInSlot(1)==null)
@@ -100,7 +100,7 @@ public class ItemCardPowerLink extends Item  {
 			
 			
 			if (tileEntity instanceof TileEntityAreaDefenseStation) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
 				  {
 		
 					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 0,"<Power-Link>");
@@ -108,7 +108,7 @@ public class ItemCardPowerLink extends Item  {
 			}
 			
 			if (tileEntity instanceof TileEntityCapacitor) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
 				  {
 		
 					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 2,"<Power-Link>");

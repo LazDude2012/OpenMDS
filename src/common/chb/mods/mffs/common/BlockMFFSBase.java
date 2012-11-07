@@ -76,10 +76,6 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		{
 			((TileEntityProjector)tileEntity).addtogrid();
 		}
-		if(tileEntity instanceof TileEntitySecurityStation)
-		{
-			((TileEntitySecurityStation)tileEntity).addtogrid();
-		}
 		if(tileEntity instanceof TileEntityAdvSecurityStation)
 		{
 			((TileEntityAdvSecurityStation)tileEntity).addtogrid();
@@ -109,10 +105,7 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		{
 			((TileEntityProjector)tileEntity).removefromgrid();
 		}
-		if(tileEntity instanceof TileEntitySecurityStation)
-		{
-			((TileEntitySecurityStation)tileEntity).removefromgrid();
-		}
+
 		if(tileEntity instanceof TileEntityAdvSecurityStation)
 		{
 			((TileEntityAdvSecurityStation)tileEntity).removefromgrid();

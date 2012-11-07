@@ -26,12 +26,12 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import chb.mods.mffs.common.ModularForceFieldSystem;
+import chb.mods.mffs.common.TileEntityAdvSecurityStation;
 import chb.mods.mffs.common.TileEntityAreaDefenseStation;
 import chb.mods.mffs.common.TileEntityCapacitor;
 import chb.mods.mffs.common.TileEntityExtractor;
 import chb.mods.mffs.common.TileEntityMachines;
 import chb.mods.mffs.common.TileEntityProjector;
-import chb.mods.mffs.common.TileEntitySecurityStation;
 import chb.mods.mffs.common.TileEntityForceField;
 import chb.mods.mffs.common.TileEntityConverter;
 
@@ -100,7 +100,7 @@ public void onPacketData(INetworkManager manager,Packet250CustomPayload packet, 
 	
 	case 3:
 		int dimension2 = dat.readInt() ;
-		int evt = dat.readInt() ;
+		String evt = dat.readUTF();
 		
 		World serverworld2 = DimensionManager.getWorld(dimension2);
 		TileEntity servertileEntity2 = serverworld2.getBlockTileEntity(x, y, z);
@@ -251,10 +251,10 @@ public static void updateTileEntityField(TileEntity tileEntity, String varname)
 	}
  }
  
- if(tileEntity instanceof TileEntitySecurityStation)
+ if(tileEntity instanceof TileEntityAdvSecurityStation)
  {
 	 try {	
-        Field f = ReflectionHelper.findField(TileEntitySecurityStation.class, varname);
+        Field f = ReflectionHelper.findField(TileEntityAdvSecurityStation.class, varname);
         f.get(tileEntity);
     	dos.writeUTF(String.valueOf(f.get(tileEntity)));
 	} catch (Exception e) {

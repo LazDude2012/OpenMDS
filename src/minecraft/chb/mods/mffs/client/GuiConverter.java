@@ -55,7 +55,7 @@ public class GuiConverter extends GuiContainer {
     }
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandlerClient.fireTileEntityEvent(Converter, guibutton.id);
+		NetworkHandlerClient.fireTileEntityEvent(Converter, String.valueOf(guibutton.id));
 	}
 
     public void initGui() {

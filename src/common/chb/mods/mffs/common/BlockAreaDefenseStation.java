@@ -55,7 +55,7 @@ public class BlockAreaDefenseStation extends BlockMFFSBase {
 		TileEntity tileentity = world.getBlockTileEntity(i, j, k);
 
 		
-		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
 		{return false;}
 
 		

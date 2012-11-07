@@ -1888,8 +1888,10 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	@Override
-	public void onNetworkHandlerEvent(int event) {
-		   switch(event)
+	public void onNetworkHandlerEvent(String event) {
+		
+		
+		switch(Integer.parseInt(event))
 		   {
 		   case 0:
 

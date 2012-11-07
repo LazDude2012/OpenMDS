@@ -34,8 +34,7 @@ public final class Linkgrid {
 	static class Worldlinknet {
 		private Map<Integer, TileEntityProjector> Projektor = new Hashtable<Integer, TileEntityProjector>();
 		private Map<Integer, TileEntityCapacitor> Capacitors = new Hashtable<Integer, TileEntityCapacitor>();
-		private Map<Integer, TileEntitySecurityStation> SecStation = new Hashtable<Integer, TileEntitySecurityStation>();
-		private Map<Integer, TileEntityAdvSecurityStation> AdvSecStation = new Hashtable<Integer, TileEntityAdvSecurityStation>();
+		private Map<Integer, TileEntityAdvSecurityStation> SecStation = new Hashtable<Integer, TileEntityAdvSecurityStation>();
 		private Map<Integer, TileEntityAreaDefenseStation> DefStation = new Hashtable<Integer, TileEntityAreaDefenseStation>();
 		private Map<Integer, TileEntityExtractor> Extractor = new Hashtable<Integer, TileEntityExtractor>();
 		private Map<Integer, TileEntityConverter> Converter = new Hashtable<Integer, TileEntityConverter>();
@@ -61,11 +60,7 @@ public final class Linkgrid {
 			return Capacitors;
 		}
 		
-		public Map<Integer, TileEntityAdvSecurityStation> getAdvSecStation() {
-			return AdvSecStation;
-		}
-
-		public Map<Integer, TileEntitySecurityStation> getSecStation() {
+		public Map<Integer, TileEntityAdvSecurityStation> getSecStation() {
 			return SecStation;
 		}
 
@@ -113,21 +108,13 @@ public final class Linkgrid {
 				
 			}
 			
-			if(tileEntity instanceof TileEntitySecurityStation){
+			
+			if(tileEntity instanceof TileEntityAdvSecurityStation){
 				
 				while (SecStation.get(tempID) != null) {
 					tempID = random.nextInt();
 				}
-				SecStation.put(tempID, (TileEntitySecurityStation) tileEntity);
-				
-			}
-			
-			if(tileEntity instanceof TileEntityAdvSecurityStation){
-				
-				while (AdvSecStation.get(tempID) != null) {
-					tempID = random.nextInt();
-				}
-				AdvSecStation.put(tempID, (TileEntityAdvSecurityStation) tileEntity);
+				SecStation.put(tempID, (TileEntityAdvSecurityStation) tileEntity);
 				
 			}
 			

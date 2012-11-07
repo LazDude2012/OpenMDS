@@ -55,7 +55,7 @@ public class BlockCapacitor extends BlockMFFSBase {
 		TileEntityCapacitor tileentity = (TileEntityCapacitor) world
 				.getBlockTileEntity(i, j, k);
 
-		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
 		{return false;}
 
 		if (entityplayer.getCurrentEquippedItem() != null

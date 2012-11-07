@@ -118,9 +118,9 @@ public class ItemWrench extends ItemMultitool  {
 					}
 					
 					
-					if(tileentity instanceof TileEntitySecurityStation)
+					if(tileentity instanceof TileEntityAdvSecurityStation)
 					{
-					if(((TileEntitySecurityStation)tileentity).isActive())
+					if(((TileEntityAdvSecurityStation)tileentity).isActive())
 					return false;
 					}
 					

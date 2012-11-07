@@ -413,8 +413,10 @@ public class TileEntityConverter extends TileEntityMachines implements
 	}
 
 	@Override
-	public void onNetworkHandlerEvent(int event) {
-		if (event == 0) {
+	public void onNetworkHandlerEvent(String event) {
+		
+	
+		if (Integer.parseInt(event) == 0) {
 			if (this.getswitchtyp() == 0) {
 				this.setswitchtyp(1);
 			} else {
@@ -423,7 +425,7 @@ public class TileEntityConverter extends TileEntityMachines implements
 		}
 
 		if (!this.isActive()) {
-			switch (event) {
+			switch(Integer.parseInt(event)){
 			case 1:
 				if (output < 2046) {
 					output++;

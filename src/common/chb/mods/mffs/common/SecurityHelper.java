@@ -7,7 +7,7 @@ import net.minecraft.src.World;
 public class SecurityHelper {
 	
 	
-	public static boolean isAccessGranted(TileEntity tileEntity,EntityPlayer entityplayer,World world, int accessmode)
+	public static boolean isAccessGranted(TileEntity tileEntity,EntityPlayer entityplayer,World world, String right)
 	{
 		
 		
@@ -19,7 +19,7 @@ public class SecurityHelper {
 			{
 				ItemCardSecurityLink card = (ItemCardSecurityLink) ((TileEntitySecStorage)tileEntity).getStackInSlot(0).getItem();
 				
-				if(card.isAccessGranted(((TileEntitySecStorage)tileEntity).getStackInSlot(0), entityplayer, world, ModularForceFieldSystem.PERSONALID_FULLACCESS, true))
+				if(card.isAccessGranted(((TileEntitySecStorage)tileEntity).getStackInSlot(0), entityplayer, world, right, true))
 				{
 					return true;
 				}
@@ -37,9 +37,9 @@ public class SecurityHelper {
 		
 		
 		
-		if (tileEntity instanceof TileEntitySecurityStation) {
+		if (tileEntity instanceof TileEntityAdvSecurityStation) {
 			
-				if (!(((TileEntitySecurityStation)tileEntity).isAccessGranted(entityplayer.username,accessmode))) {
+				if (!(((TileEntityAdvSecurityStation)tileEntity).isAccessGranted(entityplayer.username,right))) {
 					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 					return false;
 				}
@@ -52,7 +52,7 @@ public class SecurityHelper {
 			{
 			if(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityConverter)tileEntity).getLinkCapacitors_ID()).getSecStation_ID()) != null)
 			{
-				if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityConverter)tileEntity).getLinkCapacitors_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,accessmode))) {
+				if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityConverter)tileEntity).getLinkCapacitors_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,right))) {
 					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 					return false;
 				}
@@ -67,7 +67,7 @@ public class SecurityHelper {
 
 			if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()) != null)
 			{
-				if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,accessmode))) {
+				if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,right))) {
 				
 						Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 					
@@ -82,7 +82,7 @@ public class SecurityHelper {
 			{
 			if(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityExtractor)tileEntity).getLinkCapacitors_ID()).getSecStation_ID()) != null)
 			{
-				if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityExtractor)tileEntity).getLinkCapacitors_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,accessmode))) {
+				if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityExtractor)tileEntity).getLinkCapacitors_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,right))) {
 					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 					return false;
 				}
@@ -101,7 +101,7 @@ public class SecurityHelper {
 			{
 			if(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileEntity).getLinkCapacitor_ID()).getSecStation_ID()) != null)
 			{
-				if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileEntity).getLinkCapacitor_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,accessmode))) {
+				if (!(Linkgrid.getWorldMap(world).getSecStation().get(Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileEntity).getLinkCapacitor_ID()).getSecStation_ID()).isAccessGranted(entityplayer.username,right))) {
 					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 					return false;
 				}
@@ -112,7 +112,7 @@ public class SecurityHelper {
 			{
 			if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityProjector)tileEntity).getSecStation_ID()) != null)
 			{
-				if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityProjector)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,accessmode))) {
+				if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityProjector)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,right))) {
 					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 					return false;
 				}
@@ -125,7 +125,7 @@ public class SecurityHelper {
 			
 			if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityAreaDefenseStation)tileEntity).getSecStation_ID()) != null)
 			{
-				if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityAreaDefenseStation)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,accessmode))) {
+				if (!(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityAreaDefenseStation)tileEntity).getSecStation_ID()).isAccessGranted(entityplayer.username,right))) {
 				
 						Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
 					
