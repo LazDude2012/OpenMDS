@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -27,27 +27,25 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 
 public class ContainerConverter extends Container {
-
     private int linkPower;
     private int SwitchTyp;
     private int capacity;
     private int output;
 	private EntityPlayer player;
-	private TileEntityConverter Capacitor;	
-	
+	private TileEntityConverter Capacitor;
+
 	public ContainerConverter(EntityPlayer player,
 			TileEntityConverter tileentity) {
-
 		Capacitor = tileentity;
 		this.player = player;
         linkPower = -1;
         SwitchTyp = -1;
         capacity = -1;
         output = -1;
-	
-		addSlotToContainer(new SlotHelper(Capacitor, 0, 11, 25));
+
+		addSlotToContainer(new SlotHelper(Capacitor, 0, 11, 25)); //Power link
 		//addSlotToContainer(new SlotHelper(Capacitor, 1, 125, 38));
-	
+
 		int var3;
 
 		for (var3 = 0; var3 < 3; ++var3) {
@@ -61,9 +59,7 @@ public class ContainerConverter extends Container {
 			this.addSlotToContainer(new Slot(player.inventory, var3, 8 + var3 * 18, 142));
 		}
 	}
-	
-	
-	
+
     public void updateCraftingResults() {
         super.updateCraftingResults();
 
@@ -90,40 +86,35 @@ public class ContainerConverter extends Container {
         capacity = Capacitor.getCapacity();
         output = Capacitor.getOutput();
     }
-	
-	
 
     public void updateProgressBar(int i, int j) {
         switch(i) {
-        case 0: 
+        case 0:
             Capacitor.setLinkPower(Capacitor.getLinkPower() & 0xffff0000 | j);
             break;
-        case 1: 
+        case 1:
             Capacitor.setLinkPower(Capacitor.getLinkPower() & 0xffff | j << 16);
             break;
-        case 2: 
+        case 2:
             Capacitor.setCapacity(j);
             break;
-        case 3: 
+        case 3:
             Capacitor.setswitchtyp(j);
             break;
-        case 4: 
+        case 4:
             Capacitor.setOutput(j);
             break;
         }
     }
-	
-
 
     public EntityPlayer getPlayer() {
     	return player;
     }
-	
-	
+
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return Capacitor.isUseableByPlayer(entityplayer);
 	}
-	
+
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
 		ItemStack itemstack = null;
@@ -144,5 +135,4 @@ public class ContainerConverter extends Container {
 		}
 		return itemstack;
 	}
-
 }

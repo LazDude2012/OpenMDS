@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -30,7 +30,7 @@ import net.minecraft.src.World;
 public class ItemProjectorModuleBase extends ItemMFFSBase  {
 	public ItemProjectorModuleBase(int i) {
 		super(i);
-		setMaxStackSize(1);
+		setMaxStackSize(8);
 	}
 	@Override
 	public String getTextureFile() {
@@ -48,14 +48,13 @@ public class ItemProjectorModuleBase extends ItemMFFSBase  {
 
 		if (!world.isRemote) {
 			if (tileEntity instanceof TileEntityProjector) {
-				
 				if(!SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
 				{return false;}
 
 				if(((TileEntityProjector)tileEntity).getStackInSlot(1)==null)
 				{
-					((TileEntityProjector)tileEntity).setInventorySlotContents(1,itemstack);
-					entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
+					((TileEntityProjector)tileEntity).setInventorySlotContents(1, itemstack.splitStack(1));
+					//entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
 					Functions.ChattoPlayer(entityplayer, "[Projector] Success: <Projector Module > installed");
 					return true;
 				}

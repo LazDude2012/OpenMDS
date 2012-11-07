@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,13 +13,12 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
 
 package chb.mods.mffs.common;
-
 
 import java.util.List;
 
@@ -29,80 +28,78 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.Slot;
 import net.minecraft.src.World;
 
-
-
 public class ItemPersonalIDWriter extends ItemMultitool{
-	
 	public ItemPersonalIDWriter(int i) {
 		super(i,2);
 	}
-	
-	
-	
-	
-    public boolean onLeftClickEntity(ItemStack itemstack, EntityPlayer entityplayer, Entity entity) 
+
+    public boolean onLeftClickEntity(ItemStack itemstack, EntityPlayer entityplayer, Entity entity)
     {
-    	
     	if(entity instanceof EntityPlayer)
     	{
-    	
 		List<Slot> slots = entityplayer.inventorySlots.inventorySlots;
 		for (Slot slot : slots) {
-			if (slot.getStack() != null) {
-				if (slot.getStack().getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
+			ItemStack stack = slot.getStack();
+			if (stack != null) {
+				if (stack.getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
 					if(ForceEnergyItems.use(itemstack, 1000, false,entityplayer))
 					{
 				     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
                         ItemStack IDCard= new ItemStack(ModularForceFieldSystem.MFFSItemIDCard, 1);
                         ItemCardPersonalID.setOwner(IDCard, ((EntityPlayer)entity).username);
                         ItemCardPersonalID.setSeclevel(IDCard, 1);
-	                    slot.putStack(IDCard);
-						
-                      
+
+                        if (--stack.stackSize<=0) {
+        					slot.putStack(IDCard);
+        				} else if (!entityplayer.inventory.addItemStackToInventory(IDCard))
+        					entityplayer.dropPlayerItem(IDCard);
+
 						Functions.ChattoPlayer(entityplayer,"[MultiTool] Success: ID-Card create");
                         return true;
 					}else{
-					
 						Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: not enough FP please charge");
 						 return true;
 					}
 				}
 			}
 		}
-	
+
 		Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: need MFFS Card <blank> in  Inventory");
         return true;
     	}
     	return false;
     }
 
-
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
 		if(entityplayer.isSneaking())
 		{
-	
-		int powerleft = this.getForceEnergy(itemstack);
-		ItemStack hand = entityplayer.inventory.getCurrentItem();
-		hand= new ItemStack(ModularForceFieldSystem.MFFSitemFieldTeleporter, 1);
-		ForceEnergyItems.charge(hand, powerleft,entityplayer);
-		
-		return hand;
+			int powerleft = this.getForceEnergy(itemstack);
+			ItemStack hand = entityplayer.inventory.getCurrentItem();
+			hand= new ItemStack(ModularForceFieldSystem.MFFSitemFieldTeleporter, 1);
+			ForceEnergyItems.charge(hand, powerleft,entityplayer);
+
+			return hand;
 		}
-	
+
 			List<Slot> slots = entityplayer.inventorySlots.inventorySlots;
 			for (Slot slot : slots) {
-				if (slot.getStack() != null) {
-					if (slot.getStack().getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
+				ItemStack stack = slot.getStack();
+				if (stack != null) {
+					if (stack.getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
 						if(ForceEnergyItems.use(itemstack, 1000, false,entityplayer))
 						{
 					     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
                             ItemStack IDCard= new ItemStack(ModularForceFieldSystem.MFFSItemIDCard, 1);
                             ItemCardPersonalID.setOwner(IDCard, entityplayer.username);
                             ItemCardPersonalID.setSeclevel(IDCard, 1);
-		                    slot.putStack(IDCard);
-							
+
+                            if (--stack.stackSize<=0) {
+            					slot.putStack(IDCard);
+            				} else if (!entityplayer.inventory.addItemStackToInventory(IDCard))
+            					entityplayer.dropPlayerItem(IDCard);
+
 	                        if(world.isRemote)
 							Functions.ChattoPlayer(entityplayer,"[MultiTool] Success: ID-Card create");
 
@@ -121,13 +118,10 @@ public class ItemPersonalIDWriter extends ItemMultitool{
 		return itemstack;
 	}
 
-
 	@Override
 	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player,
 			World world, int x, int y, int z, int side, float hitX, float hitY,
 			float hitZ) {
 		return false;
 	}
-
-
 }

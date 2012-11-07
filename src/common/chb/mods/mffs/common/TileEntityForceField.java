@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -35,13 +35,10 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
 
-
 public class TileEntityForceField extends TileEntity {
-	
 private Random random = new Random();
 private int[] texturid = {-76,-76,-76,-76,-76,-76};
 private int Ticker = 0 ;
-
 
 	public int getTicker() {
 	return Ticker;
@@ -63,61 +60,45 @@ public void setTicker(int ticker) {
 	{
 		return texturid[l];
 	}
-	
+
 	public void  setTexturid(String[] remotetextur )
 	{
-	
 		this.texturid[0] = Integer.parseInt(remotetextur[0].trim());
 		this.texturid[1] = Integer.parseInt(remotetextur[1].trim());
 		this.texturid[2] = Integer.parseInt(remotetextur[2].trim());
 		this.texturid[3] = Integer.parseInt(remotetextur[3].trim());
 		this.texturid[4] = Integer.parseInt(remotetextur[4].trim());
 		this.texturid[5] = Integer.parseInt(remotetextur[5].trim());
-		
+
 		worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		this.setTicker((short) 0);
-		
 	}
-	
-	
+
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
-			
 			if (this.getTicker() >= 20) {
-				
 				if(texturid[0] == -76)
 				{
 					UpdateTextur();
-
 				}
 
 				this.setTicker((short) 0);
 			}
-			
-			this.setTicker((short) (this.getTicker() + 1));
 
-				
+			this.setTicker((short) (this.getTicker() + 1));
 		}else{
-			
-			
 			if (this.getTicker() >= 20 + random.nextInt(20)) {
-				
 				if(texturid[0] == -76)
 				{
 					ForceFieldClientUpdatehandler.getWorldMap(ModularForceFieldSystem.proxy.getClientWorld()).addto(xCoord, yCoord, zCoord);
-
 				}
 
 				this.setTicker((short) 0);
 			}
-			
-			this.setTicker((short) (this.getTicker() + 1));
-	
 
+			this.setTicker((short) (this.getTicker() + 1));
 		}
 		}
-	
-	
 
 	public void  setTexturid(int[] texturid )
 	{
@@ -133,13 +114,9 @@ public void setTicker(int ticker) {
 		}
 	}
 
-
-
 	public void UpdateTextur()
 	{
 		if (worldObj.isRemote == false) {
-			
-		
 		ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(worldObj).getForceFieldStackMap(WorldMap.Cordhash(this.xCoord, this.yCoord, this.zCoord));
 
 		if(ffworldmap != null)
@@ -152,14 +129,11 @@ public void setTicker(int ticker) {
 				if(projector != null)
 				{
 					setTexturid(projector.getForcefieldtextur_id());
-
 				}
 			}
 		}
 	}
 	}
-
-
 
 	public ItemStack[] getContents() {
 		return null;
@@ -167,6 +141,4 @@ public void setTicker(int ticker) {
 
 	public void setMaxStackSize(int arg0) {
 	}
-
-
 }

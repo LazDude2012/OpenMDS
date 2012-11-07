@@ -19,23 +19,20 @@ import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntitySecStorage extends TileEntityMachines implements ISidedInventory,INetworkHandlerListener,IExtractionHandler{
 
-	
 	private ItemStack inventory[];
-	
-	
-	public TileEntitySecStorage() {
 
+	public TileEntitySecStorage() {
 		inventory = new ItemStack[60];
 		PipeManager.registerExtractionHandler(this);
 
 	}
-	
+
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
 			dropplugins(a,this);
 		}
 	}
-	
+
 	
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
@@ -67,15 +64,14 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 			
 		}
 	}
-	
-	
+
+
 	public void removefromgrid() {
 		dropplugins();
 	}
 
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-
 
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		inventory = new ItemStack[getSizeInventory()];
@@ -93,7 +89,6 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 
-
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < inventory.length; i++) {
 			if (inventory[i] != null) {
@@ -106,8 +101,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 
 		nbttagcompound.setTag("Items", nbttaglist);
 	}
-	
-	
+
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
 			return false;
@@ -116,7 +110,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
 		}
 	}
-	
+
 	public ItemStack getStackInSlot(int i) {
 		return inventory[i];
 	}
@@ -183,8 +177,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 	@Override
 	public void closeChest() {
 	}
-	
-	
+
 	@Override
 	public Container getContainer(InventoryPlayer inventoryplayer) {
 		return new ContainerSecStorage(inventoryplayer.player, this);
@@ -192,19 +185,21 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
-
 		switch (Slot) {
 		case 0:
 			if (!(par1ItemStack.getItem() instanceof ItemCardSecurityLink))
 			return false;
 			break;
-
 		}
 
 		return true;
 	}
 
 	@Override
+	public int getSlotStackLimit(int Slot){
+		return 1;
+	}
+	
 	public boolean canExtractItems(IPipe pipe, World world, int i, int j, int k) {
 		return !this.isActive();
 	}
@@ -233,6 +228,5 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 		}
 
 	}
-
 
 }

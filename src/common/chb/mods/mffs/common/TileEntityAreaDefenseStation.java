@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -24,7 +24,6 @@ import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
 import chb.mods.mffs.network.NetworkHandlerServer;
-
 
 import java.util.LinkedList;
 import java.util.List;
@@ -169,7 +168,7 @@ ISidedInventory,INetworkHandlerListener {
 					.newID(this);
 		}
 		Linkgrid.getWorldMap(worldObj).getDefStation().put(Defstation_ID, this);
-		
+
 		registerChunkLoading();
 	}
 
@@ -308,7 +307,6 @@ ISidedInventory,INetworkHandlerListener {
         }else{
         	this.setOptionMobDefense(false);
         }
-
 		}else{
 			setCanwork(false);
 		}
@@ -381,7 +379,6 @@ ISidedInventory,INetworkHandlerListener {
 				}
 			}
 
-
 			if (this.getTicker() == 20) {
 				checkslots();
 				if(this.isActive())
@@ -399,12 +396,11 @@ ISidedInventory,INetworkHandlerListener {
 			if(Defstation_ID==0)
 			{
 				if (this.getTicker() >= 20+random.nextInt(20)) {
-					
 					NetworkHandlerClient.requestInitialData(this,true);
 
 					this.setTicker((short) 0);
 				}
-				
+
 				this.setTicker((short) (this.getTicker() + 1));
 			}
 		}
@@ -496,7 +492,6 @@ ISidedInventory,INetworkHandlerListener {
 		return new ContainerAreaDefenseStation(inventoryplayer.player, this);
 	}
 
-
 	public ItemStack[] getContents() {
 		return ProjektorItemStacks;
 	}
@@ -514,17 +509,11 @@ ISidedInventory,INetworkHandlerListener {
 		return 0;
 	}
 
-	
-	
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
-		
-		
-		
 		if (field.equals("active")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
-		
 	}
 
 	@Override
@@ -537,25 +526,20 @@ ISidedInventory,INetworkHandlerListener {
 		NetworkedFields.add("side");
 		NetworkedFields.add("Defstation_ID");
 
-
-
 		return NetworkedFields;
 	}
 
-
-
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
-		
 		switch(Slot)
 		{
 		case 0:
 		     if(par1ItemStack.getItem() instanceof ItemCardPowerLink)
-	        	return true;	
+	        	return true;
 		break;
 		case 1:
 			if(par1ItemStack.getItem() instanceof ItemCardSecurityLink)
-				return true;		
+				return true;
 		break;
 		case 2:
 			if(par1ItemStack.getItem() instanceof ItemProjectorOptionDefenseStation || par1ItemStack.getItem() instanceof ItemProjectorOptionMobDefence)
@@ -563,13 +547,19 @@ ISidedInventory,INetworkHandlerListener {
 		break;
 		case 3:
 			if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorDistance)
-				return true;	
+				return true;
 		break;
 		}
-		
+
 		return false;
 	}
 
-
-
+	@Override
+	public int getSlotStackLimit(int Slot){
+		switch(Slot){
+		case 3: //Distance mod
+			return 64;
+		}
+		return 1;
+	}
 }

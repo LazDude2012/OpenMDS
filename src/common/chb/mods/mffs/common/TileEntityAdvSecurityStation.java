@@ -457,6 +457,11 @@ ISidedInventory, INetworkHandlerListener {
 		return false;
 	}
 
+	@Override
+	public int getSlotStackLimit(int Slot){
+		return 1;
+	}
+	
 	public boolean getLinkOption(String flag) {
 		
 		return true;

@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -48,11 +48,10 @@ public class ContainerCapacitor extends Container {
 		generatorentity = tileentity;
 		this.player = player;
 
-		addSlotToContainer(new SlotHelper(generatorentity, 4, 154, 47));
-		addSlotToContainer(new SlotHelper(generatorentity, 0, 154, 5));
-		addSlotToContainer(new SlotHelper(generatorentity, 1, 154, 26));
-		addSlotToContainer(new SlotHelper(generatorentity, 2, 107, 47));
-	
+		addSlotToContainer(new SlotHelper(generatorentity, 4, 154, 47)); //Security Link
+		addSlotToContainer(new SlotHelper(generatorentity, 0, 154, 5)); //Capacity upgrade
+		addSlotToContainer(new SlotHelper(generatorentity, 1, 154, 26)); //Range upgrade
+		addSlotToContainer(new SlotHelper(generatorentity, 2, 107, 47)); //Force Energy/ext. Powerlink
 
 		int var3;
 
@@ -106,10 +105,6 @@ public class ContainerCapacitor extends Container {
 				icrafting.updateCraftingInventoryInfo(this, 6,
 						generatorentity.getPowerlinkmode());
 			}
-			
-			
-
-
 		}
 
 		transmitrange = (short) generatorentity.getTransmitRange();
@@ -144,11 +139,11 @@ public class ContainerCapacitor extends Container {
 		case 4:
 			generatorentity.setCapacity(j);
 			break;
-			
+
 		case 5:
 			generatorentity.setswitchtyp(j);
 			break;
-			
+
 		case 6:
 			generatorentity.setPowerlinkmode(j);
 			break;
@@ -158,7 +153,7 @@ public class ContainerCapacitor extends Container {
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return generatorentity.isUseableByPlayer(entityplayer);
 	}
-	
+
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
 		ItemStack itemstack = null;

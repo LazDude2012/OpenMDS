@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -39,7 +39,6 @@ import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
-
 
 public class TileEntitySecurityStation extends TileEntityMachines implements
 ISidedInventory, INetworkHandlerListener {
@@ -121,16 +120,13 @@ ISidedInventory, INetworkHandlerListener {
 	}
 
 	public void addtogrid() {
-		
 		if (SecurtyStation_ID == 0) {
 			SecurtyStation_ID = Linkgrid.getWorldMap(worldObj)
 					.newID(this);
 		}
 		Linkgrid.getWorldMap(worldObj).getSecStation().put(SecurtyStation_ID, this);
-		
-		
+
 		registerChunkLoading();
-		
 	}
 
 	public void removefromgrid() {
@@ -191,7 +187,6 @@ ISidedInventory, INetworkHandlerListener {
 				}
 			}
 
-
 			if (this.getTicker() == 10) {
 				checkslots();
 				this.setTicker((short) 0);
@@ -201,12 +196,11 @@ ISidedInventory, INetworkHandlerListener {
 			if(SecurtyStation_ID==0)
 			{
 				if (this.getTicker() >= 20+random.nextInt(20)) {
-					
 					NetworkHandlerClient.requestInitialData(this,true);
 
 					this.setTicker((short) 0);
 				}
-				
+
 				this.setTicker((short) (this.getTicker() + 1));
 			}
 		}
@@ -216,26 +210,23 @@ ISidedInventory, INetworkHandlerListener {
 		if (getStackInSlot(1) != null) {
 			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSItemIDCard) {
 				ItemCardPersonalID Card = (ItemCardPersonalID) getStackInSlot(1).getItem();
-				
+
 				String name = Card.getUsername(getStackInSlot(1));
-				
+
 				if(!getMainUser().equals(name))
 				{
 				setMainUser(name);
 				}
-				
+
 				if(Card.getSecLevel(getStackInSlot(1)) != ModularForceFieldSystem.PERSONALID_FULLACCESS)
 				{
 					Card.setSeclevel(getStackInSlot(1), ModularForceFieldSystem.PERSONALID_FULLACCESS);
 				}
 			}else{
-
 				setMainUser("");
 			}
 		}else{
-
 			setMainUser("");
-			
 		}
 
 		if (getStackInSlot(2) != null) {
@@ -268,7 +259,7 @@ ISidedInventory, INetworkHandlerListener {
 					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
 		}
 	}
-	
+
 	public int getSizeInventory() {
 		return inventory.length;
 	}
@@ -352,12 +343,11 @@ ISidedInventory, INetworkHandlerListener {
 	}
 
 	public boolean isAccessGranted(String username, int Level) {
-
 		if(!isActive())
 		{
 			return true;
 		}
-		
+
 		if(username.equalsIgnoreCase(ModularForceFieldSystem.Admin))
 		{
 			return true;
@@ -366,9 +356,6 @@ ISidedInventory, INetworkHandlerListener {
 		if (this.MainUser.equals(username)) {
 			return true;
 		}
-		
-		
-		
 
 		if(this.isMultiusermod())
 		{
@@ -385,7 +372,6 @@ ISidedInventory, INetworkHandlerListener {
 
 		return false;
 	}
-
 
 	public ItemStack[] getContents() {
 		return inventory;
@@ -406,16 +392,12 @@ ISidedInventory, INetworkHandlerListener {
 
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
-		
-	
-		
 		if (field.equals("side")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("active")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
-		
 	}
 
 	@Override
@@ -427,15 +409,11 @@ ISidedInventory, INetworkHandlerListener {
 		NetworkedFields.add("side");
 		NetworkedFields.add("SecurtyStation_ID");
 
-
-
 		return NetworkedFields;
 	}
-	
-	
+
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
-		
 		switch(Slot)
 		{
 		case 1:
@@ -450,11 +428,13 @@ ISidedInventory, INetworkHandlerListener {
 			if(par1ItemStack.getItem() instanceof ItemSecurityStationExternalIDReader)
 				return true;
 		break;
-		
-		
 		}
-		
+
 		return false;
 	}
 
+	@Override
+	public int getSlotStackLimit(int Slot){
+		return 1;
+	}
 }
