@@ -36,11 +36,12 @@ public class CommonProxy implements IGuiHandler {
 	
 	public static final int GUI_CAPACITOR = 1;
 	public static final int GUI_PROJECTOR = 2;
+	public static final int GUI_SECSTATION = 3;
 	public static final int GUI_DEFSTATION = 4;
 	public static final int GUI_EXTRACTOR = 5;
 	public static final int GUI_CONVERTER = 6;
 	public static final int GUI_SECSTORAGE = 7;
-	public static final int GUI_ADVSECSTATION = 8;
+
 
 	public void registerRenderInformation()
 {
@@ -87,7 +88,7 @@ public class CommonProxy implements IGuiHandler {
 					te == null ? new TileEntitySecStorage()
 							: ((TileEntitySecStorage) te));
 			
-		case GUI_ADVSECSTATION:
+		case GUI_SECSTATION:
 			return new GuiAdvSecurityStation(player,
 					te == null ? new TileEntityAdvSecurityStation()
 							: ((TileEntityAdvSecurityStation) te));
@@ -130,7 +131,7 @@ public class CommonProxy implements IGuiHandler {
 				return new ContainerSecStorage(player,
 						te == null ? new TileEntitySecStorage()
 								: ((TileEntitySecStorage) te));
-			case GUI_ADVSECSTATION:
+			case GUI_SECSTATION:
 				return new ContainerAdvSecurityStation(player,
 						te == null ? new TileEntityAdvSecurityStation()
 								: ((TileEntityAdvSecurityStation) te));

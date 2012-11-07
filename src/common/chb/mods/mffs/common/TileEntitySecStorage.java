@@ -50,6 +50,9 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 						if(this.isActive()!=true)
 						this.setActive(true);
 						return;
+					}else{
+						
+						this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 					}
 				}
 			}

@@ -71,7 +71,7 @@ public class BlockAdvSecurtyStation extends BlockMFFSBase {
 		}
 
 		if (!world.isRemote)
-		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_ADVSECSTATION, world,
+		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_SECSTATION, world,
 				i, j, k);
 		}
 		return true;
