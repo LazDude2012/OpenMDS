@@ -324,7 +324,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 					
 					ItemCardPersonalID Card = (ItemCardPersonalID) getStackInSlot(a).getItem();
 					
-					boolean access  = Card.getlegitimac(getStackInSlot(1), right);
+					boolean access  = Card.getlegitimac(getStackInSlot(a), right);
 					
 					if (username_invtory.equals(username)) {
 						if (access) {
