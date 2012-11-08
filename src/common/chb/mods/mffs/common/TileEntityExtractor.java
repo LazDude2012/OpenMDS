@@ -667,7 +667,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		case 2: //Cap upgrade
 			return 9;
 		case 3: //Boost upgrade
-			return 9;
+			return 19;
 		case 4: //Forcicium cell
 			return 1;
 		}
