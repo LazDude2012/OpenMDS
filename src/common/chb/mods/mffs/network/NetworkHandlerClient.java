@@ -221,7 +221,8 @@ public static void reflectionsetvalue(Field f,TileEntity tileEntity,ByteArrayDat
 		 if(f.getType().equals(java.lang.Boolean.TYPE)){f.setBoolean(tileEntity, Boolean.parseBoolean(dat.readUTF()));}
 		 if(f.getType().equals(java.lang.Short.TYPE)){f.setShort(tileEntity, Short.parseShort(dat.readUTF()));}
 		 if(f.getType().equals(java.lang.Float.TYPE)){f.setFloat(tileEntity, Float.parseFloat(dat.readUTF()));}
-
+		 if(f.getType().equals(java.lang.String.class)){f.set(tileEntity, dat.readUTF());}
+		
 		 
 		 if(tileEntity instanceof INetworkHandlerListener )
 		 {

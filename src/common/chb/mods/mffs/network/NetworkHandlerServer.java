@@ -259,7 +259,8 @@ public static void updateTileEntityField(TileEntity tileEntity, String varname)
     	dos.writeUTF(String.valueOf(f.get(tileEntity)));
 	} catch (Exception e) {
 		if(DEBUG)
-		System.out.println(e.getLocalizedMessage());
+			System.out.println(e.getMessage());
+
 	}
  }
  

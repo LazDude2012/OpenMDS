@@ -32,7 +32,7 @@ public class ItemCardEmpty extends ItemMFFSBase {
 	public ItemCardEmpty(int i) {
 		super(i);
 		setIconIndex(16);
-		setMaxStackSize(1);
+		setMaxStackSize(16);
 	}
 	@Override
 	public String getTextureFile() {
@@ -56,11 +56,16 @@ public class ItemCardEmpty extends ItemMFFSBase {
 			
 			if(((TileEntityAdvSecurityStation)tileEntity).isActive()){
 				
-			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB")) {
+			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"CSR")) {
 	
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
 				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Secstation_ID", ((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
-				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
+
+
+				if (--itemstack.stackSize<=0) {
+					entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
+					} else if (!entityplayer.inventory.addItemStackToInventory(newcard))
+					entityplayer.dropPlayerItem(newcard);
 
 
 				if (world.isRemote)
@@ -85,7 +90,11 @@ public class ItemCardEmpty extends ItemMFFSBase {
 			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB")) {
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSitemfc);
 				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("CapacitorID", ((TileEntityCapacitor)tileEntity).getCapacitor_ID());
-				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
+				
+				if (--itemstack.stackSize<=0) {
+					entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
+					} else if (!entityplayer.inventory.addItemStackToInventory(newcard))
+					entityplayer.dropPlayerItem(newcard);
 
 				if (world.isRemote)
 				entityplayer.addChatMessage("[Capacitor] Success: <Power-Link> Card create");

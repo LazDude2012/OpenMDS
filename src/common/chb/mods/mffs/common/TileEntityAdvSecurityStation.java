@@ -26,6 +26,7 @@ import buildcraft.api.transport.PipeManager;
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
+import chb.mods.mffs.network.NetworkHandlerServer;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -85,6 +86,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 
 	public void setMainUser(String s) {
 		this.MainUser = s;
+		NetworkHandlerServer.updateTileEntityField(this, "MainUser");
 	}
 
 	public int getSecurtyStation_ID() {
@@ -214,6 +216,8 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 						.getItem();
 
 				String name = Card.getUsername(getStackInSlot(0));
+				
+			
 
 				if (!getMainUser().equals(name)) {
 					setMainUser(name);
@@ -380,6 +384,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 		if (field.equals("active")) {
 			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 		}
+		
 
 	}
 
@@ -390,6 +395,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 
 		NetworkedFields.add("active");
 		NetworkedFields.add("SecurtyStation_ID");
+		NetworkedFields.add("MainUser");
 
 		return NetworkedFields;
 	}
