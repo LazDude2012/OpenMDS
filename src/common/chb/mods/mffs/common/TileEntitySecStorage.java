@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import chb.mods.mffs.network.INetworkHandlerListener;
+import chb.mods.mffs.network.NetworkHandlerClient;
 import buildcraft.api.transport.IExtractionHandler;
 import buildcraft.api.transport.IPipe;
 import buildcraft.api.transport.PipeManager;
@@ -17,57 +18,65 @@ import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
-public class TileEntitySecStorage extends TileEntityMachines implements ISidedInventory,INetworkHandlerListener,IExtractionHandler{
+public class TileEntitySecStorage extends TileEntityMachines implements
+		ISidedInventory, INetworkHandlerListener, IExtractionHandler {
 
 	private ItemStack inventory[];
+	private boolean init;
 
 	public TileEntitySecStorage() {
 		inventory = new ItemStack[60];
+		init = true;
 		PipeManager.registerExtractionHandler(this);
 
 	}
 
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
-			dropplugins(a,this);
+			dropplugins(a, this);
 		}
 	}
 
-	
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
-			
+
 			if (getTicker() >= 20) {
 				setTicker((short) 0);
-			
-			if (getStackInSlot(0) != null) {
-				if (getStackInSlot(0).getItem() instanceof ItemCardSecurityLink) {
-					
-					ItemCardSecurityLink card = (ItemCardSecurityLink) getStackInSlot(0).getItem();
-					
-					if(((ItemCardSecurityLink)card).isSecurityCardValidity(getStackInSlot(0),worldObj))
-					{
-						if(this.isActive()!=true)
-						this.setActive(true);
-						return;
-					}else{
-						
-						this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+
+				if (getStackInSlot(0) != null) {
+					if (getStackInSlot(0).getItem() instanceof ItemCardSecurityLink) {
+
+						ItemCardSecurityLink card = (ItemCardSecurityLink) getStackInSlot(
+								0).getItem();
+
+						if (((ItemCardSecurityLink) card)
+								.isSecurityCardValidity(getStackInSlot(0),
+										worldObj)) {
+							if (this.isActive() != true)
+								this.setActive(true);
+							return;
+						} else {
+
+							this.setInventorySlotContents(0, new ItemStack(
+									ModularForceFieldSystem.MFFSitemcardempty));
+						}
 					}
 				}
-			}
-			
-			if(this.isActive()!=false)
-			this.setActive(false);
-			return;
-			
-		}
-		setTicker((short) (getTicker() + 1));
 
-			
+				if (this.isActive() != false)
+					this.setActive(false);
+				return;
+
+			}
+			setTicker((short) (getTicker() + 1));
+
+		} else {
+			if (init) {
+				NetworkHandlerClient.requestInitialData(this, true);
+				init = false;
+			}
 		}
 	}
-
 
 	public void removefromgrid() {
 		dropplugins();
@@ -191,7 +200,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 		switch (Slot) {
 		case 0:
 			if (!(par1ItemStack.getItem() instanceof ItemCardSecurityLink))
-			return false;
+				return false;
 			break;
 		}
 
@@ -199,10 +208,10 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 	}
 
 	@Override
-	public int getSlotStackLimit(int Slot){
+	public int getSlotStackLimit(int Slot) {
 		return 1;
 	}
-	
+
 	public boolean canExtractItems(IPipe pipe, World world, int i, int j, int k) {
 		return !this.isActive();
 	}
@@ -222,7 +231,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements ISidedIn
 
 		return NetworkedFields;
 	}
-	
+
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
 
