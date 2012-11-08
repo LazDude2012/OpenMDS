@@ -45,10 +45,16 @@ public class ItemDebugger extends  ItemMultitool  {
 		
 		if (!world.isRemote) {
 			
-
+                
+		 if (tileEntity instanceof TileEntityAdvSecurityStation)
+			 System.out.println(((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
+			
+			
 			
 		}else{
 			
+			 if (tileEntity instanceof TileEntityAdvSecurityStation)
+				 System.out.println(((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
 
 		}
 
