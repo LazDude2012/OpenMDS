@@ -32,7 +32,7 @@ public class ItemCardEmpty extends ItemMFFSBase {
 	public ItemCardEmpty(int i) {
 		super(i);
 		setIconIndex(16);
-		setMaxStackSize(16);
+		setMaxStackSize(1);
 	}
 	@Override
 	public String getTextureFile() {
@@ -46,18 +46,46 @@ public class ItemCardEmpty extends ItemMFFSBase {
 	@Override
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer,
 			World world, int i, int j, int k, int l, float par8, float par9, float par10) {
+		
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
+		
 
+		if (tileEntity instanceof TileEntityAdvSecurityStation) {
+			
+		
+			
+			if(((TileEntityAdvSecurityStation)tileEntity).isActive()){
+				
+			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB")) {
+	
+				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
+				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Secstation_ID", ((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
+				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
+
+
+				if (world.isRemote)
+				Functions.ChattoPlayer(entityplayer, "[Security Station] Success: <Security Station Link>  Card create");
+
+				return true;
+			  }
+			 }else{
+				
+				 if (world.isRemote)
+				Functions.ChattoPlayer(entityplayer, "[Security Station] Fail: Security Station must be Aktive  for create" );
+			 }
+		
+	 }
+		
+		
+		
 		if (tileEntity instanceof TileEntityCapacitor) {
+			
+		
+			
 			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB")) {
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSitemfc);
 				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("CapacitorID", ((TileEntityCapacitor)tileEntity).getCapacitor_ID());
-				//entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
-
-				if (--itemstack.stackSize<=0) {
-					entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
-				} else if (!entityplayer.inventory.addItemStackToInventory(newcard))
-					entityplayer.dropPlayerItem(newcard);
+				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
 
 				if (world.isRemote)
 				entityplayer.addChatMessage("[Capacitor] Success: <Power-Link> Card create");
@@ -65,24 +93,14 @@ public class ItemCardEmpty extends ItemMFFSBase {
 				return true;
 			 }
 		}
-
-		if (tileEntity instanceof TileEntityAdvSecurityStation) {
-			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB")) {
-				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
-				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Secstation_ID", ((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
-				//entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
-
-				if (--itemstack.stackSize<=0) {
-					entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
-				} else if (!entityplayer.inventory.addItemStackToInventory(newcard))
-					entityplayer.dropPlayerItem(newcard);
-
-				if (world.isRemote)
-				Functions.ChattoPlayer(entityplayer, "[Security Station] Success: <Security Station Link>  Card create");
-
-				return true;
-			 }
-		}
+		
+		
+		
+		
+		
+		
+		
+		
 
 		return false;
 	}
