@@ -50,14 +50,26 @@ public class BlockSecurtyStorage extends BlockMFFSBase {
 				}else{
 					return false;
 				}
+			}else{
+				if(tileentity.getStackInSlot(0).getItem() instanceof ItemCardEmpty)
+				{
+					if (!world.isRemote){
+						entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_SECSTORAGE, world,
+								i, j, k);
+					return true;
+					}
+				}
 			}
+			
+			
+			
 			}else{
 				
-				if (!world.isRemote)
+				if (!world.isRemote){
 					entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_SECSTORAGE, world,
 							i, j, k);
 				return true;
-				
+				}
 			}
 		}
 	
