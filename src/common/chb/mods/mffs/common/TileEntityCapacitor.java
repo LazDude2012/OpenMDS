@@ -50,8 +50,8 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 
-public class TileEntityCapacitor extends TileEntityMachines implements
-ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEnergyCapacitor{
+public class TileEntityCapacitor extends TileEntityMachines implements  IForceEnergyCapacitor,
+ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	private ItemStack inventory[];
 	private int forcePower;
 	private int maxforcepower;
@@ -71,7 +71,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 		inventory = new ItemStack[5];
 		transmitrange = 8;
 		SecStation_ID = 0;
-		forcePower = 1000000;
+		forcePower = 0;
 		maxforcepower = 10000000;
 		Capacitor_ID = 0;
 		Remote_Capacitor_ID = 0;
@@ -173,7 +173,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener, IForceEner
 	public int getForcePower() {
 		return forcePower;
 	}
-
+	
+	
 	public void setForcePower(int f) {
 		forcePower = f;
 	}
