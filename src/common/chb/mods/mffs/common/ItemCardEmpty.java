@@ -76,7 +76,7 @@ public class ItemCardEmpty extends ItemMFFSBase {
 			 }else{
 				
 				 if (world.isRemote)
-				Functions.ChattoPlayer(entityplayer, "[Security Station] Fail: Security Station must be Aktive  for create" );
+				Functions.ChattoPlayer(entityplayer, "[Security Station] Fail: Security Station must be Active  for create" );
 			 }
 		
 	 }
