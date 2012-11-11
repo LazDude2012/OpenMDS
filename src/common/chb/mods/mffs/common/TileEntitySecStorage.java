@@ -130,7 +130,8 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 	public String getInvName() {
 		return "SecStation";
 	}
-
+	
+	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}
@@ -139,12 +140,17 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 		return inventory.length;
 	}
 
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		inventory[i] = itemstack;
-		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
-			itemstack.stackSize = getInventoryStackLimit();
-		}
-	}
+    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    {
+        this.inventory[par1] = par2ItemStack;
+
+        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+        {
+            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        }
+
+        this.onInventoryChanged();
+    }
 
 	public ItemStack decrStackSize(int i, int j) {
 		if (inventory[i] != null) {
@@ -209,7 +215,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 
 	@Override
 	public int getSlotStackLimit(int Slot) {
-		return 1;
+		return 64;
 	}
 
 	public boolean canExtractItems(IPipe pipe, World world, int i, int j, int k) {
