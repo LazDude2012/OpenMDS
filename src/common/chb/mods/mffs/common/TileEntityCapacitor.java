@@ -182,6 +182,15 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	public int getSecStation_ID() {
 		return SecStation_ID;
 	}
+	
+	public void setSecStation_ID(int SecStation_ID){
+	
+		if(this.SecStation_ID != SecStation_ID){
+		this.SecStation_ID = SecStation_ID;
+		NetworkHandlerServer.updateTileEntityField(this, "SecStation_ID");
+		}
+	}
+	
 
 	public void setTransmitrange(short transmitrange) {
 		if(this.transmitrange != transmitrange){
@@ -303,12 +312,12 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 		if (getStackInSlot(4) != null) {
 			if (getStackInSlot(4).getItem() == ModularForceFieldSystem.MFFSItemSecLinkCard) {
-				if (SecStation_ID != NBTTagCompoundHelper.getTAGfromItemstack(
+				if (this.getSecStation_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
 						getStackInSlot(4)).getInteger("Secstation_ID")) {
-					SecStation_ID = NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(4)).getInteger("Secstation_ID");
+					this.setSecStation_ID( NBTTagCompoundHelper.getTAGfromItemstack(
+							getStackInSlot(4)).getInteger("Secstation_ID"));
 				}
-				if (SecStation_ID == 0) {
+				if (this.getSecStation_ID() == 0) {
 					dropplugins(4,this);
 				}
 				if(Linkgrid.getWorldMap(worldObj)
@@ -324,14 +333,14 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				}
 				}
 			} else {
-			    	SecStation_ID = 0;
+			    	this.setSecStation_ID(0);
 				    setLinkedSecStation(false);
 					if (getStackInSlot(4).getItem() != ModularForceFieldSystem.MFFSitemcardempty) {
 						dropplugins(4,this);
 					}
 			}
 		} else {
-			SecStation_ID = 0;
+			this.setSecStation_ID(0);
 			setLinkedSecStation(false);
 		}
 
@@ -682,6 +691,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		NetworkedFields.add("transmitrange");
 		NetworkedFields.add("capacity");
 		NetworkedFields.add("Capacitor_ID");
+		NetworkedFields.add("SecStation_ID");
 
 		return NetworkedFields;
 	}

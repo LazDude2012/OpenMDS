@@ -55,9 +55,6 @@ public class BlockCapacitor extends BlockMFFSBase {
 		TileEntityCapacitor tileentity = (TileEntityCapacitor) world
 				.getBlockTileEntity(i, j, k);
 
-		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
-		{return false;}
-
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {
 			return false;
@@ -78,6 +75,11 @@ public class BlockCapacitor extends BlockMFFSBase {
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardSecurityLink)) {
 			return false;
 		}
+		
+		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
+		{return false;}
+		
+		
 		if (!world.isRemote)
 		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_CAPACITOR, world,
 				i, j, k);

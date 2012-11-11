@@ -85,9 +85,9 @@ public class ItemCardEmpty extends ItemMFFSBase {
 		
 		if (tileEntity instanceof TileEntityCapacitor) {
 			
-		
 			
 			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB")) {
+				  				  
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSitemfc);
 				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("CapacitorID", ((TileEntityCapacitor)tileEntity).getCapacitor_ID());
 				

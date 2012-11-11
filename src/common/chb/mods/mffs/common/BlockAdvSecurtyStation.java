@@ -53,11 +53,6 @@ public class BlockAdvSecurtyStation extends BlockMFFSBase {
 		TileEntityAdvSecurityStation tileentity = (TileEntityAdvSecurityStation) world
 				.getBlockTileEntity(i, j, k);
 
-		if(tileentity.isActive())
-		{
-			if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"CSR"))
-			{return false;}
-		}
 
 			
 		if (entityplayer.getCurrentEquippedItem() != null
@@ -69,6 +64,13 @@ public class BlockAdvSecurtyStation extends BlockMFFSBase {
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardEmpty)) {
 			return false;
 		}
+		
+		if(tileentity.isActive())
+		{
+			if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"CSR"))
+			{return false;}
+		}
+
 
 		if (!world.isRemote)
 		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_SECSTATION, world,

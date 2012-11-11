@@ -345,6 +345,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 	}
 
 	public boolean isAccessGranted(String username, String string) {
+		
 
 		if (!isActive())
 			return true;
