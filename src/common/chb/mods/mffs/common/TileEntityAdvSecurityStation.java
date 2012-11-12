@@ -46,7 +46,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntityAdvSecurityStation extends TileEntityMachines implements
-		ISidedInventory, INetworkHandlerListener, IExtractionHandler,
+		ISidedInventory, INetworkHandlerListener,
 		INetworkHandlerEventListener {
 
 	private String MainUser;
@@ -57,13 +57,10 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 
 	public TileEntityAdvSecurityStation() {
 
-		PipeManager.registerExtractionHandler(this);
-
 		inventory = new ItemStack[40];
 		SecurtyStation_ID = 0;
 		create = true;
 		MainUser = "";
-
 	}
 
 	public void dropplugins() {
@@ -434,16 +431,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 
 		return false;
 	}
-
-	public boolean canExtractItems(IPipe pipe, World world, int i, int j, int k) {
-		return false;
-	}
-
-	@Override
-	public boolean canExtractLiquids(IPipe pipe, World world, int i, int j,
-			int k) {
-		return false;
-	}
+	
 
 	@Override
 	public void onNetworkHandlerEvent(String flag) {

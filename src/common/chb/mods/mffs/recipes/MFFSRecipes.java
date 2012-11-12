@@ -205,14 +205,6 @@ public class MFFSRecipes {
 						Items.getItem("advancedAlloy"), 'B',
 						Item.pickaxeSteel });
 
-		CraftingManager.getInstance().addRecipe(
-				new ItemStack(ModularForceFieldSystem.MFFSSecStationexidreader),
-				new Object[] { "A  ", " B ", "  C", 'A',
-					ModularForceFieldSystem.MFFSitemcardempty, 'B',
-						Items.getItem("electronicCircuit"),
-						'C', Item.redstone });
-
-
 
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemWrench),
 				new Object[] { "ADE", "CFC", "CBC", 'A',

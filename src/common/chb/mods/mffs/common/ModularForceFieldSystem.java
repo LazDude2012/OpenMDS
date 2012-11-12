@@ -67,8 +67,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.2.8.0.13")
-@NetworkMod(versionBounds = "[2.2.8.0.13]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version ="2.2.8.1.1")
+@NetworkMod(versionBounds = "[2.2.8.1.1]",clientSideRequired=true, serverSideRequired=false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {"MFFS" }, packetHandler = NetworkHandlerServer.class))
 
 public class ModularForceFieldSystem {
 	
@@ -145,10 +145,9 @@ public class ModularForceFieldSystem {
 	public static Item MFFSProjectorOptionCamouflage;
 	public static Item MFFSProjectorOptionFieldFusion;
 	
-
 	public static Item MFFSProjectorFFDistance;
 	public static Item MFFSProjectorFFStrenght;
-	public static Item MFFSSecStationexidreader;
+
 	
 	public static int MonazitOreworldamount = 4;
 
@@ -259,7 +258,6 @@ public class ModularForceFieldSystem {
 			MFFSitemFocusmatix= new ItemProjectorFocusMatrix(MFFSconfig.getItem(Configuration.CATEGORY_ITEM,"itemPorjectorFocusmatrix",11133).getInt(11133)).setItemName("itemPorjectorFocusmatrix");
 			MFFSItemIDCard= new ItemCardPersonalID(MFFSconfig.getItem(Configuration.CATEGORY_ITEM,"itemIDCard",11134).getInt(11134)).setItemName("itemIDCard");
 			MFFSItemSecLinkCard= new ItemCardSecurityLink(MFFSconfig.getItem(Configuration.CATEGORY_ITEM,"itemSecLinkCard",11135).getInt(11135)).setItemName("itemSecLinkCard");
-			MFFSSecStationexidreader= new ItemSecurityStationExternalIDReader(MFFSconfig.getItem(Configuration.CATEGORY_ITEM,"itemSecStationexidreader",11136).getInt(11136)).setItemName("itemSecStationexidreader");
 			MFFSProjectorOptionDefenceStation= new ItemProjectorOptionDefenseStation(MFFSconfig.getItem(Configuration.CATEGORY_ITEM,"itemProjectorOptiondefencestation",11137).getInt(11137)).setItemName("itemProjectorOptiondefencestation");
 			MFFSProjectorOptionMoobEx= new ItemProjectorOptionMobDefence(MFFSconfig.getItem(Configuration.CATEGORY_ITEM,"itemProjectorOptionMoobEx",11138).getInt(11138)).setItemName("itemProjectorOptionMoobEx");
 			MFFSProjectorOptionForceFieldJammer= new ItemProjectorOptionForceFieldJammer(MFFSconfig.getItem(Configuration.CATEGORY_ITEM,"itemProjectorOptionFFJammer",11139).getInt(11139)).setItemName("itemProjectorOptionFFJammer");
@@ -392,7 +390,7 @@ public class ModularForceFieldSystem {
 			Generatetexturindex(Block.cloth, meta);
 		}
 		
-		LanguageRegistry.instance().addNameForObject(MFFSSecurtyStation,"en_US", "MFFS Security Station");
+		LanguageRegistry.instance().addNameForObject(MFFSSecurtyStation,"en_US", "MFFS  Advanced Security Station");
 		LanguageRegistry.instance().addNameForObject(MFFSSecurtyStorage, "en_US", "MFFS Security Storage");
 		LanguageRegistry.instance().addNameForObject(MFFSForceEnergyConverter, "en_US", "MFFS ForceEnergy to EU Converter");
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradeexctractorboost, "en_US", "MFFS Extractor Booster");
@@ -430,7 +428,6 @@ public class ModularForceFieldSystem {
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorOptionForceFieldJammer ,"en_US","MFFS Projector Upgrade <Force Field Jammer>");
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorFFDistance,"en_US","MFFS Projector Field Modulator <distance>");
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorFFStrenght,"en_US","MFFS Projector Field Modulator <strength>");
-		LanguageRegistry.instance().addNameForObject(MFFSSecStationexidreader,"en_US","MFFS Security Station <External ID-Reader>");
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorTypcontainment,"en_US","MFFS Projector Module <Containment>");
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorTypAdvCube,"en_US","MFFS Projector Module <Adv.Cube>");
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorOptionCamouflage ,"en_US","MFFS Projector Upgrade <Camouflage>");

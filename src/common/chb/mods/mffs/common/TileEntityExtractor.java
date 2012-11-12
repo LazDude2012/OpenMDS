@@ -819,8 +819,10 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		this.wattHours = wattHours;
 	}
 
+
 	@Override
-	public double getMaxJoules() {
+	public double getMaxJoules(Object... data) {
+		// TODO Auto-generated method stub
 		return 120000;
 	}
 }

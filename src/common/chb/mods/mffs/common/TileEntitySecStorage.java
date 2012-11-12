@@ -19,7 +19,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntitySecStorage extends TileEntityMachines implements
-		ISidedInventory, INetworkHandlerListener, IExtractionHandler {
+		ISidedInventory, INetworkHandlerListener {
 
 	private ItemStack inventory[];
 	private boolean init;
@@ -27,8 +27,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 	public TileEntitySecStorage() {
 		inventory = new ItemStack[60];
 		init = true;
-		PipeManager.registerExtractionHandler(this);
-
+	
 	}
 
 	public void dropplugins() {
@@ -176,12 +175,12 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 
 	@Override
 	public int getStartInventorySide(ForgeDirection side) {
-		return 1;
+		return 0;
 	}
 
 	@Override
 	public int getSizeInventorySide(ForgeDirection side) {
-		return 54;
+		return 0;
 	}
 
 	public ItemStack[] getContents() {
@@ -217,16 +216,8 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 	public int getSlotStackLimit(int Slot) {
 		return 64;
 	}
+	
 
-	public boolean canExtractItems(IPipe pipe, World world, int i, int j, int k) {
-		return !this.isActive();
-	}
-
-	@Override
-	public boolean canExtractLiquids(IPipe pipe, World world, int i, int j,
-			int k) {
-		return false;
-	}
 
 	@Override
 	public List<String> getFieldsforUpdate() {
