@@ -244,6 +244,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 				rights[3] = Card.getlegitimac(getStackInSlot(1), "SR");
 				rights[4] = Card.getlegitimac(getStackInSlot(1), "OSS");
 				rights[5] = Card.getlegitimac(getStackInSlot(1), "RPB");
+				
 
 			}
 		} else {
@@ -440,6 +441,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 
 	@Override
 	public void onNetworkHandlerEvent(String flag) {
+		
 
 		if (getStackInSlot(1) != null) {
 			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSItemIDCard) {

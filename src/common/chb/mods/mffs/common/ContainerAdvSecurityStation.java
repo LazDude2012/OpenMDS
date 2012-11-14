@@ -103,7 +103,7 @@ public class ContainerAdvSecurityStation extends Container {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
 
-			for(int a = 0; a< 5 ;a++)
+			for(int a = 0; a< 6 ;a++)
 			{
 			if (rights[a] != SecStation.getRights(a)) {
 				if(SecStation.getRights(a))

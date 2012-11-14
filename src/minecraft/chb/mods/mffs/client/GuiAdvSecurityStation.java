@@ -75,6 +75,7 @@ public class GuiAdvSecurityStation extends GuiContainer {
 		
 		for (String flag : flags) {
 			
+			
 			if (tileEntity.getLinkOption(flag)) {
 				drawSprite(this.guiLeft+x, this.guiTop+40+y, 0,0,count);
 			} else {
