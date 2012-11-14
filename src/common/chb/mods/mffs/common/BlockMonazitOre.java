@@ -37,7 +37,7 @@ public class BlockMonazitOre extends Block {
 		setResistance(5.0F);
 		setStepSound(soundStoneFootstep);
 		blockid = i;
-		setCreativeTab(CreativeTabs.tabBlock);
+		setCreativeTab(ModularForceFieldSystem.MFFSTab);
 	}
 
 	@Override

@@ -24,6 +24,10 @@ import ic2.api.IWrenchable;
 
 import java.util.Random;
 
+import buildcraft.api.transport.IExtractionHandler;
+import buildcraft.api.transport.IPipe;
+import buildcraft.api.transport.PipeManager;
+
 import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityItem;
@@ -34,13 +38,14 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Slot;
 import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import chb.mods.mffs.api.IMFFS_Wrench;
 import chb.mods.mffs.network.NetworkHandlerServer;
 
-public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wrench,IWrenchable{
+public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wrench,IWrenchable,IExtractionHandler{
 	private boolean active;
 	private int side;
 	private short ticker;
@@ -53,6 +58,8 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 		active = false;
 		side = -1;
 		ticker = 0;
+		
+		PipeManager.registerExtractionHandler(this);
 	}
 
 	public  void dropplugins(int slot ,IInventory inventory ) {
@@ -188,9 +195,38 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 	@Override
     public void invalidate() {
     ForgeChunkManager.releaseTicket(chunkTicket);
+    PipeManager.extractionHandlers.remove(this);
     super.invalidate();
     }
-
+	
+	@Override
+	public  boolean canExtractItems(IPipe pipe, World world, int i, int j,int k){
+		
+	TileEntity tileentity =	world.getBlockTileEntity(i, j, k);
+	if(tileentity != null)
+	{
+		if(tileentity instanceof TileEntitySecStorage)
+		{
+		 if(((TileEntitySecStorage)tileentity).isActive())
+		 {
+			 return false;
+		 }
+			
+		}
+	}
+		
+		
+		
+		return true;
+	}
+	
+	@Override
+	public boolean canExtractLiquids(IPipe pipe, World world, int i, int j,int k) {
+	
+		return true;
+	}
+	
+	
 	public abstract boolean isItemValid(ItemStack par1ItemStack, int Slot);
 
 	public abstract int getSlotStackLimit(int slt);

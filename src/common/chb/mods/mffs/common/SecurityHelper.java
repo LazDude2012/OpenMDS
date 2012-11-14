@@ -6,8 +6,19 @@ import net.minecraft.src.World;
 
 public class SecurityHelper {
 
+	
+	
+	
 	public static boolean isAccessGranted(TileEntity tileEntity,
 			EntityPlayer entityplayer, World world, String right) {
+		
+		return isAccessGranted( tileEntity,
+				 entityplayer,  world,  right,false);
+	}
+	
+	
+	public static boolean isAccessGranted(TileEntity tileEntity,
+			EntityPlayer entityplayer, World world, String right,boolean suppresswarning) {
 
 		if (tileEntity instanceof TileEntitySecStorage) {
 
@@ -39,7 +50,7 @@ public class SecurityHelper {
 			if (!(((TileEntityAdvSecurityStation) tileEntity).isAccessGranted(
 					entityplayer.username, right))) {
 
-				if (world.isRemote)
+				if (world.isRemote && !suppresswarning)
 					Functions.ChattoPlayer(entityplayer,
 							"[Field Security] Fail: access denied");
 				return false;
@@ -73,6 +84,7 @@ public class SecurityHelper {
 									.getSecStation_ID()).isAccessGranted(
 							entityplayer.username, right))) {
 						
+						if (!suppresswarning)
 							Functions.ChattoPlayer(entityplayer,
 									"[Field Security] Fail: access denied");
 						return false;
@@ -96,7 +108,7 @@ public class SecurityHelper {
 
 					if (!(SecStation.isAccessGranted(entityplayer.username,
 							right))) {
-
+						if (!suppresswarning)
 						Functions.ChattoPlayer(entityplayer,
 								"[Field Security] Fail: access denied");
 
@@ -140,7 +152,7 @@ public class SecurityHelper {
 											.getLinkCapacitors_ID())
 									.getSecStation_ID()).isAccessGranted(
 							entityplayer.username, right))) {
-					
+						if (!suppresswarning)
 							Functions.ChattoPlayer(entityplayer,
 									"[Field Security] Fail: access denied");
 						return false;
@@ -176,7 +188,7 @@ public class SecurityHelper {
 												.getLinkCapacitor_ID())
 										.getSecStation_ID()).isAccessGranted(
 								entityplayer.username, right))) {
-					
+							if (!suppresswarning)
 								Functions.ChattoPlayer(entityplayer,
 										"[Field Security] Fail: access denied");
 							return false;
@@ -196,7 +208,7 @@ public class SecurityHelper {
 							.get(((TileEntityProjector) tileEntity)
 									.getSecStation_ID()).isAccessGranted(
 							entityplayer.username, right))) {
-						
+						if (!suppresswarning)
 							Functions.ChattoPlayer(entityplayer,
 									"[Field Security] Fail: access denied");
 						return false;
@@ -219,7 +231,7 @@ public class SecurityHelper {
 						.get(((TileEntityAreaDefenseStation) tileEntity)
 								.getSecStation_ID()).isAccessGranted(
 						entityplayer.username, right))) {
-				
+					if (!suppresswarning)
 						Functions.ChattoPlayer(entityplayer,
 								"[Field Security] Fail: access denied");
 

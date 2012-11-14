@@ -275,12 +275,6 @@ public final class ForceFieldOptions {
 									.setForcePower(Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation
 										.getlinkCapacitors_ID()).getForcePower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
 
-//									EntityPlayer mainuser = world.getPlayerEntityByName(Linkgrid.getWorldMap(world).getSecStation().get(DefenseStation.getSecStation_ID()).getMainUser());
-//									if(mainuser != null)
-//									{
-//									 Functions.ChattoPlayer(mainuser,"[Defence Area Station] Attack " + ((EntityPlayer)entityLiving).username+ " at x:" +  ((EntityPlayer)entityLiving).posX + " y:" + 
-//									           ((EntityPlayer)entityLiving).posY+ " z:"+((EntityPlayer)entityLiving).posZ);	
-//									}
 									Functions.ChattoPlayer((EntityPlayer)entityLiving,"[Defence Area Station] !!! you  are in a restricted area !!! ");
 									((EntityPlayer)entityLiving).inventory.dropAllItems();
 									entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);
@@ -293,13 +287,61 @@ public final class ForceFieldOptions {
 			}
 		}
 	}
+	
+	//-----------------------------------Block Protected by ForceField---------------------------------------------------------------------
 
-	//-----------------------------------CheckInnerSpace Function------------------------------------
+		
+	public static boolean BlockProtected(World world,int x, int y , int z, EntityPlayer entityplayer)
+	{
+		
+		
+		Map<Integer, TileEntityProjector> ProjectorinrangeMap =  Linkgrid.getWorldMap(world).getProjektor();
+		for (TileEntityProjector tileentity : ProjectorinrangeMap.values()) {
+			
+			int dx = tileentity.xCoord - x;
+			int dy = tileentity.yCoord - y;
+			int dz = tileentity.zCoord - z;
+
+			int dist = (int) Math.round(Math.sqrt(dx * dx + dy * dy + dz * dz));
+			
+			
+			if(dist > 64 || !tileentity.isActive() ||tileentity.getProjektor_Typ() == 1 ||  tileentity.getProjektor_Typ() == 2)
+			{continue;}
+
+			if(CheckInnerSpace (x, y , z,  tileentity, world,"BlockProtected"))
+			{
+
+				
+			 if(entityplayer != null)
+			 {
+				
+			    	 if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world, "RPB",true))
+			    	 { 
+			         return true;
+			    	 }
+			    
+			 }else{
+				
+				 return true;	 
+			 }
+			}	
+		}
+		
+		return false;
+	}
+	//-----------------------------------CheckInnerSpace Function---------------------------------------------------------------------
 
 	public static boolean CheckInnerSpace (int x, int y , int z, TileEntityProjector tileEntityProjector,World world, String Option)
 	{
 		Map<Integer, TileEntityProjector> InnerMap = null;
 
+		
+		if(Option.equalsIgnoreCase("BlockProtected"))
+		{
+			InnerMap = Linkgrid.getWorldMap(world).getProjektor();
+		}
+		
+		
 		if(Option.equalsIgnoreCase("jammer"))
 		{
 			InnerMap = Linkgrid.getWorldMap(world).getJammer();
@@ -311,9 +353,15 @@ public final class ForceFieldOptions {
 		}
 
 		for (TileEntityProjector tileentity : InnerMap.values()) {
+						
 			int xmin=0;int xmax=0;int ymin=0;int ymax=0;int zmin=0;int zmax=0;
 
 			boolean logicswitch= false;
+			
+			if(Option.equalsIgnoreCase("BlockProtected"))
+			{
+				logicswitch = tileentity.equals(tileEntityProjector);
+			}
 
 			if(Option.equalsIgnoreCase("jammer"))
 			{
@@ -429,7 +477,7 @@ public final class ForceFieldOptions {
 					int dy = tileentity.yCoord - y;
 					int dz = tileentity.zCoord - z;
 
-					double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+					int dist = (int) Math.round(Math.sqrt(dx * dx + dy * dy + dz * dz));
 
 					if (dist <= tileentity.getForceField_distance()) {
 						if(tileentity.isOptionFieldcut() && (tileentity.yCoord < dy))

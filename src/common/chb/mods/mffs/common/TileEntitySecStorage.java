@@ -175,12 +175,12 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 
 	@Override
 	public int getStartInventorySide(ForgeDirection side) {
-		return 0;
+		return 1;
 	}
 
 	@Override
 	public int getSizeInventorySide(ForgeDirection side) {
-		return 0;
+		return 54;
 	}
 
 	public ItemStack[] getContents() {

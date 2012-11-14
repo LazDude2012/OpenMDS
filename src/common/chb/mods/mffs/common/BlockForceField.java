@@ -79,12 +79,6 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 
 	        if(ForceField  != null){
 	        	
-	        	if(ForceField.getTexturid(1) == 237){
-	        		this.setLightValue(1.0F);
-	        	}else{
-	        		this.setLightValue(0.0F);
-	        	}
-	        	
 	        	
 	        	if(ForceField.getTexturid(1) == 67 || ForceField.getTexturid(1) == 205)
 	        	{
@@ -172,25 +166,6 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 
     @Override
     public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {

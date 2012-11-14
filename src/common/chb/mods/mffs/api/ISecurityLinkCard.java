@@ -19,6 +19,7 @@ public interface ISecurityLinkCard {
      *       Config Security Rights = "CSR)"
      *       Stay Right =  "SR"
      *       Open Secure Storage = "OSS"
+     *       Remote Protected Block = "RRB"
      *       
 	 *        AccessErrorMessage =  if true write Error Massage on function return false
 	 *        

@@ -58,7 +58,7 @@ public class NEI_MFFS_Config implements IConfigureNEI {
 
 		upgrades.add(ModularForceFieldSystem.MFFSProjectorFFDistance);
 		upgrades.add(ModularForceFieldSystem.MFFSProjectorFFStrenght);
-		upgrades.add(ModularForceFieldSystem.MFFSSecStationexidreader);
+
 
 
 		modules.add(ModularForceFieldSystem.MFFSProjectorTypsphere);

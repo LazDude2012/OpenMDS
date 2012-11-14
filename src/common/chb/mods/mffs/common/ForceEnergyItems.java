@@ -2,6 +2,7 @@ package chb.mods.mffs.common;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
+import chb.mods.mffs.api.IForceEnergyItems;
 
 public class ForceEnergyItems {
 	

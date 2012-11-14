@@ -98,6 +98,7 @@ public class ItemCardPersonalID extends Item{
             boolean CSR = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getBoolean("CSR");
             boolean SR = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getBoolean("SR");
             boolean OSS = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getBoolean("OSS");
+            boolean RPB = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getBoolean("RPB");
             
             info.add("Access Level:");
             
@@ -107,6 +108,6 @@ public class ItemCardPersonalID extends Item{
             if(CSR)info.add("Config Security Rights (CSR)");
             if(SR)info.add("Stay Right (SR)");
             if(OSS)info.add("Open Secure Storage (OSS)");
-
+            if(RPB)info.add("Remote Protected Blocks (RPB)");
     }
 }

@@ -40,6 +40,7 @@ import net.minecraft.src.Packet;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
+import chb.mods.mffs.api.IForceEnergyItems;
 import chb.mods.mffs.api.IForceEnergyCapacitor;
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
@@ -71,7 +72,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		inventory = new ItemStack[5];
 		transmitrange = 8;
 		SecStation_ID = 0;
-		forcePower = 0;
+		forcePower =0;
 		maxforcepower = 10000000;
 		Capacitor_ID = 0;
 		Remote_Capacitor_ID = 0;

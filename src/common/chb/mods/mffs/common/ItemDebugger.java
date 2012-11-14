@@ -27,6 +27,8 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import chb.mods.mffs.api.ForcefieldProtected;
+import chb.mods.mffs.api.IForceEnergyItems;
 
 public class ItemDebugger extends  ItemMultitool  {
 	protected StringBuffer info = new StringBuffer();
@@ -45,16 +47,12 @@ public class ItemDebugger extends  ItemMultitool  {
 		
 		if (!world.isRemote) {
 			
-                
-		 if (tileEntity instanceof TileEntityAdvSecurityStation)
-			 System.out.println(((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
 			
-			
+    		System.out.println(ForcefieldProtected.BlockProtected(world, x, y, z,null)+" :debugger");  
+
 			
 		}else{
 			
-			 if (tileEntity instanceof TileEntityAdvSecurityStation)
-				 System.out.println(((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
 
 		}
 
@@ -66,10 +64,6 @@ public class ItemDebugger extends  ItemMultitool  {
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
 		
-		System.out.println("Capacitor:" +Linkgrid.getWorldMap(world).getCapacitor().size());
-		System.out.println("Converter:" +Linkgrid.getWorldMap(world).getConverter().size());
-		System.out.println("Extractor:" +Linkgrid.getWorldMap(world).getExtractor().size());
-		System.out.println("Projector:" +Linkgrid.getWorldMap(world).getProjektor().size());
 	
 		
 		return itemstack;

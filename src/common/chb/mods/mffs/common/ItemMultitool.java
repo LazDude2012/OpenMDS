@@ -29,6 +29,7 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
+import chb.mods.mffs.api.IForceEnergyItems;
 
 public abstract class ItemMultitool extends  ItemMFFSBase  implements IForceEnergyItems{
 	private int typ;

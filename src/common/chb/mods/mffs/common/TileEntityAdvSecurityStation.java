@@ -243,6 +243,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 				rights[2] = Card.getlegitimac(getStackInSlot(1), "CSR");
 				rights[3] = Card.getlegitimac(getStackInSlot(1), "SR");
 				rights[4] = Card.getlegitimac(getStackInSlot(1), "OSS");
+				rights[5] = Card.getlegitimac(getStackInSlot(1), "RPB");
 
 			}
 		} else {
@@ -252,6 +253,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 			rights[2] = false;
 			rights[3] = false;
 			rights[4] = false;
+			rights[5] = false;
 		}
 
 	}
@@ -428,6 +430,9 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 
 		if (flag.contains("(OSS)"))
 			return getRights(4);
+		
+		if (flag.contains("(RPB)"))
+			return getRights(5);
 
 		return false;
 	}
@@ -451,6 +456,8 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 					Card.setlegitimac(getStackInSlot(1), "SR", !getRights(3));
 				if (flag.contains("(OSS)"))
 					Card.setlegitimac(getStackInSlot(1), "OSS", !getRights(4));
+				if (flag.contains("(RPB)"))
+					Card.setlegitimac(getStackInSlot(1), "RPB", !getRights(5));
 
 			}
 		}
