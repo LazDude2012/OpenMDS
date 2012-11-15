@@ -69,17 +69,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.2")
-@NetworkMod(versionBounds = "[2.2.8.1.2]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.3")
+@NetworkMod(versionBounds = "[2.2.8.1.3]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
 public class ModularForceFieldSystem {
-
-	public static final int GUI_CAPACITOR = 1;
-	public static final int GUI_PROJECTOR = 2;
-	public static final int GUI_SECSTATION = 3;
-	public static final int GUI_DEFSTATION = 4;
-	public static final int GUI_EXTRACTOR = 5;
-	public static final int GUI_CONVERTER = 6;
-	public static final int GUI_SECSTORAGE = 7;
 
 	public static final int FORCEFIELBOCKMETA_DEFAULT = 0;
 	public static final int FORCEFIELBOCKMETA_ZAPPER = 1;
@@ -414,16 +406,9 @@ public class ModularForceFieldSystem {
 	public void load(FMLInitializationEvent evt) {
 
 		MFFSRecipes.init();
+		MFFSParts.generateRecipes();
 
-		GameRegistry.registerBlock(MFFSCapacitor);
-		GameRegistry.registerBlock(MFFSProjector);
-		GameRegistry.registerBlock(MFFSFieldblock);
-		GameRegistry.registerBlock(MFFSDefenceStation);
 		GameRegistry.registerBlock(MFFSMonazitOre);
-		GameRegistry.registerBlock(MFFSExtractor);
-		GameRegistry.registerBlock(MFFSForceEnergyConverter);
-		GameRegistry.registerBlock(MFFSSecurtyStorage);
-		GameRegistry.registerBlock(MFFSSecurtyStation);
 
 		OreDictionary.registerOre("ForciciumItem", MFFSitemForcicium);
 		OreDictionary.registerOre("MonazitOre", MFFSMonazitOre);
@@ -432,41 +417,20 @@ public class ModularForceFieldSystem {
 				ModularForceFieldSystem.MFFSMonazitOre.blockID, new ItemStack(
 						ModularForceFieldSystem.MFFSitemForcicium, 5), 0.5F);
 
-		GameRegistry.registerTileEntity(TileEntityAdvSecurityStation.class,
-				"MFFSSecurtyStation");
+		
+		for (MFFSParts mach : MFFSParts.values()) {
+			
+			GameRegistry.registerBlock(mach.block);
+            GameRegistry.registerTileEntity(mach.clazz, mach.inCodeName);
+            
+            if(mach.parttyp.equalsIgnoreCase("maschine"))
+            {
+			 LanguageRegistry.instance().addNameForObject(mach.block, "en_US","MFFS "+ mach.displayName);
+			 ExplosionWhitelist.addWhitelistedBlock(mach.block);
+            }
+            }
+		
 
-		GameRegistry.registerTileEntity(TileEntitySecStorage.class,
-				"MFFSSecurtyStorage");
-
-		GameRegistry.registerTileEntity(TileEntityConverter.class,
-				"MFFSForceEnergyConverter");
-
-		GameRegistry.registerTileEntity(TileEntityExtractor.class,
-				"MFFSExtractor");
-
-		GameRegistry.registerTileEntity(TileEntityAreaDefenseStation.class,
-				"MFFSDefenceStation");
-		GameRegistry.registerTileEntity(TileEntityCapacitor.class,
-				"MFFSCapacitor");
-		GameRegistry.registerTileEntity(TileEntityProjector.class,
-				"MFFSProjector");
-		GameRegistry.registerTileEntity(TileEntityForceField.class,
-				"MFFSForceField");
-
-		ExplosionWhitelist
-				.addWhitelistedBlock(ModularForceFieldSystem.MFFSDefenceStation);
-		ExplosionWhitelist
-				.addWhitelistedBlock(ModularForceFieldSystem.MFFSCapacitor);
-		ExplosionWhitelist
-				.addWhitelistedBlock(ModularForceFieldSystem.MFFSProjector);
-		ExplosionWhitelist
-				.addWhitelistedBlock(ModularForceFieldSystem.MFFSExtractor);
-		ExplosionWhitelist
-				.addWhitelistedBlock(ModularForceFieldSystem.MFFSForceEnergyConverter);
-		ExplosionWhitelist
-				.addWhitelistedBlock(ModularForceFieldSystem.MFFSSecurtyStorage);
-		ExplosionWhitelist
-				.addWhitelistedBlock(ModularForceFieldSystem.MFFSSecurtyStation);
 
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 
@@ -532,17 +496,11 @@ public class ModularForceFieldSystem {
 			Generatetexturindex(Block.cloth, meta);
 		}
 
-		LanguageRegistry.instance().addNameForObject(MFFSSecurtyStation,
-				"en_US", "MFFS  Advanced Security Station");
-		LanguageRegistry.instance().addNameForObject(MFFSSecurtyStorage,
-				"en_US", "MFFS Security Storage");
-		LanguageRegistry.instance().addNameForObject(MFFSForceEnergyConverter,
-				"en_US", "MFFS ForceEnergy to EU Converter");
+
+
 		LanguageRegistry.instance().addNameForObject(
 				MFFSitemupgradeexctractorboost, "en_US",
 				"MFFS Extractor Booster");
-		LanguageRegistry.instance().addNameForObject(MFFSExtractor, "en_US",
-				"MFFS Force Energy Extractor");
 		LanguageRegistry.instance().addNameForObject(MFFSMonazitOre, "en_US",
 				"Monazit Ore");
 		LanguageRegistry.instance().addNameForObject(MFFSitemForcicumCell,
@@ -555,12 +513,6 @@ public class ModularForceFieldSystem {
 				"MFFS MultiTool <Switch>");
 		LanguageRegistry.instance().addNameForObject(MFFSitemWrench, "en_US",
 				"MFFS MultiTool <Wrench>");
-		LanguageRegistry.instance().addNameForObject(MFFSDefenceStation,
-				"en_US", "MFFS Area Defense Station");
-		LanguageRegistry.instance().addNameForObject(MFFSCapacitor, "en_US",
-				"MFFS Force Energy Capacitor");
-		LanguageRegistry.instance().addNameForObject(MFFSProjector, "en_US",
-				"MFFS Modular Projector");
 		LanguageRegistry.instance().addNameForObject(MFFSitemFocusmatix,
 				"en_US", "MFFS Projector Focus Matrix");
 		LanguageRegistry.instance().addNameForObject(MFFSitemFieldTeleporter,

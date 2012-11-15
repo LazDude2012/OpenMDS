@@ -23,25 +23,11 @@ package chb.mods.mffs.common;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import chb.mods.mffs.client.GuiAdvSecurityStation;
-import chb.mods.mffs.client.GuiAreaDefenseStation;
-import chb.mods.mffs.client.GuiCapacitor;
-import chb.mods.mffs.client.GuiExtractor;
-import chb.mods.mffs.client.GuiProjector;
-import chb.mods.mffs.client.GuiSecStorage;
-import chb.mods.mffs.client.GuiConverter;
 import cpw.mods.fml.common.network.IGuiHandler;
+import java.lang.reflect.Constructor;
 
 public class CommonProxy implements IGuiHandler {
 	
-	public static final int GUI_CAPACITOR = 1;
-	public static final int GUI_PROJECTOR = 2;
-	public static final int GUI_SECSTATION = 3;
-	public static final int GUI_DEFSTATION = 4;
-	public static final int GUI_EXTRACTOR = 5;
-	public static final int GUI_CONVERTER = 6;
-	public static final int GUI_SECSTORAGE = 7;
-
 
 	public void registerRenderInformation()
 {
@@ -57,43 +43,18 @@ public class CommonProxy implements IGuiHandler {
 		{
 			return null;
 		}
-
-		switch (ID) {
-		case GUI_CAPACITOR:
-			return new GuiCapacitor(player,
-					te == null ? new TileEntityCapacitor()
-							: ((TileEntityCapacitor) te));
-		case GUI_PROJECTOR:
-			return new GuiProjector(player,
-					te == null ? new TileEntityProjector()
-							: ((TileEntityProjector) te));
-
-		case GUI_DEFSTATION:
-			return new GuiAreaDefenseStation(player,
-					te == null ? new TileEntityAreaDefenseStation()
-							: ((TileEntityAreaDefenseStation) te));
-			
-		case GUI_EXTRACTOR:
-			return new GuiExtractor(player,
-					te == null ? new TileEntityExtractor()
-							: ((TileEntityExtractor) te));
-			
-		case GUI_CONVERTER:
-			return new GuiConverter(player,
-					te == null ? new TileEntityConverter()
-							: ((TileEntityConverter) te));
-			
-		case GUI_SECSTORAGE:
-			return new GuiSecStorage(player,
-					te == null ? new TileEntitySecStorage()
-							: ((TileEntitySecStorage) te));
-			
-		case GUI_SECSTATION:
-			return new GuiAdvSecurityStation(player,
-					te == null ? new TileEntityAdvSecurityStation()
-							: ((TileEntityAdvSecurityStation) te));
 		
-		}
+		MFFSParts machType = MFFSParts.fromTE(te);
+		
+		
+	try{
+		Constructor mkGui = machType.Gui.getConstructor(new Class[]{EntityPlayer.class, machType.clazz});
+		return mkGui.newInstance(player, (machType.clazz.cast(te)));
+	    }catch(Exception ex) 
+	    {
+		  System.out.println(ex.getLocalizedMessage());
+	    }
+		
 		return null;
 	}
 
@@ -104,41 +65,19 @@ public class CommonProxy implements IGuiHandler {
 			{
 				return null;
 			}
-
-			switch (ID) {
-			case GUI_CAPACITOR:
-				return new ContainerCapacitor(player,
-						te == null ? new TileEntityCapacitor()
-								: ((TileEntityCapacitor) te));
-			case GUI_PROJECTOR:
-				return new ContainerProjector(player,
-						te == null ? new TileEntityProjector()
-								: ((TileEntityProjector) te));
-
-			case GUI_DEFSTATION:
-					return new ContainerAreaDefenseStation(player,
-							te == null ? new TileEntityAreaDefenseStation()
-									: ((TileEntityAreaDefenseStation) te));
-			case GUI_EXTRACTOR:
-				return new ContainerForceEnergyExtractor(player,
-						te == null ? new TileEntityExtractor()
-								: ((TileEntityExtractor) te));
-			case GUI_CONVERTER:
-				return new ContainerConverter(player,
-						te == null ? new TileEntityConverter()
-								: ((TileEntityConverter) te));
-			case GUI_SECSTORAGE:
-				return new ContainerSecStorage(player,
-						te == null ? new TileEntitySecStorage()
-								: ((TileEntitySecStorage) te));
-			case GUI_SECSTATION:
-				return new ContainerAdvSecurityStation(player,
-						te == null ? new TileEntityAdvSecurityStation()
-								: ((TileEntityAdvSecurityStation) te));
-			}
 			
+			MFFSParts machType = MFFSParts.fromTE(te);
 			
-			return null;
+			try{
+				Constructor mkGui = machType.Container.getConstructor(new Class[]{EntityPlayer.class, machType.clazz});
+				return mkGui.newInstance(player, (machType.clazz.cast(te)));
+			    }catch(Exception ex) 
+			    {
+				  System.out.println(ex.getLocalizedMessage());
+			    }
+				
+				return null;
+
 		}
 	}
 

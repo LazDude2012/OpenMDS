@@ -111,76 +111,6 @@ public class MFFSRecipes {
 				'B', Items.getItem("electronicCircuit") });
 
 
-	
-		CraftingManager.getInstance().addRecipe(
-				new ItemStack(ModularForceFieldSystem.MFFSCapacitor, 1),
-				new Object[] { "ABA", "CDC", "ABA", 'A',
-					ModularForceFieldSystem.MFFSitemForcePowerCrystal,
-						'B',
-						Items.getItem("frequencyTransmitter"),
-						'C',
-						Items.getItem("electronicCircuit"),
-						'D',
-						Items.getItem("advancedMachine") });
-
-		CraftingManager.getInstance()
-				.addRecipe(
-						new ItemStack(ModularForceFieldSystem.MFFSProjector, 1),
-						new Object[] { "DCD", "CAC", "DBD",
-								'A',
-								Items.getItem("advancedMachine"),
-								'B',
-								Items.getItem("frequencyTransmitter"),
-								'C', ModularForceFieldSystem.MFFSitemFocusmatix,
-								'D',
-								Items.getItem("advancedAlloy") });
-		CraftingManager.getInstance()
-				.addRecipe(
-						new ItemStack(ModularForceFieldSystem.MFFSSecurtyStation, 1),
-						new Object[] { "DCD", "CAC", "DBD",
-								'A',
-								Items.getItem("advancedMachine"),
-								'B',
-								Items.getItem("frequencyTransmitter"),
-								'C',
-								Items.getItem("electronicCircuit"),
-								'D',
-								Items.getItem("advancedAlloy") });
-		
-		CraftingManager.getInstance()
-		.addRecipe(
-				new ItemStack(ModularForceFieldSystem.MFFSForceEnergyConverter, 1),
-				new Object[] { "ADA", "BEC", "AFA",
-						'A',
-						Items.getItem("refinedIronIngot"),
-						'B',
-						Items.getItem("frequencyTransmitter"),
-						'C',
-						Items.getItem("glassFiberCableItem"),
-						'D',
-						Items.getItem("lvTransformer"),
-						'E',
-						Items.getItem("mvTransformer"),
-						'F',
-						Items.getItem("hvTransformer"),
-						
-				
-				});
-		
-		
-		CraftingManager.getInstance()
-		.addRecipe(
-				new ItemStack(ModularForceFieldSystem.MFFSSecurtyStorage, 1),
-				new Object[] { "AAA", "ABA", "AAA",
-						'A',
-						Items.getItem("refinedIronIngot"),
-						'B',
-						Items.getItem("electronicCircuit"),
-
-				});
-		
-		
-		
 		
 
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemFocusmatix, 64),
@@ -218,11 +148,7 @@ public class MFFSRecipes {
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorOptionForceFieldJammer), new Object[] { " A ", "ABA", " A ", 'A', Items.getItem("frequencyTransmitter"),'B', ModularForceFieldSystem.MFFSitemFocusmatix });
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorOptionCamouflage), new Object[] { " A ", "ABA", " A ", 'B', Items.getItem("matter"),'A', Items.getItem("advancedAlloy") });
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorOptionFieldFusion), new Object[] { " A ", "ABA", " A ", 'B', Items.getItem("advancedCircuit"),'A', Items.getItem("advancedAlloy") });
-		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSDefenceStation,1),new Object[] { " B ", "CAC", " D ",'A',Items.getItem("advancedMachine"),
-			'B',Items.getItem("frequencyTransmitter"),
-			'C',Item.enderPearl,
-			'D',Items.getItem("carbonPlate")
-		});
+
 
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorOptionDefenceStation),new Object[] { " B ", "CAC", " B ", 'A', Items.getItem("teslaCoil"), 'B',ModularForceFieldSystem.MFFSItemIDCard , 'C',Items.getItem("electronicCircuit")});
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorOptionMoobEx), new Object[] { "BCB", "DAD", "ECE", 'A', Items.getItem("teslaCoil"), 'B', Item.bone, 'C', Item.blazeRod, 'D', Item.rottenFlesh, 'E', Item.spiderEye});

@@ -40,49 +40,4 @@ public class BlockAreaDefenseStation extends BlockMFFSBase {
 		return new TileEntityAreaDefenseStation();
 	}
 
-	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k,
-			EntityPlayer entityplayer, int par6, float par7, float par8,
-			float par9){
-	
-			
-		
-		if (entityplayer.isSneaking())
-        {
-			return false;
-        }
-
-		TileEntity tileentity = world.getBlockTileEntity(i, j, k);
-
-		
-		
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {
-			return false;
-		}
-
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemMultitool)) {
-			return false;
-		}
-
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardSecurityLink)) {
-			return false;
-		}
-
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardPowerLink)) {
-			return false;
-		}
-		
-		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
-		{return false;}
-
-		if (!world.isRemote)
-		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_DEFSTATION, world,
-				i, j, k);
-		
-		return true;
-	}
 }

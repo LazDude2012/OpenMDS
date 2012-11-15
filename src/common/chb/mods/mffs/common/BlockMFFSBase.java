@@ -22,6 +22,7 @@ package chb.mods.mffs.common;
 
 import java.util.Random;
 
+import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
@@ -55,8 +56,60 @@ public abstract class BlockMFFSBase extends BlockContainer {
 	public abstract String getTextureFile();
 
 	@Override
-	public abstract boolean onBlockActivated(World world, int i, int j, int k,EntityPlayer entityplayer, int par6, float par7, float par8, float par9);
+	public boolean onBlockActivated(World world, int i, int j, int k,
+			EntityPlayer entityplayer, int par6, float par7, float par8,
+			float par9){
+		
+		
+		if (entityplayer.isSneaking())
+        {
+			return false;
+        }
 
+		TileEntityMachines tileentity = (TileEntityMachines) world
+				.getBlockTileEntity(i, j, k);
+
+
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {
+			return false;
+		}
+		
+
+
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemProjectorModuleBase)) {
+			return false;
+		}
+
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemMultitool)) {
+			return false;
+		}
+
+		
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardPowerLink)) {
+			return false;
+		}
+		
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardSecurityLink)) {
+			return false;
+		}
+		
+		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
+		{return false;}
+		
+		if (!world.isRemote)
+		entityplayer.openGui(ModularForceFieldSystem.instance, 0, world,
+				i, j, k);
+		
+	
+		return true;
+	}
+	
+	
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k) {
 		

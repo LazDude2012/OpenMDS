@@ -44,7 +44,7 @@ public class BlockSecurtyStorage extends BlockMFFSBase {
 				if(card.isAccessGranted(tileentity.getStackInSlot(0), entityplayer, world, "OSS", true))
 				{
 					if (!world.isRemote)
-						entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_SECSTORAGE, world,
+						entityplayer.openGui(ModularForceFieldSystem.instance, 0, world,
 								i, j, k);
 					return true;
 				}else{
@@ -54,7 +54,7 @@ public class BlockSecurtyStorage extends BlockMFFSBase {
 				if(tileentity.getStackInSlot(0).getItem() instanceof ItemCardEmpty)
 				{
 					if (!world.isRemote){
-						entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_SECSTORAGE, world,
+						entityplayer.openGui(ModularForceFieldSystem.instance,0, world,
 								i, j, k);
 					return true;
 					}
@@ -66,7 +66,7 @@ public class BlockSecurtyStorage extends BlockMFFSBase {
 			}else{
 				
 				if (!world.isRemote){
-					entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_SECSTORAGE, world,
+					entityplayer.openGui(ModularForceFieldSystem.instance, 0, world,
 							i, j, k);
 				return true;
 				}
