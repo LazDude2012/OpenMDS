@@ -88,7 +88,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		linkCapacitor_ID = 0;
 		Projektor_ID = 0;
 		linkPower = 0;
-		forcefieldblock_meta = ModularForceFieldSystem.FORCEFIELBOCKMETA_DEFAULT;
+		forcefieldblock_meta =  (short) ForceFieldTyps.Default.ordinal();
 		ProjektorTyp = 0;
 		switchdelay = 0;
 		burnout = false;
@@ -503,37 +503,37 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			if (getStackInSlot(1).getItem() instanceof ItemProjectorModuleBase) {
 				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTypwall) {
 					if(getProjektor_Typ()!= 1) {setProjektor_Typ(1);}
-					setforcefieldblock_meta(ModularForceFieldSystem.FORCEFIELBOCKMETA_DEFAULT);
+					setforcefieldblock_meta(ForceFieldTyps.Default.ordinal());
 					setOptionBlockdropper(true);
 				}
 				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTypdeflector) {
 					if(getProjektor_Typ()!= 2) {setProjektor_Typ(2);}
-					setforcefieldblock_meta(ModularForceFieldSystem.FORCEFIELBOCKMETA_DEFAULT);
+					setforcefieldblock_meta(ForceFieldTyps.Default.ordinal());
 					setOptionBlockdropper(true);
 				}
 				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTyptube) {
 					if(getProjektor_Typ()!= 3) {setProjektor_Typ(3);}
-					setforcefieldblock_meta(ModularForceFieldSystem.FORCEFIELBOCKMETA_DEFAULT);
+					setforcefieldblock_meta(ForceFieldTyps.Default.ordinal());
 					setOptionBlockdropper(false);
 				}
 				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTypkube) {
 					if(getProjektor_Typ()!= 4) {setProjektor_Typ(4);}
-					setforcefieldblock_meta(ModularForceFieldSystem.FORCEFIELBOCKMETA_AREA);
+					setforcefieldblock_meta(ForceFieldTyps.Area.ordinal());
 					setOptionBlockdropper(false);
 				}
 				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTypsphere) {
 					if(getProjektor_Typ()!= 5) {setProjektor_Typ(5);}
-					setforcefieldblock_meta(ModularForceFieldSystem.FORCEFIELBOCKMETA_AREA);
+					setforcefieldblock_meta(ForceFieldTyps.Area.ordinal());
 					setOptionBlockdropper(false);
 				}
 				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTypcontainment) {
 					if(getProjektor_Typ()!= 6) {setProjektor_Typ(6);}
-					setforcefieldblock_meta(ModularForceFieldSystem.FORCEFIELBOCKMETA_CONTAIMENT);
+					setforcefieldblock_meta(ForceFieldTyps.Containment.ordinal());
 					setOptionBlockdropper(true);
 				}
 				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTypAdvCube) {
 					if(getProjektor_Typ()!= 7) {setProjektor_Typ(7);}
-					setforcefieldblock_meta(ModularForceFieldSystem.FORCEFIELBOCKMETA_AREA);
+					setforcefieldblock_meta(ForceFieldTyps.Area.ordinal());
 					setOptionBlockdropper(false);
 				}
 
@@ -809,7 +809,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 					if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSProjectorOptionCamouflage) {
 	                     if(!this.isOptionDamage())
 	                     {
-	 						setforcefieldblock_meta((short) ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE);
+	 						setforcefieldblock_meta((short) ForceFieldTyps.Camouflage.ordinal());
 	 						this.setOptioncamouflage(true);
 	                     }else{
 	                    	 dropplugins(place,this);

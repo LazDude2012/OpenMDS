@@ -20,14 +20,21 @@
 
 package chb.mods.mffs.common;
 
-import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.Item;
+import java.util.List;
 
-public class ItemForcePowerCrystal extends ItemMFFSBase{
+import chb.mods.mffs.api.IForceEnergyItems;
+import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
+
+public class ItemForcePowerCrystal extends ItemMFFSBase  implements IForceEnergyItems{
 	public ItemForcePowerCrystal(int i) {
 		super(i);
 		setIconIndex(96);
 		setMaxStackSize(1);
+		setMaxDamage(100);
 	}
 	@Override
 	public String getTextureFile() {
@@ -37,4 +44,52 @@ public class ItemForcePowerCrystal extends ItemMFFSBase{
 	public boolean isRepairable() {
 		return false;
 	}
+	
+	@Override
+	public boolean isDamageable()
+	{
+	return true;
+	}
+	@Override
+	public int getforceEnergyTransferMax() {
+		return 100000;
+	}
+	@Override
+	public int getItemDamage(ItemStack itemStack) {
+		
+		return 101-((getForceEnergy(itemStack)*100)/getMaxForceEnergy());
+	}
+	@Override
+	public int getMaxForceEnergy() {
+		return 5000000;
+	}
+	@Override
+	public void setForceEnergy(ItemStack itemStack, int ForceEnergy) {
+	       
+		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
+	       nbtTagCompound.setInteger("ForceEnergy", ForceEnergy);
+		
+	}
+	
+    @Override
+    public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b)
+    {
+        String tooltip = String.format( "%d FE/%d FE ",getForceEnergy(itemStack),getMaxForceEnergy());
+        info.add(tooltip);
+    }
+    
+	@Override
+	public int getForceEnergy(ItemStack itemstack) {
+    	
+		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
+    	if(nbtTagCompound != null)
+    	{
+    		return nbtTagCompound.getInteger("ForceEnergy");
+    	}
+       return 0;
+	}
+	
+	
+	
+	
 }

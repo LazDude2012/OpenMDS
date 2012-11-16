@@ -7,14 +7,15 @@ import net.minecraft.src.World;
 
 public class BlockConverter extends BlockMFFSBase {
 	
-	public BlockConverter(int i, int texturindex) {
-		super(i, texturindex);
+	public BlockConverter(int i) {
+		super(i);
 		setRequiresSelfNotify();
 	}
 
 	
 	@Override
 	public String getTextureFile() {
+
 		return "/chb/mods/mffs/sprites/Converter.png";
 	}
 	

@@ -9,8 +9,8 @@ import net.minecraft.src.World;
 
 public class BlockSecurtyStorage extends BlockMFFSBase {
 
-	public BlockSecurtyStorage(int i, int texturindex) {
-		super(i, texturindex);
+	public BlockSecurtyStorage(int i) {
+		super(i);
 		setRequiresSelfNotify();
 		setBlockUnbreakable();	
 	}

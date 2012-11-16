@@ -38,9 +38,9 @@ public abstract class BlockMFFSBase extends BlockContainer {
 	private int blockid;
 	private int texturindex;
 
-	public BlockMFFSBase(int i, int texturindex) {
+	public BlockMFFSBase(int i) {
 		super(i, Material.iron);
-		this.texturindex = texturindex;
+		this.texturindex = 0;
 		blockid = i;
 		setHardness(25F);
 		setResistance(25F);
@@ -61,6 +61,7 @@ public abstract class BlockMFFSBase extends BlockContainer {
 			float par9){
 		
 		
+		
 		if (entityplayer.isSneaking())
         {
 			return false;
@@ -76,6 +77,10 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		}
 		
 
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardEmpty)) {
+			return false;
+		}
 
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemProjectorModuleBase)) {

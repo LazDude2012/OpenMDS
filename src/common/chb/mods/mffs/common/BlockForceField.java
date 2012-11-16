@@ -73,7 +73,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 	@Override
 	public int getRenderBlockPass() {
 
-		if(ModularForceFieldSystem.proxy.getClientWorld().getBlockMetadata(posx , posy, posz) == ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE)
+		if(ModularForceFieldSystem.proxy.getClientWorld().getBlockMetadata(posx , posy, posz) == ForceFieldTyps.Camouflage.ordinal())
 		{
 			TileEntityForceField ForceField   =	(TileEntityForceField) ModularForceFieldSystem.proxy.getClientWorld().getBlockTileEntity(posx , posy, posz);
 
@@ -306,7 +306,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 		{
 		return  ((TileEntityForceField)tileEntity).getTexturid(l);
 	}else{
-		if (iblockaccess.getBlockMetadata(i, j, k) == ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE)
+		if (iblockaccess.getBlockMetadata(i, j, k) == ForceFieldTyps.Camouflage.ordinal())
 		{
 			 return 180;
 		}else{
@@ -336,7 +336,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k,
 			Random random) {
-		if (world.getBlockMetadata(i, j, k) == ModularForceFieldSystem.FORCEFIELBOCKMETA_ZAPPER) {
+		if (world.getBlockMetadata(i, j, k) == ForceFieldTyps.Zapper.ordinal()) {
 			double d = i + Math.random()+ 0.2D;
 			double d1 = j + Math.random() + 0.2D;
 			double d2 = k + Math.random() + 0.2D;
@@ -375,7 +375,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 
 	@Override
 	public TileEntity createTileEntity(World world, int meta) {
-		if(meta == ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE)
+		if(meta == ForceFieldTyps.Camouflage.ordinal())
 		{
 			
 				return new TileEntityForceField();

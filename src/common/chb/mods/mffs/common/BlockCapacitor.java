@@ -25,8 +25,8 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
 public class BlockCapacitor extends BlockMFFSBase {
-	public BlockCapacitor(int i, int texturindex) {
-		super(i, texturindex);
+	public BlockCapacitor(int i) {
+		super(i);
 		setRequiresSelfNotify();
 	}
 

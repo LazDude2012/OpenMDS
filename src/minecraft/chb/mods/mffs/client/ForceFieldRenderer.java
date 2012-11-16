@@ -24,6 +24,7 @@ import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
 import net.minecraftforge.client.ForgeHooksClient;
+import chb.mods.mffs.common.ForceFieldTyps;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
@@ -32,7 +33,7 @@ public class ForceFieldRenderer implements ISimpleBlockRenderingHandler {
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
 			Block block, int modelId, RenderBlocks renderer) {
 		if(block == ModularForceFieldSystem.MFFSFieldblock) {
-			if(world.getBlockMetadata(x, y, z) == ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE)
+			if(world.getBlockMetadata(x, y, z) == ForceFieldTyps.Camouflage.ordinal())
 			{
                 ForgeHooksClient.bindTexture("/terrain.png", 0);
 				renderer.renderStandardBlock(block, x, y, z);

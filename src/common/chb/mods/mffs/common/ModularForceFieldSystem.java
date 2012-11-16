@@ -73,12 +73,6 @@ import cpw.mods.fml.common.registry.TickRegistry;
 @NetworkMod(versionBounds = "[2.2.8.1.3]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
 public class ModularForceFieldSystem {
 
-	public static final int FORCEFIELBOCKMETA_DEFAULT = 0;
-	public static final int FORCEFIELBOCKMETA_ZAPPER = 1;
-	public static final int FORCEFIELBOCKMETA_AREA = 2;
-	public static final int FORCEFIELBOCKMETA_CONTAIMENT = 3;
-	public static final int FORCEFIELBOCKMETA_CAMOFLAGE = 4;
-
 	public static CreativeTabs MFFSTab;
 
 	public static int FORCEFIELDRENDER_ID = 2908;
@@ -153,6 +147,9 @@ public class ModularForceFieldSystem {
 
 	public static Boolean influencedbyothermods;
 	public static Boolean adventuremap;
+	public static Boolean ic2found = false;
+	public static Boolean uefound = false;
+	public static Boolean buildcraftfound = false;
 
 	public static int ForceciumWorkCylce;
 	public static int ForceciumCellWorkCylce;
@@ -168,6 +165,7 @@ public class ModularForceFieldSystem {
 
 	@Instance
 	public static ModularForceFieldSystem instance;
+
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event) {
@@ -237,30 +235,30 @@ public class ModularForceFieldSystem {
 					"ExtractorPassForceEnergyGenerate", 10000).getInt(10000);
 
 			MFFSForceEnergyConverter = new BlockConverter(MFFSconfig.getBlock(
-					"MFFSForceEnergyConverter", 687).getInt(687), 0)
+					"MFFSForceEnergyConverter", 687).getInt(687))
 					.setBlockName("MFFSForceEnergyConverter");
 			MFFSExtractor = new BlockExtractor(MFFSconfig.getBlock(
-					"MFFSExtractor", 682).getInt(682), 0)
+					"MFFSExtractor", 682).getInt(682))
 					.setBlockName("MFFSExtractor");
 			MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getBlock(
 					"MFFSMonazitOre", 688).getInt(688))
 					.setBlockName("MFFSMonazitOre");
 			MFFSDefenceStation = new BlockAreaDefenseStation(MFFSconfig
-					.getBlock("MFFSDefenceStation", 681).getInt(681), 0)
+					.getBlock("MFFSDefenceStation", 681).getInt(681))
 					.setBlockName("MFFSDefenceStation");
 			MFFSCapacitor = new BlockCapacitor(MFFSconfig.getBlock(
-					"MFFSCapacitor", 680).getInt(680), 0)
+					"MFFSCapacitor", 680).getInt(680))
 					.setBlockName("MFFSCapacitor");
 			MFFSProjector = new BlockProjector(MFFSconfig.getBlock(
-					"MFFSProjector", 685).getInt(685), 0)
+					"MFFSProjector", 685).getInt(685))
 					.setBlockName("MFFSProjector");
 			MFFSFieldblock = new BlockForceField(MFFSconfig.getBlock(
 					"MFFSFieldblock", 683).getInt(683));
 			MFFSSecurtyStorage = new BlockSecurtyStorage(MFFSconfig.getBlock(
-					"MFFSSecurtyStorage", 684).getInt(684), 0)
+					"MFFSSecurtyStorage", 684).getInt(684))
 					.setBlockName("MFFSSecurtyStorage");
 			MFFSSecurtyStation = new BlockAdvSecurtyStation(MFFSconfig
-					.getBlock("MFFSSecurtyStation", 686).getInt(686), 0)
+					.getBlock("MFFSSecurtyStation", 686).getInt(686))
 					.setBlockName("MFFSSecurtyStation");
 
 			MFFSitemWrench = new ItemWrench(MFFSconfig.getItem(
@@ -397,6 +395,7 @@ public class ModularForceFieldSystem {
 		} catch (Exception e) {
 			FMLLog.log(Level.SEVERE, e,
 					"ModularForceFieldSystem has a problem loading it's configuration");
+			System.out.println(e.getMessage());
 		} finally {
 			MFFSconfig.save();
 		}
@@ -405,10 +404,19 @@ public class ModularForceFieldSystem {
 	@Init
 	public void load(FMLInitializationEvent evt) {
 
+		initIC2Plugin();
+		inituEPlugin();
+		initbuildcraftPlugin();
+		
 		MFFSRecipes.init();
-		MFFSParts.generateRecipes();
+		
+		MFFSMaschines.initialize();
+		ProjectorTyp.initialize();
 
 		GameRegistry.registerBlock(MFFSMonazitOre);
+		GameRegistry.registerBlock(MFFSFieldblock);
+        GameRegistry.registerTileEntity(TileEntityForceField.class, "MFFSFieldblock");
+		
 
 		OreDictionary.registerOre("ForciciumItem", MFFSitemForcicium);
 		OreDictionary.registerOre("MonazitOre", MFFSMonazitOre);
@@ -416,20 +424,6 @@ public class ModularForceFieldSystem {
 		GameRegistry.addSmelting(
 				ModularForceFieldSystem.MFFSMonazitOre.blockID, new ItemStack(
 						ModularForceFieldSystem.MFFSitemForcicium, 5), 0.5F);
-
-		
-		for (MFFSParts mach : MFFSParts.values()) {
-			
-			GameRegistry.registerBlock(mach.block);
-            GameRegistry.registerTileEntity(mach.clazz, mach.inCodeName);
-            
-            if(mach.parttyp.equalsIgnoreCase("maschine"))
-            {
-			 LanguageRegistry.instance().addNameForObject(mach.block, "en_US","MFFS "+ mach.displayName);
-			 ExplosionWhitelist.addWhitelistedBlock(mach.block);
-            }
-            }
-		
 
 
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
@@ -533,16 +527,7 @@ public class ModularForceFieldSystem {
 				"en_US", "MFFS Capacitor Upgrade <Range> ");
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradecapcap,
 				"en_US", "MFFS Capacitor Upgrade <Capacity> ");
-		LanguageRegistry.instance().addNameForObject(MFFSProjectorTypsphere,
-				"en_US", "MFFS Projector Module <Sphere> ");
-		LanguageRegistry.instance().addNameForObject(MFFSProjectorTypkube,
-				"en_US", "MFFS Projector Module <Cube>");
-		LanguageRegistry.instance().addNameForObject(MFFSProjectorTypwall,
-				"en_US", "MFFS Projector Module <Wall>");
-		LanguageRegistry.instance().addNameForObject(MFFSProjectorTypdeflector,
-				"en_US", "MFFS Projector Module <Deflector>");
-		LanguageRegistry.instance().addNameForObject(MFFSProjectorTyptube,
-				"en_US", "MFFS Projector Module <Tube>");
+	
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorOptionZapper,
 				"en_US", "MFFS Projector Upgrade <touch damage> ");
 		LanguageRegistry.instance().addNameForObject(
@@ -565,11 +550,6 @@ public class ModularForceFieldSystem {
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorFFStrenght,
 				"en_US", "MFFS Projector Field Modulator <strength>");
 		LanguageRegistry.instance().addNameForObject(
-				MFFSProjectorTypcontainment, "en_US",
-				"MFFS Projector Module <Containment>");
-		LanguageRegistry.instance().addNameForObject(MFFSProjectorTypAdvCube,
-				"en_US", "MFFS Projector Module <Adv.Cube>");
-		LanguageRegistry.instance().addNameForObject(
 				MFFSProjectorOptionCamouflage, "en_US",
 				"MFFS Projector Upgrade <Camouflage>");
 		LanguageRegistry.instance().addNameForObject(
@@ -587,7 +567,6 @@ public class ModularForceFieldSystem {
 	public void postInit(FMLPostInitializationEvent evt) {
 		
 		ForgeChunkManager.setForcedChunkLoadingCallback(instance,new MFFSChunkloadCallback());
-		initNEIPlugin();
 	}
 	
 	
@@ -634,18 +613,52 @@ public class ModularForceFieldSystem {
 		idmetatotextur.put(block.blockID + meta * 1000, index);
 	}
 
-	public static void initNEIPlugin() {
+	
+	public  void initbuildcraftPlugin() {
 		
-		System.out.println("[ModularForceFieldSystem] Loading module for NEI");
+		System.out.println("[ModularForceFieldSystem] Loading module for Buildcraft");
 
 		try {
-			Method method =ModularForceFieldSystem.class.getClassLoader().loadClass("chb.mods.mffs.nei.NEI_MFFS_Config").getMethod("loadConfig", (Class[]) null);
-			method.invoke(null);
-
-
+			
+			Class.forName("buildcraft.core.Version");
+			buildcraftfound= true;
 
 		} catch (Throwable t) {
-			System.out.println("[ModularForceFieldSystem] Module not loaded: NEI not found");
+			System.out.println("[ModularForceFieldSystem] Module not loaded: Buildcraft not found");
+		
+		}
+	}
+	
+
+	
+	public  void inituEPlugin() {
+		
+		System.out.println("[ModularForceFieldSystem] Loading module for Universal Electricity");
+
+		try {
+			
+			Class.forName("basiccomponents.item.ItemBasic");
+	        uefound= true;
+
+		} catch (Throwable t) {
+			System.out.println("[ModularForceFieldSystem] Module not loaded: Universal Electricity not found");
+		
+		}
+	}
+	
+	
+	
+	public  void initIC2Plugin() {
+		
+		System.out.println("[ModularForceFieldSystem] Loading module for IC2");
+
+		try {
+			
+			Class.forName("ic2.common.Ic2Items");
+	        ic2found= true;
+
+		} catch (Throwable t) {
+			System.out.println("[ModularForceFieldSystem] Module not loaded: IC2 not found");
 		
 		}
 	}

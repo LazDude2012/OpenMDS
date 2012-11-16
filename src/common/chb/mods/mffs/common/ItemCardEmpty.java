@@ -59,9 +59,9 @@ public class ItemCardEmpty extends ItemMFFSBase {
 			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"CSR")) {
 	
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
-				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Secstation_ID", ((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
-
-
+				
+				((ItemCardSecurityLink)newcard.getItem()).setInformation(newcard, world, "x:"+i+" y:"+j+" z:"+k, ((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
+				
 				if (--itemstack.stackSize<=0) {
 					entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
 					} else if (!entityplayer.inventory.addItemStackToInventory(newcard))
@@ -89,7 +89,7 @@ public class ItemCardEmpty extends ItemMFFSBase {
 			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB")) {
 				  				  
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSitemfc);
-				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("CapacitorID", ((TileEntityCapacitor)tileEntity).getCapacitor_ID());
+				((ItemCardPowerLink)newcard.getItem()).setInformation(newcard, world, "x:"+i+" y:"+j+" z:"+k, ((TileEntityCapacitor)tileEntity).getCapacitor_ID());
 				
 				if (--itemstack.stackSize<=0) {
 					entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);

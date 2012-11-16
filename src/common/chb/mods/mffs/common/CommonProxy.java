@@ -44,7 +44,7 @@ public class CommonProxy implements IGuiHandler {
 			return null;
 		}
 		
-		MFFSParts machType = MFFSParts.fromTE(te);
+		MFFSMaschines machType = MFFSMaschines.fromTE(te);
 		
 		
 	try{
@@ -66,7 +66,7 @@ public class CommonProxy implements IGuiHandler {
 				return null;
 			}
 			
-			MFFSParts machType = MFFSParts.fromTE(te);
+			MFFSMaschines machType = MFFSMaschines.fromTE(te);
 			
 			try{
 				Constructor mkGui = machType.Container.getConstructor(new Class[]{EntityPlayer.class, machType.clazz});

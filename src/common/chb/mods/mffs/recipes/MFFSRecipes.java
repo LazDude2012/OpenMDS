@@ -1,5 +1,6 @@
 package chb.mods.mffs.recipes;
 
+import chb.mods.mffs.common.MFFSMaschines;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import ic2.api.ExplosionWhitelist;
 import ic2.api.Ic2Recipes;
@@ -12,6 +13,7 @@ import net.minecraft.src.ItemStack;
 public class MFFSRecipes {
 
 	
+
 	public static void init()
 	{
 		
@@ -23,32 +25,7 @@ public class MFFSRecipes {
 
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemForcePowerCrystal), new Object[] { "BBB", "BAB", "BBB", 'A', Item.diamond,'B', ModularForceFieldSystem.MFFSitemForcicium});
 		
-		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypcontainment), new Object[] {
-			"AAA", "ABA", "AAA", 'B',
-			ModularForceFieldSystem.MFFSitemFocusmatix, 'A', Block.obsidian });
-
-		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypAdvCube), new Object[] {
-			"AAA", "ABA", "AAA", 'A',
-			ModularForceFieldSystem.MFFSitemFocusmatix, 'B', ModularForceFieldSystem.MFFSProjectorTypkube });
-			
 		
-		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypsphere),
-				new Object[] { " B ", "BAB", " B ", 'A',
-			ModularForceFieldSystem.MFFSitemFocusmatix, 'B',
-						Block.obsidian });
-		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypkube), new Object[] {
-				"B B", " A ", "B B", 'A',
-				ModularForceFieldSystem.MFFSitemFocusmatix, 'B', Block.obsidian });
-		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypwall), new Object[] {
-				"AA ", "AA ", "BB ", 'A',
-				ModularForceFieldSystem.MFFSitemFocusmatix, 'B', Block.obsidian });
-		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTypdeflector),
-				new Object[] { "AAA", "ABA", "AAA", 'A',
-			ModularForceFieldSystem.MFFSitemFocusmatix, 'B',
-						Block.obsidian });
-		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorTyptube), new Object[] {
-				"AAA", " B ", "AAA", 'A',
-				ModularForceFieldSystem.MFFSitemFocusmatix, 'B', Block.obsidian });
 
 		CraftingManager.getInstance().addRecipe(new ItemStack(ModularForceFieldSystem.MFFSProjectorFFStrenght),
 				new Object[] { "AAA", "AAA", "AAA", 'A',
@@ -58,7 +35,7 @@ public class MFFSRecipes {
 			ModularForceFieldSystem.MFFSitemFocusmatix });
 
 
-		if(Items.getItem("carbonPlate")!=null){
+		if(ModularForceFieldSystem.ic2found){
 			
 			
 			Ic2Recipes.addMaceratorRecipe(new ItemStack(ModularForceFieldSystem.MFFSMonazitOre, 1), new ItemStack(ModularForceFieldSystem.MFFSitemForcicium, 10));

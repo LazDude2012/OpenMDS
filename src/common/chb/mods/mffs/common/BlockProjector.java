@@ -30,8 +30,8 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
 public class BlockProjector extends BlockMFFSBase {
-	public BlockProjector(int i, int texturindex) {
-		super(i, texturindex);
+	public BlockProjector(int i) {
+		super(i);
 		setRequiresSelfNotify();
 	}
 

@@ -7,9 +7,9 @@ import ic2.api.IEnergySink;
 import java.util.LinkedList;
 import java.util.List;
 
-import universalelectricity.electricity.ElectricityManager;
-import universalelectricity.implement.IElectricityReceiver;
-import universalelectricity.implement.IJouleStorage;
+import universalelectricity.core.electricity.ElectricityManager;
+import universalelectricity.core.implement.IElectricityReceiver;
+import universalelectricity.core.implement.IJouleStorage;
 
 import buildcraft.api.gates.IOverrideDefaultTriggers;
 import buildcraft.api.gates.ITrigger;
@@ -56,9 +56,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	private boolean addedToEnergyNet;
 	private double wattHours = 0;
 
-	private boolean Industriecraftfound = true;
-	private boolean Buildcraftfound;
-	private boolean Universalelectricityfound;
+
 
 	public TileEntityExtractor() {
 		inventory = new ItemStack[5];
@@ -75,24 +73,13 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		capacity = 0;
 		addedToEnergyNet = false;
 
-		try{
+		
+			
+		if(ModularForceFieldSystem.buildcraftfound){	
 		powerProvider = PowerFramework.currentFramework.createPowerProvider();
 		powerProvider.configure(10, 2, (int) (getMaxWorkEnergy() / 2.5),(int) (getMaxWorkEnergy() / 2.5),(int) (getMaxWorkEnergy() / 2.5));
-		Buildcraftfound = true;
-		}catch(NullPointerException ex)
-		{
-			Buildcraftfound = false;
 		}
 
-		try{
-		Universalelectricityfound= true;
-		}catch(NoClassDefFoundError ex)
-		{
-			Universalelectricityfound = false;
-		}catch(NoSuchMethodError ex)
-		{
-			Universalelectricityfound = false;
-		}
 	}
 
 	public int getCapacity(){
@@ -385,11 +372,9 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 				create = false;
 			}
 
-			if (!addedToEnergyNet && Industriecraftfound) {
-				try{
+			if (!addedToEnergyNet && ModularForceFieldSystem.ic2found) {
 				EnergyNet.getForWorld(worldObj).addTileEntity(this);
 				addedToEnergyNet = true;
-				}catch(Exception ex){Industriecraftfound = false;}
 				}
 
 			if (this.getTicker() >= getWorkTicker()) {
@@ -397,10 +382,10 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 				if(workmode==0)
 				{
-				if(Buildcraftfound)
+				if(ModularForceFieldSystem.buildcraftfound)
 				converMJtoWorkEnergy();
 
-				if(Universalelectricityfound)
+				if(ModularForceFieldSystem.uefound)
 				converUEtoWorkEnergy();
 
 				if(this.getWorkdone() != getWorkEnergy() * 100 / getMaxWorkEnergy())
@@ -437,10 +422,10 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 				if(this.getWorkdone() != getWorkEnergy() * 100 / getMaxWorkEnergy())
 					setWorkdone( getWorkEnergy() * 100 / getMaxWorkEnergy());
 
-				if(Buildcraftfound)
+				if(ModularForceFieldSystem.buildcraftfound)
 				converMJtoWorkEnergy();
 
-				if(Universalelectricityfound)
+				if(ModularForceFieldSystem.uefound)
 				converUEtoWorkEnergy();
 
 			   	if(((ItemForcicumCell)getStackInSlot(4).getItem()).getForceciumlevel(getStackInSlot(4)) < ((ItemForcicumCell)getStackInSlot(4).getItem()).getMaxForceciumlevel())
@@ -822,7 +807,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 	@Override
 	public double getMaxJoules(Object... data) {
-		// TODO Auto-generated method stub
 		return 120000;
 	}
 }

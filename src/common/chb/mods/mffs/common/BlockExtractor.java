@@ -28,8 +28,8 @@ import net.minecraft.src.World;
 public class BlockExtractor extends BlockMFFSBase {
 
 
-	public BlockExtractor(int i, int texturindex) {
-		super(i, texturindex);
+	public BlockExtractor(int i) {
+		super(i);
 		setRequiresSelfNotify();
 	}
 

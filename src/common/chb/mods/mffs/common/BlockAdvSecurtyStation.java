@@ -26,8 +26,8 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
 public class BlockAdvSecurtyStation extends BlockMFFSBase {
-	public BlockAdvSecurtyStation(int i, int texturindex) {
-		super(i, texturindex);
+	public BlockAdvSecurtyStation(int i) {
+		super(i);
 	}
 	@Override
 	public String getTextureFile() {

@@ -25,8 +25,8 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
 public class BlockAreaDefenseStation extends BlockMFFSBase {
-	public BlockAreaDefenseStation(int i, int texturindex) {
-		super(i, texturindex);
+	public BlockAreaDefenseStation(int i) {
+		super(i);
 		setRequiresSelfNotify();
 	}
 
