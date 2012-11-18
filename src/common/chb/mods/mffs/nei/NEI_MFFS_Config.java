@@ -42,6 +42,7 @@ public class NEI_MFFS_Config implements IConfigureNEI {
 		items.add(ModularForceFieldSystem.MFFSitemForcicumCell);
 		items.add(ModularForceFieldSystem.MFFSitemFocusmatix);
 
+		
 		upgrades.add(ModularForceFieldSystem.MFFSitemupgradeexctractorboost);
 		upgrades.add(ModularForceFieldSystem.MFFSitemupgradecaprange);
 		upgrades.add(ModularForceFieldSystem.MFFSitemupgradecapcap);

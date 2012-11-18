@@ -118,7 +118,7 @@ public class ContainerAdvSecurityStation extends Container {
 			
 		}
 		
-	for(int a = 0; a< 5 ;a++)
+	for(int a = 0; a< 6 ;a++)
 	{
 		rights[a] = SecStation.getRights(a);
 	}

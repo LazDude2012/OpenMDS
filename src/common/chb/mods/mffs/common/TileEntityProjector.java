@@ -1621,9 +1621,15 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 					if (isOptionBlockcutter()) {
 						int blockid = worldObj.getBlockId(ffb.getX(),
 								ffb.getY(), ffb.getZ());
+						TileEntity entity = worldObj.getBlockTileEntity(ffb.getX(),
+								ffb.getY(), ffb.getZ());
+						
 						if (blockid != ModularForceFieldSystem.MFFSFieldblock.blockID
 								&& blockid != 0
-								&& blockid != Block.bedrock.blockID) {
+								&& blockid != Block.bedrock.blockID
+								&& entity == null) 
+						
+						{
 							ArrayList<ItemStack> stacks = Functions
 									.getItemStackFromBlock(worldObj,
 											ffb.getX(), ffb.getY(), ffb.getZ());

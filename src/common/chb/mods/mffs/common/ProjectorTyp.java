@@ -11,13 +11,13 @@ import net.minecraft.src.ItemStack;
 
 public enum ProjectorTyp {
 	
-	containment("<Sphere>","BBBBABBBB",ModularForceFieldSystem.MFFSProjectorTypcontainment),
-	AdvCube("<Cube>","AAAACAAAA",ModularForceFieldSystem.MFFSProjectorTypAdvCube),
-	cube("<Wall>","B B A B B",ModularForceFieldSystem.MFFSProjectorTypkube),
-	sphere("<Deflector>"," B BAB B ",ModularForceFieldSystem.MFFSProjectorTypsphere),
+	containment("<Containment>","BBBBABBBB",ModularForceFieldSystem.MFFSProjectorTypcontainment),
+	AdvCube("<Adv.Cube>","AAAACAAAA",ModularForceFieldSystem.MFFSProjectorTypAdvCube),
+	cube("<Cube>","B B A B B",ModularForceFieldSystem.MFFSProjectorTypkube),
+	sphere("<Sphere>"," B BAB B ",ModularForceFieldSystem.MFFSProjectorTypsphere),
 	tube("<Tube>","AAA B AAA",ModularForceFieldSystem.MFFSProjectorTyptube),
-	deflector("<Adv.Cube>","AAAABAAAA",ModularForceFieldSystem.MFFSProjectorTypdeflector),
-	wall("<Containment>","AA AA BB ",ModularForceFieldSystem.MFFSProjectorTypwall);
+	deflector("<Deflector>","AAAABAAAA",ModularForceFieldSystem.MFFSProjectorTypdeflector),
+	wall("<Wall>","AA AA BB ",ModularForceFieldSystem.MFFSProjectorTypwall);
 
 	
 	

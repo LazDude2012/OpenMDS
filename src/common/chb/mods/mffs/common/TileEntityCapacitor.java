@@ -72,7 +72,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		inventory = new ItemStack[5];
 		transmitrange = 8;
 		SecStation_ID = 0;
-		forcePower =10000000;
+		forcePower =0;
 		maxforcepower = 10000000;
 		Capacitor_ID = 0;
 		Remote_Capacitor_ID = 0;

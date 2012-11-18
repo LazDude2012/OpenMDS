@@ -27,7 +27,6 @@ import chb.mods.mffs.network.ForceFieldServerUpdatehandler;
 import chb.mods.mffs.network.NetworkHandlerClient;
 import chb.mods.mffs.network.NetworkHandlerServer;
 import chb.mods.mffs.network.ForceFieldClientUpdatehandler;
-import chb.mods.mffs.recipes.MFFSRecipes;
 
 import ic2.api.ExplosionWhitelist;
 
@@ -69,8 +68,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.3")
-@NetworkMod(versionBounds = "[2.2.8.1.3]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.4")
+@NetworkMod(versionBounds = "[2.2.8.1.4]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
 public class ModularForceFieldSystem {
 
 	public static CreativeTabs MFFSTab;
@@ -237,6 +236,7 @@ public class ModularForceFieldSystem {
 			MFFSForceEnergyConverter = new BlockConverter(MFFSconfig.getBlock(
 					"MFFSForceEnergyConverter", 687).getInt(687))
 					.setBlockName("MFFSForceEnergyConverter");
+			
 			MFFSExtractor = new BlockExtractor(MFFSconfig.getBlock(
 					"MFFSExtractor", 682).getInt(682))
 					.setBlockName("MFFSExtractor");
@@ -408,28 +408,23 @@ public class ModularForceFieldSystem {
 		inituEPlugin();
 		initbuildcraftPlugin();
 		
+		GameRegistry.registerBlock(MFFSMonazitOre);
+		GameRegistry.registerBlock(MFFSFieldblock);
+		GameRegistry.registerTileEntity(TileEntityForceField.class,"MFFSForceField");
+		
 		MFFSRecipes.init();
 		
 		MFFSMaschines.initialize();
 		ProjectorTyp.initialize();
-
-		GameRegistry.registerBlock(MFFSMonazitOre);
-		GameRegistry.registerBlock(MFFSFieldblock);
-        GameRegistry.registerTileEntity(TileEntityForceField.class, "MFFSFieldblock");
-		
-
-		OreDictionary.registerOre("ForciciumItem", MFFSitemForcicium);
-		OreDictionary.registerOre("MonazitOre", MFFSMonazitOre);
-
-		GameRegistry.addSmelting(
-				ModularForceFieldSystem.MFFSMonazitOre.blockID, new ItemStack(
-						ModularForceFieldSystem.MFFSitemForcicium, 5), 0.5F);
-
+		ProjectorOptions.initialize();
 
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 
 		proxy.registerRenderInformation();
 		proxy.registerTileEntitySpecialRenderer();
+		
+		GameRegistry.registerWorldGenerator(new MFFSWorldGenerator());
+		
 
 		Generatetexturindex(Block.oreLapis, 0);
 		Generatetexturindex(Block.blockLapis, 0);
@@ -528,39 +523,14 @@ public class ModularForceFieldSystem {
 		LanguageRegistry.instance().addNameForObject(MFFSitemupgradecapcap,
 				"en_US", "MFFS Capacitor Upgrade <Capacity> ");
 	
-		LanguageRegistry.instance().addNameForObject(MFFSProjectorOptionZapper,
-				"en_US", "MFFS Projector Upgrade <touch damage> ");
-		LanguageRegistry.instance().addNameForObject(
-				MFFSProjectorOptionSubwater, "en_US",
-				"MFFS Projector Upgrade <Sponge> ");
-		LanguageRegistry.instance().addNameForObject(MFFSProjectorOptionDome,
-				"en_US", "MFFS Projector Upgrade <Field Manipulator> ");
-		LanguageRegistry.instance().addNameForObject(MFFSProjectorOptionCutter,
-				"en_US", "MFFS Projector Upgrade <Block Breaker> ");
-		LanguageRegistry.instance().addNameForObject(
-				MFFSProjectorOptionDefenceStation, "en_US",
-				"MFFS Defense Station Upgrade");
-		LanguageRegistry.instance().addNameForObject(MFFSProjectorOptionMoobEx,
-				"en_US", "MFFS NPC Defense Upgrade");
-		LanguageRegistry.instance().addNameForObject(
-				MFFSProjectorOptionForceFieldJammer, "en_US",
-				"MFFS Projector Upgrade <Force Field Jammer>");
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorFFDistance,
 				"en_US", "MFFS Projector Field Modulator <distance>");
 		LanguageRegistry.instance().addNameForObject(MFFSProjectorFFStrenght,
 				"en_US", "MFFS Projector Field Modulator <strength>");
-		LanguageRegistry.instance().addNameForObject(
-				MFFSProjectorOptionCamouflage, "en_US",
-				"MFFS Projector Upgrade <Camouflage>");
-		LanguageRegistry.instance().addNameForObject(
-				MFFSProjectorOptionFieldFusion, "en_US",
-				"MFFS Projector Upgrade <Field Fusion>");
+		
 		LanguageRegistry.instance().addStringLocalization("itemGroup.MFFS",
 				"en_US", "Modular Force Field System");
-
-		GameRegistry.registerWorldGenerator(new MFFSWorldGenerator());
-
-		
+				
 	}
 
 	@PostInit
