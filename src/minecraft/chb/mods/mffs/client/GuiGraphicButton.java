@@ -130,6 +130,12 @@ public class GuiGraphicButton extends GuiButton
                     case 2:
                     	this.drawTexturedModalRect(this.xPosition, this.yPosition, 128, 80, this.width, this.height);
                     break;
+                    case 3:
+                    	this.drawTexturedModalRect(this.xPosition, this.yPosition, 144, 80, this.width, this.height);
+                    break;
+                    case 4:
+                    	this.drawTexturedModalRect(this.xPosition, this.yPosition, 160, 80, this.width, this.height);
+                    break;
                     }
                 }
             }

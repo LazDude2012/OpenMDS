@@ -231,8 +231,13 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 		if (getStackInSlot(2) != null) {
 			if (getStackInSlot(2).getItem() instanceof IForceEnergyItems) {
+				if(this.getPowerlinkmode()!=3 && this.getPowerlinkmode()!=4)this.setPowerlinkmode(3);
 				IForceEnergyItems ForceEnergyItem = (IForceEnergyItems) getStackInSlot(2).getItem();
 
+				switch(this.getPowerlinkmode())
+				{
+				case 3:
+				
 				if(ForceEnergyItem.getForceEnergy(getStackInSlot(2)) < ForceEnergyItem.getMaxForceEnergy())
 				{
 					int maxtransfer = ForceEnergyItem.getforceEnergyTransferMax();
@@ -264,9 +269,42 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 					  getStackInSlot(2).setItemDamage(ForceEnergyItem.getItemDamage(getStackInSlot(2)));
 					}
 				}
-			}
+				
+				break;
+				case 4:
+					
+					if(ForceEnergyItem.getForceEnergy(getStackInSlot(2)) > 0)
+					{
+						
+						int maxtransfer = ForceEnergyItem.getforceEnergyTransferMax();
+						int freeeamount = this.getMaxForcePower() - this.getForcePower();
+						
+						if(this.getForcePower() < this.getMaxForcePower())
+						{
+						
+						    if(freeeamount > maxtransfer)
+						    {
+						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))-maxtransfer);
+				                this.setForcePower(this.getForcePower() + maxtransfer);
+						    }else{
+						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))-freeeamount);
+				                this.setForcePower(this.getForcePower() + freeeamount);
+						    }
+	
+						}
+						
+					}
+
+				break;
+				}
+				
+				}
+					
 
 			if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSitemfc) {
+				
+				if(this.getPowerlinkmode()!=0 && this.getPowerlinkmode()!=1 && this.getPowerlinkmode()!=2)this.setPowerlinkmode(0);
+				
 				if (getRemote_Capacitor_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
 						getStackInSlot(2)).getInteger("CapacitorID")) {
 					setRemote_Capacitor_ID(NBTTagCompoundHelper.getTAGfromItemstack(
@@ -651,8 +689,35 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		break;
 
 		case 1:
-			if(this.getPowerlinkmode() != 2)
+			if (getStackInSlot(2) != null) 
 			{
+				if (getStackInSlot(2).getItem() instanceof IForceEnergyItems)
+				{
+					if(this.getPowerlinkmode() == 4)
+					{
+						this.setPowerlinkmode(3);
+					}else{
+						this.setPowerlinkmode(4);
+					}
+					
+					return;
+				}
+				if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSitemfc)
+				{
+					
+					if(this.getPowerlinkmode() < 2)
+					{				
+						this.setPowerlinkmode(this.getPowerlinkmode() +1);
+					}else{
+						this.setPowerlinkmode(0);
+					}
+					
+					return;
+				}
+			}
+			
+			if(this.getPowerlinkmode() != 4)
+			{				
 				this.setPowerlinkmode(this.getPowerlinkmode() +1);
 			}else{
 				this.setPowerlinkmode(0);
