@@ -62,10 +62,16 @@ public class ItemCardEmpty extends ItemMFFSBase {
 				
 				((ItemCardSecurityLink)newcard.getItem()).setInformation(newcard, world, "x:"+i+" y:"+j+" z:"+k, ((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
 				
-				if (--itemstack.stackSize<=0) {
-					entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
-					} else if (!entityplayer.inventory.addItemStackToInventory(newcard))
-					entityplayer.dropPlayerItem(newcard);
+				
+				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
+				
+				
+				if (--itemstack.stackSize>0) {
+					if (!entityplayer.inventory.addItemStackToInventory(itemstack))
+					{
+						entityplayer.dropPlayerItem(itemstack);	
+					}
+				}
 
 
 				if (world.isRemote)
@@ -91,10 +97,15 @@ public class ItemCardEmpty extends ItemMFFSBase {
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSitemfc);
 				((ItemCardPowerLink)newcard.getItem()).setInformation(newcard, world, "x:"+i+" y:"+j+" z:"+k, ((TileEntityCapacitor)tileEntity).getCapacitor_ID());
 				
-				if (--itemstack.stackSize<=0) {
-					entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
-					} else if (!entityplayer.inventory.addItemStackToInventory(newcard))
-					entityplayer.dropPlayerItem(newcard);
+				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
+				
+				
+				if (--itemstack.stackSize>0) {
+					if (!entityplayer.inventory.addItemStackToInventory(itemstack))
+					{
+						entityplayer.dropPlayerItem(itemstack);	
+					}
+				}
 
 				if (world.isRemote)
 				entityplayer.addChatMessage("[Capacitor] Success: <Power-Link> Card create");
