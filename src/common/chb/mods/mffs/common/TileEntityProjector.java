@@ -21,10 +21,12 @@
 package chb.mods.mffs.common;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.Stack;
 
 import cpw.mods.fml.common.Side;
@@ -80,7 +82,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	private int capacity;
 
 	protected Stack<Integer> field_queue = new Stack<Integer>();
-
+	
 	public TileEntityProjector() {
 		Random random = new Random();
 
