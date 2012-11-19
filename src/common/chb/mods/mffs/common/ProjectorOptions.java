@@ -14,7 +14,7 @@ public enum ProjectorOptions {
 	Zapper("<touch damage>",ModularForceFieldSystem.MFFSProjectorOptionZapper," K KQK K "," C CdC C "),
 	Subwater("<Sponge>",ModularForceFieldSystem.MFFSProjectorOptionSubwater," K KcK K "," C CcC C "),
 	Dome("<Field Manipulator>",ModularForceFieldSystem.MFFSProjectorOptionDome," K KCK K "," C CEC C "),
-	Cutter("<Block Breaker>",ModularForceFieldSystem.MFFSProjectorOptionCutter," K KbK K ","C CbC C "),
+	Cutter("<Block Breaker>",ModularForceFieldSystem.MFFSProjectorOptionCutter," K KbK K "," C CbC C "),
 	FieldJammer("<Force Field Jammer>",ModularForceFieldSystem.MFFSProjectorOptionForceFieldJammer," J JvJ J "," a ava a "),
 	Camouflage("<Camouflage>",ModularForceFieldSystem.MFFSProjectorOptionCamouflage," K KRK K "," C CGC C "),
     FieldFusion("<Field Fusion>",ModularForceFieldSystem.MFFSProjectorOptionFieldFusion," K KDK K "," C CFC C "),

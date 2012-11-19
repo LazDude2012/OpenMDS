@@ -15,11 +15,12 @@ public final class RecipesFactory {
 	
 	public static boolean addRecipe(String Recipe,int count, int forMod,Block block,Item item){
 		
-		if(forMod>2 && forMod < 0)return false;
-		if(Recipe.isEmpty())return false;
-		if(count < 0)return false;
-        if(block == null && item == null)return false;
-		if(block != null && item != null)return false;
+		if((forMod>2 && forMod < 0) || (count < 0) || (block == null && item == null) 
+		   || (block != null && item != null) || (Recipe.length()!= 9))
+		{
+			System.out.println("[ModularForceFieldSystem] Recipes generating Fail for :" + block +"/"+item);	
+			return false;
+		}
 		
 		ItemStack itemstack = null;
 		
@@ -48,6 +49,7 @@ public final class RecipesFactory {
 					'l', Block.glass,
 					'm', Item.redstone,
 					'n', Block.lever,
+					'o', Item.paper,
 					
 					'u', ModularForceFieldSystem.MFFSitemForcicium,
 					'v', ModularForceFieldSystem.MFFSitemFocusmatix,
@@ -129,6 +131,7 @@ public final class RecipesFactory {
 				'l', Block.glass,
 				'm', Item.redstone,
 				'n', Block.lever,
+				'o', Item.paper,
 				
 				'u', ModularForceFieldSystem.MFFSitemForcicium,
 				'v', ModularForceFieldSystem.MFFSitemFocusmatix,

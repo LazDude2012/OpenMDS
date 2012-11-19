@@ -21,8 +21,8 @@ public class MFFSRecipes {
 		OreDictionary.registerOre("MonazitOre", ModularForceFieldSystem.MFFSMonazitOre);
 		
 		RecipesFactory.addRecipe("uuuuiuuuu", 1, 0, null, ModularForceFieldSystem.MFFSitemForcePowerCrystal);
-		RecipesFactory.addRecipe("xxxxxxxxx", 1, 0, null, ModularForceFieldSystem.MFFSProjectorFFStrenght);
-		RecipesFactory.addRecipe("xxx   xxx", 1, 0, null, ModularForceFieldSystem.MFFSProjectorFFDistance);
+		RecipesFactory.addRecipe("vvvvvvvvv", 1, 0, null, ModularForceFieldSystem.MFFSProjectorFFStrenght);
+		RecipesFactory.addRecipe("vvv   vvv", 1, 0, null, ModularForceFieldSystem.MFFSProjectorFFDistance);
 		
 		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemcardempty),new Object[] { new ItemStack(ModularForceFieldSystem.MFFSitemfc) });
 		CraftingManager.getInstance().addShapelessRecipe(new ItemStack(ModularForceFieldSystem.MFFSitemcardempty),new Object[] { new ItemStack(ModularForceFieldSystem.MFFSItemIDCard) });
@@ -47,13 +47,13 @@ public class MFFSRecipes {
 
 	if(ModularForceFieldSystem.uefound){
 		
-		RecipesFactory.addRecipe("AAAAxAAHA", 1, 1, null, ModularForceFieldSystem.MFFSitemForcicumCell);
-		RecipesFactory.addRecipe(" C CGC C ", 9, 1, null, ModularForceFieldSystem.MFFSitemupgradeexctractorboost);
-		RecipesFactory.addRecipe(" C CxC C ", 1, 1, null, ModularForceFieldSystem.MFFSitemupgradecapcap);
-		RecipesFactory.addRecipe("NNNCICCEC", 1, 1, null, ModularForceFieldSystem.MFFSitemupgradecaprange);
-		RecipesFactory.addRecipe("BlBlilBlB", 64, 1, null, ModularForceFieldSystem.MFFSitemFocusmatix);
-		RecipesFactory.addRecipe("ooooEoooo", 1, 1, null, ModularForceFieldSystem.MFFSitemcardempty);
-		RecipesFactory.addRecipe("mOnDxDDED", 1, 1, null, ModularForceFieldSystem.MFFSitemWrench);
+		RecipesFactory.addRecipe("AAAAxAAHA", 1, 2, null, ModularForceFieldSystem.MFFSitemForcicumCell);
+		RecipesFactory.addRecipe(" C CGC C ", 9, 2, null, ModularForceFieldSystem.MFFSitemupgradeexctractorboost);
+		RecipesFactory.addRecipe(" C CxC C ", 1, 2, null, ModularForceFieldSystem.MFFSitemupgradecapcap);
+		RecipesFactory.addRecipe("NNNCICCEC", 1, 2, null, ModularForceFieldSystem.MFFSitemupgradecaprange);
+		RecipesFactory.addRecipe("BlBlilBlB", 64, 2, null, ModularForceFieldSystem.MFFSitemFocusmatix);
+		RecipesFactory.addRecipe("ooooEoooo", 1, 2, null, ModularForceFieldSystem.MFFSitemcardempty);
+		RecipesFactory.addRecipe("mOnDxDDED", 1, 2, null, ModularForceFieldSystem.MFFSitemWrench);
 	}
 	
 	
