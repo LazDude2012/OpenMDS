@@ -59,68 +59,6 @@ public class Functions {
 	}
 
 
-	public static IInventory searchinventory(TileEntityMachines tileEntity, World worldObj,boolean faceinginventory) {
-		int facing = tileEntity.getSide();
-
-		if(faceinginventory)
-		{
-			switch(facing)
-			{
-			case 0:facing=1;break;
-			case 1:facing=0;break;
-			case 2:facing=3;break;
-			case 3:facing=2;break;
-			case 4:facing=5;break;
-			case 5:facing=4;break;
-			}
-		}
-
-		switch (facing) {
-		case 0:
-			if (worldObj.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord + 1, tileEntity.zCoord) instanceof IInventory) {
-				TileEntity inventory = worldObj.getBlockTileEntity(tileEntity.xCoord,
-						tileEntity.yCoord + 1, tileEntity.zCoord);
-				return (IInventory) inventory;
-			}
-			break;
-		case 1:
-			if (worldObj.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord - 1, tileEntity.zCoord) instanceof IInventory) {
-				TileEntity inventory = worldObj.getBlockTileEntity(tileEntity.xCoord,
-						tileEntity.yCoord - 1, tileEntity.zCoord);
-				return (IInventory) inventory;
-			}
-			break;
-		case 2:
-			if (worldObj.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord + 1) instanceof IInventory) {
-				TileEntity inventory = worldObj.getBlockTileEntity(tileEntity.xCoord,
-						tileEntity.yCoord, tileEntity.zCoord + 1);
-				return (IInventory) inventory;
-			}
-			break;
-		case 3:
-			if (worldObj.getBlockTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord - 1) instanceof IInventory) {
-				TileEntity inventory = worldObj.getBlockTileEntity(tileEntity.xCoord,
-						tileEntity.yCoord, tileEntity.zCoord - 1);
-				return (IInventory) inventory;
-			}
-			break;
-		case 4:
-			if (worldObj.getBlockTileEntity(tileEntity.xCoord + 1, tileEntity.yCoord, tileEntity.zCoord) instanceof IInventory) {
-				TileEntity inventory = worldObj.getBlockTileEntity(tileEntity.xCoord + 1,
-						tileEntity.yCoord, tileEntity.zCoord);
-				return (IInventory) inventory;
-			}
-			break;
-		case 5:
-			if (worldObj.getBlockTileEntity(tileEntity.xCoord - 1, tileEntity.yCoord, tileEntity.zCoord) instanceof IInventory) {
-				TileEntity inventory = worldObj.getBlockTileEntity(tileEntity.xCoord - 1,
-						tileEntity.yCoord, tileEntity.zCoord);
-				return (IInventory) inventory;
-			}
-			break;
-		}
-		return null;
-	}
 	
 	
 	public static boolean setIteminSlot(ItemStack itemstack, EntityPlayer entityplayer,TileEntity tileEntity,int Slot, String Cardname)

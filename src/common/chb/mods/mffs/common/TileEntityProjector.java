@@ -1637,11 +1637,10 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 									ffb.getZ(), 0);
 
 							if (isOptionBlockdropper() && stacks != null) {
-								IInventory inventory = Functions
-										.searchinventory(this, worldObj, false);
+								IInventory inventory = InventoryHelper.findAttachedInventory(worldObj,this.xCoord,this.yCoord,this.zCoord);
 								if (inventory != null) {
 									if (inventory.getSizeInventory() > 0) {
-										addtoinventory(inventory, stacks);
+										InventoryHelper.addStacksToInventory(inventory, stacks);
 									}
 								}
 							}
@@ -1672,39 +1671,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		}
 	}
 
-	public boolean addtoinventory(IInventory inventory,
-			ArrayList<ItemStack> itemstacks) {
-		for (int a = 0; a <= inventory.getSizeInventory() - 1; a++) {
-			ItemStack inventorystack = inventory.getStackInSlot(a);
 
-			for (ItemStack items : itemstacks) {
-				if (items != null) {
-					if (inventorystack != null) {
-						if (inventorystack.getItem() == items.getItem()
-								&& inventorystack.getItemDamage() == items
-										.getItemDamage()
-								&& inventorystack.stackSize + 1 <= inventorystack
-										.getMaxStackSize()
-								&& inventorystack.stackSize + 1 <= inventory
-										.getInventoryStackLimit()) {
-							inventorystack.stackSize++;
-
-							items.stackSize--;
-							return true;
-						}
-					} else {
-						inventorystack = items.copy();
-						inventorystack.stackSize = 1;
-						items.stackSize--;
-						inventory.setInventorySlotContents(a, inventorystack);
-
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
 
 	public void destroyField() {
 		while(!field_queue.isEmpty()){
