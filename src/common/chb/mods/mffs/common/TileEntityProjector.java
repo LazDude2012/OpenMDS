@@ -46,7 +46,8 @@ import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
-import chb.mods.mffs.api.IModularProjector;
+import chb.mods.mffs.common.modules.Module3DBase;
+import chb.mods.mffs.common.modules.ModuleBase;
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
@@ -82,6 +83,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	private int capacity;
 
 	protected Stack<Integer> field_queue = new Stack<Integer>();
+	protected Set<PointXYZ> field_interior = new HashSet<PointXYZ>();
+	protected Set<PointXYZ> field_def = new HashSet<PointXYZ>();
 	
 	public TileEntityProjector() {
 		Random random = new Random();
@@ -256,6 +259,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		this.linkPower = linkPower;
 	}
 
+	@Override
 	public int getLinkCapacitor_ID() {
 		return linkCapacitor_ID;
 	}
@@ -296,6 +300,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		projektoroption[3] = b;
 	}
 
+	@Override
 	public int getProjektor_ID() {
 		return Projektor_ID;
 	}
@@ -336,7 +341,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		return burnout;
 	}
 
-	public void setBurnout(boolean b) {
+	public void setBurnedOut(boolean b) {
 		burnout = b;
 		NetworkHandlerServer.updateTileEntityField(this, "burnout");
 	}
@@ -384,7 +389,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	public void ProjektorBurnout() {
-		this.setBurnout(true);
+		this.setBurnedOut(true);
 		dropplugins();
 	}
 
@@ -501,108 +506,25 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			setLinkGenerator(false);
 		}
 
-		if (getStackInSlot(1) != null) {
-			if (getStackInSlot(1).getItem() instanceof ItemProjectorModuleBase) {
-				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTypwall) {
-					if(getProjektor_Typ()!= 1) {setProjektor_Typ(1);}
-					setforcefieldblock_meta(ForceFieldTyps.Default.ordinal());
-					setOptionBlockdropper(true);
-				}
-				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTypdeflector) {
-					if(getProjektor_Typ()!= 2) {setProjektor_Typ(2);}
-					setforcefieldblock_meta(ForceFieldTyps.Default.ordinal());
-					setOptionBlockdropper(true);
-				}
-				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTyptube) {
-					if(getProjektor_Typ()!= 3) {setProjektor_Typ(3);}
-					setforcefieldblock_meta(ForceFieldTyps.Default.ordinal());
-					setOptionBlockdropper(false);
-				}
-				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTypkube) {
-					if(getProjektor_Typ()!= 4) {setProjektor_Typ(4);}
-					setforcefieldblock_meta(ForceFieldTyps.Area.ordinal());
-					setOptionBlockdropper(false);
-				}
-				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTypsphere) {
-					if(getProjektor_Typ()!= 5) {setProjektor_Typ(5);}
-					setforcefieldblock_meta(ForceFieldTyps.Area.ordinal());
-					setOptionBlockdropper(false);
-				}
-				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTypcontainment) {
-					if(getProjektor_Typ()!= 6) {setProjektor_Typ(6);}
-					setforcefieldblock_meta(ForceFieldTyps.Containment.ordinal());
-					setOptionBlockdropper(true);
-				}
-				if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSProjectorTypAdvCube) {
-					if(getProjektor_Typ()!= 7) {setProjektor_Typ(7);}
-					setforcefieldblock_meta(ForceFieldTyps.Area.ordinal());
-					setOptionBlockdropper(false);
-				}
+		
+		if (hasValidTypeMod()){
+	           
+			if(getProjektor_Typ()!= ProjectorTyp.TypfromItem(get_type()).ProTyp) 
+			setProjektor_Typ(ProjectorTyp.TypfromItem(get_type()).ProTyp);
+			
+			if(getforcefieldblock_meta() != get_type().getForceFieldTyps().ordinal())
+			setforcefieldblock_meta(get_type().getForceFieldTyps().ordinal());
 
-				worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
-			} else {
-				if(getProjektor_Typ()!= 0) {setProjektor_Typ(0);}
-			}
-		} else {
+			setOptionBlockdropper(ProjectorTyp.TypfromItem(get_type()).Blockdropper);
+			worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
+			
+		}else{
 			if(getProjektor_Typ()!= 0) {setProjektor_Typ(0);}
 			worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
 		}
+		
+		
 
-		if (getStackInSlot(5) != null) {
-			if (getStackInSlot(5).getItem() == ModularForceFieldSystem.MFFSProjectorFFDistance) {
-				switch(getProjektor_Typ())
-				{
-				case 1:setForceField_distance(getStackInSlot(5).stackSize);break;
-				case 2:setForceField_distance(getStackInSlot(5).stackSize);break;
-				case 3:setForceField_distance(getStackInSlot(5).stackSize+2);break;
-				case 4:setForceField_distance(getStackInSlot(5).stackSize+4);break;
-				case 5:setForceField_distance(getStackInSlot(5).stackSize+4);break;
-				case 6:setForceField_distance(getStackInSlot(5).stackSize);break;
-				case 7:setForceField_distance(getStackInSlot(5).stackSize);break;
-				}
-			} else {
-				dropplugins(5,this);
-			}
-		} else {
-			switch(getProjektor_Typ())
-			{
-			case 1:setForceField_distance(0);break;
-			case 2:setForceField_distance(0);break;
-			case 3:setForceField_distance(2);break;
-			case 4:setForceField_distance(4);break;
-			case 5:setForceField_distance(4);break;
-			case 6:setForceField_distance(0);break;
-			case 7:setForceField_distance(0);break;
-			}
-		}
-
-		if (getStackInSlot(6) != null) {
-			if (getStackInSlot(6).getItem() == ModularForceFieldSystem.MFFSProjectorFFStrenght) {
-				switch(getProjektor_Typ())
-				{
-				case 1:setForceField_strength(getStackInSlot(6).stackSize+1);break;
-				case 2:setForceField_strength(getStackInSlot(6).stackSize+1);break;
-				case 3:setForceField_strength(getStackInSlot(6).stackSize);break;
-				case 4:setForceField_strength(getStackInSlot(6).stackSize+1);break;
-				case 5:setForceField_strength(getStackInSlot(6).stackSize+1);break;
-				case 6:setForceField_strength(getStackInSlot(6).stackSize+2);break;
-				case 7:setForceField_strength(getStackInSlot(6).stackSize+3);break;
-				}
-			} else {
-				dropplugins(6,this);
-			}
-		} else {
-			switch(getProjektor_Typ())
-			{
-			case 1:setForceField_strength(1);break;
-			case 2:setForceField_strength(1);break;
-			case 3:setForceField_strength(0);break;
-			case 4:setForceField_strength(1);break;
-			case 5:setForceField_strength(1);break;
-			case 6:setForceField_strength(2);break;
-			case 7:setForceField_strength(3);break;
-			}
-		}
 
 		// Focus function
 
@@ -999,7 +921,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				addtogrid();
 				checkslots(true);
 				if (this.isActive()) {
-					fieldcalculation(getProjektor_Typ(),true);
+					calculateField(true);
 				}
 				this.setCreate(false);
 			}
@@ -1040,8 +962,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				if (isActive() != true) {
 					setActive(true);
 					switchdelay = 0;
-					if(fieldcalculation(getProjektor_Typ(),true))
-					{FieldGenerate(true);}
+					if(calculateField(true))
+					{
+					System.out.println("Fieldgenerate");	
+					FieldGenerate(true);
+					}
 					worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
 				}
 			}
@@ -1087,423 +1012,199 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 		switchdelay++;
 	}
-
-	public boolean fieldcalculation(int typ, boolean addtoMap) {
-		if (!field_queue.isEmpty()) {
-			field_queue.clear();
+	
+	private boolean calculateField(boolean addtoMap){ //Should only be called when being turned on after setting changes or on first on.
+		field_def.clear();
+		field_interior.clear();
+		if (hasValidTypeMod()){
+			Set<PointXYZ> tField = new HashSet<PointXYZ>();
+			Set<PointXYZ> tFieldInt = new HashSet<PointXYZ>();
+			
+			if (get_type() instanceof Module3DBase){
+				((Module3DBase)get_type()).calculateField(this, tField, tFieldInt);
+			}else{
+				get_type().calculateField(this, tField);
+			}
+			
+			for (PointXYZ pnt : tField){
+				
+				PointXYZ tp  = new PointXYZ(pnt.X+this.xCoord,pnt.Y+this.yCoord,pnt.Z+this.zCoord);
+				
+				if (Forcefielddefine(tp,addtoMap))
+					{
+					field_def.add(tp);
+					}else{return false;}
+			}
+			for (PointXYZ pnt : tFieldInt){
+				
+				PointXYZ tp  = new PointXYZ(pnt.X+this.xCoord,pnt.Y+this.yCoord,pnt.Z+this.zCoord);
+				
+				if (calculateBlock(tp))
+					{field_interior.add(tp);}else{return false;}
+			}
+			
+			System.out.println(field_def.size());
+			System.out.println(field_interior.size());
+			
+			return true;
 		}
+		return false;
+	}
 
-		int tpx = 0;
-		int tpy = 0;
-		int tpz = 0;
-		int x_offset_s = 0;
-		int y_offset_s = 0;
-		int z_offset_s = 0;
-		int x_offset_e = 0;
-		int y_offset_e = 0;
-		int z_offset_e = 0;
+	
+	public boolean calculateBlock(PointXYZ pnt){
 
-		switch (typ) {
-		// 1 Wall
-		// 2 Deflect
-		// 3 Tube
-		// 4 Cube
-		// 5 Sphere
-		// 6 Conataiment
-		// 7 Advance Cube
+		if (isOptionSubwater()) 
+		removeLiquid(pnt.X,pnt.Y,pnt.Z);
+    	
+		
+		if(this.isFieldFusion())
+		ForceFieldFusion(pnt.X,pnt.Y,pnt.Z);
 
-		case 1: // Wall
-
-			for (int x1 = 0 - getFocusleft(); x1 < getFocusright() + 1; x1++) {
-				for (int z1 = 0 - getFocusdown(); z1 < getFocusup() + 1; z1++) {
-					for (int y1 = 1; y1 < getForceField_strength() + 1; y1++) {
-						if (this.getSide() == 0) {
-							tpy = y1 - y1 - y1 - getForceField_distance();
-							tpx = x1;
-							tpz = z1 - z1 - z1;
-						}
-
-						if (this.getSide() == 1) {
-							tpy = y1 + getForceField_distance();
-							tpx = x1;
-							tpz = z1 - z1 - z1;
-						}
-
-						if (this.getSide() == 2) {
-							tpz = y1 - y1 - y1 - getForceField_distance();
-							tpx = x1 - x1 - x1;
-							tpy = z1;
-						}
-
-						if (this.getSide() == 3) {
-							tpz = y1 + getForceField_distance();
-							tpx = x1;
-							tpy = z1;
-						}
-
-						if (this.getSide() == 4) {
-							tpx = y1 - y1 - y1 - getForceField_distance();
-							tpz = x1;
-							tpy = z1;
-						}
-						if (this.getSide() == 5) {
-							tpx = y1 + getForceField_distance();
-							tpz = x1 - x1 - x1;
-							tpy = z1;
-						}
-
-						if ((this.getSide() == 0 || this.getSide() == 1)
-								&& ((tpx == 0 && tpz != 0)
-										|| (tpz == 0 && tpx != 0) || (tpz == 0 && tpx == 0))
-								|| (this.getSide() == 2 || this.getSide() == 3)
-								&& ((tpx == 0 && tpy != 0)
-										|| (tpy == 0 && tpx != 0) || (tpy == 0 && tpx == 0))
-								|| (this.getSide() == 4 || this.getSide() == 5)
-								&& ((tpz == 0 && tpy != 0)
-										|| (tpy == 0 && tpz != 0) || (tpy == 0 && tpz == 0)))
-
-						{
-						     if(!Forcefielddefine(xCoord + tpx, yCoord + tpy, zCoord + tpz,addtoMap))
-						     {return false;}
-						}
-					}
-				}
-			}
-			break;
-		case 2: // Deflect
-
-			for (int x1 = 0 - getFocusleft(); x1 < getFocusright() + 1; x1++) {
-				for (int z1 = 0 - getFocusup(); z1 < getFocusdown() + 1; z1++) {
-					if (this.getSide() == 0) {
-						tpy = 0 - getForceField_distance() - 1;
-						tpx = x1;
-						tpz = z1;
-					}
-
-					if (this.getSide() == 1) {
-						tpy = 0 + getForceField_distance() + 1;
-						tpx = x1;
-						tpz = z1;
-					}
-
-					if (this.getSide() == 2) {
-						tpz = 0 - getForceField_distance() - 1;
-						tpy = z1 - z1 - z1;
-						tpx = x1 - x1 - x1;
-					}
-
-					if (this.getSide() == 3) {
-						tpz = 0 + getForceField_distance() + 1;
-						tpy = z1 - z1 - z1;
-						tpx = x1;
-					}
-
-					if (this.getSide() == 4) {
-						tpx = 0 - getForceField_distance() - 1;
-						tpy = z1 - z1 - z1;
-						tpz = x1;
-					}
-					if (this.getSide() == 5) {
-						tpx = 0 + getForceField_distance() + 1;
-						tpy = z1 - z1 - z1;
-						tpz = x1 - x1 - x1;
-					}
-
-				     if(!Forcefielddefine(xCoord + tpx, yCoord + tpy, zCoord + tpz,addtoMap))
-				     {return false;}
-				}
-			}
-			break;
-		case 3: // Tube
-
-			if (this.getSide() == 0 || this.getSide() == 1) {
-				tpy = getForceField_strength();
-				tpx = getForceField_distance();
-				tpz = getForceField_distance();
-
-				y_offset_s = getForceField_strength() - getForceField_strength();
-				if (this.isOptionFieldcut()) {
-					if (this.getSide() == 0) {
-						y_offset_e = getForceField_strength();
-					}
-					if (this.getSide() == 1) {
-						y_offset_s = getForceField_strength();
-					}
-				}
-			}
-
-			if (this.getSide() == 2 || this.getSide() == 3) {
-				tpy = getForceField_distance();
-				tpz = getForceField_strength();
-				tpx = getForceField_distance();
-
-				z_offset_s = getForceField_strength() - getForceField_strength();
-				if (this.isOptionFieldcut()) {
-					if (this.getSide() == 2) {
-						z_offset_e = getForceField_strength();
-					}
-					if (this.getSide() == 3) {
-						z_offset_s = getForceField_strength();
-					}
-				}
-			}
-			if (this.getSide() == 4 || this.getSide() == 5) {
-				tpy = getForceField_distance();
-				tpz = getForceField_distance();
-				tpx = getForceField_strength();
-
-				x_offset_s = getForceField_strength() - getForceField_strength();
-				if (this.isOptionFieldcut()) {
-					if (this.getSide() == 4) {
-						x_offset_e = getForceField_strength();
-					}
-					if (this.getSide() == 5) {
-						x_offset_s = getForceField_strength();
-					}
-				}
-			}
-
-			for (int z1 = 0 - tpz + z_offset_s; z1 <= tpz - z_offset_e; z1++) {
-				for (int x1 = 0 - tpx + x_offset_s; x1 <= tpx - x_offset_e; x1++) {
-					for (int y1 = 0 - tpy + y_offset_s; y1 <= tpy - y_offset_e; y1++) {
-						int tpx_temp = tpx;
-						int tpy_temp = tpy;
-						int tpz_temp = tpz;
-
-						if (tpx == getForceField_strength()
-								&& (this.getSide() == 4 || this.getSide() == 5)) {
-							tpx_temp += 1;
-						}
-						if (tpy == getForceField_strength()
-								&& (this.getSide() == 0 || this.getSide() == 1)) {
-							tpy_temp += 1;
-						}
-						if (tpz == getForceField_strength()
-								&& (this.getSide() == 2 || this.getSide() == 3)) {
-							tpz_temp += 1;
-						}
-
-						if ((x1 == 0 - tpx_temp || x1 == tpx_temp
-								|| y1 == 0 - tpy_temp || y1 == tpy_temp
-								|| z1 == 0 - tpz_temp || z1 == tpz_temp)
-								&& ((yCoord + y1) >= 0)) {
-						     if(!Forcefielddefine(xCoord + x1, yCoord + y1, zCoord + z1,addtoMap))
-						     {return false;}
-						} else {
-							if(this.isFieldFusion())
-							{
-								ForceFieldFusion(xCoord + x1, yCoord + y1, zCoord + z1);
-							}
-
-							if (isOptionSubwater()) {
-								removeLiquid(xCoord + x1, yCoord + y1, zCoord
-										+ z1);
-							}
-						}
-					}
-				}
-			}
-			break;
-		case 4:// cube
-
-			int radius_temp = 0;
-			int yradius_cube = getForceField_distance();
-
-			if (yCoord + getForceField_distance() > 255) {
-				radius_temp = 255 - (yCoord + getForceField_distance());
-			}
-
-			if (isOptionFieldcut()) {
-				yradius_cube = 0;
-			}
-
-			for (int y1 = 0 - yradius_cube; y1 <= getForceField_distance() + radius_temp; y1++) {
-				for (int x1 = 0 - getForceField_distance(); x1 <= getForceField_distance(); x1++) {
-					for (int z1 = 0 - getForceField_distance(); z1 <= getForceField_distance(); z1++) {
-						if ((x1 == 0 - getForceField_distance() || x1 == getForceField_distance()
-								|| y1 == 0 - getForceField_distance()
-								|| y1 == getForceField_distance() + radius_temp
-								|| z1 == 0 - getForceField_distance() || z1 == getForceField_distance())
-								&& ((yCoord + y1) >= 0)) {
-						     if(!Forcefielddefine(xCoord + x1, yCoord + y1, zCoord + z1,addtoMap))
-						     {return false;}
-						} else {
-							if(this.isFieldFusion())
-							{
-								ForceFieldFusion(xCoord + x1, yCoord + y1, zCoord + z1);
-							}
-
-							if (isOptionSubwater()) {
-								removeLiquid(xCoord + x1, yCoord + y1, zCoord
-										+ z1);
-							}
-						}
-					}
-				}
-			}
-			break;
-		case 5: // Sphere
-
-			int yradius_sphere = this.getForceField_distance();
-
-			if (isOptionFieldcut()) {
-				yradius_sphere = 0;
-			}
-			for (int y1 = 0 - yradius_sphere; y1 <= getForceField_distance(); y1++) {
-				for (int x1 = 0 - getForceField_distance(); x1 <= getForceField_distance(); x1++) {
-					for (int z1 = 0 - getForceField_distance(); z1 <= getForceField_distance(); z1++) {
-						int dx = (xCoord + x1) - xCoord;
-						int dy = (yCoord + y1) - yCoord;
-						int dz = (zCoord + z1) - zCoord;
-
-						int dist = (int) Math.round(Math.sqrt(dx * dx + dy * dy + dz * dz));
-
-						if (dist <= getForceField_distance() && dist > (getForceField_distance() - getForceField_strength())
-								&& ((yCoord + y1) >= 0)) {
-						     if(!Forcefielddefine(xCoord + x1, yCoord + y1, zCoord + z1,addtoMap))
-						     {return false;}
-						}else if(dist <= getForceField_distance() && yCoord + y1 >= 0){
-							if(this.isFieldFusion())
-							{
-								ForceFieldFusion(xCoord + x1, yCoord + y1, zCoord + z1);
-							}
-
-							if (isOptionSubwater()) {
-								removeLiquid(xCoord + x1, yCoord + y1, zCoord
-										+ z1);
-							}
-						}
-					}
-				}
-			}
-			break;
-		case 6: //Conataiment
-		case 7: // Adv.Cube
-
-			for (int y1 = 0; y1 <= getForceField_strength(); y1++) {
-				for (int x1 = 0 - getFocusleft(); x1 < getFocusright() + 1; x1++) {
-			    	for (int z1 = 0 - getFocusup(); z1 < getFocusdown() + 1; z1++) {
-						if (this.getSide() == 0) {
-							if(this.ProjektorTyp==6)
-							{
-								tpy = y1 - y1 - y1 - getForceField_distance()-1;
-							}else{
-								tpy = y1 - y1 - y1+1;
-							}
-							tpx = x1;
-							tpz = z1;
-						}
-
-						if (this.getSide() == 1) {
-							if(this.ProjektorTyp==6)
-							{
-								tpy = y1 + getForceField_distance()+1;
-							}else{
-								tpy = y1-1;
-							}
-							tpx = x1;
-							tpz = z1;
-						}
-
-						if (this.getSide() == 2) {
-							if(this.ProjektorTyp==6)
-							{
-								tpz = y1 - y1 - y1 - getForceField_distance()-1;
-							}else{
-								tpz = y1 - y1 - y1+1;
-							}
-
-							tpy = z1 - z1 - z1;
-							tpx = x1 - x1 - x1;
-						}
-
-						if (this.getSide() == 3) {
-							if(this.ProjektorTyp==6)
-							{
-								tpz = y1 + getForceField_distance()+1;
-							}else{
-								tpz = y1-1;
-							}
-
-							tpy = z1 - z1 - z1;
-							tpx = x1;
-						}
-
-						if (this.getSide() == 4) {
-							if(this.ProjektorTyp==6)
-							{
-								tpx = y1 - y1 - y1 - getForceField_distance()-1;
-							}else{
-								tpx = y1 - y1 - y1+1;
-							}
-
-							tpy = z1 - z1 - z1;
-							tpz = x1;
-						}
-						if (this.getSide() == 5) {
-							if(this.ProjektorTyp==6)
-							{
-								tpx = y1 + getForceField_distance()+1;
-							}else{
-								tpx = y1-1;
-							}
-							tpy = z1 - z1 - z1;
-							tpz = x1 -x1 - x1;
-						}
-
-						if(y1==0 || y1 == getForceField_strength() || x1== 0 - getFocusleft() || x1==  getFocusright()  || z1 == 0 - getFocusup() || z1 == getFocusdown())
-						{
-							if(this.isOptionFieldcut() && this.getProjektor_Typ() == 7)
-	                        {
-								switch(this.getSide())
-								{
-									case 0:
-										if((yCoord + tpy) > this.yCoord )
-										continue;
-									break;
-									case 1:
-										if((yCoord + tpy) < this.yCoord )
-										continue;
-									break;
-									case 2:
-										if((zCoord + tpz) > this.zCoord )
-										continue;
-									break;
-									case 3:
-										if((zCoord + tpz) < this.zCoord )
-										continue;
-									break;
-									case 4:
-										if((xCoord + tpx) > this.xCoord )
-										continue;
-									break;
-									case 5:
-										if((xCoord + tpx) < this.xCoord )
-										continue;
-									break;
-								}
-							}
-
-					     if(!Forcefielddefine(xCoord + tpx, yCoord + tpy, zCoord + tpz,addtoMap))
-					     {return false;}
-						}else {
-							if(this.isFieldFusion())
-							{
-								ForceFieldFusion(xCoord + tpx, yCoord + tpy, zCoord + tpz);
-							}
-
-							if (isOptionSubwater()) {
-								removeLiquid(xCoord + tpx, yCoord + tpy, zCoord + tpz);
-							}
-						}
-			    	}
-				}
-			}
-
-		break;
-		}
+		
 		return true;
 	}
+	
+
+
+//		int tpx = 0;
+//		int tpy = 0;
+//		int tpz = 0;
+//		int x_offset_s = 0;
+//		int y_offset_s = 0;
+//		int z_offset_s = 0;
+//		int x_offset_e = 0;
+//		int y_offset_e = 0;
+//		int z_offset_e = 0;
+//
+
+//		case 6: //Conataiment
+//		case 7: // Adv.Cube
+//
+//			for (int y1 = 0; y1 <= getForceField_strength(); y1++) {
+//				for (int x1 = 0 - getFocusleft(); x1 < getFocusright() + 1; x1++) {
+//			    	for (int z1 = 0 - getFocusup(); z1 < getFocusdown() + 1; z1++) {
+//						if (this.getSide() == 0) {
+//							if(this.ProjektorTyp==6)
+//							{
+//								tpy = y1 - y1 - y1 - getForceField_distance()-1;
+//							}else{
+//								tpy = y1 - y1 - y1+1;
+//							}
+//							tpx = x1;
+//							tpz = z1;
+//						}
+//
+//						if (this.getSide() == 1) {
+//							if(this.ProjektorTyp==6)
+//							{
+//								tpy = y1 + getForceField_distance()+1;
+//							}else{
+//								tpy = y1-1;
+//							}
+//							tpx = x1;
+//							tpz = z1;
+//						}
+//
+//						if (this.getSide() == 2) {
+//							if(this.ProjektorTyp==6)
+//							{
+//								tpz = y1 - y1 - y1 - getForceField_distance()-1;
+//							}else{
+//								tpz = y1 - y1 - y1+1;
+//							}
+//
+//							tpy = z1 - z1 - z1;
+//							tpx = x1 - x1 - x1;
+//						}
+//
+//						if (this.getSide() == 3) {
+//							if(this.ProjektorTyp==6)
+//							{
+//								tpz = y1 + getForceField_distance()+1;
+//							}else{
+//								tpz = y1-1;
+//							}
+//
+//							tpy = z1 - z1 - z1;
+//							tpx = x1;
+//						}
+//
+//						if (this.getSide() == 4) {
+//							if(this.ProjektorTyp==6)
+//							{
+//								tpx = y1 - y1 - y1 - getForceField_distance()-1;
+//							}else{
+//								tpx = y1 - y1 - y1+1;
+//							}
+//
+//							tpy = z1 - z1 - z1;
+//							tpz = x1;
+//						}
+//						if (this.getSide() == 5) {
+//							if(this.ProjektorTyp==6)
+//							{
+//								tpx = y1 + getForceField_distance()+1;
+//							}else{
+//								tpx = y1-1;
+//							}
+//							tpy = z1 - z1 - z1;
+//							tpz = x1 -x1 - x1;
+//						}
+//
+//						if(y1==0 || y1 == getForceField_strength() || x1== 0 - getFocusleft() || x1==  getFocusright()  || z1 == 0 - getFocusup() || z1 == getFocusdown())
+//						{
+//							if(this.isOptionFieldcut() && this.getProjektor_Typ() == 7)
+//	                        {
+//								switch(this.getSide())
+//								{
+//									case 0:
+//										if((yCoord + tpy) > this.yCoord )
+//										continue;
+//									break;
+//									case 1:
+//										if((yCoord + tpy) < this.yCoord )
+//										continue;
+//									break;
+//									case 2:
+//										if((zCoord + tpz) > this.zCoord )
+//										continue;
+//									break;
+//									case 3:
+//										if((zCoord + tpz) < this.zCoord )
+//										continue;
+//									break;
+//									case 4:
+//										if((xCoord + tpx) > this.xCoord )
+//										continue;
+//									break;
+//									case 5:
+//										if((xCoord + tpx) < this.xCoord )
+//										continue;
+//									break;
+//								}
+//							}
+//
+//					     if(!Forcefielddefine(xCoord + tpx, yCoord + tpy, zCoord + tpz,addtoMap))
+//					     {return false;}
+//						}else {
+//							if(this.isFieldFusion())
+//							{
+//								ForceFieldFusion(xCoord + tpx, yCoord + tpy, zCoord + tpz);
+//							}
+//
+//							if (isOptionSubwater()) {
+//								removeLiquid(xCoord + tpx, yCoord + tpy, zCoord + tpz);
+//							}
+//						}
+//			    	}
+//				}
+//			}
+//
+//		break;
+//		}
+//		return true;
+//	}
 
 	private void ForceFieldFusion(int x, int y, int z) {
 		ForceFieldBlockStack ffworldmap = WorldMap
@@ -1534,16 +1235,16 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		}
 	}
 
-	public boolean Forcefielddefine(int x, int y, int z,boolean addtoMap)
+	public boolean Forcefielddefine(PointXYZ png,boolean addtoMap)
 	{
-		if (ForceFieldOptions.CheckInnerSpace(x, y, z,this,worldObj,"jammer")) {
+		if (ForceFieldOptions.CheckInnerSpace(png.X, png.Y, png.Z,this,worldObj,"jammer")) {
 			ProjektorBurnout();
 			return false;
 		}
 
 		if(isFieldFusion())
 		{
-			if(ForceFieldOptions.CheckInnerSpace(x, y, z,this,worldObj,"fieldfuser"))
+			if(ForceFieldOptions.CheckInnerSpace(png.X, png.Y, png.Z,this,worldObj,"fieldfuser"))
 			{
 				return true;
 			}
@@ -1551,8 +1252,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 		ForceFieldBlockStack ffworldmap = WorldMap
 				.getForceFieldWorld(worldObj)
-				.getorcreateFFStackMap(x, y,
-						z);
+				.getorcreateFFStackMap(png.X, png.Y, png.Z);
 
 		if(!ffworldmap.isEmpty())
 		{
@@ -1565,10 +1265,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			ffworldmap.setSync(false);
 		}
 
-		field_queue.push(WorldMap.Cordhash(x, y, z));
+		field_queue.push(WorldMap.Cordhash(png.X, png.Y, png.Z));
 
 		return true;
 	}
+	
 
 	private void removeLiquid(int x, int y, int z) {
 		if (worldObj.getBlockMaterial(x, y, z).isLiquid()) {
@@ -1605,17 +1306,19 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				}
 
 				((TileEntityCapacitor) tileEntity).Energylost(cost
-						* field_queue.size());
+						* field_def.size());
 			}
 
 		blockcounter = 0;
 
-		for (Integer hasher : field_queue) {
+		for (PointXYZ pnt : field_def) {
 			if (blockcounter == ModularForceFieldSystem.forcefieldmaxblockpeerTick) {
 				break;
 			}
-			ForceFieldBlockStack ffb = WorldMap.getForceFieldWorld(worldObj).getForceFieldStackMap(hasher);
+			ForceFieldBlockStack ffb = WorldMap.getForceFieldWorld(worldObj).getForceFieldStackMap(pnt.X, pnt.Y, pnt.Z);
 
+
+			
 			if(ffb!=null){
 		     if (worldObj.getChunkFromBlockCoords(ffb.getX(), ffb.getZ()).isChunkLoaded) {
 		    	 if(!ffb.isEmpty()){
@@ -1706,7 +1409,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		 {
 			 if(tileentity.isActive())
 			 {
-				 tileentity.fieldcalculation(tileentity.getProjektor_Typ(),false);
+				 tileentity.calculateField(false);
 			 }
 		 }
 	  }
@@ -1931,7 +1634,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		break;
 
 		case 1:
-			if(par1ItemStack.getItem() instanceof ItemProjectorModuleBase )
+			if(par1ItemStack.getItem() instanceof ModuleBase )
 			return true;
 		break;
 
@@ -2003,4 +1706,47 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 		return 1;
 	}
+	
+	public boolean hasValidTypeMod(){
+		if (this.getStackInSlot(1) != null && getStackInSlot(1).getItem() instanceof ModuleBase)
+			return true;
+		return false;
+	}
+	
+	public ModuleBase get_type(){
+		if (hasValidTypeMod())
+			return (ModuleBase)this.getStackInSlot(1).getItem();
+		
+		return null;
+	}
+
+	
+	public int countItemsInSlot(Slots slt){
+		if (this.getStackInSlot(slt.slot) != null)
+			return this.getStackInSlot(slt.slot).stackSize;
+		return 0;
+	}
+
+	@Override
+	public Set<PointXYZ> getInteriorPoints() {
+		return field_interior;
+	}
+
+	
+	public TileEntityCapacitor getLinkedCapacitor(){
+		int capid = getLinkCapacitor_ID();
+		TileEntityCapacitor cap = Linkgrid.getWorldMap(getWorldObj()).getCapacitor().get(capid);
+		if (cap != null){
+			if (cap.getTransmitRange() >= Math.sqrt((cap.xCoord-xCoord)^2 + (cap.yCoord-yCoord)^2 + (cap.zCoord-zCoord)^2))
+				setLinkGenerator(true);
+				return cap;
+		}else{
+		  if (getStackInSlot(0) != null)
+			  this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+		}
+		setLinkGenerator(false);
+		return null;
+	}
+
+	
 }

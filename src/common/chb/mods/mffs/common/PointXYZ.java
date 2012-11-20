@@ -58,35 +58,6 @@ public class PointXYZ {
 		return new PointXYZ(X+localTo.X, Y+localTo.Y, Z+localTo.Z);
 	}
 	
-	public PointXYZ transformToFace(int face){ //From Y+
-		int tx = X;
-		int ty = Y;
-		int tz = Z;
-		switch (face){			
-		case 1:
-			ty = -Y;
-			break;
-		case 2:
-			tz = Y;
-			ty = -Z;
-			break;
-		case 3:
-			tz = -Y;
-			ty = -Z;
-			break;
-		case 4:
-			tz = Y;
-			ty = -Z;
-			tx = tz;
-			tz = -X;
-		case 5:
-			tz = Y;
-			ty = -Z;
-			tx = -tz;
-			tz = X;
-		}
-		return new PointXYZ(tx, ty, tz);
-	}
 	
 	@Override
 	public String toString(){

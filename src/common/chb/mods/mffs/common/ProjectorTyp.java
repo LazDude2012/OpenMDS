@@ -6,35 +6,47 @@ import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.TileEntity;
 
 
 
 public enum ProjectorTyp {
 	
-	containment("<Containment>","BBBBABBBB",ModularForceFieldSystem.MFFSProjectorTypcontainment),
-	AdvCube("<Adv.Cube>","AAAACAAAA",ModularForceFieldSystem.MFFSProjectorTypAdvCube),
-	cube("<Cube>","B B A B B",ModularForceFieldSystem.MFFSProjectorTypkube),
-	sphere("<Sphere>"," B BAB B ",ModularForceFieldSystem.MFFSProjectorTypsphere),
-	tube("<Tube>","AAA B AAA",ModularForceFieldSystem.MFFSProjectorTyptube),
-	deflector("<Deflector>","AAAABAAAA",ModularForceFieldSystem.MFFSProjectorTypdeflector),
-	wall("<Wall>","AA AA BB ",ModularForceFieldSystem.MFFSProjectorTypwall);
-
+	wall(1,"Wall","AA AA BB ",ModularForceFieldSystem.MFFSProjectorTypwall,true),
+	deflector(2,"Deflector","AAAABAAAA",ModularForceFieldSystem.MFFSProjectorTypdeflector,true),
+	tube(3,"Tube","AAA B AAA",ModularForceFieldSystem.MFFSProjectorTyptube,false),
+	cube(4,"Cube","B B A B B",ModularForceFieldSystem.MFFSProjectorTypkube,false),
+	sphere(5,"Sphere"," B BAB B ",ModularForceFieldSystem.MFFSProjectorTypsphere,false),
+	containment(6,"Containment","BBBBABBBB",ModularForceFieldSystem.MFFSProjectorTypcontainment,false),
+	AdvCube(7,"Adv.Cube","AAAACAAAA",ModularForceFieldSystem.MFFSProjectorTypAdvCube,false);
 	
-	
-	String displayName;
+	public String displayName;
 	String recipe;
 	Item item;
+	int ProTyp;
+	boolean Blockdropper;
 
-private ProjectorTyp( String dispNm,String recipe,Item item) {
 
-	
-	
-	
+private ProjectorTyp(int ProTyp,String dispNm,String recipe,Item item,boolean Blockdropper) {
+
 	this.displayName = dispNm;
 	this.recipe=recipe;
 	this.item = item;
-
+    this.ProTyp = ProTyp;
+    this.Blockdropper = Blockdropper;
 }
+
+public static ProjectorTyp TypfromItem(Item item){
+	for (ProjectorTyp mach : ProjectorTyp.values()) {
+		if (mach.item ==item)
+		{	
+			return mach;
+		}
+	}
+	return null;
+}
+
+
 
 public static void initialize(){
 	

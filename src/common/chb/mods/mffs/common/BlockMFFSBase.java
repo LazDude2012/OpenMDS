@@ -34,6 +34,8 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
+import chb.mods.mffs.common.modules.ModuleBase;
+
 public abstract class BlockMFFSBase extends BlockContainer {
 	private int blockid;
 	private int texturindex;
@@ -83,7 +85,7 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		}
 
 		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemProjectorModuleBase)) {
+				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ModuleBase)) {
 			return false;
 		}
 
