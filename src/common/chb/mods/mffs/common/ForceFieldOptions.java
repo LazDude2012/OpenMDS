@@ -308,10 +308,15 @@ public final class ForceFieldOptions {
 			if(dist > 64 || !tileentity.isActive() ||tileentity.getProjektor_Typ() == 1 ||  tileentity.getProjektor_Typ() == 2)
 			{continue;}
 
-			if(CheckInnerSpace (x, y , z,  tileentity, world,"BlockProtected"))
-			{
-
-				
+	Map<Integer, TileEntityProjector> InnerMap = null;
+	InnerMap = Linkgrid.getWorldMap(world).getProjektor();
+	
+	for (TileEntityProjector tileentity2 : InnerMap.values()) {
+		
+		boolean logicswitch = tileentity2.equals(tileentity);
+		
+		if (logicswitch && tileentity2.isActive()) {
+			
 			 if(entityplayer != null)
 			 {
 				
@@ -324,254 +329,14 @@ public final class ForceFieldOptions {
 				
 				 return true;	 
 			 }
-			}	
+		
+		}
+		
+       	}
+
 		}
 		
 		return false;
 	}
-	//-----------------------------------CheckInnerSpace Function---------------------------------------------------------------------
 
-	public static boolean CheckInnerSpace (int x, int y , int z, TileEntityProjector tileEntityProjector,World world, String Option)
-	{
-		Map<Integer, TileEntityProjector> InnerMap = null;
-
-		
-		if(Option.equalsIgnoreCase("BlockProtected"))
-		{
-			InnerMap = Linkgrid.getWorldMap(world).getProjektor();
-		}
-		
-		
-		if(Option.equalsIgnoreCase("jammer"))
-		{
-			InnerMap = Linkgrid.getWorldMap(world).getJammer();
-		}
-
-		if(Option.equalsIgnoreCase("fieldfuser"))
-		{
-			InnerMap = Linkgrid.getWorldMap(world).getFieldFusion();
-		}
-
-		for (TileEntityProjector tileentity : InnerMap.values()) {
-						
-			int xmin=0;int xmax=0;int ymin=0;int ymax=0;int zmin=0;int zmax=0;
-
-			boolean logicswitch= false;
-			
-			if(Option.equalsIgnoreCase("BlockProtected"))
-			{
-				logicswitch = tileentity.equals(tileEntityProjector);
-			}
-
-			if(Option.equalsIgnoreCase("jammer"))
-			{
-				logicswitch = tileentity.getLinkCapacitor_ID() != tileEntityProjector.getLinkCapacitor_ID();
-			}
-
-			if(Option.equalsIgnoreCase("fieldfuser"))
-			{
-				logicswitch = tileentity.getLinkCapacitor_ID() == tileEntityProjector.getLinkCapacitor_ID() &&
-					          tileentity.getProjektor_ID() != tileEntityProjector.getProjektor_ID();
-			}
-
-			if (logicswitch && tileentity.isActive()) {
-				switch(tileentity.getProjektor_Typ())
-				{
-				case 4:
-
-					 xmin = tileentity.xCoord - tileentity.getForceField_distance();
-					 xmax = tileentity.xCoord + tileentity.getForceField_distance();
-					 ymin = tileentity.yCoord - tileentity.getForceField_distance();if(ymin<0){ymin = 0;}
-					 ymax = tileentity.yCoord + tileentity.getForceField_distance(); if(ymax>255){ymax = 255;}
-					 zmin = tileentity.zCoord - tileentity.getForceField_distance();
-					 zmax = tileentity.zCoord + tileentity.getForceField_distance();
-
-					if(tileentity.isOptionFieldcut())
-					{
-						ymin = tileentity.yCoord;
-					}
-
-					if(xmax >= x && x >= xmin && ymax >= y && y >= ymin && zmax >= z && z >= zmin)
-					{
-						if(tileentity.isOptionFieldcut() && (tileentity.yCoord < y))
-						{
-							return false;
-						}
-
-						return true;
-					}
-
-				break;
-				case 7:
-
-					switch(tileentity.getSide())
-					{
-					case 0:
-						ymax = tileentity.yCoord +1;
-						ymin = tileentity.yCoord - tileentity.getForceField_strength();
-						xmax = tileentity.xCoord + tileentity.getFocusleft();
-						xmin = tileentity.xCoord - tileentity.getFocusright();
-						zmin = tileentity.zCoord - tileentity.getFocusup();
-						zmax = tileentity.zCoord	+ tileentity.getFocusdown();
-					break;
-					case 1:
-						ymin = tileentity.yCoord -1;
-						ymax = tileentity.yCoord + tileentity.getForceField_strength();
-						xmin = tileentity.xCoord - tileentity.getFocusleft();
-						xmax = tileentity.xCoord + tileentity.getFocusright();
-						zmin = tileentity.zCoord - tileentity.getFocusup();
-						zmax = tileentity.zCoord	+ tileentity.getFocusdown();
-					break;
-					case 2:
-						zmax = tileentity.zCoord +1;
-						zmin = tileentity.zCoord - tileentity.getForceField_strength();
-						xmax = tileentity.xCoord + tileentity.getFocusleft();
-						xmin = tileentity.xCoord - tileentity.getFocusright();
-						ymax = tileentity.yCoord + tileentity.getFocusup();
-						ymin = tileentity.yCoord	- tileentity.getFocusdown();
-					break;
-					case 3:
-						zmin = tileentity.zCoord -1;
-						zmax = tileentity.zCoord + tileentity.getForceField_strength();
-						xmax = tileentity.xCoord + tileentity.getFocusleft();
-						xmin = tileentity.xCoord - tileentity.getFocusright();
-						ymax = tileentity.yCoord + tileentity.getFocusup();
-						ymin = tileentity.yCoord	- tileentity.getFocusdown();
-					break;
-					case 4:
-						xmax = tileentity.xCoord +1;
-						xmin = tileentity.xCoord - tileentity.getForceField_strength();
-						zmin = tileentity.zCoord - tileentity.getFocusleft();
-						zmax = tileentity.zCoord + tileentity.getFocusright();
-						ymin = tileentity.yCoord - tileentity.getFocusup();
-						ymax = tileentity.yCoord	+ tileentity.getFocusdown();
-					break;
-					case 5:
-						xmin = tileentity.xCoord -1;
-						xmax = tileentity.xCoord + tileentity.getForceField_strength();
-						zmax = tileentity.zCoord + tileentity.getFocusleft();
-						zmin = tileentity.zCoord - tileentity.getFocusright();
-						ymin = tileentity.yCoord - tileentity.getFocusup();
-						ymax = tileentity.yCoord	+ tileentity.getFocusdown();
-					break;
-					}
-
-					int realxmax = Math.max(xmax, xmin);
-					int realxmin = Math.min(xmax, xmin);
-
-					int realymax = Math.max(ymax, ymin);
-					int realymin = Math.min(ymax, ymin);
-
-					int realzmax = Math.max(zmax, zmin);
-					int realzmin = Math.min(zmax, zmin);
-
-					if(realxmax > x && x > realxmin && realymax > y && y > realymin && realzmax > z && z > realzmin)
-					{
-						return true;
-					}
-
-				break;
-				case 5:
-
-					int dx = tileentity.xCoord - x;
-					int dy = tileentity.yCoord - y;
-					int dz = tileentity.zCoord - z;
-
-					int dist = (int) Math.round(Math.sqrt(dx * dx + dy * dy + dz * dz));
-
-					if (dist <= tileentity.getForceField_distance()) {
-						if(tileentity.isOptionFieldcut() && (tileentity.yCoord < dy))
-						{
-							return false;
-						}
-
-					      return true;
-						}
-
-				break;
-				case 3:
-
-						int xmin2=tileentity.xCoord;
-					int xmax2=tileentity.xCoord;
-					int ymin2=tileentity.yCoord;
-					int ymax2=tileentity.yCoord;
-					int zmin2=tileentity.zCoord;
-					int zmax2=tileentity.zCoord;
-
-                          switch(tileentity.getSide())
-                          {
-                          case 0:
-                          case 1:
-
-      						 xmin2 = tileentity.xCoord - tileentity.getForceField_distance();
-    						 xmax2 = tileentity.xCoord + tileentity.getForceField_distance();
-    						 ymin2 = tileentity.yCoord - tileentity.getForceField_strength();;if(ymin2<0){ymin2 = 0;}
-    						 ymax2 = tileentity.yCoord + tileentity.getForceField_strength();; if(ymax2>255){ymax2 = 255;}
-    						 zmin2 = tileentity.zCoord - tileentity.getForceField_distance();
-    						 zmax2 = tileentity.zCoord + tileentity.getForceField_distance();
-
-                          break;
-                          case 2:
-                          case 3:
-
-        					 xmin2 = tileentity.xCoord - tileentity.getForceField_distance();
-        					 xmax2 = tileentity.xCoord + tileentity.getForceField_distance();
-        					 ymin2 = tileentity.yCoord - tileentity.getForceField_distance();if(ymin2<0){ymin2 = 0;}
-        					 ymax2 = tileentity.yCoord + tileentity.getForceField_distance(); if(ymax2>255){ymax2 = 255;}
-        					 zmin2 = tileentity.zCoord - tileentity.getForceField_strength();
-        					 zmax2 = tileentity.zCoord + tileentity.getForceField_strength();
-
-                           break;
-                          case 4:
-                          case 5:
-
-         					 xmin2 = tileentity.xCoord - tileentity.getForceField_strength();
-         					 xmax2 = tileentity.xCoord + tileentity.getForceField_strength();
-         					 ymin2 = tileentity.yCoord - tileentity.getForceField_distance();if(ymin2<0){ymin2 = 0;}
-         					 ymax2 = tileentity.yCoord + tileentity.getForceField_distance(); if(ymax2>255){ymax2 = 255;}
-         					 zmin2 = tileentity.zCoord - tileentity.getForceField_distance();
-         					 zmax2 = tileentity.zCoord + tileentity.getForceField_distance();
-
-                          break;
-                          }
-
-  						if(tileentity.isOptionFieldcut())
-						{
-                            switch(tileentity.getSide())
-                            {
-                            case 1:
-                            	ymin2 = tileentity.yCoord;
-                            break;
-                            case 0:
-                            	ymax2 = tileentity.yCoord;
-                            break;
-                            case 3:
-                            	 zmin2 = tileentity.zCoord;
-                            break;
-                            case 2:
-                            	zmax2 = tileentity.zCoord;
-                            break;
-                            case 5:
-                            	xmin2 =tileentity.xCoord;
-                            break;
-                            case 4:
-                            	xmax2 =tileentity.xCoord;
-                            break;
-                            }
-						}
-
-						if(xmax2 >= x && x >= xmin2 && ymax2>= y && y >= ymin2 && zmax2 >= z && z >= zmin2)
-						{
-							return true;
-						}
-
-				break;
-				default:
-				return false;
-				}
-			}
-		}
-
-		return false;
-	}
 }

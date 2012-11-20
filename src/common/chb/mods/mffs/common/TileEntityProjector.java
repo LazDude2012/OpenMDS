@@ -1043,8 +1043,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 					{field_interior.add(tp);}else{return false;}
 			}
 			
-			System.out.println(field_def.size());
-			System.out.println(field_interior.size());
 			
 			return true;
 		}
@@ -1237,17 +1235,64 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 	public boolean Forcefielddefine(PointXYZ png,boolean addtoMap)
 	{
-		if (ForceFieldOptions.CheckInnerSpace(png.X, png.Y, png.Z,this,worldObj,"jammer")) {
-			ProjektorBurnout();
-			return false;
+		
+		
+		Map<Integer, TileEntityProjector> InnerMap = null;
+		InnerMap = Linkgrid.getWorldMap(worldObj).getJammer();
+		
+		for (TileEntityProjector tileentity : InnerMap.values()) {
+			boolean logicswitch= false;
+			
+			logicswitch = tileentity.getLinkCapacitor_ID() != this.getLinkCapacitor_ID();
+			
+			if (logicswitch && tileentity.isActive()) {
+				
+				
+				for (PointXYZ tpng : tileentity.getInteriorPoints()) {
+					
+				
+					if(tpng.X == png.X && tpng.Y == png.Y && tpng.Z == png.Z){
+						ProjektorBurnout();
+					    return false;
+					}
+					
+				}
+				
+				
+			}
+			
 		}
+
 
 		if(isFieldFusion())
 		{
-			if(ForceFieldOptions.CheckInnerSpace(png.X, png.Y, png.Z,this,worldObj,"fieldfuser"))
-			{
-				return true;
+
+			InnerMap = Linkgrid.getWorldMap(worldObj).getFieldFusion();
+			for (TileEntityProjector tileentity : InnerMap.values()) {
+				
+				
+				boolean logicswitch= false;
+				logicswitch = tileentity.getLinkCapacitor_ID() == this.getLinkCapacitor_ID() &&
+				          tileentity.getProjektor_ID() != this.getProjektor_ID();
+			
+				
+				if (logicswitch && tileentity.isActive()) {
+					
+					
+					for (PointXYZ tpng : tileentity.getInteriorPoints()) {
+						
+					
+						if(tpng.X == png.X && tpng.Y == png.Y && tpng.Z == png.Z)
+							return true;	
+						
+					}
+					
+					
+				}
+				
+				
 			}
+			
 		}
 
 		ForceFieldBlockStack ffworldmap = WorldMap
