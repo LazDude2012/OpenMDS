@@ -18,7 +18,7 @@
     Thunderdark - initial implementation
 */
 
-package chb.mods.mffs.common;
+package chb.mods.mffs.common.options;
 
 import java.util.List;
 
@@ -27,24 +27,17 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
-public class ItemProjectorOptionCamoflage extends ItemProjectorOptionBase {
-	public ItemProjectorOptionCamoflage(int i) {
+public class ItemProjectorOptionTouchDamage extends ItemProjectorOptionBase  {
+	public ItemProjectorOptionTouchDamage(int i) {
 		super(i);
-		setIconIndex(42);
-	}
-	@Override
-	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/items.png";
-	}
-	@Override
-	public boolean isRepairable() {
-		return false;
+		setIconIndex(36);
 	}
 
+	
 	@Override
     public void addInformation(ItemStack itemStack,EntityPlayer player,List info,boolean par4)
     {
-            String tooltip = "compatible to: <ALL>";
+            String tooltip = "compatible to: <Wall><Deflector><Tube>";
             info.add(tooltip);
     }
 }

@@ -233,7 +233,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 	public void onNetworkHandlerUpdate(String field) {
 
 		if (field.equals("active")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 
 	}

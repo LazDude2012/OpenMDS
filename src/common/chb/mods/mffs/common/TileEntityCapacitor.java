@@ -72,7 +72,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		inventory = new ItemStack[5];
 		transmitrange = 8;
 		SecStation_ID = 0;
-		forcePower =10000000;
+		forcePower =0;
 		maxforcepower = 10000000;
 		Capacitor_ID = 0;
 		Remote_Capacitor_ID = 0;
@@ -278,20 +278,30 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 						
 						int maxtransfer = ForceEnergyItem.getforceEnergyTransferMax();
 						int freeeamount = this.getMaxForcePower() - this.getForcePower();
+						int amountleft = ForceEnergyItem.getForceEnergy(getStackInSlot(2));
 						
-						if(this.getForcePower() < this.getMaxForcePower())
-						{
-						
-						    if(freeeamount > maxtransfer)
-						    {
-						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))-maxtransfer);
-				                this.setForcePower(this.getForcePower() + maxtransfer);
-						    }else{
-						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))-freeeamount);
-				                this.setForcePower(this.getForcePower() + freeeamount);
-						    }
-	
-						}
+
+							if(freeeamount >= amountleft)
+							{
+								if(amountleft >= maxtransfer)
+								{
+							    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))-maxtransfer);
+					                this.setForcePower(this.getForcePower() + maxtransfer);	
+								}else{
+					
+							    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))-amountleft);
+					                this.setForcePower(this.getForcePower() + amountleft);
+								}
+								
+						     }else{
+						    	
+							    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))-freeeamount);
+					                this.setForcePower(this.getForcePower() + freeeamount);
+						    	 
+				
+						     }
+							
+							getStackInSlot(2).setItemDamage(ForceEnergyItem.getItemDamage(getStackInSlot(2)));
 						
 					}
 
@@ -729,19 +739,19 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
 		if (field.equals("side")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("active")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("linketprojektor")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("transmitrange")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("capacity")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 	}
 

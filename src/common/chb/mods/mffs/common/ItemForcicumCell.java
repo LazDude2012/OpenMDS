@@ -71,7 +71,7 @@ public class ItemForcicumCell extends ItemMFFSBase {
         	if(entity instanceof EntityPlayer)
         	{
         	
-    		List<Slot> slots = ((EntityPlayer)entity).inventorySlots.inventorySlots;
+    		List<Slot> slots = ((EntityPlayer)entity).inventoryContainer.inventorySlots;
     		for (Slot slot : slots) {
     			if (slot.getStack() != null) {
     				if (slot.getStack().getItem() == ModularForceFieldSystem.MFFSitemForcicium) {

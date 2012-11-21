@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 import chb.mods.mffs.common.IModularProjector;
 import chb.mods.mffs.common.PointXYZ;
+import chb.mods.mffs.common.TileEntityProjector;
 import chb.mods.mffs.common.IModularProjector.Slots;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -38,20 +39,72 @@ public class ItemProjectorModuleContainment extends Module3DBase {
 	@Override
 	public void calculateField(IModularProjector projector, Set<PointXYZ> ffLocs, Set<PointXYZ> ffInterior) {
 		
-		int out = projector.countItemsInSlot(Slots.Strength) + 1;
+		int tpx = 0;
+		int tpy = 0;
+		int tpz = 0;
 		
-		for (int y1 = 0; y1 <= out+2; y1++) {
-			for (int x1 = -out; x1 <= out; x1++) {
-		    	for (int z1 = -out; z1 <= out; z1++) {
-		    		if ((x1==out || x1==-out) || (y1==out || y1==0) || (z1==out || z1==-out))
-		    			ffLocs.add(new PointXYZ(x1, y1+projector.countItemsInSlot(Slots.Distance)+1, z1));
-		    		else
-		    			ffInterior.add(new PointXYZ(x1, y1+projector.countItemsInSlot(Slots.Distance)+1, z1));
-		    	}
-			}
+		int xMout = projector.countItemsInSlot(Slots.FocusLeft);
+		int xPout = projector.countItemsInSlot(Slots.FocusRight);
+		int zMout = projector.countItemsInSlot(Slots.FocusDown);
+		int zPout = projector.countItemsInSlot(Slots.FocusUp);
+		int distance = projector.countItemsInSlot(Slots.Distance);
+		int Strength =  projector.countItemsInSlot(Slots.Strength) + 1;
+		
+		for (int y1 = 0; y1 <= Strength; y1++) {
+		for (int x1 = 0 - xMout; x1 < xPout + 1; x1++) {
+	    	for (int z1 = 0 - zPout; z1 < zMout + 1; z1++) {
+				if (((TileEntityProjector)projector).getSide() == 0) {
+
+					tpy = y1 - y1 - y1 - distance-1;
+					tpx = x1;
+					tpz = z1;
+				}
+
+				if (((TileEntityProjector)projector).getSide() == 1) {
+
+					tpy = y1 + distance+1;
+					tpx = x1;
+					tpz = z1;
+				}
+
+				if (((TileEntityProjector)projector).getSide() == 2) {
+
+					tpz = y1 - y1 - y1 - distance-1;
+					tpy = z1 - z1 - z1;
+					tpx = x1 - x1 - x1;
+				}
+
+				if (((TileEntityProjector)projector).getSide() == 3) {
+
+					tpz = y1 + distance+1;
+					tpy = z1 - z1 - z1;
+					tpx = x1;
+				}
+
+				if (((TileEntityProjector)projector).getSide() == 4) {
+                
+					tpx = y1 - y1 - y1 - distance-1;
+                    tpy = z1 - z1 - z1;
+					tpz = x1;
+				}
+				if (((TileEntityProjector)projector).getSide() == 5) {
+
+					tpx = y1 + distance+1;
+                    tpy = z1 - z1 - z1;
+					tpz = x1 -x1 - x1;
+				}
+
+				if(y1==0 || y1 == Strength || x1== 0 - xMout || x1==  xPout  || z1 == 0 - zPout || z1 == zMout)
+				{
+					ffLocs.add(new PointXYZ(tpx, tpy, tpz));
+					
+				}else {
+					
+					ffInterior.add(new PointXYZ(tpx, tpy, tpz));
+				}
+	    	}
 		}
 	}
 	
-
-
+   }
 }

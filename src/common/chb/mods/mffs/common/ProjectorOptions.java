@@ -35,8 +35,10 @@ public enum ProjectorOptions {
 		this.recipeic = recipeic;
 		this.recipeue = recipeue;
 		
-
 	}
+	
+	
+	
 	
 	public static void initialize(){
 		

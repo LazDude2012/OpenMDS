@@ -108,9 +108,9 @@ public class ContainerAdvSecurityStation extends Container {
 			if (rights[a] != SecStation.getRights(a)) {
 				if(SecStation.getRights(a))
 				{
-					icrafting.updateCraftingInventoryInfo(this, a, 1);
+					icrafting.sendProgressBarUpdate(this, a, 1);
 				}else{
-					icrafting.updateCraftingInventoryInfo(this, a, 0);
+					icrafting.sendProgressBarUpdate(this, a, 0);
 				}
 			}
 

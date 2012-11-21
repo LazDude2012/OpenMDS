@@ -67,18 +67,18 @@ public class ContainerConverter extends Container {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
             if(linkPower != Capacitor.getLinkPower()) {
-            	icrafting.updateCraftingInventoryInfo(this, 0, Capacitor.getLinkPower() & 0xffff);
-            	icrafting.updateCraftingInventoryInfo(this, 1,Capacitor.getLinkPower() >>> 16);
+            	icrafting.sendProgressBarUpdate(this, 0, Capacitor.getLinkPower() & 0xffff);
+            	icrafting.sendProgressBarUpdate(this, 1,Capacitor.getLinkPower() >>> 16);
             }
 
             if(capacity != Capacitor.getCapacity())
-            	icrafting.updateCraftingInventoryInfo(this, 2, Capacitor.getCapacity());
+            	icrafting.sendProgressBarUpdate(this, 2, Capacitor.getCapacity());
 
             if(SwitchTyp != Capacitor.getswitchtyp())
-            	icrafting.updateCraftingInventoryInfo(this, 3,Capacitor.getswitchtyp());
+            	icrafting.sendProgressBarUpdate(this, 3,Capacitor.getswitchtyp());
 
             if(output != Capacitor.getOutput())
-            	icrafting.updateCraftingInventoryInfo(this, 4, Capacitor.getOutput());
+            	icrafting.sendProgressBarUpdate(this, 4, Capacitor.getOutput());
         }
 
         linkPower = Capacitor.getLinkPower();

@@ -45,28 +45,106 @@ public class ItemProjectorModuleAdvCube extends Module3DBase {
 	@Override
 	public void calculateField(IModularProjector projector, Set<PointXYZ> ffLocs, Set<PointXYZ> ffInterior) {
 		
-		int xMout = projector.countItemsInSlot(Slots.FocusLeft) + 1;
-		int xPout = projector.countItemsInSlot(Slots.FocusRight) + 1;
 		
-		int yMout = projector.countItemsInSlot(Slots.Strength) + 1;
-		int yPout = projector.countItemsInSlot(Slots.Strength) + 1;
+		int tpx = 0;
+		int tpy = 0;
+		int tpz = 0;
 		
-		int zMout = projector.countItemsInSlot(Slots.FocusDown) + 1;
-		int zPout = projector.countItemsInSlot(Slots.FocusUp) + 1;
+		int xMout = projector.countItemsInSlot(Slots.FocusLeft);
+		int xPout = projector.countItemsInSlot(Slots.FocusRight);
+		int zMout = projector.countItemsInSlot(Slots.FocusDown);
+		int zPout = projector.countItemsInSlot(Slots.FocusUp);
+		int distance = projector.countItemsInSlot(Slots.Distance);
+		int Strength =  projector.countItemsInSlot(Slots.Strength) + 1;
 		
-		for (int y1 = -yMout; y1 <= yPout; y1++) {
-			for (int x1 = -xMout; x1 <= xPout; x1++) {
-		    	for (int z1 = -zMout; z1 <= zPout; z1++) {
-		    		if ((x1==xPout || x1==-xMout) || (y1==yPout || y1==-yMout) || (z1==zPout || z1==-zMout))
-		    			ffLocs.add(new PointXYZ(x1, y1, z1));
-		    		else
-		    			ffInterior.add(new PointXYZ(x1, y1, z1));
-		    	}
-			}
+		for (int y1 = 0; y1 <= Strength; y1++) {
+		for (int x1 = 0 - xMout; x1 < xPout + 1; x1++) {
+	    	for (int z1 = 0 - zPout; z1 < zMout + 1; z1++) {
+				if (((TileEntityProjector)projector).getSide() == 0) {
+
+					tpy = y1 - y1 - y1+1;
+					tpx = x1;
+					tpz = z1;
+				}
+
+				if (((TileEntityProjector)projector).getSide() == 1) {
+
+					tpy = y1-1;
+					tpx = x1;
+					tpz = z1;
+				}
+
+				if (((TileEntityProjector)projector).getSide() == 2) {
+
+					tpz = y1 - y1 - y1+1;
+			        tpy = z1 - z1 - z1;
+					tpx = x1 - x1 - x1;
+				}
+
+				if (((TileEntityProjector)projector).getSide() == 3) {
+
+					tpz = y1-1;
+					tpy = z1 - z1 - z1;
+					tpx = x1;
+				}
+
+				if (((TileEntityProjector)projector).getSide() == 4) {
+
+					tpx = y1 - y1 - y1+1;
+					tpy = z1 - z1 - z1;
+					tpz = x1;
+				}
+				if (((TileEntityProjector)projector).getSide() == 5) {
+
+					tpx = y1-1;
+					tpy = z1 - z1 - z1;
+					tpz = x1 -x1 - x1;
+				}
+
+				if(y1==0 || y1 == Strength || x1== 0 - xMout || x1==  xPout  || z1 == 0 - zPout || z1 == zMout)
+				{
+					if(((TileEntityProjector)projector).isOptionFieldcut())
+                    {
+						switch(((TileEntityProjector)projector).getSide())
+						{
+							case 0:
+								if((((TileEntityProjector)projector).yCoord + tpy) > ((TileEntityProjector)projector).yCoord )
+								continue;
+							break;
+							case 1:
+								if((((TileEntityProjector)projector).yCoord + tpy) < ((TileEntityProjector)projector).yCoord )
+								continue;
+							break;
+							case 2:
+								if((((TileEntityProjector)projector).zCoord + tpz) > ((TileEntityProjector)projector).zCoord )
+								continue;
+							break;
+							case 3:
+								if((((TileEntityProjector)projector).zCoord + tpz) < ((TileEntityProjector)projector).zCoord )
+								continue;
+							break;
+							case 4:
+								if((((TileEntityProjector)projector).xCoord + tpx) > ((TileEntityProjector)projector).xCoord )
+								continue;
+							break;
+							case 5:
+								if((((TileEntityProjector)projector).xCoord + tpx) < ((TileEntityProjector)projector).xCoord )
+								continue;
+							break;
+						}
+					}
+
+					ffLocs.add(new PointXYZ(tpx, tpy, tpz));
+					
+				}else {
+					
+					ffInterior.add(new PointXYZ(tpx, tpy, tpz));
+				}
+	    	}
 		}
+	}
+		
 		
 	}
-
-
 	
 }

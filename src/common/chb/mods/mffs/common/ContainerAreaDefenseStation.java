@@ -73,16 +73,16 @@ public class ContainerAreaDefenseStation extends Container {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
 			if (forcepower != defstation.getLinkPower()) {
-				icrafting.updateCraftingInventoryInfo(this, 0,
+				icrafting.sendProgressBarUpdate(this, 0,
 						defstation.getLinkPower() & 0xffff);
-				icrafting.updateCraftingInventoryInfo(this, 1,
+				icrafting.sendProgressBarUpdate(this, 1,
 						defstation.getLinkPower() >>> 16);
 			}
 
 			if (maxforcepower != defstation.getMaxlinkPower()) {
-				icrafting.updateCraftingInventoryInfo(this, 2,
+				icrafting.sendProgressBarUpdate(this, 2,
 						defstation.getMaxlinkPower() & 0xffff);
-				icrafting.updateCraftingInventoryInfo(this, 3,
+				icrafting.sendProgressBarUpdate(this, 3,
 						defstation.getMaxlinkPower() >>> 16);
 			}
 		}

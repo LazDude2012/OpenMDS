@@ -18,35 +18,50 @@
     Thunderdark - initial implementation
 */
 
-package chb.mods.mffs.common;
+package chb.mods.mffs.common.options;
 
 import java.util.List;
+
+import chb.mods.mffs.common.ModularForceFieldSystem;
+import chb.mods.mffs.common.PointXYZ;
+import chb.mods.mffs.common.TileEntityProjector;
 
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.World;
 
-public class ItemProjectorOptionMobDefence extends ItemProjectorOptionBase  {
-	public ItemProjectorOptionMobDefence(int i) {
+public class ItemProjectorOptionSponge extends ItemProjectorOptionBase implements IInteriorCheck {
+	public ItemProjectorOptionSponge(int i) {
 		super(i);
-		setIconIndex(40);
-	}
-	@Override
-	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/items.png";
-	}
-	@Override
-	public boolean isRepairable() {
-		return false;
+		setIconIndex(35);
 	}
 
+	
 	@Override
     public void addInformation(ItemStack itemStack,EntityPlayer player,List info,boolean par4)
     {
-        String tooltip = "compatible to ProjectorTyp: <Cube><Adv.Cube><Sphere>";
-        info.add(tooltip);
-        tooltip = "compatible to Area Defense Station";
-        info.add(tooltip);
+            String tooltip = "compatible to: <Tube><Cube><Adv.Cube><Sphere>";
+            info.add(tooltip);
     }
+	
+	public  void checkInteriorBlock(PointXYZ png ,World world,TileEntityProjector Projector) {
+		if (world.getBlockMaterial(png.X, png.Y, png.Z).isLiquid()) {
+			if (!ModularForceFieldSystem.forcefieldremoveonlywaterandlava) {
+				world.setBlockWithNotify(png.X, png.Y, png.Z, 0);
+			} else if (world.getBlockId(png.X, png.Y, png.Z) == 8
+					|| world.getBlockId(png.X, png.Y, png.Z) == 9
+					|| world.getBlockId(png.X, png.Y, png.Z) == 10
+					|| world.getBlockId(png.X, png.Y, png.Z) == 11
+
+			)
+
+			{
+				world.setBlockWithNotify(png.X, png.Y, png.Z, 0);
+			}
+		}
+	}
+	
+	
 }

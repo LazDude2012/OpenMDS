@@ -18,7 +18,7 @@
     Thunderdark - initial implementation
 */
 
-package chb.mods.mffs.common;
+package chb.mods.mffs.common.options;
 
 import java.util.List;
 
@@ -33,13 +33,6 @@ public class ItemProjectorOptionBlockBreaker extends ItemProjectorOptionBase  {
 		setIconIndex(38);
 	}
 
-	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/items.png";
-	}
-
-	public boolean isRepairable() {
-		return false;
-	}
 
 	@Override
     public void addInformation(ItemStack itemStack,EntityPlayer player,List info,boolean par4)

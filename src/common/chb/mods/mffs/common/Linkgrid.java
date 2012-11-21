@@ -31,7 +31,7 @@ import net.minecraft.src.World;
 public final class Linkgrid {
 	private static Map WorldpowernetMap = new HashMap();
 
-	static class Worldlinknet {
+	 public static class Worldlinknet {
 		private Map<Integer, TileEntityProjector> Projektor = new Hashtable<Integer, TileEntityProjector>();
 		private Map<Integer, TileEntityCapacitor> Capacitors = new Hashtable<Integer, TileEntityCapacitor>();
 		private Map<Integer, TileEntityAdvSecurityStation> SecStation = new Hashtable<Integer, TileEntityAdvSecurityStation>();

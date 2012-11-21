@@ -30,6 +30,15 @@ import chb.mods.mffs.common.modules.ItemProjectorModuleDeflector;
 import chb.mods.mffs.common.modules.ItemProjectorModuleSphere;
 import chb.mods.mffs.common.modules.ItemProjectorModuleTube;
 import chb.mods.mffs.common.modules.ItemProjectorModuleWall;
+import chb.mods.mffs.common.options.ItemProjectorOptionBlockBreaker;
+import chb.mods.mffs.common.options.ItemProjectorOptionCamoflage;
+import chb.mods.mffs.common.options.ItemProjectorOptionDefenseStation;
+import chb.mods.mffs.common.options.ItemProjectorOptionFieldFusion;
+import chb.mods.mffs.common.options.ItemProjectorOptionFieldManipulator;
+import chb.mods.mffs.common.options.ItemProjectorOptionForceFieldJammer;
+import chb.mods.mffs.common.options.ItemProjectorOptionMobDefence;
+import chb.mods.mffs.common.options.ItemProjectorOptionSponge;
+import chb.mods.mffs.common.options.ItemProjectorOptionTouchDamage;
 import chb.mods.mffs.network.ForceFieldServerUpdatehandler;
 import chb.mods.mffs.network.NetworkHandlerClient;
 import chb.mods.mffs.network.NetworkHandlerServer;
@@ -75,8 +84,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.5")
-@NetworkMod(versionBounds = "[2.2.8.1.5]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.6")
+@NetworkMod(versionBounds = "[2.2.8.1.6]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
 public class ModularForceFieldSystem {
 
 	public static CreativeTabs MFFSTab;
@@ -199,7 +208,7 @@ public class ModularForceFieldSystem {
 					"ForceFieldMaster", "nobody").value;
 			influencedbyothermods = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL, "influencedbyothermods",
-					false).getBoolean(false);
+					true).getBoolean(true);
 			adventuremap = MFFSconfig.get(Configuration.CATEGORY_GENERAL,
 					"adventuremap", false).getBoolean(false);
 			forcefieldremoveonlywaterandlava = MFFSconfig.get(

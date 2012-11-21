@@ -213,12 +213,12 @@ public final class ForceFieldOptions {
 							Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkCapacitor_ID())
 							.setForcePower(Linkgrid.getWorldMap(world).getCapacitor().get(projector
 								.getLinkCapacitor_ID()).getForcePower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
-							EntityPlayer mainuser = world.getPlayerEntityByName(Linkgrid.getWorldMap(world).getSecStation().get(projector.getSecStation_ID()).getMainUser());
-							if(mainuser != null)
-							{
-							 Functions.ChattoPlayer(mainuser,"[Defence Area Station] Attack " + ((EntityPlayer)entityLiving).username+ " at x:" +  ((EntityPlayer)entityLiving).posX + " y:" + 
-							           ((EntityPlayer)entityLiving).posY+ " z:"+((EntityPlayer)entityLiving).posZ);	
-							}
+//							EntityPlayer mainuser = world.getPlayerEntityByName(Linkgrid.getWorldMap(world).getSecStation().get(projector.getSecStation_ID()).getMainUser());
+//							if(mainuser != null)
+//							{
+//							 Functions.ChattoPlayer(mainuser,"[Defence Area Station] Attack " + ((EntityPlayer)entityLiving).username+ " at x:" +  ((EntityPlayer)entityLiving).posX + " y:" + 
+//							           ((EntityPlayer)entityLiving).posY+ " z:"+((EntityPlayer)entityLiving).posZ);	
+//							}
 							Functions.ChattoPlayer((EntityPlayer)entityLiving,"[Defence Area Station] !!! you  are in a restricted area !!! ");
 							((EntityPlayer)entityLiving).inventory.dropAllItems();
 							entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);

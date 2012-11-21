@@ -79,30 +79,30 @@ public class ContainerCapacitor extends Container {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
 			if (transmitrange != generatorentity.getTransmitRange()) {
-				icrafting.updateCraftingInventoryInfo(this, 0,
+				icrafting.sendProgressBarUpdate(this, 0,
 						generatorentity.getTransmitRange());
 			}
 			if (linketprojektor != generatorentity.getLinketProjektor()) {
-				icrafting.updateCraftingInventoryInfo(this, 1,
+				icrafting.sendProgressBarUpdate(this, 1,
 						generatorentity.getLinketProjektor());
 			}
 
 			if (forcepower != generatorentity.getForcePower()) {
-				icrafting.updateCraftingInventoryInfo(this, 2,
+				icrafting.sendProgressBarUpdate(this, 2,
 						generatorentity.getForcePower() & 0xffff);
-				icrafting.updateCraftingInventoryInfo(this, 3,
+				icrafting.sendProgressBarUpdate(this, 3,
 						generatorentity.getForcePower() >>> 16);
 			}
 			if (capacity != generatorentity.getCapacity()) {
-				icrafting.updateCraftingInventoryInfo(this, 4,
+				icrafting.sendProgressBarUpdate(this, 4,
 						generatorentity.getCapacity());
 			}
 			if (SwitchTyp != generatorentity.getswitchtyp()) {
-				icrafting.updateCraftingInventoryInfo(this, 5,
+				icrafting.sendProgressBarUpdate(this, 5,
 						generatorentity.getswitchtyp());
 			}
 			if (Powerlinkmode != generatorentity.getPowerlinkmode()) {
-				icrafting.updateCraftingInventoryInfo(this, 6,
+				icrafting.sendProgressBarUpdate(this, 6,
 						generatorentity.getPowerlinkmode());
 			}
 		}

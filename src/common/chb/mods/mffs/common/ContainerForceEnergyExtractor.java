@@ -117,18 +117,18 @@ public class ContainerForceEnergyExtractor extends Container {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
 			if (workdone != ForceEnergyExtractor.getWorkdone()) {
-				icrafting.updateCraftingInventoryInfo(this, 0,
+				icrafting.sendProgressBarUpdate(this, 0,
 						ForceEnergyExtractor.getWorkdone());
 			}
 			if (WorkCylce != ForceEnergyExtractor.getWorkCylce()) {
-				icrafting.updateCraftingInventoryInfo(this, 1,
+				icrafting.sendProgressBarUpdate(this, 1,
 						ForceEnergyExtractor.getWorkCylce());
 			}
 
 			if (ForceEnergybuffer != ForceEnergyExtractor.getForceEnergybuffer()) {
-				icrafting.updateCraftingInventoryInfo(this, 2,
+				icrafting.sendProgressBarUpdate(this, 2,
 						ForceEnergyExtractor.getForceEnergybuffer() & 0xffff);
-				icrafting.updateCraftingInventoryInfo(this, 3,
+				icrafting.sendProgressBarUpdate(this, 3,
 						ForceEnergyExtractor.getForceEnergybuffer() >>> 16);
 			}
 		}

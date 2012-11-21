@@ -383,7 +383,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 	public void onNetworkHandlerUpdate(String field) {
 
 		if (field.equals("active")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 		}
 		
 

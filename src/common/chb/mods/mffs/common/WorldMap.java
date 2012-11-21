@@ -29,7 +29,7 @@ import net.minecraft.src.World;
 public final class WorldMap {
 	private static Map ForceFieldWorlds = new HashMap();
 
-	static class ForceFieldWorld {
+	public static class ForceFieldWorld {
 		private static Map<Integer, ForceFieldBlockStack> ForceFieldStackMap = new Hashtable<Integer, ForceFieldBlockStack>();
 
 		public ForceFieldBlockStack getorcreateFFStackMap(int x, int y, int z) {

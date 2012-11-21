@@ -37,7 +37,7 @@ public class ItemPersonalIDWriter extends ItemMultitool{
     {
     	if(entity instanceof EntityPlayer)
     	{
-		List<Slot> slots = entityplayer.inventorySlots.inventorySlots;
+		List<Slot> slots = entityplayer.inventoryContainer.inventorySlots;
 		for (Slot slot : slots) {
 			ItemStack stack = slot.getStack();
 			if (stack != null) {
@@ -82,7 +82,7 @@ public class ItemPersonalIDWriter extends ItemMultitool{
 			return hand;
 		}
 
-			List<Slot> slots = entityplayer.inventorySlots.inventorySlots;
+			List<Slot> slots = entityplayer.inventoryContainer.inventorySlots;
 			for (Slot slot : slots) {
 				ItemStack stack = slot.getStack();
 				if (stack != null) {

@@ -70,7 +70,7 @@ public void setTicker(int ticker) {
 		this.texturid[4] = Integer.parseInt(remotetextur[4].trim());
 		this.texturid[5] = Integer.parseInt(remotetextur[5].trim());
 
-		worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		this.setTicker((short) 0);
 	}
 

@@ -48,6 +48,18 @@ import net.minecraftforge.common.ISidedInventory;
 
 import chb.mods.mffs.common.modules.Module3DBase;
 import chb.mods.mffs.common.modules.ModuleBase;
+import chb.mods.mffs.common.options.IChecksOnAll;
+import chb.mods.mffs.common.options.IInteriorCheck;
+import chb.mods.mffs.common.options.ItemProjectorOptionBase;
+import chb.mods.mffs.common.options.ItemProjectorOptionBlockBreaker;
+import chb.mods.mffs.common.options.ItemProjectorOptionCamoflage;
+import chb.mods.mffs.common.options.ItemProjectorOptionDefenseStation;
+import chb.mods.mffs.common.options.ItemProjectorOptionFieldFusion;
+import chb.mods.mffs.common.options.ItemProjectorOptionFieldManipulator;
+import chb.mods.mffs.common.options.ItemProjectorOptionForceFieldJammer;
+import chb.mods.mffs.common.options.ItemProjectorOptionMobDefence;
+import chb.mods.mffs.common.options.ItemProjectorOptionSponge;
+import chb.mods.mffs.common.options.ItemProjectorOptionTouchDamage;
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
@@ -70,7 +82,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	private short forcefieldblock_meta;
 	private int ProjektorTyp;
 	private int Projektor_ID;
-	private int linkCapacitor_ID;
 	private int linkPower;
 	private int blockcounter;
 	private int ForceField_strength;
@@ -90,7 +101,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		Random random = new Random();
 
 		ProjektorItemStacks = new ItemStack[13];
-		linkCapacitor_ID = 0;
 		Projektor_ID = 0;
 		linkPower = 0;
 		forcefieldblock_meta =  (short) ForceFieldTyps.Default.ordinal();
@@ -259,14 +269,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		this.linkPower = linkPower;
 	}
 
-	@Override
-	public int getLinkCapacitor_ID() {
-		return linkCapacitor_ID;
-	}
-
-	public void setLinkCapacitor_ID(int i) {
-		this.linkCapacitor_ID = i;
-	}
 
 	public boolean isOptionDamage() {
 		return projektoroption[0];
@@ -276,13 +278,13 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		projektoroption[0] = b;
 	}
 
-	public boolean isOptionSubwater() {
-		return projektoroption[1];
-	}
-
-	public void setOptionSubwater(boolean b) {
-		projektoroption[1] = b;
-	}
+//	public boolean isOptionSubwater() {
+//		return projektoroption[1];
+//	}
+//
+//	public void setOptionSubwater(boolean b) {
+//		projektoroption[1] = b;
+//	}
 
 	public boolean isOptionFieldcut() {
 		return projektoroption[2];
@@ -464,48 +466,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	public void checkslots(boolean init) {
-		if (getStackInSlot(0) != null) {
-			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemfc) {
-				if (getLinkCapacitor_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
-						getStackInSlot(0)).getInteger("CapacitorID")) {
-					setLinkCapacitor_ID(NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(0)).getInteger("CapacitorID"));
-				}
-
-				if (Linkgrid.getWorldMap(worldObj).getCapacitor()
-						.get(this.getLinkCapacitor_ID()) != null) {
-					int transmit = Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getLinkCapacitor_ID())
-							.getTransmitRange();
-					int gen_x = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkCapacitor_ID()).xCoord
-							- this.xCoord;
-					int gen_y = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkCapacitor_ID()).yCoord
-							- this.yCoord;
-					int gen_z = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkCapacitor_ID()).zCoord
-							- this.zCoord;
-
-					if (Math.sqrt(gen_x * gen_x + gen_y * gen_y + gen_z * gen_z) <= transmit) {
-						setLinkGenerator(true);
-					} else {
-						setLinkCapacitor_ID(0);
-						setLinkGenerator(false);
-					}
-				} else {
-					setLinkCapacitor_ID(0);
-					setLinkGenerator(false);
-					if (!init) {
-						this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-					}
-				}
-			}
-		} else {
-			setLinkCapacitor_ID(0);
-			setLinkGenerator(false);
-		}
-
+		
 		
 		if (hasValidTypeMod()){
 	           
@@ -516,11 +477,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			setforcefieldblock_meta(get_type().getForceFieldTyps().ordinal());
 
 			setOptionBlockdropper(ProjectorTyp.TypfromItem(get_type()).Blockdropper);
-			worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			
 		}else{
 			if(getProjektor_Typ()!= 0) {setProjektor_Typ(0);}
-			worldObj.markBlockAsNeedsUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 		
 		
@@ -633,6 +594,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			if(getaccesstyp() ==3)
 				{setaccesstyp(0);}
 		}
+				
+		
 
 		if (getStackInSlot(2) != null || getStackInSlot(3) != null
 				|| getStackInSlot(4) != null) {
@@ -646,9 +609,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				setforcefieldblock_meta((short) 0);
 			}
 
-			if (isOptionSubwater()) {
-				setOptionSubwater(false);
-			}
+//			if (isOptionSubwater()) {
+//				setOptionSubwater(false);
+//			}
 
 			if (isOptionFFJammer()) {
 				setOptionFFJammer(false);
@@ -698,14 +661,14 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 						continue;
 					}
 
-					if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSProjectorOptionSubwater) {
-						if (this.getProjektor_Typ() == 1 || this.getProjektor_Typ() == 2 || this.getProjektor_Typ() == 6) {
-							dropplugins(place,this);
-						} else {
-							setOptionSubwater(true);
-						}
-						continue;
-					}
+//					if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSProjectorOptionSubwater) {
+//						if (this.getProjektor_Typ() == 1 || this.getProjektor_Typ() == 2 || this.getProjektor_Typ() == 6) {
+//							dropplugins(place,this);
+//						} else {
+//							setOptionSubwater(true);
+//						}
+//						continue;
+//					}
 					if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSProjectorOptionDome) {
 						if (this.getProjektor_Typ() == 1 || this.getProjektor_Typ() == 2 || this.getProjektor_Typ() == 6) {
 							dropplugins(place,this);
@@ -815,9 +778,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			if (isOptionFieldcut()) {
 				setOptionFieldcut(false);
 			}
-			if (isOptionSubwater()) {
-				setOptionSubwater(false);
-			}
+//			if (isOptionSubwater()) {
+//				setOptionSubwater(false);
+//			}
 
 			if (isOptionFFJammer()) {
 				setOptionFFJammer(false);
@@ -836,58 +799,35 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 		// --------------------------
 		// Drop plugin by typ
-
-		switch (getProjektor_Typ()) {
-		case 0:
-
-			dropplugins(2,this);
-			dropplugins(3,this);
-			dropplugins(4,this);
-			dropplugins(5,this);
-			dropplugins(6,this);
-			dropplugins(7,this);
-			dropplugins(8,this);
-			dropplugins(9,this);
-			dropplugins(10,this);
-
-		case 1:
-
-			break;
-		case 2:
-			dropplugins(6,this);
-
-			break;
-		case 3:
-
-			dropplugins(7,this);
-			dropplugins(8,this);
-			dropplugins(9,this);
-			dropplugins(10,this);
-
-			break;
-		case 4:
-			dropplugins(6,this);
-
-		case 5:
-
-			dropplugins(7,this);
-			dropplugins(8,this);
-			dropplugins(9,this);
-			dropplugins(10,this);
-
-			break;
-
-		case 7:
-			dropplugins(5,this);
-			break;
+		
+		if (hasValidTypeMod()) {
+			ModuleBase modTyp = get_type();				
+			
+			if (!modTyp.supportsStrength)
+				dropplugins(6,this);
+			if (!modTyp.supportsDistance)
+				dropplugins(5,this);
+			
+			if (!modTyp.supportsMatrixRight)
+				dropplugins(9,this);
+			if (!modTyp.supportsMatrixLeft)
+				dropplugins(10,this);
+			if (!modTyp.supportsMatrixUp)
+				dropplugins(7,this);
+			if (!modTyp.supportsMatrixDown)
+				dropplugins(8,this);
+			
+			if(!this.isOptioncamouflage())
+				dropplugins(11,this);
+			
+		} else {
+			for (int spot = 2; spot <= 10; spot++) {
+				dropplugins(spot, this);
+			}
 		}
-
-		if(!this.isOptioncamouflage())
-		{
-			dropplugins(11,this);
-		}
-
-		// ---------------------------
+		
+		
+		
 
 	}
 
@@ -964,10 +904,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 					switchdelay = 0;
 					if(calculateField(true))
 					{
-					System.out.println("Fieldgenerate");	
 					FieldGenerate(true);
 					}
-					worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
 			}
 			if ((!getOnOffSwitch() && switchdelay >= 40)
@@ -977,7 +916,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 					setActive(false);
 					switchdelay = 0;
 					destroyField();
-					worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
 			}
 
@@ -1050,251 +989,44 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	
+	
+	
 	public boolean calculateBlock(PointXYZ pnt){
 
-		if (isOptionSubwater()) 
-		removeLiquid(pnt.X,pnt.Y,pnt.Z);
-    	
-		
-		if(this.isFieldFusion())
-		ForceFieldFusion(pnt.X,pnt.Y,pnt.Z);
-
-		
+		for(ItemProjectorOptionBase opt : getOptions())
+		{
+			if(opt instanceof IInteriorCheck)
+				((IInteriorCheck)opt).checkInteriorBlock(pnt, worldObj, this);	
+						
+		}
 		return true;
 	}
 	
 
 
-//		int tpx = 0;
-//		int tpy = 0;
-//		int tpz = 0;
-//		int x_offset_s = 0;
-//		int y_offset_s = 0;
-//		int z_offset_s = 0;
-//		int x_offset_e = 0;
-//		int y_offset_e = 0;
-//		int z_offset_e = 0;
-//
-
-//		case 6: //Conataiment
-//		case 7: // Adv.Cube
-//
-//			for (int y1 = 0; y1 <= getForceField_strength(); y1++) {
-//				for (int x1 = 0 - getFocusleft(); x1 < getFocusright() + 1; x1++) {
-//			    	for (int z1 = 0 - getFocusup(); z1 < getFocusdown() + 1; z1++) {
-//						if (this.getSide() == 0) {
-//							if(this.ProjektorTyp==6)
-//							{
-//								tpy = y1 - y1 - y1 - getForceField_distance()-1;
-//							}else{
-//								tpy = y1 - y1 - y1+1;
-//							}
-//							tpx = x1;
-//							tpz = z1;
-//						}
-//
-//						if (this.getSide() == 1) {
-//							if(this.ProjektorTyp==6)
-//							{
-//								tpy = y1 + getForceField_distance()+1;
-//							}else{
-//								tpy = y1-1;
-//							}
-//							tpx = x1;
-//							tpz = z1;
-//						}
-//
-//						if (this.getSide() == 2) {
-//							if(this.ProjektorTyp==6)
-//							{
-//								tpz = y1 - y1 - y1 - getForceField_distance()-1;
-//							}else{
-//								tpz = y1 - y1 - y1+1;
-//							}
-//
-//							tpy = z1 - z1 - z1;
-//							tpx = x1 - x1 - x1;
-//						}
-//
-//						if (this.getSide() == 3) {
-//							if(this.ProjektorTyp==6)
-//							{
-//								tpz = y1 + getForceField_distance()+1;
-//							}else{
-//								tpz = y1-1;
-//							}
-//
-//							tpy = z1 - z1 - z1;
-//							tpx = x1;
-//						}
-//
-//						if (this.getSide() == 4) {
-//							if(this.ProjektorTyp==6)
-//							{
-//								tpx = y1 - y1 - y1 - getForceField_distance()-1;
-//							}else{
-//								tpx = y1 - y1 - y1+1;
-//							}
-//
-//							tpy = z1 - z1 - z1;
-//							tpz = x1;
-//						}
-//						if (this.getSide() == 5) {
-//							if(this.ProjektorTyp==6)
-//							{
-//								tpx = y1 + getForceField_distance()+1;
-//							}else{
-//								tpx = y1-1;
-//							}
-//							tpy = z1 - z1 - z1;
-//							tpz = x1 -x1 - x1;
-//						}
-//
-//						if(y1==0 || y1 == getForceField_strength() || x1== 0 - getFocusleft() || x1==  getFocusright()  || z1 == 0 - getFocusup() || z1 == getFocusdown())
-//						{
-//							if(this.isOptionFieldcut() && this.getProjektor_Typ() == 7)
-//	                        {
-//								switch(this.getSide())
-//								{
-//									case 0:
-//										if((yCoord + tpy) > this.yCoord )
-//										continue;
-//									break;
-//									case 1:
-//										if((yCoord + tpy) < this.yCoord )
-//										continue;
-//									break;
-//									case 2:
-//										if((zCoord + tpz) > this.zCoord )
-//										continue;
-//									break;
-//									case 3:
-//										if((zCoord + tpz) < this.zCoord )
-//										continue;
-//									break;
-//									case 4:
-//										if((xCoord + tpx) > this.xCoord )
-//										continue;
-//									break;
-//									case 5:
-//										if((xCoord + tpx) < this.xCoord )
-//										continue;
-//									break;
-//								}
-//							}
-//
-//					     if(!Forcefielddefine(xCoord + tpx, yCoord + tpy, zCoord + tpz,addtoMap))
-//					     {return false;}
-//						}else {
-//							if(this.isFieldFusion())
-//							{
-//								ForceFieldFusion(xCoord + tpx, yCoord + tpy, zCoord + tpz);
-//							}
-//
-//							if (isOptionSubwater()) {
-//								removeLiquid(xCoord + tpx, yCoord + tpy, zCoord + tpz);
-//							}
-//						}
-//			    	}
-//				}
-//			}
-//
-//		break;
-//		}
-//		return true;
-//	}
-
-	private void ForceFieldFusion(int x, int y, int z) {
-		ForceFieldBlockStack ffworldmap = WorldMap
-				.getForceFieldWorld(worldObj)
-				.getorcreateFFStackMap(x, y,
-						z);
-
-		if(!ffworldmap.isEmpty())
-		{
-		 if(ffworldmap.getGenratorID()== this.getLinkCapacitor_ID())
-		 {
-			TileEntityProjector Projector =  Linkgrid.getWorldMap(worldObj).getProjektor().get(ffworldmap.getProjectorID());
-
-			if(Projector.isOptionFieldFusion())
-			{
-    			Projector.field_queue.removeElement(WorldMap.Cordhash(x, y, z));
-				ffworldmap.removebyProjector(Projector.getProjektor_ID());
-
-				if(worldObj.getBlockId(ffworldmap.getX(),ffworldmap.getY(), ffworldmap.getZ()) == ModularForceFieldSystem.MFFSFieldblock.blockID)
-				{
-				worldObj.removeBlockTileEntity(ffworldmap.getX(),
-						ffworldmap.getY(), ffworldmap.getZ());
-				worldObj.setBlockWithNotify(ffworldmap.getX(),
-						ffworldmap.getY(), ffworldmap.getZ(), 0);
-				}
-			}
-		 }
-		}
-	}
 
 	public boolean Forcefielddefine(PointXYZ png,boolean addtoMap)
 	{
 		
-		
-		Map<Integer, TileEntityProjector> InnerMap = null;
-		InnerMap = Linkgrid.getWorldMap(worldObj).getJammer();
-		
-		for (TileEntityProjector tileentity : InnerMap.values()) {
-			boolean logicswitch= false;
-			
-			logicswitch = tileentity.getLinkCapacitor_ID() != this.getLinkCapacitor_ID();
-			
-			if (logicswitch && tileentity.isActive()) {
-				
-				
-				for (PointXYZ tpng : tileentity.getInteriorPoints()) {
-					
-				
-					if(tpng.X == png.X && tpng.Y == png.Y && tpng.Z == png.Z){
-						ProjektorBurnout();
-					    return false;
-					}
-					
-				}
-				
-				
-			}
-			
-		}
-
-
-		if(isFieldFusion())
+		for(ItemProjectorOptionBase opt : getOptions())
 		{
-
-			InnerMap = Linkgrid.getWorldMap(worldObj).getFieldFusion();
-			for (TileEntityProjector tileentity : InnerMap.values()) {
+			if(opt instanceof IChecksOnAll){
 				
-				
-				boolean logicswitch= false;
-				logicswitch = tileentity.getLinkCapacitor_ID() == this.getLinkCapacitor_ID() &&
-				          tileentity.getProjektor_ID() != this.getProjektor_ID();
-			
-				
-				if (logicswitch && tileentity.isActive()) {
-					
-					
-					for (PointXYZ tpng : tileentity.getInteriorPoints()) {
-						
-					
-						if(tpng.X == png.X && tpng.Y == png.Y && tpng.Z == png.Z)
-							return true;	
-						
-					}
-					
-					
+				if(opt instanceof ItemProjectorOptionForceFieldJammer){
+					if(((ItemProjectorOptionForceFieldJammer)opt).CheckJammerinfluence(png, worldObj, this))
+			            return false;
+				}
+				if(opt instanceof ItemProjectorOptionFieldFusion){
+					if(((ItemProjectorOptionFieldFusion)opt).checkFieldFusioninfluence(png, worldObj, this))
+			            return true;
 				}
 				
 				
-			}
-			
+				
+			}			
 		}
-
+		
+		
 		ForceFieldBlockStack ffworldmap = WorldMap
 				.getForceFieldWorld(worldObj)
 				.getorcreateFFStackMap(png.X, png.Y, png.Z);
@@ -1316,26 +1048,10 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 	
 
-	private void removeLiquid(int x, int y, int z) {
-		if (worldObj.getBlockMaterial(x, y, z).isLiquid()) {
-			if (!ModularForceFieldSystem.forcefieldremoveonlywaterandlava) {
-				worldObj.setBlockWithNotify(x, y, z, 0);
-			} else if (worldObj.getBlockId(x, y, z) == 8
-					|| worldObj.getBlockId(x, y, z) == 9
-					|| worldObj.getBlockId(x, y, z) == 10
-					|| worldObj.getBlockId(x, y, z) == 11
-
-			)
-
-			{
-				worldObj.setBlockWithNotify(x, y, z, 0);
-			}
-		}
-	}
 
 	public void FieldGenerate(boolean init) {
 			TileEntity tileEntity = Linkgrid.getWorldMap(worldObj)
-					.getCapacitor().get(this.linkCapacitor_ID);
+					.getCapacitor().get(this.getLinkCapacitor_ID());
 			if (tileEntity instanceof TileEntityCapacitor && tileEntity != null) {
 				int cost = 0;
 
@@ -1450,7 +1166,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 		Map<Integer, TileEntityProjector> FieldFusion = Linkgrid.getWorldMap(worldObj).getFieldFusion();
 		for (TileEntityProjector tileentity : FieldFusion.values()) {
-		 if(tileentity.getLinkCapacitor_ID() == this.linkCapacitor_ID)
+		 if(tileentity.getLinkCapacitor_ID() == this.getLinkCapacitor_ID())
 		 {
 			 if(tileentity.isActive())
 			 {
@@ -1644,13 +1360,13 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
 		if (field.equals("side")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("active")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("ProjektorTyp")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 	}
 
@@ -1776,6 +1492,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	public Set<PointXYZ> getInteriorPoints() {
 		return field_interior;
 	}
+	
+	public Stack<Integer> getfield_queue()
+	{
+		return field_queue;
+	}
 
 	
 	public TileEntityCapacitor getLinkedCapacitor(){
@@ -1792,6 +1513,37 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		setLinkGenerator(false);
 		return null;
 	}
+	
+	
+
+	
+	@Override
+	public int getLinkCapacitor_ID(){
+		if (getStackInSlot(0) != null)
+			return NBTTagCompoundHelper.getTAGfromItemstack(getStackInSlot(0)).getInteger("CapacitorID");
+		return 0;
+	}
+	
+
+		
+	
+	public List<ItemProjectorOptionBase> getOptions(){
+		List<ItemProjectorOptionBase> ret = new ArrayList<ItemProjectorOptionBase>();
+		for (int place = 2; place < 5; place++) {
+			if (getStackInSlot(place) != null) {
+				ret.add((ItemProjectorOptionBase)(getStackInSlot(place).getItem()));
+			}
+			
+			for (ItemProjectorOptionBase opt : ItemProjectorOptionBase.get_instances()) {
+				if (opt instanceof IChecksOnAll && !ret.contains(opt))
+					ret.add(opt);
+			}
+			
+		}
+
+		return ret;
+	}
+	
 
 	
 }

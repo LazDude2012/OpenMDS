@@ -149,7 +149,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 					ffworldmap.removebyProjector(ffworldmap.getProjectorID());
 				}else{
 					world.setBlockAndMetadataWithNotify(i, j, k,ModularForceFieldSystem.MFFSFieldblock.blockID,ffworldmap.getTyp());
-					world.markBlockAsNeedsUpdate(i, j, k);
+					world.markBlockForUpdate(i, j, k);
 					ffworldmap.setSync(true);
 
 					TileEntity tileEntity = Linkgrid.getWorldMap(world).getCapacitor().get(ffworldmap.getGenratorID());

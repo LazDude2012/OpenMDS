@@ -116,29 +116,29 @@ public class ContainerProjector extends Container {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
 			if (linkPower != projectorentity.getLinkPower()) {
-				icrafting.updateCraftingInventoryInfo(this, 0,
+				icrafting.sendProgressBarUpdate(this, 0,
 						projectorentity.getLinkPower() & 0xffff);
-				icrafting.updateCraftingInventoryInfo(this, 1,
+				icrafting.sendProgressBarUpdate(this, 1,
 						projectorentity.getLinkPower() >>> 16);
 			}
 			if (capacity != projectorentity.getCapacity()) {
-				icrafting.updateCraftingInventoryInfo(this, 2,
+				icrafting.sendProgressBarUpdate(this, 2,
 						projectorentity.getCapacity());
 			}
 			if (SwitchTyp != projectorentity.getswitchtyp()) {
-				icrafting.updateCraftingInventoryInfo(this, 3,
+				icrafting.sendProgressBarUpdate(this, 3,
 						projectorentity.getswitchtyp());
 			}
 			if (accesstyp != projectorentity.getaccesstyp()) {
-				icrafting.updateCraftingInventoryInfo(this, 4,
+				icrafting.sendProgressBarUpdate(this, 4,
 						projectorentity.getaccesstyp());
 			}
 			if (camoflage != projectorentity.isOptioncamouflage()) {
 				if(projectorentity.isOptioncamouflage())
 				{
-					icrafting.updateCraftingInventoryInfo(this, 5, 1);
+					icrafting.sendProgressBarUpdate(this, 5, 1);
 				}else{
-					icrafting.updateCraftingInventoryInfo(this, 5, 0);
+					icrafting.sendProgressBarUpdate(this, 5, 0);
 				}
 			}
 		}

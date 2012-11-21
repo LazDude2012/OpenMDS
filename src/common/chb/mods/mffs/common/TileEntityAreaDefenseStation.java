@@ -20,6 +20,8 @@
 
 package chb.mods.mffs.common;
 
+import chb.mods.mffs.common.options.ItemProjectorOptionDefenseStation;
+import chb.mods.mffs.common.options.ItemProjectorOptionMobDefence;
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
@@ -365,7 +367,7 @@ ISidedInventory,INetworkHandlerListener {
 			{
 				if (isActive() != true) {
 					setActive(true);
-					worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+					worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 				}
 			}
 			if ( !isCanwork()
@@ -375,7 +377,7 @@ ISidedInventory,INetworkHandlerListener {
 					|| this.getLinkPower() < ModularForceFieldSystem.DefenseStationFPpeerAttack) {
 				if (isActive() != false) {
 					setActive(false);
-					worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+					worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 				}
 			}
 
@@ -512,7 +514,7 @@ ISidedInventory,INetworkHandlerListener {
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
 		if (field.equals("active")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 		}
 	}
 
