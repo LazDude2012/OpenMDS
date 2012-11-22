@@ -28,6 +28,7 @@ import chb.mods.mffs.common.IModularProjector.Slots;
 import chb.mods.mffs.common.modules.ModuleBase;
 import chb.mods.mffs.common.modules.Module3DBase;
 import chb.mods.mffs.common.IModularProjector;
+import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.PointXYZ;
 import chb.mods.mffs.common.TileEntityProjector;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -103,7 +104,7 @@ public class ItemProjectorModuleAdvCube extends Module3DBase {
 
 				if(y1==0 || y1 == Strength || x1== 0 - xMout || x1==  xPout  || z1 == 0 - zPout || z1 == zMout)
 				{
-					if(((TileEntityProjector)projector).isOptionFieldcut())
+					if(((TileEntityProjector)projector).hasOption(ModularForceFieldSystem.MFFSProjectorOptionDome))
                     {
 						switch(((TileEntityProjector)projector).getSide())
 						{

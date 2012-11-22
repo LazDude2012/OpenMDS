@@ -32,7 +32,7 @@ public class ItemCardEmpty extends ItemMFFSBase {
 	public ItemCardEmpty(int i) {
 		super(i);
 		setIconIndex(16);
-		setMaxStackSize(16);
+		setMaxStackSize(1);
 	}
 	@Override
 	public String getTextureFile() {
@@ -65,13 +65,6 @@ public class ItemCardEmpty extends ItemMFFSBase {
 				
 				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
 				
-				
-				if (--itemstack.stackSize>0) {
-					if (!entityplayer.inventory.addItemStackToInventory(itemstack))
-					{
-						entityplayer.dropPlayerItem(itemstack);	
-					}
-				}
 
 
 				if (world.isRemote)
@@ -100,12 +93,6 @@ public class ItemCardEmpty extends ItemMFFSBase {
 				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
 				
 				
-				if (--itemstack.stackSize>0) {
-					if (!entityplayer.inventory.addItemStackToInventory(itemstack))
-					{
-						entityplayer.dropPlayerItem(itemstack);	
-					}
-				}
 
 				if (world.isRemote)
 				entityplayer.addChatMessage("[Capacitor] Success: <Power-Link> Card create");

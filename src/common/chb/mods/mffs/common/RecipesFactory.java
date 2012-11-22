@@ -32,7 +32,7 @@ public final class RecipesFactory {
 		switch(forMod)
 		{
 		case 0:
-			
+						
 			CraftingManager.getInstance().addRecipe(itemstack, recipeSplit,	
 					
 					'a', Item.enderPearl,

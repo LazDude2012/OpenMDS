@@ -35,6 +35,8 @@ public class ItemForcePowerCrystal extends ItemMFFSBase  implements IForceEnergy
 		setIconIndex(96);
 		setMaxStackSize(1);
 		setMaxDamage(100);
+		
+		
 	}
 	@Override
 	public String getTextureFile() {
@@ -57,7 +59,12 @@ public class ItemForcePowerCrystal extends ItemMFFSBase  implements IForceEnergy
 	@Override
 	public int getItemDamage(ItemStack itemStack) {
 		
+		if(getForceEnergy(itemStack) == 0)
+		return -1;
+		
+		
 		return 101-((getForceEnergy(itemStack)*100)/getMaxForceEnergy());
+		
 	}
 	@Override
 	public int getMaxForceEnergy() {

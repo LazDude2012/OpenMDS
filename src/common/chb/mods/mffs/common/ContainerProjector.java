@@ -33,7 +33,6 @@ public class ContainerProjector extends Container {
 	private int SwitchTyp;
 	private int accesstyp;
 	private int capacity;
-	private boolean camoflage;
 	private EntityPlayer player;
 
 	public ContainerProjector(EntityPlayer player,
@@ -45,7 +44,6 @@ public class ContainerProjector extends Container {
 		SwitchTyp = -1;
 		accesstyp = -1;
 		capacity = -1;
-		camoflage = false;
 
 		addSlotToContainer(new SlotHelper(projectorentity, 0, 11, 41)); // Linkcard
 		addSlotToContainer(new SlotHelper(projectorentity, 1, 11, 18)); // Typ Slot
@@ -133,21 +131,13 @@ public class ContainerProjector extends Container {
 				icrafting.sendProgressBarUpdate(this, 4,
 						projectorentity.getaccesstyp());
 			}
-			if (camoflage != projectorentity.isOptioncamouflage()) {
-				if(projectorentity.isOptioncamouflage())
-				{
-					icrafting.sendProgressBarUpdate(this, 5, 1);
-				}else{
-					icrafting.sendProgressBarUpdate(this, 5, 0);
-				}
-			}
+
 		}
 
 		linkPower = projectorentity.getLinkPower();
 		SwitchTyp = projectorentity.getswitchtyp();
 		accesstyp = projectorentity.getaccesstyp();
 		capacity =  projectorentity.getCapacity();
-		camoflage = projectorentity.isOptioncamouflage();
 	}
 
 	public void updateProgressBar(int i, int j) {
@@ -171,10 +161,6 @@ public class ContainerProjector extends Container {
 			break;
 		case 4:
 			projectorentity.setaccesstyp(j);
-			break;
-		case 5:
-			if(j==1){projectorentity.setOptioncamouflage(true);}
-			else{projectorentity.setOptioncamouflage(false);}
 			break;
 		}
 	}

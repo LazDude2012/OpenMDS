@@ -88,7 +88,7 @@ public class ItemProjectorOptionFieldFusion extends ItemProjectorOptionBase impl
 		 {
 			TileEntityProjector Projector =  Linkgrid.getWorldMap(world).getProjektor().get(ffworldmap.getProjectorID());
 
-			if(Projector.isOptionFieldFusion())
+			if(Projector.hasOption(ModularForceFieldSystem.MFFSProjectorOptionForceFieldJammer))
 			{
     			Projector.getfield_queue().removeElement(WorldMap.Cordhash(png.X, png.Y,png.Z));
 				ffworldmap.removebyProjector(Projector.getProjektor_ID());

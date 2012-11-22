@@ -23,6 +23,7 @@ package chb.mods.mffs.common.modules;
 import java.util.Set;
 
 import chb.mods.mffs.common.IModularProjector;
+import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.PointXYZ;
 import chb.mods.mffs.common.TileEntityProjector;
 import chb.mods.mffs.common.IModularProjector.Slots;
@@ -63,7 +64,7 @@ public class ItemProjectorModuleTube extends Module3DBase {
 		tpz = distance;
 
 		y_offset_s = Strength - Strength;
-		if (((TileEntityProjector)projector).isOptionFieldcut()) {
+		if (((TileEntityProjector)projector).hasOption(ModularForceFieldSystem.MFFSProjectorOptionDome)) {
 			if (projector.getSide() == 0) {
 				y_offset_e = Strength;
 			}
@@ -79,7 +80,7 @@ public class ItemProjectorModuleTube extends Module3DBase {
 		tpx = distance;
 
 		z_offset_s = Strength - Strength;
-		if (((TileEntityProjector)projector).isOptionFieldcut()) {
+		if (((TileEntityProjector)projector).hasOption(ModularForceFieldSystem.MFFSProjectorOptionDome)) {
 			if (projector.getSide() == 2) {
 				z_offset_e = Strength;
 			}
@@ -94,7 +95,7 @@ public class ItemProjectorModuleTube extends Module3DBase {
 		tpx = Strength;
 
 		x_offset_s = Strength - Strength;
-		if (((TileEntityProjector)projector).isOptionFieldcut()) {
+		if (((TileEntityProjector)projector).hasOption(ModularForceFieldSystem.MFFSProjectorOptionDome)) {
 			if (projector.getSide() == 4) {
 				x_offset_e = Strength;
 			}

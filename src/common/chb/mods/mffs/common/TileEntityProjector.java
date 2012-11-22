@@ -46,6 +46,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
+import chb.mods.mffs.common.IModularProjector.Slots;
 import chb.mods.mffs.common.modules.Module3DBase;
 import chb.mods.mffs.common.modules.ModuleBase;
 import chb.mods.mffs.common.options.IChecksOnAll;
@@ -69,7 +70,7 @@ public class TileEntityProjector extends TileEntityMachines implements IModularP
 ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	private ItemStack ProjektorItemStacks[];
 
-	private boolean[] projektoroption = { false, false, false, false, false,false,false,true,false,false,false,false,false};
+	private boolean[] projektoroption = { false, false};
 	private int[] focusmatrix = { 0, 0, 0, 0 }; // Up 7,Down 8,Right 9,Left 10
 	private int[] nullgrafik = { 180, 180, 180, 180, 180, 180 };
 	private int[] watergrafik = { 205, 205, 207, 222, 223, 223 }; // Vanilla Water Textur
@@ -84,10 +85,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	private int Projektor_ID;
 	private int linkPower;
 	private int blockcounter;
-	private int ForceField_strength;
-	private int ForceField_distance;
 	private boolean burnout;
-	private boolean camoflage;
 	private int accesstyp;
 	private int SwitchTyp;
 	private boolean OnOffSwitch;
@@ -107,9 +105,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		ProjektorTyp = 0;
 		switchdelay = 0;
 		burnout = false;
-		camoflage = false;
-		ForceField_strength = 0;
-		ForceField_distance = 0;
 		accesstyp = 0;
 		SecStation_ID = 0;
 		LinkedSecStation = false;
@@ -180,37 +175,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		return ProjektorTyp;
 	}
 
-	public int getFocusup() {
-		return focusmatrix[0];
-	}
-
-	public void setFocusup(int i) {
-		focusmatrix[0] = i;
-	}
-
-	public int getFocusdown() {
-		return focusmatrix[1];
-	}
-
-	public void setFocusdown(int i) {
-		focusmatrix[1] = i;
-	}
-
-	public int getFocusright() {
-		return focusmatrix[2];
-	}
-
-	public void setFocusright(int i) {
-		focusmatrix[2] = i;
-	}
-
-	public int getFocusleft() {
-		return focusmatrix[3];
-	}
-
-	public void setForcusleft(int i) {
-		focusmatrix[3] = i;
-	}
 
 	public void setProjektor_Typ(int ProjektorTyp) {
 		this.ProjektorTyp = ProjektorTyp;
@@ -218,31 +182,17 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		NetworkHandlerServer.updateTileEntityField(this, "ProjektorTyp");
 	}
 
-	public int getForceField_strength() {
-		return ForceField_strength;
-	}
-
-	public int getForceField_distance() {
-		return ForceField_distance;
-	}
-
-	public void setForceField_distance(int distance) {
-		this.ForceField_distance = distance;
-	}
-
-	public void setForceField_strength(int length) {
-		this.ForceField_strength = length;
-	}
+	
 	public int getBlockcounter() {
 		return blockcounter;
 	}
 
 	public boolean isCreate() {
-		return projektoroption[7];
+		return projektoroption[0];
 	}
 
 	public void setCreate(boolean create) {
-		this.projektoroption[7] = create;
+		this.projektoroption[0] = create;
 	}
 
 	public int getforcefieldblock_meta() {
@@ -254,11 +204,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	public boolean isLinkCapacitor() {
-		return projektoroption[8];
+		return projektoroption[1];
 	}
 
 	public void setLinkGenerator(boolean linkGenerator) {
-		projektoroption[8] = linkGenerator;
+		projektoroption[1] = linkGenerator;
 	}
 
 	public int getLinkPower() {
@@ -270,74 +220,17 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 
-	public boolean isOptionDamage() {
-		return projektoroption[0];
-	}
-
-	public void setOptionDamage(boolean b) {
-		projektoroption[0] = b;
-	}
-
-//	public boolean isOptionSubwater() {
-//		return projektoroption[1];
-//	}
-//
-//	public void setOptionSubwater(boolean b) {
-//		projektoroption[1] = b;
-//	}
-
-	public boolean isOptionFieldcut() {
-		return projektoroption[2];
-	}
-
-	public void setOptionFieldcut(boolean b) {
-		projektoroption[2] = b;
-	}
-
-	public boolean isOptionBlockcutter() {
-		return projektoroption[3];
-	}
-
-	public void setOptionBlockcutter(boolean b) {
-		projektoroption[3] = b;
-	}
-
 	@Override
 	public int getProjektor_ID() {
 		return Projektor_ID;
 	}
 
-	public boolean isOptionBlockdropper() {
-		return projektoroption[4];
+
+	public void ProjektorBurnout() {
+		this.setBurnedOut(true);
+		dropplugins();
 	}
 
-	public void setOptionBlockdropper(boolean b) {
-		projektoroption[4] = b;
-	}
-
-	public boolean isOptionFFJammer() {
-		return projektoroption[5];
-	}
-
-	public void setOptionFFJammer(boolean b) {
-		projektoroption[5] = b;
-	}
-
-	public boolean isOptionDefenceStation() {
-		return projektoroption[9];
-	}
-
-	public void setOptionDefenceStation(boolean b) {
-		projektoroption[9] = b;
-	}
-
-	public boolean isOptionMobDefense() {
-		return projektoroption[10];
-	}
-
-	public void setOptionMobDefense(boolean b) {
-		projektoroption[10] = b;
-	}
 
 	public boolean isBurnout() {
 		return burnout;
@@ -348,60 +241,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		NetworkHandlerServer.updateTileEntityField(this, "burnout");
 	}
 
-	public boolean isJammeractive() {
-		return projektoroption[6];
-	}
-
-	public void setJammer(boolean b) {
-		if (b) {
-			projektoroption[6] = true;
-			Linkgrid.getWorldMap(worldObj).getJammer()
-					.put(getProjektor_ID(), this);
-		}
-		if (!b) {
-			projektoroption[6] = false;
-			Linkgrid.getWorldMap(worldObj).getJammer()
-					.remove(getProjektor_ID());
-		}
-	}
-
-	public boolean isOptionFieldFusion() {
-		return projektoroption[12];
-	}
-
-	public void setOptionFieldFusion(boolean b) {
-		projektoroption[12] = b;
-	}
-
-	public boolean isFieldFusion() {
-		return projektoroption[11];
-	}
-
-	public void setFieldFusion(boolean b) {
-		if (b) {
-			projektoroption[11] = true;
-			Linkgrid.getWorldMap(worldObj).getFieldFusion()
-					.put(getProjektor_ID(), this);
-		}
-		if (!b) {
-			projektoroption[11] = false;
-			Linkgrid.getWorldMap(worldObj).getFieldFusion()
-					.remove(getProjektor_ID());
-		}
-	}
-
-	public void ProjektorBurnout() {
-		this.setBurnedOut(true);
-		dropplugins();
-	}
-
-	public boolean isOptioncamouflage() {
-		return camoflage;
-	}
-
-	public void setOptioncamouflage(boolean b) {
-		camoflage = b;
-	}
+	
 
 	// End Getter AND Setter
 
@@ -476,7 +316,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			if(getforcefieldblock_meta() != get_type().getForceFieldTyps().ordinal())
 			setforcefieldblock_meta(get_type().getForceFieldTyps().ordinal());
 
-			setOptionBlockdropper(ProjectorTyp.TypfromItem(get_type()).Blockdropper);
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			
 		}else{
@@ -489,10 +328,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 		// Focus function
 
+		if (hasValidTypeMod()) {
 		for (int place = 7; place < 11; place++) {
 		if (getStackInSlot(place) != null) {
 			if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSitemFocusmatix) {
-				switch(this.getProjektor_Typ())
+				switch(ProjectorTyp.TypfromItem(get_type()).ProTyp)
 				{
 				case 6:
 					focusmatrix[place-7] = getStackInSlot(place).stackSize+1;
@@ -508,7 +348,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				dropplugins(place,this);
 			}
 		} else {
-			switch(this.getProjektor_Typ())
+			switch(ProjectorTyp.TypfromItem(get_type()).ProTyp)
 			{
 			case 6:
 				focusmatrix[place-7] = 1;
@@ -522,6 +362,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			}
 		}
 		}
+		}
+		
 
 		if (getStackInSlot(11) != null) {
 			int[] grafikindex = null;
@@ -596,209 +438,36 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		}
 				
 		
-
-		if (getStackInSlot(2) != null || getStackInSlot(3) != null
-				|| getStackInSlot(4) != null) {
-			boolean OptionFieldcut = false;
-
-			if (isOptionBlockcutter()) {
-				setOptionBlockcutter(false);
+		
+		if(hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage))
+			if(getforcefieldblock_meta() !=ForceFieldTyps.Camouflage.ordinal()){
+				setforcefieldblock_meta((short) ForceFieldTyps.Camouflage.ordinal());
 			}
-			if (isOptionDamage()) {
-				setOptionDamage(false);
-				setforcefieldblock_meta((short) 0);
+		
+		
+		if(hasOption(ModularForceFieldSystem.MFFSProjectorOptionZapper))
+			if(getforcefieldblock_meta() !=ForceFieldTyps.Zapper.ordinal()){
+				setforcefieldblock_meta((short) ForceFieldTyps.Zapper.ordinal());
 			}
+		
+		
+		if(hasOption(ModularForceFieldSystem.MFFSProjectorOptionFieldFusion)){
+			if(!Linkgrid.getWorldMap(worldObj).getFieldFusion().containsKey(getProjektor_ID()))
+				Linkgrid.getWorldMap(worldObj).getFieldFusion().put(getProjektor_ID(), this);
+			}else{
+			if(Linkgrid.getWorldMap(worldObj).getFieldFusion().containsKey(getProjektor_ID()))
+				Linkgrid.getWorldMap(worldObj).getFieldFusion().remove(getProjektor_ID());
+		 }
+		
+		if(hasOption(ModularForceFieldSystem.MFFSProjectorOptionForceFieldJammer)){
+			if(!Linkgrid.getWorldMap(worldObj).getJammer().containsKey(getProjektor_ID()))
+				Linkgrid.getWorldMap(worldObj).getJammer().put(getProjektor_ID(), this);
+			}else{
+			if(Linkgrid.getWorldMap(worldObj).getJammer().containsKey(getProjektor_ID()))
+				Linkgrid.getWorldMap(worldObj).getJammer().remove(getProjektor_ID());
+		 }
+		
 
-//			if (isOptionSubwater()) {
-//				setOptionSubwater(false);
-//			}
-
-			if (isOptionFFJammer()) {
-				setOptionFFJammer(false);
-			}
-
-			if (this.isOptionFieldFusion()) {
-				setOptionFieldFusion(false);
-			}
-
-			if (isOptioncamouflage()) {
-				setOptioncamouflage(false);
-			}
-
-			if(isOptionDefenceStation()){
-				setOptionDefenceStation(false);
-			}
-
-			if(isOptionMobDefense()){
-				setOptionMobDefense(false);
-			}
-
-			for (int place = 2; place < 5; place++) {
-				if (getStackInSlot(place) != null) {
-					if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSProjectorOptionFieldFusion) {
-						if (this.getProjektor_Typ() == 1 || this.getProjektor_Typ() == 2 || this.getProjektor_Typ() == 6 ) {
-							dropplugins(place,this);
-						} else {
-							setOptionFieldFusion(true);
-
-							if (!isFieldFusion()) {
-								this.setFieldFusion(true);
-							}
-						}
-						continue;
-					}
-
-					if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSProjectorOptionForceFieldJammer) {
-						if (this.getProjektor_Typ() == 1 || this.getProjektor_Typ() == 2 || this.getProjektor_Typ() == 6 ) {
-							dropplugins(place,this);
-						} else {
-							setOptionFFJammer(true);
-
-							if (!isJammeractive()) {
-								this.setJammer(true);
-							}
-						}
-						continue;
-					}
-
-//					if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSProjectorOptionSubwater) {
-//						if (this.getProjektor_Typ() == 1 || this.getProjektor_Typ() == 2 || this.getProjektor_Typ() == 6) {
-//							dropplugins(place,this);
-//						} else {
-//							setOptionSubwater(true);
-//						}
-//						continue;
-//					}
-					if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSProjectorOptionDome) {
-						if (this.getProjektor_Typ() == 1 || this.getProjektor_Typ() == 2 || this.getProjektor_Typ() == 6) {
-							dropplugins(place,this);
-						} else {
-							OptionFieldcut=true;
-						}
-						continue;
-					}
-
-					if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSProjectorOptionZapper) {
-						if (this.getProjektor_Typ() == 4 || this.getProjektor_Typ() == 5 || this.getProjektor_Typ() == 6 || this.getProjektor_Typ() == 7) {
-							dropplugins(place,this);
-						} else {
-							setOptionDamage(true);
-							setforcefieldblock_meta((short) 1);
-						}
-						continue;
-					}
-
-					if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSProjectorOptionCutter) {
-						setOptionBlockcutter(true);
-						continue;
-					}
-
-					if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSProjectorOptionCamouflage) {
-	                     if(!this.isOptionDamage())
-	                     {
-	 						setforcefieldblock_meta((short) ForceFieldTyps.Camouflage.ordinal());
-	 						this.setOptioncamouflage(true);
-	                     }else{
-	                    	 dropplugins(place,this);
-	                     }
-							continue;
-						}
-
-					if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSProjectorOptionDefenceStation) {
-						if (this.getProjektor_Typ() == 1 || this.getProjektor_Typ() == 2 || this.getProjektor_Typ() == 3 || this.getProjektor_Typ() == 6  ) {
-							dropplugins(place,this);
-							continue;
-						} else {
-							this.setOptionDefenceStation(true);
-						}
-						continue;
-					}
-
-					if (getStackInSlot(place).getItem() == ModularForceFieldSystem.MFFSProjectorOptionMoobEx) {
-						if (this.getProjektor_Typ() == 1 || this.getProjektor_Typ() == 2 || this.getProjektor_Typ() == 3 || this.getProjektor_Typ() == 6  ) {
-							dropplugins(place,this);
-							continue;
-						} else {
-							this.setOptionMobDefense(true);
-						}
-						continue;
-					}
-
-					if (getStackInSlot(place).getItem() != ModularForceFieldSystem.MFFSProjectorOptionSubwater
-							&& getStackInSlot(place).getItem() != ModularForceFieldSystem.MFFSProjectorOptionDome
-							&& getStackInSlot(place).getItem() != ModularForceFieldSystem.MFFSProjectorOptionZapper
-							&& getStackInSlot(place).getItem() != ModularForceFieldSystem.MFFSProjectorOptionCutter
-							&& getStackInSlot(place).getItem() != ModularForceFieldSystem.MFFSProjectorOptionDefenceStation
-							&& getStackInSlot(place).getItem() != ModularForceFieldSystem.MFFSProjectorOptionMoobEx
-							&& getStackInSlot(place).getItem() != ModularForceFieldSystem.MFFSProjectorOptionForceFieldJammer
-							&& getStackInSlot(place).getItem() != ModularForceFieldSystem.MFFSProjectorOptionCamouflage
-
-							) {
-						dropplugins(place,this);
-						continue;
-					}
-
-					if (getProjektor_Typ() == 0) {
-						dropplugins(place,this);
-					}
-				}
-			}
-
-			if (isJammeractive() && !isOptionFFJammer()) {
-				this.setJammer(false);
-			}
-
-			if (isFieldFusion() && !isOptionFieldFusion()) {
-				this.setFieldFusion(false);
-			}
-
-			if (isOptionFieldcut() != OptionFieldcut) {
-				setOptionFieldcut(OptionFieldcut);
-			}
-		} else {
-			if(isOptionDefenceStation()){
-				setOptionDefenceStation(false);
-			}
-
-			if (isOptioncamouflage()) {
-				setOptioncamouflage(false);
-			}
-
-			if(isOptionMobDefense()){
-				setOptionMobDefense(false);
-			}
-
-			if (isOptionBlockcutter()) {
-				setOptionBlockcutter(false);
-			}
-			if (isOptionDamage()) {
-				setOptionDamage(false);
-				setforcefieldblock_meta((short) 0);
-			}
-			if (isOptionFieldcut()) {
-				setOptionFieldcut(false);
-			}
-//			if (isOptionSubwater()) {
-//				setOptionSubwater(false);
-//			}
-
-			if (isOptionFFJammer()) {
-				setOptionFFJammer(false);
-				if (isJammeractive()) {
-					this.setJammer(false);
-				}
-			}
-
-			if (isOptionFieldFusion()) {
-				setOptionFieldFusion(false);
-				if (isFieldFusion()) {
-					this.setFieldFusion(false);
-				}
-			}
-		}
-
-		// --------------------------
-		// Drop plugin by typ
 		
 		if (hasValidTypeMod()) {
 			ModuleBase modTyp = get_type();				
@@ -817,7 +486,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			if (!modTyp.supportsMatrixDown)
 				dropplugins(8,this);
 			
-			if(!this.isOptioncamouflage())
+			if(!this.hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage))
 				dropplugins(11,this);
 			
 		} else {
@@ -832,7 +501,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	private void UpdateForcefieldTexttur() {
-		if(this.isActive() && this.isOptioncamouflage())
+		if(this.isActive() && this.hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage))
 		{
 		for (Integer hasher : field_queue) {
 			ForceFieldBlockStack ffb = WorldMap.getForceFieldWorld(worldObj).getForceFieldStackMap(hasher);
@@ -897,7 +566,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			}
 
 			if ((getOnOffSwitch() && (switchdelay >= 40))
-					&& getProjektor_Typ() != 0 && this.isLinkCapacitor()
+					&& hasValidTypeMod() && this.isLinkCapacitor()
 					&& this.getLinkPower() > Forcepowerneed(5)) {
 				if (isActive() != true) {
 					setActive(true);
@@ -910,7 +579,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				}
 			}
 			if ((!getOnOffSwitch() && switchdelay >= 40)
-					|| getProjektor_Typ() == 0 || !this.isLinkCapacitor() || burnout
+					|| !hasValidTypeMod() || !this.isLinkCapacitor() || burnout
 					|| this.getLinkPower() <= Forcepowerneed(1)) {
 				if (isActive() != false) {
 					setActive(false);
@@ -925,11 +594,15 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 				if (isActive()) {
 					FieldGenerate(false);
-					if(this.isOptionDefenceStation())
-					{ ForceFieldOptions.DefenseStation(this, worldObj,"projector","human");}
+					
+					if(hasOption(ModularForceFieldSystem.MFFSProjectorOptionMoobEx))
+						ItemProjectorOptionMobDefence.ProjectorNPCDefence(this, worldObj);
+		
+					
+					if(hasOption(ModularForceFieldSystem.MFFSProjectorOptionDefenceStation))
+						ItemProjectorOptionDefenseStation.ProjectorPlayerDefence(this, worldObj);
 
-					if(this.isOptionMobDefense())
-					{ForceFieldOptions.DefenseStation(this, worldObj,"projector","mobs");}
+
 				}
 
 				this.setTicker((short) 0);
@@ -1084,7 +757,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		     if (worldObj.getChunkFromBlockCoords(ffb.getX(), ffb.getZ()).isChunkLoaded) {
 		    	 if(!ffb.isEmpty()){
 		            	if (ffb.getProjectorID() == getProjektor_ID()){
-					if (isOptionBlockcutter()) {
+					if (hasOption(ModularForceFieldSystem.MFFSProjectorOptionCutter)) {
 						int blockid = worldObj.getBlockId(ffb.getX(),
 								ffb.getY(), ffb.getZ());
 						TileEntity entity = worldObj.getBlockTileEntity(ffb.getX(),
@@ -1102,7 +775,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 							worldObj.setBlockWithNotify(ffb.getX(), ffb.getY(),
 									ffb.getZ(), 0);
 
-							if (isOptionBlockdropper() && stacks != null) {
+							if (ProjectorTyp.TypfromItem(get_type()).Blockdropper && stacks != null) {
 								IInventory inventory = InventoryHelper.findAttachedInventory(worldObj,this.xCoord,this.yCoord,this.zCoord);
 								if (inventory != null) {
 									if (inventory.getSizeInventory() > 0) {
@@ -1191,8 +864,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	public int Forcepowerneed(int factor) {
-		if (!field_queue.isEmpty()) {
-			return field_queue.size()
+		if (!field_def.isEmpty()) {
+			return field_def.size()
 					* ModularForceFieldSystem.forcefieldblockcost;
 		}
 
@@ -1201,27 +874,27 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 		int tmplength = 1;
 
-		if (this.getForceField_strength() != 0) {
-			tmplength = this.getForceField_strength();
+		if (this.countItemsInSlot(Slots.Strength) != 0) {
+			tmplength = this.countItemsInSlot(Slots.Strength);
 		}
 
 		switch (this.getProjektor_Typ()) {
 		case 1:
-			blocks = ((this.getFocusdown() + this.getFocusleft()
-					+ this.getFocusright() + this.getFocusup()) + 1)
+			blocks = ((this.countItemsInSlot(Slots.FocusDown) + this.countItemsInSlot(Slots.FocusLeft)
+					+ this.countItemsInSlot(Slots.FocusRight) + this.countItemsInSlot(Slots.FocusUp)) + 1)
 					* tmplength;
 			break;
 		case 2:
-			blocks = (this.getFocusdown() + this.getFocusup() + 1)
-					* (this.getFocusleft() + this.getFocusright() + 1);
+			blocks = (this.countItemsInSlot(Slots.FocusDown) + this.countItemsInSlot(Slots.FocusUp) + 1)
+					* (this.countItemsInSlot(Slots.FocusLeft) + this.countItemsInSlot(Slots.FocusRight) + 1);
 			break;
 		case 3:
-			blocks = (((this.getForceField_distance() + 2 + this.getForceField_distance() + 2) * 4) + 4)
-					* (this.getForceField_strength() + 1);
+			blocks = (((this.countItemsInSlot(Slots.Distance) + 2 + this.countItemsInSlot(Slots.Distance) + 2) * 4) + 4)
+					* (this.countItemsInSlot(Slots.Strength) + 1);
 			break;
 		case 4:
 		case 5:
-			blocks = (this.getForceField_distance() * this.getForceField_distance()) * 6;
+			blocks = (this.countItemsInSlot(Slots.Distance) * this.countItemsInSlot(Slots.Distance)) * 6;
 			break;
 		}
 
@@ -1446,7 +1119,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		break;
 		}
 
-		if(Slot == 11 && this.isOptioncamouflage())
+		if(Slot == 11 && this.hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage))
 		return true;
 
 		return false;
@@ -1524,6 +1197,15 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		return 0;
 	}
 	
+	
+	public boolean hasOption(Item item){
+		
+		for(ItemProjectorOptionBase opt : getOptions()){
+			if(opt == item)
+			 return true;
+		}
+		return false;
+	}
 
 		
 	

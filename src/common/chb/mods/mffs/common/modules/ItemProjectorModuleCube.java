@@ -26,6 +26,7 @@ import java.util.Set;
 import net.minecraft.src.TileEntity;
 
 import chb.mods.mffs.common.IModularProjector;
+import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.PointXYZ;
 import chb.mods.mffs.common.IModularProjector.Slots;
 import chb.mods.mffs.common.TileEntityProjector;
@@ -53,7 +54,7 @@ public class ItemProjectorModuleCube extends Module3DBase{
 			yTop = 255-te.yCoord;
 		}
 		
-		if (((TileEntityProjector)te).isOptionFieldcut()) {
+		if (((TileEntityProjector)te).hasOption(ModularForceFieldSystem.MFFSProjectorOptionDome)) {
 			yDown = 0;
      	}
 		

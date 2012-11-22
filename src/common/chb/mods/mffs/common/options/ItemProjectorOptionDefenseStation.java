@@ -22,10 +22,26 @@ package chb.mods.mffs.common.options;
 
 import java.util.List;
 
+import chb.mods.mffs.common.Functions;
+import chb.mods.mffs.common.Linkgrid;
+import chb.mods.mffs.common.ModularForceFieldSystem;
+import chb.mods.mffs.common.PointXYZ;
+import chb.mods.mffs.common.TileEntityAdvSecurityStation;
+import chb.mods.mffs.common.TileEntityCapacitor;
+import chb.mods.mffs.common.TileEntityProjector;
+import chb.mods.mffs.common.IModularProjector.Slots;
+
+import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.DamageSource;
+import net.minecraft.src.EntityGhast;
+import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityMob;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntitySlime;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.World;
 
 public class ItemProjectorOptionDefenseStation extends ItemProjectorOptionBase  {
 	public ItemProjectorOptionDefenseStation(int i) {
@@ -42,4 +58,82 @@ public class ItemProjectorOptionDefenseStation extends ItemProjectorOptionBase  
             tooltip = "compatible to Area Defense Station";
             info.add(tooltip);
     }
+	
+	
+	public static void ProjectorPlayerDefence(TileEntityProjector projector,World world){
+		
+		if(projector.isActive())
+		{
+			int xmin = projector.xCoord - projector.countItemsInSlot(Slots.Distance);
+			int xmax = projector.xCoord + projector.countItemsInSlot(Slots.Distance);
+			int ymin = projector.yCoord - projector.countItemsInSlot(Slots.Distance);
+			int ymax = projector.yCoord + projector.countItemsInSlot(Slots.Distance);
+			int zmin = projector.zCoord - projector.countItemsInSlot(Slots.Distance);
+			int zmax = projector.zCoord + projector.countItemsInSlot(Slots.Distance);
+			
+			List<EntityLiving> LivingEntitylist = world.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(xmin, ymin, zmin, xmax, ymax, zmax));
+
+			for (int i = 0; i < LivingEntitylist.size(); i++) {
+				EntityLiving entityLiving = LivingEntitylist.get(i);
+				
+
+				if(!(entityLiving instanceof EntityPlayer))
+				{continue;}
+				
+				
+				if (projector.getLinkPower() < ModularForceFieldSystem.DefenseStationFPpeerAttack)
+				{break;}	
+				
+				
+				for (PointXYZ png : projector.getInteriorPoints()) {
+					
+					if(png.X == (int)entityLiving.posX && png.Y == (int)entityLiving.posY && png.Z == (int)entityLiving.posZ){
+						
+						
+		        		if (projector.getLinkPower() > ModularForceFieldSystem.DefenseStationFPpeerAttack) {
+		        			
+								boolean killswitch = false;
+
+								if(projector.getaccesstyp()==2)
+								{
+									TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkCapacitor_ID());
+									if(Generator != null)
+									{
+									TileEntityAdvSecurityStation SecurityStation = Linkgrid.getWorldMap(world).getSecStation().get(Generator.getSecStation_ID());
+
+									if(SecurityStation != null)
+									{
+									killswitch = !SecurityStation.isAccessGranted(((EntityPlayer)entityLiving).username,"SR");
+									}
+									}
+								}
+								if(projector.getaccesstyp()==3)
+								{
+									TileEntityAdvSecurityStation SecurityStation = Linkgrid.getWorldMap(world).getSecStation().get(projector.getSecStation_ID());
+									if(SecurityStation != null)
+									{
+									killswitch = !SecurityStation.isAccessGranted(((EntityPlayer)entityLiving).username,"SR");
+									}
+								}
+
+								if (killswitch)
+									{
+									Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkCapacitor_ID())
+									.setForcePower(Linkgrid.getWorldMap(world).getCapacitor().get(projector
+										.getLinkCapacitor_ID()).getForcePower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
+									
+									((EntityPlayer)entityLiving).inventory.dropAllItems();
+									entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);
+							
+									continue;
+									}
+
+
+		        		}	
+					}
+				}
+			}
+		}
+	}
+	
 }

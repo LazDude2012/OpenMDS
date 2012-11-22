@@ -22,10 +22,24 @@ package chb.mods.mffs.common.options;
 
 import java.util.List;
 
+import chb.mods.mffs.common.Linkgrid;
+import chb.mods.mffs.common.ModularForceFieldSystem;
+import chb.mods.mffs.common.PointXYZ;
+import chb.mods.mffs.common.TileEntityProjector;
+import chb.mods.mffs.common.IModularProjector.Slots;
+
+import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.DamageSource;
+import net.minecraft.src.EntityGhast;
+import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityMob;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntitySlime;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
 
 public class ItemProjectorOptionMobDefence extends ItemProjectorOptionBase  {
 	public ItemProjectorOptionMobDefence(int i) {
@@ -42,4 +56,51 @@ public class ItemProjectorOptionMobDefence extends ItemProjectorOptionBase  {
         tooltip = "compatible to Area Defense Station";
         info.add(tooltip);
     }
+	
+	
+	
+	public static void ProjectorNPCDefence(TileEntityProjector projector,World world){
+		
+		
+			if(projector.isActive())
+			{
+				int xmin = projector.xCoord - projector.countItemsInSlot(Slots.Distance);
+				int xmax = projector.xCoord + projector.countItemsInSlot(Slots.Distance);
+				int ymin = projector.yCoord - projector.countItemsInSlot(Slots.Distance);
+				int ymax = projector.yCoord + projector.countItemsInSlot(Slots.Distance);
+				int zmin = projector.zCoord - projector.countItemsInSlot(Slots.Distance);
+				int zmax = projector.zCoord + projector.countItemsInSlot(Slots.Distance);
+				
+				List<EntityLiving> LivingEntitylist = world.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(xmin, ymin, zmin, xmax, ymax, zmax));
+
+				for (int i = 0; i < LivingEntitylist.size(); i++) {
+					EntityLiving entityLiving = LivingEntitylist.get(i);
+					
+	
+					if(!(entityLiving instanceof EntityMob) && !(entityLiving instanceof EntitySlime) && !(entityLiving instanceof EntityGhast))
+					{continue;}
+					
+					
+					if (projector.getLinkPower() < ModularForceFieldSystem.DefenseStationFPpeerAttack)
+					{break;}	
+					
+					
+					for (PointXYZ png : projector.getInteriorPoints()) {
+						
+						if(png.X == (int)entityLiving.posX && png.Y == (int)entityLiving.posY && png.Z == (int)entityLiving.posZ){
+							
+			        		if (projector.getLinkPower() > ModularForceFieldSystem.DefenseStationFPpeerAttack) {
+			        			
+								Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkCapacitor_ID())
+								.setForcePower(Linkgrid.getWorldMap(world).getCapacitor().get(projector
+									.getLinkCapacitor_ID()).getForcePower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
+								
+						entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.MobDefenseDamage);
+						continue;
+						}	
+					}
+				}
+			}
+		}
+	}
 }

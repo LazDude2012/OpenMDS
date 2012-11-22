@@ -23,7 +23,7 @@ public enum ProjectorTyp {
 	public String displayName;
 	String recipe;
 	Item item;
-	int ProTyp;
+	public int ProTyp;
 	boolean Blockdropper;
 
 
