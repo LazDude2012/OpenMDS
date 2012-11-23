@@ -64,12 +64,12 @@ public class ItemProjectorOptionMobDefence extends ItemProjectorOptionBase  {
 		
 			if(projector.isActive())
 			{
-				int xmin = projector.xCoord - projector.countItemsInSlot(Slots.Distance);
-				int xmax = projector.xCoord + projector.countItemsInSlot(Slots.Distance);
-				int ymin = projector.yCoord - projector.countItemsInSlot(Slots.Distance);
-				int ymax = projector.yCoord + projector.countItemsInSlot(Slots.Distance);
-				int zmin = projector.zCoord - projector.countItemsInSlot(Slots.Distance);
-				int zmax = projector.zCoord + projector.countItemsInSlot(Slots.Distance);
+				int xmin = projector.xCoord - (projector.countItemsInSlot(Slots.Distance)+4);
+				int xmax = projector.xCoord + (projector.countItemsInSlot(Slots.Distance)+4);
+				int ymin = projector.yCoord - (projector.countItemsInSlot(Slots.Distance)+4);
+				int ymax = projector.yCoord + (projector.countItemsInSlot(Slots.Distance)+4);
+				int zmin = projector.zCoord - (projector.countItemsInSlot(Slots.Distance)+4);
+				int zmax = projector.zCoord + (projector.countItemsInSlot(Slots.Distance)+4);
 				
 				List<EntityLiving> LivingEntitylist = world.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(xmin, ymin, zmin, xmax, ymax, zmax));
 
