@@ -70,7 +70,6 @@ public class TileEntityProjector extends TileEntityMachines implements IModularP
 ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	private ItemStack ProjektorItemStacks[];
 
-	private boolean[] projektoroption = { false, false};
 	private int[] focusmatrix = { 0, 0, 0, 0 }; // Up 7,Down 8,Right 9,Left 10
 	private int[] nullgrafik = { 180, 180, 180, 180, 180, 180 };
 	private int[] watergrafik = { 205, 205, 207, 222, 223, 223 }; // Vanilla Water Textur
@@ -90,6 +89,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	private int SwitchTyp;
 	private boolean OnOffSwitch;
 	private int capacity;
+	private boolean Create;
 
 	protected Stack<Integer> field_queue = new Stack<Integer>();
 	protected Set<PointXYZ> field_interior = new HashSet<PointXYZ>();
@@ -111,6 +111,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		SwitchTyp = 0;
 		OnOffSwitch = false;
 		capacity = 0;
+		Create = true;
 	}
 
 	// Start Getter AND Setter
@@ -188,11 +189,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	public boolean isCreate() {
-		return projektoroption[0];
+		return Create;
 	}
 
 	public void setCreate(boolean create) {
-		this.projektoroption[0] = create;
+		this.Create = create;
 	}
 
 	public int getforcefieldblock_meta() {
@@ -519,6 +520,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
+			
+
 			if (this.isCreate() && this.getLinkCapacitor_ID() != 0) {
 				addtogrid();
 				checkslots(true);
@@ -527,6 +530,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				}
 				this.setCreate(false);
 			}
+		
 
 			if (this.getLinkedCapacitor() != null) {
 				
@@ -1165,8 +1169,16 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	public TileEntityCapacitor getLinkedCapacitor(){
 		int capid = getLinkCapacitor_ID();
 		TileEntityCapacitor cap = Linkgrid.getWorldMap(getWorldObj()).getCapacitor().get(capid);
+		
+
 		if (cap != null){
-			if (cap.getTransmitRange() >= Math.sqrt((cap.xCoord-xCoord)^2 + (cap.yCoord-yCoord)^2 + (cap.zCoord-zCoord)^2))
+			
+			
+			int dx = cap.xCoord - this.xCoord;
+			int dy = cap.yCoord - this.yCoord;
+			int dz = cap.zCoord - this.zCoord;
+			
+			if (cap.getTransmitRange() >=Math.sqrt(dx * dx + dy * dy + dz * dz))
 				return cap;
 		}
 		return null;

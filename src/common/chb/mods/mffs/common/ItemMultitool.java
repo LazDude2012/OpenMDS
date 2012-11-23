@@ -126,6 +126,7 @@ public abstract class ItemMultitool extends  ItemMFFSBase  implements IForceEner
 		{
 			return 101-((getForceEnergy(itemStack)*100)/getMaxForceEnergy());
 			
+
 		}
 
 		@SideOnly(Side.CLIENT)

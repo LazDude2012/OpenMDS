@@ -512,6 +512,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			}
 
 			if (this.getTicker() == 10) {
+				
 				if(this.getLinketProjektor() != (short) Linkgrid.getWorldMap(worldObj).condevisec(getCapacitor_ID(), xCoord, yCoord, zCoord,getTransmitRange()))
 				setLinketprojektor((short) Linkgrid.getWorldMap(worldObj).condevisec(getCapacitor_ID(), xCoord, yCoord, zCoord,getTransmitRange()));
 
