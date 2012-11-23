@@ -203,13 +203,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		this.forcefieldblock_meta =  (short) ffmeta;
 	}
 
-	public boolean isLinkCapacitor() {
-		return projektoroption[1];
-	}
-
-	public void setLinkGenerator(boolean linkGenerator) {
-		projektoroption[1] = linkGenerator;
-	}
 
 	public int getLinkPower() {
 		return linkPower;
@@ -535,25 +528,17 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				this.setCreate(false);
 			}
 
-			if (this.getLinkCapacitor_ID() != 0) {
-				this.setLinkGenerator(true);
-				try {
-					this.setLinkPower(Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getLinkCapacitor_ID())
-							.getForcePower());
-					this.setCapacity(Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getLinkCapacitor_ID())
-							.getCapacity());
-				} catch (java.lang.NullPointerException ex) {
-					this.setLinkGenerator(false);
+			if (this.getLinkedCapacitor() != null) {
+				
+				this.setLinkPower(getLinkedCapacitor().getForcePower());
+                this.setCapacity(getLinkedCapacitor().getCapacity());
+				}else{
+					
 					this.setLinkPower(0);
 					this.setCapacity(0);
+					
 				}
-			} else {
-				this.setLinkGenerator(false);
-				this.setLinkPower(0);
-				this.setCapacity(0);
-			}
+
 
 			boolean powerdirekt = worldObj.isBlockGettingPowered(xCoord,
 					yCoord, zCoord);
@@ -566,7 +551,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			}
 
 			if ((getOnOffSwitch() && (switchdelay >= 40))
-					&& hasValidTypeMod() && this.isLinkCapacitor()
+					&& hasValidTypeMod() && this.getLinkedCapacitor()  !=null
 					&& this.getLinkPower() > Forcepowerneed(5)) {
 				if (isActive() != true) {
 					setActive(true);
@@ -579,7 +564,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				}
 			}
 			if ((!getOnOffSwitch() && switchdelay >= 40)
-					|| !hasValidTypeMod() || !this.isLinkCapacitor() || burnout
+					|| !hasValidTypeMod() || this.getLinkedCapacitor() ==null || burnout
 					|| this.getLinkPower() <= Forcepowerneed(1)) {
 				if (isActive() != false) {
 					setActive(false);
@@ -610,6 +595,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 			this.setTicker((short) (this.getTicker() + 1));
 		}else{
+			
+		
 			if(this.getProjektor_ID()==0)
 			{
 				if (this.getTicker() >= 20+random.nextInt(20)) {
@@ -1032,14 +1019,16 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 	@Override
 	public void onNetworkHandlerUpdate(String field) {
+		
+		
 		if (field.equals("side")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("active")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 		}
 		if (field.equals("ProjektorTyp")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 		}
 	}
 
@@ -1142,6 +1131,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 	
 	public boolean hasValidTypeMod(){
+		
 		if (this.getStackInSlot(1) != null && getStackInSlot(1).getItem() instanceof ModuleBase)
 			return true;
 		return false;
@@ -1177,13 +1167,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		TileEntityCapacitor cap = Linkgrid.getWorldMap(getWorldObj()).getCapacitor().get(capid);
 		if (cap != null){
 			if (cap.getTransmitRange() >= Math.sqrt((cap.xCoord-xCoord)^2 + (cap.yCoord-yCoord)^2 + (cap.zCoord-zCoord)^2))
-				setLinkGenerator(true);
 				return cap;
-		}else{
-		  if (getStackInSlot(0) != null)
-			  this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 		}
-		setLinkGenerator(false);
 		return null;
 	}
 	

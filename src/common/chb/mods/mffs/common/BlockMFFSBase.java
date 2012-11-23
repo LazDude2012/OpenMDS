@@ -243,13 +243,9 @@ public abstract class BlockMFFSBase extends BlockContainer {
 				
 		int typ = 	0;	
 		
-		if(tileentity instanceof TileEntityProjector){
-			if(((TileEntityProjector) tileentity).hasValidTypeMod())
-			 typ = ProjectorTyp.TypfromItem(((TileEntityProjector) tileentity).get_type()).ProTyp;
-	
-		}
-		
-
+		if(tileentity instanceof TileEntityProjector)
+			typ = ((TileEntityProjector) tileentity).getProjektor_Typ();
+			
 
 		if (isActive(iblockaccess, i, j, k)) {
 			if (facing == l ) {
