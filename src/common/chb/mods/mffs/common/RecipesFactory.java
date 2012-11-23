@@ -54,7 +54,7 @@ public final class RecipesFactory {
 					'u', ModularForceFieldSystem.MFFSitemForcicium,
 					'v', ModularForceFieldSystem.MFFSitemFocusmatix,
 					'w',ModularForceFieldSystem.MFFSProjectorTypkube,
-					'x', ModularForceFieldSystem.MFFSitemForcePowerCrystal,       //MFFs Stuff z--
+					'x', new ItemStack(ModularForceFieldSystem.MFFSitemForcePowerCrystal, 1, -1),         //MFFs Stuff z--
 					'y', ModularForceFieldSystem.MFFSitemFocusmatix,
 					'z', ModularForceFieldSystem.MFFSItemIDCard
 
@@ -85,7 +85,7 @@ public final class RecipesFactory {
 					'u', ModularForceFieldSystem.MFFSitemForcicium,
 					'v', ModularForceFieldSystem.MFFSitemFocusmatix,
 					'w',ModularForceFieldSystem.MFFSProjectorTypkube,
-					'x', ModularForceFieldSystem.MFFSitemForcePowerCrystal,       //MFFs Stuff z--
+					'x', new ItemStack(ModularForceFieldSystem.MFFSitemForcePowerCrystal, 1, -1),         //MFFs Stuff z--
 					'y', ModularForceFieldSystem.MFFSitemFocusmatix,
 					'z', ModularForceFieldSystem.MFFSItemIDCard,
 					
@@ -136,7 +136,7 @@ public final class RecipesFactory {
 				'u', ModularForceFieldSystem.MFFSitemForcicium,
 				'v', ModularForceFieldSystem.MFFSitemFocusmatix,
 				'w',ModularForceFieldSystem.MFFSProjectorTypkube,
-				'x', ModularForceFieldSystem.MFFSitemForcePowerCrystal,       //MFFs Stuff z--
+				'x', new ItemStack(ModularForceFieldSystem.MFFSitemForcePowerCrystal, 1, -1),       //MFFs Stuff z--
 				'y', ModularForceFieldSystem.MFFSitemFocusmatix,
 				'z', ModularForceFieldSystem.MFFSItemIDCard,
 				

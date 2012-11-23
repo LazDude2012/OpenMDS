@@ -16,7 +16,7 @@ public class MFFSRecipes {
 
 	public static void init()
 	{
-		
+	
 		OreDictionary.registerOre("ForciciumItem", ModularForceFieldSystem.MFFSitemForcicium);
 		OreDictionary.registerOre("MonazitOre", ModularForceFieldSystem.MFFSMonazitOre);
 		
