@@ -22,6 +22,7 @@ package chb.mods.mffs.common.modules;
 
 import java.util.Set;
 
+import net.minecraft.src.Item;
 import net.minecraft.src.TileEntity;
 
 import chb.mods.mffs.common.IModularProjector;
@@ -29,6 +30,15 @@ import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.PointXYZ;
 import chb.mods.mffs.common.TileEntityProjector;
 import chb.mods.mffs.common.IModularProjector.Slots;
+import chb.mods.mffs.common.options.ItemProjectorOptionBlockBreaker;
+import chb.mods.mffs.common.options.ItemProjectorOptionCamoflage;
+import chb.mods.mffs.common.options.ItemProjectorOptionDefenseStation;
+import chb.mods.mffs.common.options.ItemProjectorOptionFieldFusion;
+import chb.mods.mffs.common.options.ItemProjectorOptionFieldManipulator;
+import chb.mods.mffs.common.options.ItemProjectorOptionForceFieldJammer;
+import chb.mods.mffs.common.options.ItemProjectorOptionMobDefence;
+import chb.mods.mffs.common.options.ItemProjectorOptionSponge;
+import chb.mods.mffs.common.options.ItemProjectorOptionTouchDamage;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class ItemProjectorModuleSphere extends Module3DBase {
@@ -71,6 +81,21 @@ public class ItemProjectorModuleSphere extends Module3DBase {
 				}
 			}
 		}
+	}
+	
+	
+	@Override
+	public boolean supportsOption(Item item) {
+		
+		if(item instanceof ItemProjectorOptionCamoflage) return true;
+		if(item instanceof ItemProjectorOptionDefenseStation) return true;
+		if(item instanceof ItemProjectorOptionFieldFusion) return true;
+		if(item instanceof ItemProjectorOptionFieldManipulator) return true;
+		if(item instanceof ItemProjectorOptionForceFieldJammer) return true;
+		if(item instanceof ItemProjectorOptionMobDefence) return true;
+		if(item instanceof ItemProjectorOptionSponge) return true;
+
+		return false;
 	}
 	
 

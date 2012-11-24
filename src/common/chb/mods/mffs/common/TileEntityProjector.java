@@ -1053,67 +1053,42 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
-		switch(Slot)
+		
+		if(Slot == 1)return hasValidTypeMod();
+		if(Slot==0 && par1ItemStack.getItem() instanceof ItemCardPowerLink)return true;
+		if(Slot == 11 && this.hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage))return true;
+		if(Slot==12 && par1ItemStack.getItem() instanceof ItemCardSecurityLink)return true;	
+		
+		if(hasValidTypeMod())
 		{
-		case 0:
-			if(par1ItemStack.getItem() instanceof ItemCardPowerLink)
-			return true;
-		break;
-
-		case 1:
-			if(par1ItemStack.getItem() instanceof ModuleBase )
-			return true;
-		break;
-
-		case 2:
-		case 3:
-		case 4:
-			if(par1ItemStack.getItem() instanceof ItemProjectorOptionBlockBreaker ||
-			   par1ItemStack.getItem() instanceof ItemProjectorOptionCamoflage ||
-			   par1ItemStack.getItem() instanceof ItemProjectorOptionFieldFusion ||
-			   par1ItemStack.getItem() instanceof ItemProjectorOptionDefenseStation ||
-			   par1ItemStack.getItem() instanceof ItemProjectorOptionFieldManipulator ||
-			   par1ItemStack.getItem() instanceof ItemProjectorOptionForceFieldJammer ||
-			   par1ItemStack.getItem() instanceof ItemProjectorOptionMobDefence ||
-			   par1ItemStack.getItem() instanceof ItemProjectorOptionSponge ||
-			   par1ItemStack.getItem() instanceof ItemProjectorOptionTouchDamage )
-			return true;
-		break;
-
-		case 5:
-			if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorDistance )
-
-				if(this.getProjektor_Typ() != 0 &&  this.getProjektor_Typ() != 7 )
-				return true;
-		break;
-
-		case 6:
-			if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorStrength )
-
-				if(this.getProjektor_Typ() != 0 &&  this.getProjektor_Typ() != 2 && this.getProjektor_Typ() != 4)
-				return true;
-		break;
-
-		case 7:
-		case 8:
-		case 9:
-		case 10:
-			if(par1ItemStack.getItem() instanceof ItemProjectorFocusMatrix )
+			ModuleBase modTyp = get_type();
+			
+			switch(Slot)
 			{
-				if(this.getProjektor_Typ() != 0 &&  this.getProjektor_Typ() != 3 && this.getProjektor_Typ() != 5)
-				return true;
+			case 5:
+				if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorDistance )return modTyp.supportsDistance;	
+			break;
+			case 6:
+				if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorStrength )return modTyp.supportsStrength;	
+			break;
+			
+			case 7:
+			case 8:
+			case 9:
+			case 10:
+				if(par1ItemStack.getItem() instanceof ItemProjectorFocusMatrix )return modTyp.supportsMatrixUp;
+			break;
+			
+			case 2:
+			case 3:
+			case 4:
+				if(par1ItemStack.getItem() instanceof ItemProjectorOptionBase)
+					return modTyp.supportsOption(par1ItemStack.getItem());
+					
+			break;
 			}
-
-		break;
-
-		case 12:
-			if(par1ItemStack.getItem() instanceof ItemCardSecurityLink )
-			return true;
-		break;
+			
 		}
-
-		if(Slot == 11 && this.hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage))
-		return true;
 
 		return false;
 	}

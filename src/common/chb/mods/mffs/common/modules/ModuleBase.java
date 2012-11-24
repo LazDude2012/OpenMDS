@@ -118,6 +118,7 @@ public abstract class ModuleBase extends Item {
 		return ForceFieldTyps.Default;
 	}
 
+	public abstract boolean supportsOption(Item item);
+		
 
-	
 }
