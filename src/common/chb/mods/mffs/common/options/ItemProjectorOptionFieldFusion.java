@@ -87,7 +87,9 @@ public class ItemProjectorOptionFieldFusion extends ItemProjectorOptionBase impl
 		 if(ffworldmap.getGenratorID()== Proj.getLinkCapacitor_ID())
 		 {
 			TileEntityProjector Projector =  Linkgrid.getWorldMap(world).getProjektor().get(ffworldmap.getProjectorID());
-
+			
+			if(Projector != null)
+			{
 			if(Projector.hasOption(ModularForceFieldSystem.MFFSProjectorOptionForceFieldJammer))
 			{
     			Projector.getfield_queue().removeElement(WorldMap.Cordhash(png.X, png.Y,png.Z));
@@ -101,6 +103,7 @@ public class ItemProjectorOptionFieldFusion extends ItemProjectorOptionBase impl
 						ffworldmap.getY(), ffworldmap.getZ(), 0);
 				}
 			}
+		 }
 		 }
 		}
 		
