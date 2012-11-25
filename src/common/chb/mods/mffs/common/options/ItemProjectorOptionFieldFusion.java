@@ -92,7 +92,7 @@ public class ItemProjectorOptionFieldFusion extends ItemProjectorOptionBase impl
 			{
 			if(Projector.hasOption(ModularForceFieldSystem.MFFSProjectorOptionForceFieldJammer))
 			{
-    			Projector.getfield_queue().removeElement(WorldMap.Cordhash(png.X, png.Y,png.Z));
+    			Projector.getfield_queue().remove(png);       
 				ffworldmap.removebyProjector(Projector.getProjektor_ID());
 
 				if(world.getBlockId(ffworldmap.getX(),ffworldmap.getY(), ffworldmap.getZ()) == ModularForceFieldSystem.MFFSFieldblock.blockID)

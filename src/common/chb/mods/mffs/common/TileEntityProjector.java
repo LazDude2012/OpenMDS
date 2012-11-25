@@ -497,24 +497,23 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	private void UpdateForcefieldTexttur() {
 		if(this.isActive() && this.hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage))
 		{
-		for (Integer hasher : field_queue) {
-			ForceFieldBlockStack ffb = WorldMap.getForceFieldWorld(worldObj).getForceFieldStackMap(hasher);
-
-			if(ffb!=null){
-		     if (worldObj.getChunkFromBlockCoords(ffb.getX(), ffb.getZ()).isChunkLoaded) {
-			if (ffb.getProjectorID() == getProjektor_ID()){
-				TileEntity tileEntity = worldObj.getBlockTileEntity(ffb.getX(), ffb.getY(), ffb.getZ());
+		for (PointXYZ png : field_def) {
+			
+		     if (worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded) {
+			
+				
+				TileEntity tileEntity = worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
 
 				if(tileEntity != null && tileEntity instanceof TileEntityForceField )
 				{
 					((TileEntityForceField)tileEntity).UpdateTextur();
 				}
-			}
+			
 		    }
 	    	}
 		}
 	  }
-	}
+	
 
 	// Stop Slot / Upgrades System
 
@@ -1135,9 +1134,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		return field_interior;
 	}
 	
-	public Stack<Integer> getfield_queue()
+	public Set<PointXYZ> getfield_queue()
 	{
-		return field_queue;
+		return field_def;
 	}
 
 	
