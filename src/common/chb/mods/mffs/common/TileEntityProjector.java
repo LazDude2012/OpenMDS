@@ -1053,7 +1053,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
 		
-		if(Slot == 1)return hasValidTypeMod();
+		if(Slot == 1 &&  par1ItemStack.getItem() instanceof ModuleBase)return true;
 		if(Slot==0 && par1ItemStack.getItem() instanceof ItemCardPowerLink)return true;
 		if(Slot == 11 && this.hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage))return true;
 		if(Slot==12 && par1ItemStack.getItem() instanceof ItemCardSecurityLink)return true;	
@@ -1142,7 +1142,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	
 	public TileEntityCapacitor getLinkedCapacitor(){
 		int capid = getLinkCapacitor_ID();
-		TileEntityCapacitor cap = Linkgrid.getWorldMap(getWorldObj()).getCapacitor().get(capid);
+		TileEntityCapacitor cap = Linkgrid.getWorldMap(worldObj).getCapacitor().get(capid);
 		
 
 		if (cap != null){
