@@ -777,9 +777,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 					}
 
 						if (worldObj.getBlockMaterial(ffb.getX(), ffb.getY(),
-								ffb.getZ()).isLiquid()
-								|| worldObj.getBlockId(ffb.getX(), ffb.getY(),
-										ffb.getZ()) == 0 || worldObj.getBlockId(ffb.getX(), ffb.getY(),
+								ffb.getZ()).isLiquid() || worldObj.isAirBlock(ffb.getX(), ffb.getY(),
+								ffb.getZ()) || worldObj.getBlockId(ffb.getX(), ffb.getY(),
 												ffb.getZ()) == ModularForceFieldSystem.MFFSFieldblock.blockID) {
 						if (worldObj.getBlockId(ffb.getX(), ffb.getY(),
 								ffb.getZ()) != ModularForceFieldSystem.MFFSFieldblock.blockID) {
