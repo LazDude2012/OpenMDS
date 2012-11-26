@@ -779,8 +779,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	}
 
 	@Override
-	public void onReceive(TileEntity sender, double amps, double voltage,
-			ForgeDirection side) {
+	public void onReceive(Object sender, double amps, double voltage,ForgeDirection side) {
 		wattHours = wattHours +(amps*voltage);
 	}
 
@@ -809,4 +808,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	public double getMaxJoules(Object... data) {
 		return 120000;
 	}
+
+
 }

@@ -133,6 +133,7 @@ public abstract class ItemMultitool extends  ItemMFFSBase  implements IForceEner
 		public void getSubItems(int i, CreativeTabs tabs, List itemList)
 		{
 			ItemStack charged = new ItemStack(this, 1);
+			charged.setItemDamage(1);
 			setForceEnergy(charged, getMaxForceEnergy());
 			itemList.add(charged);
 		}

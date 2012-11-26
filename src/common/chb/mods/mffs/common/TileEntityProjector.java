@@ -1164,7 +1164,22 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	@Override
 	public int getLinkCapacitor_ID(){
 		if (getStackInSlot(0) != null)
-			return NBTTagCompoundHelper.getTAGfromItemstack(getStackInSlot(0)).getInteger("CapacitorID");
+		{
+			if(getStackInSlot(0).getItem() instanceof ItemCardPowerLink)
+			{
+				
+			int capid = ((ItemCard)getStackInSlot(0).getItem()).checkandgetID(getStackInSlot(0), "CapacitorID", worldObj);
+			
+			if(capid == 0)
+			{
+				this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+				return 0;
+			}
+			return capid;
+			}
+			
+		}
+			
 		return 0;
 	}
 	

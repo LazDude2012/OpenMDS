@@ -4,6 +4,9 @@ import ic2.api.Items;
 
 import java.util.List;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
@@ -194,6 +197,21 @@ public class ItemForcicumCell extends ItemMFFSBase {
 		
 		}
 		return itemstack;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(int i, CreativeTabs tabs, List itemList)
+	{
+		ItemStack charged = new ItemStack(this, 1);
+		charged.setItemDamage(1);
+		setForceciumlevel(charged, getMaxForceciumlevel());
+		itemList.add(charged);
+		
+		
+		ItemStack empty = new ItemStack(this, 1);
+		empty.setItemDamage(100);
+		setForceciumlevel(empty, 0);
+		itemList.add(empty);
 	}
 	
 	

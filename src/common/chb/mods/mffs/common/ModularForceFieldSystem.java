@@ -84,8 +84,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.6")
-@NetworkMod(versionBounds = "[2.2.8.1.6]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.7")
+@NetworkMod(versionBounds = "[2.2.8.1.7]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
 public class ModularForceFieldSystem {
 
 	public static CreativeTabs MFFSTab;
@@ -191,7 +191,8 @@ public class ModularForceFieldSystem {
 		TickRegistry.registerScheduledTickHandler(
 				new ForceFieldClientUpdatehandler(), Side.CLIENT);
 		TickRegistry.registerScheduledTickHandler(
-				new ForceFieldServerUpdatehandler(), Side.SERVER);
+				new ForceFieldServerUpdatehandler(), Side.SERVER);		
+		
 
 		MFFSconfig = new Configuration(event.getSuggestedConfigurationFile());
 		event.getModMetadata().version = Versioninfo.version();

@@ -60,21 +60,19 @@ public class ItemCardEmpty extends ItemMFFSBase {
 	
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
 				
-				((ItemCardSecurityLink)newcard.getItem()).setInformation(newcard, world, "x:"+i+" y:"+j+" z:"+k, ((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
+				((ItemCardSecurityLink)newcard.getItem()).setInformation(newcard, world, new PointXYZ(i,j,k),"Secstation_ID", ((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
 				
 				
 				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
 				
 
-
-				if (world.isRemote)
 				Functions.ChattoPlayer(entityplayer, "[Security Station] Success: <Security Station Link>  Card create");
 
 				return true;
 			  }
 			 }else{
 				
-				 if (world.isRemote)
+			
 				Functions.ChattoPlayer(entityplayer, "[Security Station] Fail: Security Station must be Active  for create" );
 			 }
 		
@@ -88,13 +86,11 @@ public class ItemCardEmpty extends ItemMFFSBase {
 			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB")) {
 				  				  
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSitemfc);
-				((ItemCardPowerLink)newcard.getItem()).setInformation(newcard, world, "x:"+i+" y:"+j+" z:"+k, ((TileEntityCapacitor)tileEntity).getCapacitor_ID());
+				((ItemCardPowerLink)newcard.getItem()).setInformation(newcard, world, new PointXYZ(i,j,k),"CapacitorID",((TileEntityCapacitor)tileEntity).getCapacitor_ID());
 				
 				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
 				
-				
 
-				if (world.isRemote)
 				entityplayer.addChatMessage("[Capacitor] Success: <Power-Link> Card create");
 
 				return true;

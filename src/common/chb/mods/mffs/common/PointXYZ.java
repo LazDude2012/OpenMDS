@@ -61,7 +61,7 @@ public class PointXYZ {
 	
 	@Override
 	public String toString(){
-		return "X: " + X + "Y: " + Y + "Z: " + Z;
+		return "X: " + X + " Y: " + Y + " Z: " + Z;
 	}
 	
 }

@@ -22,6 +22,9 @@ package chb.mods.mffs.common;
 
 import java.util.List;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
 import chb.mods.mffs.api.IForceEnergyItems;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
@@ -96,7 +99,21 @@ public class ItemForcePowerCrystal extends ItemMFFSBase  implements IForceEnergy
        return 0;
 	}
 	
-	
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(int i, CreativeTabs tabs, List itemList)
+	{
+		ItemStack charged = new ItemStack(this, 1);
+		charged.setItemDamage(1);
+		setForceEnergy(charged, getMaxForceEnergy());
+		itemList.add(charged);
+		
+		ItemStack empty = new ItemStack(this, 1);
+		empty.setItemDamage(100);
+		setForceEnergy(empty, 0);
+		itemList.add(empty);
+		
+		
+	}
 	
 	
 }

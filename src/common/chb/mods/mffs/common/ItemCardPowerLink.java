@@ -22,6 +22,7 @@ package chb.mods.mffs.common;
 
 import java.util.List;
 
+import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
@@ -29,44 +30,13 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
-public class ItemCardPowerLink extends Item  {
-	private StringBuffer info = new StringBuffer();
+public class ItemCardPowerLink extends ItemCard  {
 
 	public ItemCardPowerLink(int i) {
 		super(i);
 		setIconIndex(17);
-		setMaxStackSize(1);
-	}
-	@Override
-	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/items.png";
-	}
-	@Override
-	public boolean isRepairable() {
-		return false;
-		
 	}
 
-	@Override
-	public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b){
-		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-		if (tag.hasKey("worldName"))
-			info.add("World: " + tag.getString("worldName"));
-		if (tag.hasKey("capCoords"))
-			info.add("Coords: " + tag.getString("capCoords"));
-	}
-	
-	public void setInformation(ItemStack itemStack,World world,String capCoords,int CapacitorID){
-	
-		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-		
-		nbtTagCompound.setInteger("CapacitorID", CapacitorID);
-		nbtTagCompound.setString("worldName", world.getWorldInfo().getWorldName());
-		nbtTagCompound.setString("capCoords", capCoords);
-		
-	}
-	
-	
 	
 	@Override
 	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer,
@@ -143,5 +113,7 @@ public class ItemCardPowerLink extends Item  {
 		return false;
 	}
 	
+	
+			
 
 }

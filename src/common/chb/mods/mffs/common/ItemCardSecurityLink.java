@@ -30,44 +30,14 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
-public class ItemCardSecurityLink extends Item implements ISecurityLinkCard {
-	private StringBuffer info = new StringBuffer();
+public class ItemCardSecurityLink extends ItemCard implements ISecurityLinkCard {
 
 	public ItemCardSecurityLink(int i) {
 		super(i);
 		setIconIndex(19);
-		setMaxStackSize(1);
+	
 	}
 
-	@Override
-	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/items.png";
-	}
-
-	@Override
-	public boolean isRepairable() {
-		return false;
-	}
-	
-	
-	@Override
-	public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b){
-		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-		if (tag.hasKey("worldName"))
-			info.add("World: " + tag.getString("worldName"));
-		if (tag.hasKey("capCoords"))
-			info.add("Coords: " + tag.getString("capCoords"));
-	}
-	
-	public void setInformation(ItemStack itemStack,World world,String capCoords,int Secstation_ID){
-	
-		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-		
-		nbtTagCompound.setInteger("Secstation_ID", Secstation_ID);
-		nbtTagCompound.setString("worldName", world.getWorldInfo().getWorldName());
-		nbtTagCompound.setString("capCoords", capCoords);
-		
-	}
 	
 
 	@Override

@@ -1,0 +1,112 @@
+/*  
+    Copyright (C) 2012 Thunderdark
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+    Contributors:
+    Thunderdark - initial implementation
+*/
+
+package chb.mods.mffs.common;
+
+import java.util.EnumSet;
+import java.util.List;
+
+import cpw.mods.fml.common.IScheduledTickHandler;
+import cpw.mods.fml.common.TickType;
+
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.World;
+
+public class ItemCard extends Item {
+	
+	private StringBuffer info = new StringBuffer();
+
+	public ItemCard(int id) {
+		super(id);
+		setMaxStackSize(1);
+}
+	
+	
+	@Override
+	public String getTextureFile() {
+		return "/chb/mods/mffs/sprites/items.png";
+	}
+	@Override
+	public boolean isRepairable() {
+		return false;
+		
+	}
+	
+	
+	
+	@Override
+	public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b){
+		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
+		if (tag.hasKey("worldName"))
+			info.add("World: " + tag.getString("worldName"));
+		if (tag.hasKey("X") && tag.hasKey("Y") && tag.hasKey("Z"))
+			info.add("Coords: " + new PointXYZ(tag.getInteger("X"),tag.getInteger("Y"),tag.getInteger("Z")).toString());
+		if (tag.hasKey("valid"))
+			info.add("valid: " + tag.getBoolean("valid"));
+	}
+	
+	public void setInformation(ItemStack itemStack,World world,PointXYZ png, String key,int value){
+	
+		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
+		
+		nbtTagCompound.setInteger(key, value);
+		nbtTagCompound.setString("worldName", world.getWorldInfo().getWorldName());
+		nbtTagCompound.setInteger("X", png.X);
+		nbtTagCompound.setInteger("Y", png.Y);
+		nbtTagCompound.setInteger("Z", png.Z);
+		nbtTagCompound.setBoolean("valid", true);
+	}
+	
+	
+	public int checkandgetID(ItemStack itemStack,String key,World world)
+	{
+		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
+		if (tag.hasKey(key) && tag.hasKey("X") && tag.hasKey("Y") && tag.hasKey("Z"))
+		{
+
+			if(world.getChunkFromBlockCoords(tag.getInteger("X"), tag.getInteger("Z")).isChunkLoaded)
+			{
+				if(world.getBlockTileEntity(tag.getInteger("X"), tag.getInteger("Y"), tag.getInteger("Z")) instanceof TileEntityMachines)
+				{
+	
+					return tag.getInteger(key);
+				}else{
+				
+					tag.setBoolean("valid", false);
+				}
+			}else{
+				return tag.getInteger(key);
+			}
+
+	}
+		return 0;
+	}
+	
+	
+	
+
+
+	
+
+	
+}

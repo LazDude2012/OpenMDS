@@ -36,7 +36,7 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 
-public class ItemProjectorOptionFieldFusion extends ItemProjectorOptionBase implements IInteriorCheck {
+public class ItemProjectorOptionFieldFusion extends ItemProjectorOptionBase implements IInteriorCheck,IChecksOnAll {
 	public ItemProjectorOptionFieldFusion(int i) {
 		super(i);
 		setIconIndex(43);
@@ -50,7 +50,6 @@ public class ItemProjectorOptionFieldFusion extends ItemProjectorOptionBase impl
             info.add(tooltip);
     }
 
-	
 	
 	public boolean checkFieldFusioninfluence(PointXYZ png, World world,TileEntityProjector Proj) {
 		
