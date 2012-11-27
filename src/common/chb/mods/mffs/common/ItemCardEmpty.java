@@ -60,7 +60,7 @@ public class ItemCardEmpty extends ItemMFFSBase {
 	
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
 				
-				((ItemCardSecurityLink)newcard.getItem()).setInformation(newcard, world, new PointXYZ(i,j,k),"Secstation_ID", ((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
+				((ItemCardSecurityLink)newcard.getItem()).setInformation(newcard, new PointXYZ(i,j,k,world),"Secstation_ID", ((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
 				
 				
 				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
@@ -86,7 +86,7 @@ public class ItemCardEmpty extends ItemMFFSBase {
 			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB")) {
 				  				  
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSitemfc);
-				((ItemCardPowerLink)newcard.getItem()).setInformation(newcard, world, new PointXYZ(i,j,k),"CapacitorID",((TileEntityCapacitor)tileEntity).getCapacitor_ID());
+				((ItemCardPowerLink)newcard.getItem()).setInformation(newcard, new PointXYZ(i,j,k,world),"CapacitorID",((TileEntityCapacitor)tileEntity).getCapacitor_ID());
 				
 				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
 				

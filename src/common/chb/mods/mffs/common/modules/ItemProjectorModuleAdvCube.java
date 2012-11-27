@@ -146,11 +146,11 @@ public class ItemProjectorModuleAdvCube extends Module3DBase {
 						}
 					}
 
-					ffLocs.add(new PointXYZ(tpx, tpy, tpz));
+					ffLocs.add(new PointXYZ(tpx, tpy, tpz,0));
 					
 				}else {
 					
-					ffInterior.add(new PointXYZ(tpx, tpy, tpz));
+					ffInterior.add(new PointXYZ(tpx, tpy, tpz,0));
 				}
 	    	}
 		}

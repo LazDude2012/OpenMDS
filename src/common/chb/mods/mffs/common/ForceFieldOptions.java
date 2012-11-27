@@ -65,11 +65,17 @@ public final class ForceFieldOptions {
 					 {
 							if(Target.equals("mobs"))
 							{
-								Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation.getlinkCapacitors_ID())
-								.setForcePower(Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation
-									.getlinkCapacitors_ID()).getForcePower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
-
-							entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.MobDefenseDamage);
+			        			TileEntityCapacitor cap = DefenseStation.getLinkedCapacitor();
+			        			if(cap!=null)
+			        			{
+			        				if(cap.consumForcePower(ModularForceFieldSystem.DefenseStationFPpeerAttack))
+			        				{
+			        					entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.MobDefenseDamage);
+			        					continue;
+			        				}
+			        				
+			        			}
+								
 							continue;
 							}
 
@@ -77,14 +83,20 @@ public final class ForceFieldOptions {
 							{
 								if(!SecurityHelper.isAccessGranted(DefenseStation, (EntityPlayer)entityLiving, world,"SR"))
 								{
-									Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation.getlinkCapacitors_ID())
-									.setForcePower(Linkgrid.getWorldMap(world).getCapacitor().get(DefenseStation
-										.getlinkCapacitors_ID()).getForcePower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
-
-									Functions.ChattoPlayer((EntityPlayer)entityLiving,"[Defence Area Station] !!! you  are in a restricted area !!! ");
-									((EntityPlayer)entityLiving).inventory.dropAllItems();
-									entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);
-									continue;
+									
+				        			TileEntityCapacitor cap = DefenseStation.getLinkedCapacitor();
+				        			if(cap!=null)
+				        			{
+				        				if(cap.consumForcePower(ModularForceFieldSystem.DefenseStationFPpeerAttack))
+				        				{
+											Functions.ChattoPlayer((EntityPlayer)entityLiving,"[Defence Area Station] !!! you  are in a restricted area !!! ");
+											((EntityPlayer)entityLiving).inventory.dropAllItems();
+											entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);
+											continue;
+				        				}
+				        				
+				        			}
+							
 									}
 
 							continue;

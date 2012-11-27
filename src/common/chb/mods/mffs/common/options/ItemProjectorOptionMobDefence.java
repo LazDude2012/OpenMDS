@@ -25,6 +25,7 @@ import java.util.List;
 import chb.mods.mffs.common.Linkgrid;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.PointXYZ;
+import chb.mods.mffs.common.TileEntityCapacitor;
 import chb.mods.mffs.common.TileEntityProjector;
 import chb.mods.mffs.common.IModularProjector.Slots;
 
@@ -91,11 +92,16 @@ public class ItemProjectorOptionMobDefence extends ItemProjectorOptionBase  {
 							
 			        		if (projector.getLinkPower() > ModularForceFieldSystem.DefenseStationFPpeerAttack) {
 			        			
-								Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkCapacitor_ID())
-								.setForcePower(Linkgrid.getWorldMap(world).getCapacitor().get(projector
-									.getLinkCapacitor_ID()).getForcePower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
-								
-						entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.MobDefenseDamage);
+			        			TileEntityCapacitor cap = projector.getLinkedCapacitor();
+			        			if(cap!=null)
+			        			{
+			        				if(cap.consumForcePower(ModularForceFieldSystem.DefenseStationFPpeerAttack))
+			        				{
+			        					entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.MobDefenseDamage);
+			        				}
+			        				
+			        			}
+			        			
 						continue;
 						}	
 					}

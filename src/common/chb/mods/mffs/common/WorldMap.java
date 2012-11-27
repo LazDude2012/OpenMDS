@@ -32,9 +32,9 @@ public final class WorldMap {
 	public static class ForceFieldWorld {
 		private static Map<Integer, ForceFieldBlockStack> ForceFieldStackMap = new Hashtable<Integer, ForceFieldBlockStack>();
 
-		public ForceFieldBlockStack getorcreateFFStackMap(int x, int y, int z) {
+		public ForceFieldBlockStack getorcreateFFStackMap(int x, int y, int z,World world) {
 			if (ForceFieldStackMap.get(Cordhash( x,  y,  z)) == null) {
-					ForceFieldStackMap.put(Cordhash( x,  y,  z), new ForceFieldBlockStack(x,y, z));
+					ForceFieldStackMap.put(Cordhash( x,  y,  z), new ForceFieldBlockStack(new PointXYZ(x,y,z,world)));
             }
 			return ForceFieldStackMap.get(Cordhash( x,  y,  z));
 		}

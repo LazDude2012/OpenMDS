@@ -33,14 +33,12 @@ public class ContainerCapacitor extends Container {
 	private int forcepower;
 	private int SwitchTyp;
 	private int Powerlinkmode;
-	private short transmitrange;
 	private short linketprojektor;
 	private EntityPlayer player;
 
 	public ContainerCapacitor(EntityPlayer player,
 			TileEntityCapacitor tileentity) {
 		forcepower = -1;
-		transmitrange = -1;
 		linketprojektor = -1;
 		capacity = -1;
 		SwitchTyp= -1 ;
@@ -78,10 +76,6 @@ public class ContainerCapacitor extends Container {
 		for (int i = 0; i < crafters.size(); i++) {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
-			if (transmitrange != generatorentity.getTransmitRange()) {
-				icrafting.sendProgressBarUpdate(this, 0,
-						generatorentity.getTransmitRange());
-			}
 			if (linketprojektor != generatorentity.getLinketProjektor()) {
 				icrafting.sendProgressBarUpdate(this, 1,
 						generatorentity.getLinketProjektor());
@@ -107,7 +101,6 @@ public class ContainerCapacitor extends Container {
 			}
 		}
 
-		transmitrange = (short) generatorentity.getTransmitRange();
 		linketprojektor = generatorentity.getLinketProjektor();
 		forcepower = generatorentity.getForcePower();
 		capacity = generatorentity.getCapacity();
@@ -117,11 +110,6 @@ public class ContainerCapacitor extends Container {
 
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
-		case 0:
-
-			generatorentity.setTransmitrange((short) j);
-			break;
-
 		case 1:
 
 			generatorentity.setLinketprojektor((short) j);

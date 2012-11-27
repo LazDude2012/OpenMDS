@@ -31,6 +31,7 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
+import net.minecraftforge.common.DimensionManager;
 
 public class ItemCard extends Item {
 	
@@ -57,20 +58,20 @@ public class ItemCard extends Item {
 	@Override
 	public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b){
 		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-		if (tag.hasKey("worldName"))
-			info.add("World: " + tag.getString("worldName"));
+		if (tag.hasKey("DId"))
+			info.add("World: " + DimensionManager.getWorld(tag.getInteger("DId")).getWorldInfo().getWorldName());
 		if (tag.hasKey("X") && tag.hasKey("Y") && tag.hasKey("Z"))
-			info.add("Coords: " + new PointXYZ(tag.getInteger("X"),tag.getInteger("Y"),tag.getInteger("Z")).toString());
-		if (tag.hasKey("valid"))
-			info.add("valid: " + tag.getBoolean("valid"));
+			info.add("Coords: " + new PointXYZ(tag.getInteger("X"),tag.getInteger("Y"),tag.getInteger("Z"),0).toString());
+		if (tag.hasKey("DId"))
+			{info.add("valid: "+ tag.getBoolean("valid"));}else{info.add("valid: false");}
 	}
 	
-	public void setInformation(ItemStack itemStack,World world,PointXYZ png, String key,int value){
+	public void setInformation(ItemStack itemStack,PointXYZ png, String key,int value){
 	
 		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
 		
 		nbtTagCompound.setInteger(key, value);
-		nbtTagCompound.setString("worldName", world.getWorldInfo().getWorldName());
+		nbtTagCompound.setInteger("DId", png.dimensionId);
 		nbtTagCompound.setInteger("X", png.X);
 		nbtTagCompound.setInteger("Y", png.Y);
 		nbtTagCompound.setInteger("Z", png.Z);
@@ -78,29 +79,24 @@ public class ItemCard extends Item {
 	}
 	
 	
-	public int checkandgetID(ItemStack itemStack,String key,World world)
+	public int getTargetID(String key,ItemStack itemStack)
 	{
 		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-		if (tag.hasKey(key) && tag.hasKey("X") && tag.hasKey("Y") && tag.hasKey("Z"))
-		{
-
-			if(world.getChunkFromBlockCoords(tag.getInteger("X"), tag.getInteger("Z")).isChunkLoaded)
-			{
-				if(world.getBlockTileEntity(tag.getInteger("X"), tag.getInteger("Y"), tag.getInteger("Z")) instanceof TileEntityMachines)
-				{
+		if (tag.hasKey(key))
+			return tag.getInteger(key);
+     return 0;
+		
+	}
+	public PointXYZ getCardTargetPoint(ItemStack itemStack)
+	{
+		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
+		if (tag.hasKey("DId") && tag.hasKey("X") && tag.hasKey("Y") && tag.hasKey("Z"))
+		    return new PointXYZ(tag.getInteger("X"),tag.getInteger("Y"),tag.getInteger("Z"),tag.getInteger("DId"));
+		
+		return null;
+	}
 	
-					return tag.getInteger(key);
-				}else{
-				
-					tag.setBoolean("valid", false);
-				}
-			}else{
-				return tag.getInteger(key);
-			}
 
-	}
-		return 0;
-	}
 	
 	
 	

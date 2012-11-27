@@ -141,9 +141,9 @@ public class ItemProjectorModuleTube extends Module3DBase {
 					|| y1 == 0 - tpy_temp || y1 == tpy_temp
 					|| z1 == 0 - tpz_temp || z1 == tpz_temp)
 					&& ((((TileEntityProjector)projector).yCoord + y1) >= 0)) {
-				 ffLocs.add(new PointXYZ(x1, y1, z1));
+				 ffLocs.add(new PointXYZ(x1, y1, z1,0));
 			} else {
-				ffInterior.add(new PointXYZ(x1, y1, z1));
+				ffInterior.add(new PointXYZ(x1, y1, z1,0));
 			}
 		}
 	}

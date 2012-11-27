@@ -96,10 +96,10 @@ public class ItemProjectorOptionDefenseStation extends ItemProjectorOptionBase  
 
 								if(projector.getaccesstyp()==2)
 								{
-									TileEntityCapacitor Generator = Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkCapacitor_ID());
-									if(Generator != null)
+									TileEntityCapacitor cap =  projector.getLinkedCapacitor();
+									if(cap != null)
 									{
-									TileEntityAdvSecurityStation SecurityStation = Linkgrid.getWorldMap(world).getSecStation().get(Generator.getSecStation_ID());
+									TileEntityAdvSecurityStation SecurityStation = Linkgrid.getWorldMap(world).getSecStation().get(cap.getSecStation_ID());
 
 									if(SecurityStation != null)
 									{
@@ -118,12 +118,16 @@ public class ItemProjectorOptionDefenseStation extends ItemProjectorOptionBase  
 
 								if (killswitch)
 									{
-									Linkgrid.getWorldMap(world).getCapacitor().get(projector.getLinkCapacitor_ID())
-									.setForcePower(Linkgrid.getWorldMap(world).getCapacitor().get(projector
-										.getLinkCapacitor_ID()).getForcePower() - (ModularForceFieldSystem.DefenseStationFPpeerAttack));
+									TileEntityCapacitor cap =  projector.getLinkedCapacitor();
+									if(cap != null)
+									{
+									  if(cap.consumForcePower(ModularForceFieldSystem.DefenseStationFPpeerAttack))
+									  {
+										 ((EntityPlayer)entityLiving).inventory.dropAllItems();
+										  entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage); 
 									
-									((EntityPlayer)entityLiving).inventory.dropAllItems();
-									entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);
+									  }
+									}
 							
 									continue;
 									}

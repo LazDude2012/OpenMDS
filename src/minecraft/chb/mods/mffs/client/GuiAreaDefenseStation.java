@@ -45,7 +45,7 @@ public class GuiAreaDefenseStation extends GuiContainer {
 		int w = (width - xSize) / 2;
 		int k = (height - ySize) / 2;
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
-		int i1 = (79 * DefenceStation.getLinkPower()) / DefenceStation.getMaxlinkPower();
+		int i1 = (79 * DefenceStation.getCapacity() / 100);
 		drawTexturedModalRect(w + 8, k + 71, 176, 0, i1 + 1, 79);
 	}
 @Override

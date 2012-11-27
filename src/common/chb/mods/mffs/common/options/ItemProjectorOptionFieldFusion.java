@@ -79,7 +79,7 @@ public class ItemProjectorOptionFieldFusion extends ItemProjectorOptionBase impl
 
 		ForceFieldBlockStack ffworldmap = WorldMap
 				.getForceFieldWorld(world)
-				.getorcreateFFStackMap(png.X, png.Y,png.Z);
+				.getorcreateFFStackMap(png.X, png.Y,png.Z,world);
 		
 		if(!ffworldmap.isEmpty())
 		{
@@ -93,13 +93,13 @@ public class ItemProjectorOptionFieldFusion extends ItemProjectorOptionBase impl
 			{
     			Projector.getfield_queue().remove(png);       
 				ffworldmap.removebyProjector(Projector.getProjektor_ID());
+				
+				PointXYZ ffpng = ffworldmap.getPoint();
 
-				if(world.getBlockId(ffworldmap.getX(),ffworldmap.getY(), ffworldmap.getZ()) == ModularForceFieldSystem.MFFSFieldblock.blockID)
+				if(world.getBlockId(ffpng.X,ffpng.Y, ffpng.Z) == ModularForceFieldSystem.MFFSFieldblock.blockID)
 				{
-					world.removeBlockTileEntity(ffworldmap.getX(),
-						ffworldmap.getY(), ffworldmap.getZ());
-					world.setBlockWithNotify(ffworldmap.getX(),
-						ffworldmap.getY(), ffworldmap.getZ(), 0);
+					world.removeBlockTileEntity(ffpng.X,ffpng.Y, ffpng.Z);
+					world.setBlockWithNotify(ffpng.X,ffpng.Y, ffpng.Z, 0);
 				}
 			}
 		 }

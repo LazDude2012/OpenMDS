@@ -38,6 +38,8 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.Packet;
+import net.minecraft.src.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
@@ -45,10 +47,9 @@ public class TileEntityAreaDefenseStation extends TileEntityMachines implements
 ISidedInventory,INetworkHandlerListener {
 	private ItemStack ProjektorItemStacks[];
 	private int Defstation_ID;
-	private int linkCapacitors_ID;
 	private int linkSecStation_ID;
 	private int linkPower;
-	private int maxlinkPower;
+	private int capacity;
 	private boolean linkSecStation;
 	private boolean linkGenerator;
 	private boolean create;
@@ -61,11 +62,9 @@ ISidedInventory,INetworkHandlerListener {
 
 		ProjektorItemStacks = new ItemStack[4];
 		Defstation_ID = 0;
-		linkCapacitors_ID = 0;
 		linkSecStation = false;
-		linkGenerator = false;
 		linkPower = 0;
-		maxlinkPower = 1000000;
+		capacity = 0;
 		create = true;
 		linkSecStation_ID = 0;
 		canwork = false;
@@ -73,6 +72,14 @@ ISidedInventory,INetworkHandlerListener {
 
 	// Start Getter AND Setter
 
+	public int getCapacity(){
+		return capacity;
+	}
+
+	public void setCapacity(int Capacity){
+		this.capacity = Capacity;
+	}
+	
 	public boolean isOptionDefenceStation() {
 		return Typ[0];
 	}
@@ -105,13 +112,6 @@ ISidedInventory,INetworkHandlerListener {
 		this.distance = distance;
 	}
 
-	public boolean isLinkGenerator() {
-		return linkGenerator;
-	}
-
-	public void setLinkGenerator(boolean linkGenerator) {
-		this.linkGenerator = linkGenerator;
-	}
 
 	public boolean isCreate() {
 		return create;
@@ -119,14 +119,6 @@ ISidedInventory,INetworkHandlerListener {
 
 	public void setCreate(boolean create) {
 		this.create = create;
-	}
-
-	public int getMaxlinkPower() {
-		return maxlinkPower;
-	}
-
-	public void setMaxlinkPower(int maxlinkPower) {
-		this.maxlinkPower = maxlinkPower;
 	}
 
 	public int getSecStation_ID() {
@@ -153,14 +145,48 @@ ISidedInventory,INetworkHandlerListener {
 	public void setLinkPower(int linkPower) {
 		this.linkPower = linkPower;
 	}
-
-	public int getlinkCapacitors_ID() {
-		return linkCapacitors_ID;
+	
+	
+	public TileEntityCapacitor getLinkedCapacitor()
+	{
+		if (getStackInSlot(0) != null)
+		{
+			if(getStackInSlot(0).getItem() instanceof ItemCardPowerLink)
+			{
+				ItemCardPowerLink card = (ItemCardPowerLink) getStackInSlot(0).getItem();
+				PointXYZ png = card.getCardTargetPoint(getStackInSlot(0));
+				World world = DimensionManager.getWorld(png.dimensionId);
+					if(world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				{
+				TileEntityCapacitor cap = (TileEntityCapacitor) world.getBlockTileEntity(png.X, png.Y, png.Z);
+				if (cap != null){
+					
+				  if(cap.getCapacitor_ID()== card.getTargetID("CapacitorID",getStackInSlot(0))&&  card.getTargetID("CapacitorID",getStackInSlot(0)) != 0 )
+				  {
+					if (cap.getTransmitRange() >=PointXYZ.distance(cap.getMaschinePoint(), this.getMaschinePoint()))
+					{
+						return cap;
+					}else{
+						return null;
+					}
+				   }
+				}
+			  }
+			  if(world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+					this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+			}
+		}
+		
+		return null;
+	}
+	
+	public int getLinkCapacitor_ID(){
+		TileEntityCapacitor cap = getLinkedCapacitor();
+		if(cap != null)
+			return cap.getCapacitor_ID();
+		return 0;	
 	}
 
-	public void setlinkCapacitors_ID(int linkCapacitors_ID) {
-		this.linkCapacitors_ID = linkCapacitors_ID;
-	}
 
 	// End Getter AND Setter
 
@@ -224,42 +250,6 @@ ISidedInventory,INetworkHandlerListener {
 	}
 
 	public void checkslots() {
-		if (getStackInSlot(0) != null) {
-			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemfc) {
-				if (getlinkCapacitors_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
-						getStackInSlot(0)).getInteger("CapacitorID")) {
-					setlinkCapacitors_ID(NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(0)).getInteger("CapacitorID"));
-					}
-
-				if(Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID())!=null)
-				{
-				 int transmit =	Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID()).getTransmitRange();
-				 int gen_x=Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID()).xCoord - this.xCoord;
-			     int gen_y=Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID()).yCoord - this.yCoord;
-			     int gen_z=Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID()).zCoord - this.zCoord;
-
-				 if(Math.sqrt(gen_x * gen_x + gen_y * gen_y + gen_z * gen_z) <= transmit)
-				 {
-					 setLinkGenerator(true);
-				 }
-				 else
-				 {
-					setLinkGenerator(false);
-					setlinkCapacitors_ID(0);
-				 }
-				}
-				else
-				{
-	 	    	setLinkGenerator(false);
-	 	    	setlinkCapacitors_ID(0);
-	 	    	this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-				}
-			}
-		} else {
-			setLinkGenerator(false);
-			setlinkCapacitors_ID(0);
-		}
 
 		if (getStackInSlot(1) != null) {
 			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSItemSecLinkCard) {
@@ -326,30 +316,27 @@ ISidedInventory,INetworkHandlerListener {
 
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
-			if (this.isCreate() && this.getlinkCapacitors_ID() != 0) {
+			if (this.isCreate() && this.getLinkCapacitor_ID() != 0) {
 				addtogrid();
 				checkslots();
 				this.setCreate(false);
 			}
 
-			if (this.getlinkCapacitors_ID() != 0) {
-				this.setLinkGenerator(true);
-				try {
-					this.setLinkPower(Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getlinkCapacitors_ID())
-							.getForcePower());
-					this.setMaxlinkPower(Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getlinkCapacitors_ID())
-							.getMaxForcePower());
-				} catch (java.lang.NullPointerException ex) {
-					this.setLinkGenerator(false);
-					this.setLinkPower(0);
-					this.setMaxlinkPower(1000000);
+			if (getLinkCapacitor_ID() != 0) {
+
+				TileEntityCapacitor remotecap = getLinkedCapacitor();
+				if(remotecap != null)
+				{
+					setCapacity(remotecap.getCapacity());
+					setLinkPower(remotecap.getForcePower());
+				}else{
+					setCapacity(0);
+					setLinkPower(0);
 				}
+				
 			} else {
-				this.setLinkGenerator(false);
-				this.setLinkPower(0);
-				this.setMaxlinkPower(1000000);
+				setCapacity(0);
+				setLinkPower(0);
 			}
 
 			boolean securityStationneed = true;
@@ -361,8 +348,8 @@ ISidedInventory,INetworkHandlerListener {
 
 			if ( isCanwork()
 					&& securityStationneed
-					&& this.isLinkGenerator()
-					&& this.getLinkPower() > ModularForceFieldSystem.DefenseStationFPpeerAttack)
+					&& getLinkedCapacitor() != null
+					&& getLinkPower() > ModularForceFieldSystem.DefenseStationFPpeerAttack)
 
 			{
 				if (isActive() != true) {
@@ -373,8 +360,8 @@ ISidedInventory,INetworkHandlerListener {
 			if ( !isCanwork()
 
 					|| !securityStationneed
-					|| !this.isLinkGenerator()
-					|| this.getLinkPower() < ModularForceFieldSystem.DefenseStationFPpeerAttack) {
+					|| getLinkedCapacitor() == null
+					|| getLinkPower() < ModularForceFieldSystem.DefenseStationFPpeerAttack) {
 				if (isActive() != false) {
 					setActive(false);
 					worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);

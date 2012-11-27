@@ -32,6 +32,8 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
@@ -47,7 +49,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	private int ForceEnergybuffer;
 	private int MaxForceEnergyBuffer;
 	private int WorkCylce;
-	private int LinkCapacitor_ID;
 	private int workTicker;
 	private int workdone;
 	private int maxworkcylce;
@@ -62,7 +63,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		inventory = new ItemStack[5];
 		create = true;
 		Extractor_ID = 0;
-		LinkCapacitor_ID = 0;
 		WorkEnergy = 0;
 		MaxWorkEnergy = 4000;
 		ForceEnergybuffer = 0;
@@ -121,13 +121,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		this.workTicker = workTicker;
 	}
 
-	public int getLinkCapacitors_ID() {
-		return LinkCapacitor_ID;
-	}
-
-	public void setLinkCapacitor_ID(int id){
-		this.LinkCapacitor_ID = id;
-	}
 
 	public int getExtractor_ID() {
 		return Extractor_ID;
@@ -206,43 +199,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	}
 
 	public void checkslots(boolean init) {
-		if (getStackInSlot(1) != null) {
-			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSitemfc) {
-				if (getLinkCapacitors_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
-						getStackInSlot(1)).getInteger("CapacitorID")) {
-					setLinkCapacitor_ID(NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(1)).getInteger("CapacitorID"));
-				}
-
-				if (Linkgrid.getWorldMap(worldObj).getCapacitor()
-						.get(this.getLinkCapacitors_ID()) != null) {
-					int transmit = Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getLinkCapacitors_ID())
-							.getTransmitRange();
-					int gen_x = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkCapacitors_ID()).xCoord
-							- this.xCoord;
-					int gen_y = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkCapacitors_ID()).yCoord
-							- this.yCoord;
-					int gen_z = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkCapacitors_ID()).zCoord
-							- this.zCoord;
-
-					if (Math.sqrt(gen_x * gen_x + gen_y * gen_y + gen_z * gen_z) <= transmit) {
-					} else {
-						setLinkCapacitor_ID(0);
-					}
-				} else {
-					setLinkCapacitor_ID(0);
-					if (!init) {
-						this.setInventorySlotContents(1, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-					}
-				}
-			}
-		} else {
-		    this.setLinkCapacitor_ID(0);
-		}
 
 		if (getStackInSlot(2) != null) {
 			if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSitemupgradecapcap) {
@@ -273,6 +229,47 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 				workmode = 0;
 				setMaxWorkEnergy(4000);
 			}
+	}
+	
+	
+	public TileEntityCapacitor getLinkedCapacitor()
+	{
+		if (getStackInSlot(1) != null)
+		{
+			if(getStackInSlot(1).getItem() instanceof ItemCardPowerLink)
+			{
+				ItemCardPowerLink card = (ItemCardPowerLink) getStackInSlot(1).getItem();
+				PointXYZ png = card.getCardTargetPoint(getStackInSlot(1));
+				World world = DimensionManager.getWorld(png.dimensionId);
+					if(world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				{
+				TileEntityCapacitor cap = (TileEntityCapacitor) world.getBlockTileEntity(png.X, png.Y, png.Z);
+				if (cap != null){
+					
+				  if(cap.getCapacitor_ID()== card.getTargetID("CapacitorID",getStackInSlot(1))&&  card.getTargetID("CapacitorID",getStackInSlot(1)) != 0 )
+				  {
+					if (cap.getTransmitRange() >=PointXYZ.distance(cap.getMaschinePoint(), this.getMaschinePoint()))
+					{
+						return cap;
+					}else{
+						return null;
+					}
+				   }
+				}
+			  }
+			  if(world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+					this.setInventorySlotContents(1, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+			}
+		}
+		
+		return null;
+	}
+	
+	public int getLinkCapacitor_ID(){
+		TileEntityCapacitor cap = getLinkedCapacitor();
+		if(cap != null)
+			return cap.getCapacitor_ID();
+		return 0;	
 	}
 
 	private boolean hasPowertoConvert()
@@ -331,9 +328,9 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	{
 		if(this.getForceEnergybuffer() > 0)
 		{
-		if(LinkCapacitor_ID!=0)
+		if(getLinkCapacitor_ID()!=0)
 		{
-			TileEntityCapacitor RemoteCap =Linkgrid.getWorldMap(worldObj).getCapacitor().get(LinkCapacitor_ID);
+			TileEntityCapacitor RemoteCap =getLinkedCapacitor();
 			if(RemoteCap != null)
 			{
 			      int maxtrasferrate = ModularForceFieldSystem.ExtractorPassForceEnergyGenerate*2;
@@ -366,7 +363,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
-			if (create && this.getLinkCapacitors_ID() != 0) {
+			if (create && this.getLinkCapacitor_ID() != 0) {
 				addtogrid();
 				checkslots(true);
 				create = false;

@@ -104,7 +104,7 @@ public class ItemProjectorModuleWall extends ModuleBase {
 								|| (tpy == 0 && tpz != 0) || (tpy == 0 && tpz == 0)))
 
 				{
-					ffLocs.add(new PointXYZ(tpx, tpy, tpz));
+					ffLocs.add(new PointXYZ(tpx, tpy, tpz,0));
 				}
 			}
         }

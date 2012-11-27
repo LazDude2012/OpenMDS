@@ -107,11 +107,11 @@ public class ItemProjectorModuleContainment extends Module3DBase {
 
 				if(y1==0 || y1 == Strength || x1== 0 - xMout || x1==  xPout  || z1 == 0 - zPout || z1 == zMout)
 				{
-					ffLocs.add(new PointXYZ(tpx, tpy, tpz));
+					ffLocs.add(new PointXYZ(tpx, tpy, tpz,0));
 					
 				}else {
 					
-					ffInterior.add(new PointXYZ(tpx, tpy, tpz));
+					ffInterior.add(new PointXYZ(tpx, tpy, tpz,0));
 				}
 	    	}
 		}

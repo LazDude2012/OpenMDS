@@ -41,6 +41,8 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
@@ -54,28 +56,34 @@ public class TileEntityConverter extends TileEntityMachines implements
 	private ItemStack inventory[];
 	private boolean create;
 	private int Converter_ID;
-	private int LinkCapacitor_ID;
 	private int capacity;
-	private int linkPower;
 	private boolean linkGenerator;
 	private int SwitchTyp;
 	private boolean OnOffSwitch;
 	private int output;
 	private boolean addedToEnergyNet;
 	private boolean Industriecraftfound = true;
+	private int linkPower;
 
 	public TileEntityConverter() {
 		inventory = new ItemStack[4];
 		create = true;
 		Converter_ID = 0;
-		LinkCapacitor_ID = 0;
 		capacity = 0;
-		linkPower = 0;
 		linkGenerator = false;
 		SwitchTyp = 0;
 		OnOffSwitch = false;
 		output = 1;
 		addedToEnergyNet = false;
+		linkPower = 0;
+	}
+	
+	public int getLinkPower() {
+		return linkPower;
+	}
+
+	public void setLinkPower(int linkPower) {
+		this.linkPower = linkPower;
 	}
 
 	public int getOutput() {
@@ -102,22 +110,6 @@ public class TileEntityConverter extends TileEntityMachines implements
 		SwitchTyp = a;
 	}
 
-	public boolean isLinkGenerator() {
-		return linkGenerator;
-	}
-
-	public void setLinkGenerator(boolean linkGenerator) {
-		this.linkGenerator = linkGenerator;
-	}
-
-	public int getLinkPower() {
-		return linkPower;
-	}
-
-	public void setLinkPower(int linkPower) {
-		this.linkPower = linkPower;
-	}
-
 	public int getCapacity() {
 		return capacity;
 	}
@@ -126,13 +118,6 @@ public class TileEntityConverter extends TileEntityMachines implements
 		capacity = Capacity;
 	}
 
-	public int getLinkCapacitors_ID() {
-		return LinkCapacitor_ID;
-	}
-
-	public void setLinkCapacitor_ID(int id) {
-		LinkCapacitor_ID = id;
-	}
 
 	public int getConverter_ID() {
 		return Converter_ID;
@@ -145,6 +130,48 @@ public class TileEntityConverter extends TileEntityMachines implements
 	public void setCreate(boolean create) {
 		this.create = create;
 	}
+	
+	
+	public TileEntityCapacitor getLinkedCapacitor()
+	{
+		if (getStackInSlot(0) != null)
+		{
+			if(getStackInSlot(0).getItem() instanceof ItemCardPowerLink)
+			{
+				ItemCardPowerLink card = (ItemCardPowerLink) getStackInSlot(0).getItem();
+				PointXYZ png = card.getCardTargetPoint(getStackInSlot(0));
+				World world = DimensionManager.getWorld(png.dimensionId);
+					if(world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				{
+				TileEntityCapacitor cap = (TileEntityCapacitor) world.getBlockTileEntity(png.X, png.Y, png.Z);
+				if (cap != null){
+					
+				  if(cap.getCapacitor_ID()== card.getTargetID("CapacitorID",getStackInSlot(0))&&  card.getTargetID("CapacitorID",getStackInSlot(0)) != 0 )
+				  {
+					if (cap.getTransmitRange() >=PointXYZ.distance(cap.getMaschinePoint(), this.getMaschinePoint()))
+					{
+						return cap;
+					}else{
+						return null;
+					}
+				   }
+				}
+			  }
+			  if(world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+					this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+			}
+		}
+		
+		return null;
+	}
+	
+	public int getLinkCapacitor_ID(){
+		TileEntityCapacitor cap = getLinkedCapacitor();
+		if(cap != null)
+			return cap.getCapacitor_ID();
+		return 0;	
+	}
+	
 
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
@@ -157,31 +184,26 @@ public class TileEntityConverter extends TileEntityMachines implements
 				}
 			}
 
-			if (this.isCreate() && this.getLinkCapacitors_ID() != 0) {
+			if (this.isCreate() && this.getLinkCapacitor_ID() != 0) {
 				addtogrid();
-				checkslots(true);
 				setCreate(false);
 			}
 
-			if (getLinkCapacitors_ID() != 0) {
-				setLinkGenerator(true);
+			if (getLinkCapacitor_ID() != 0) {
 
-				try {
-					this.setLinkPower(Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getLinkCapacitors_ID())
-							.getForcePower());
-					this.setCapacity(Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getLinkCapacitors_ID())
-							.getCapacity());
-				} catch (NullPointerException ex) {
-					setLinkGenerator(false);
-					setLinkPower(0);
+				TileEntityCapacitor remotecap = getLinkedCapacitor();
+				if(remotecap != null)
+				{
+					setCapacity(remotecap.getCapacity());
+					setLinkPower(remotecap.getForcePower());
+				}else{
 					setCapacity(0);
+					setLinkPower(0);
 				}
+				
 			} else {
-				setLinkGenerator(false);
-				setLinkPower(0);
 				setCapacity(0);
+				setLinkPower(0);
 			}
 
 			boolean powerdirekt = worldObj.isBlockGettingPowered(xCoord,
@@ -192,23 +214,16 @@ public class TileEntityConverter extends TileEntityMachines implements
 			if (getswitchtyp() == 0)
 				setOnOffSwitch(powerdirekt || powerindrekt);
 
-			if (getOnOffSwitch() && isLinkGenerator() && getLinkPower() > 0
+			if (getOnOffSwitch() &&  getLinkedCapacitor()!= null
 					&& !isActive())
 				setActive(true);
 
-			if ((!getOnOffSwitch() || !isLinkGenerator() || getLinkPower() <= 0)
-					&& isActive())
+			if ((!getOnOffSwitch() || getLinkCapacitor_ID()==0) && isActive())
 				setActive(false);
 
 			if (isActive())
 				Emitpower();
 
-			if (getTicker() >= 20) {
-				checkslots(false);
-				setTicker((short) 0);
-			}
-
-			setTicker((short) (getTicker() + 1));
 		} else {
 			if (Converter_ID == 0) {
 				if (this.getTicker() >= 20 + random.nextInt(20)) {
@@ -222,48 +237,6 @@ public class TileEntityConverter extends TileEntityMachines implements
 		}
 	}
 
-	public void checkslots(boolean init) {
-		if (getStackInSlot(0) != null) {
-			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemfc) {
-				if (getLinkCapacitors_ID() != NBTTagCompoundHelper
-						.getTAGfromItemstack(getStackInSlot(0)).getInteger(
-								"CapacitorID")) {
-					setLinkCapacitor_ID(NBTTagCompoundHelper
-							.getTAGfromItemstack(getStackInSlot(0)).getInteger(
-									"CapacitorID"));
-				}
-
-				if (Linkgrid.getWorldMap(worldObj).getCapacitor()
-						.get(this.getLinkCapacitors_ID()) != null) {
-					int transmit = Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getLinkCapacitors_ID())
-							.getTransmitRange();
-					int gen_x = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkCapacitors_ID()).xCoord
-							- this.xCoord;
-					int gen_y = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkCapacitors_ID()).yCoord
-							- this.yCoord;
-					int gen_z = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkCapacitors_ID()).zCoord
-							- this.zCoord;
-
-					if (Math.sqrt(gen_x * gen_x + gen_y * gen_y + gen_z * gen_z) <= transmit) {
-					} else {
-						setLinkCapacitor_ID(0);
-					}
-				} else {
-					setLinkCapacitor_ID(0);
-					if (!init) {
-						this.setInventorySlotContents(0, new ItemStack(
-								ModularForceFieldSystem.MFFSitemcardempty));
-					}
-				}
-			}
-		} else {
-			this.setLinkCapacitor_ID(0);
-		}
-	}
 
 	public void addtogrid() {
 		if (Converter_ID == 0) {
@@ -470,24 +443,20 @@ public class TileEntityConverter extends TileEntityMachines implements
 
 	public void Emitpower() {
 		if (Industriecraftfound) {
-			if (getLinkPower() > (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000)
-					* getOutput()) {
-				int a = EnergyNet.getForWorld(worldObj).emitEnergyFrom(
-						((IEnergySource) (this)), getOutput());
-				TileEntityCapacitor powercource = (TileEntityCapacitor) Linkgrid
-						.getWorldMap(worldObj)
-						.getCapacitor()
-						.get(((Object) (Integer.valueOf(getLinkCapacitors_ID()))));
-
-				if (powercource != null)
-					powercource
-							.setForcePower(powercource.getForcePower()
-									- (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000)
-									* (getOutput() - a));
-				else
-					System.out
-							.println("[MFFS ERROR]Linked Capacitor not found");
+			
+			TileEntityCapacitor remotecap = getLinkedCapacitor();
+			if(remotecap != null)
+			{
+				if (remotecap.getForcePower() > (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000)* getOutput()) {
+				
+					int a = EnergyNet.getForWorld(worldObj).emitEnergyFrom(((IEnergySource) (this)), getOutput());
+					remotecap.setForcePower(remotecap.getForcePower()
+							- (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000)
+							* (getOutput() - a));
+					
+				}
 			}
+						
 		}
 	}
 

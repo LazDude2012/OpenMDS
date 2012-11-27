@@ -47,13 +47,15 @@ public class ItemDebugger extends  ItemMultitool  {
 		
 		if (!world.isRemote) {
 			
-			
-    		System.out.println(ForcefieldProtected.BlockProtected(world, x, y, z,null)+" :debugger");  
+			if(tileEntity instanceof TileEntityCapacitor)
+				System.out.println(((TileEntityCapacitor)tileEntity).getTransmitRange());
+    		
 
 			
 		}else{
 			
-
+			if(tileEntity instanceof TileEntityCapacitor)
+				System.out.println(((TileEntityCapacitor)tileEntity).getTransmitRange());
 		}
 
 		return false;

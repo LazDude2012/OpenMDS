@@ -51,7 +51,6 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 	private short ticker;
 	protected Random random = new Random();
 	protected Ticket chunkTicket;
-
 	public TileEntityMachines()
 
 	{
@@ -60,6 +59,11 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 		ticker = 0;
 		
 		PipeManager.registerExtractionHandler(this);
+	}
+	
+	public PointXYZ getMaschinePoint()
+	{
+		return  new PointXYZ(this.xCoord,this.yCoord,this.zCoord,worldObj);
 	}
 
 	public  void dropplugins(int slot ,IInventory inventory ) {

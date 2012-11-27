@@ -29,14 +29,14 @@ import net.minecraft.src.Slot;
 public class ContainerAreaDefenseStation extends Container {
 	private TileEntityAreaDefenseStation defstation;
 
-	private int forcepower;
-	private int maxforcepower;
+	 private int linkPower;
+    private int capacity;
 	private EntityPlayer player;
 
 	public ContainerAreaDefenseStation(EntityPlayer player,
 			TileEntityAreaDefenseStation tileentity) {
-		forcepower = -1;
-		maxforcepower = -1;
+		linkPower = -1;
+		capacity = -1;
 
 		defstation = tileentity;
 		this.player = player;
@@ -72,23 +72,19 @@ public class ContainerAreaDefenseStation extends Container {
 		for (int i = 0; i < crafters.size(); i++) {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
-			if (forcepower != defstation.getLinkPower()) {
+			if (linkPower != defstation.getLinkPower()) {
 				icrafting.sendProgressBarUpdate(this, 0,
 						defstation.getLinkPower() & 0xffff);
 				icrafting.sendProgressBarUpdate(this, 1,
 						defstation.getLinkPower() >>> 16);
 			}
 
-			if (maxforcepower != defstation.getMaxlinkPower()) {
-				icrafting.sendProgressBarUpdate(this, 2,
-						defstation.getMaxlinkPower() & 0xffff);
-				icrafting.sendProgressBarUpdate(this, 3,
-						defstation.getMaxlinkPower() >>> 16);
-			}
+            if(capacity != defstation.getCapacity())
+            	icrafting.sendProgressBarUpdate(this, 2, defstation.getCapacity());
 		}
 
-		forcepower = defstation.getLinkPower();
-		maxforcepower = defstation.getMaxlinkPower();
+		linkPower = defstation.getLinkPower();
+		capacity = defstation.getCapacity();
 	}
 
 	public void updateProgressBar(int i, int j) {
@@ -104,14 +100,9 @@ public class ContainerAreaDefenseStation extends Container {
 							| (j << 16));
 			break;
 
-		case 2:
-			defstation.setMaxlinkPower((defstation
-					.getMaxlinkPower() & 0xffff0000) | j);
-			break;
-		case 3:
-			defstation.setMaxlinkPower((defstation
-					.getMaxlinkPower() & 0xffff) | (j << 16));
-			break;
+        case 2:
+        	defstation.setCapacity(j);
+            break;
 		}
 	}
 

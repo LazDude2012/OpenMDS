@@ -94,7 +94,7 @@ public class ItemProjectorModuleDeflector extends ModuleBase {
 				tpz = x1 - x1 - x1;
 			}
 
-			ffLocs.add(new PointXYZ(tpx, tpy, tpz));
+			ffLocs.add(new PointXYZ(tpx, tpy, tpz,0));
 		}
 	  }
 		

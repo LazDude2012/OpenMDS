@@ -74,9 +74,9 @@ public class ItemProjectorModuleSphere extends Module3DBase {
 					int dist = (int) Math.round(Math.sqrt(dx * dx + dy * dy + dz * dz));
 
 					if (dist <= radius && dist > (radius - (projector.countItemsInSlot(Slots.Strength)+1))) {
-					     ffLocs.add(new PointXYZ(x1, y1, z1));
+					     ffLocs.add(new PointXYZ(x1, y1, z1,0));
 					}else if(dist <= radius){
-						ffInterior.add(new PointXYZ(x1, y1, z1));
+						ffInterior.add(new PointXYZ(x1, y1, z1,0));
 					}
 				}
 			}

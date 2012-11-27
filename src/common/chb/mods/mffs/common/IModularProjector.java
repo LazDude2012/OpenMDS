@@ -55,8 +55,6 @@ public interface IModularProjector extends IInventory {
 	public boolean isLinkedSecStation();
 //  true/false Projector ist linked to a Security Station
 	
-	public int getLinkCapacitor_ID();
-	
 	public int getProjektor_ID();
 	
 	public Set<PointXYZ> getInteriorPoints();

@@ -152,12 +152,14 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 					world.markBlockForUpdate(i, j, k);
 					ffworldmap.setSync(true);
 
-					TileEntity tileEntity = Linkgrid.getWorldMap(world).getCapacitor().get(ffworldmap.getGenratorID());
-					if (tileEntity instanceof TileEntityCapacitor && tileEntity != null) {
+					TileEntityCapacitor cap =Projector.getLinkedCapacitor();
+					
+					if (cap != null) {
+						
 						if (ffworldmap.getTyp() == 1) {
-							((TileEntityCapacitor) tileEntity).Energylost(ModularForceFieldSystem.forcefieldblockcost* ModularForceFieldSystem.forcefieldblockcreatemodifier);
+							cap.Energylost(ModularForceFieldSystem.forcefieldblockcost* ModularForceFieldSystem.forcefieldblockcreatemodifier);
 						} else {
-							((TileEntityCapacitor) tileEntity).Energylost(ModularForceFieldSystem.forcefieldblockcost* ModularForceFieldSystem.forcefieldblockcreatemodifier* ModularForceFieldSystem.forcefieldblockzappermodifier);
+							cap.Energylost(ModularForceFieldSystem.forcefieldblockcost* ModularForceFieldSystem.forcefieldblockcreatemodifier* ModularForceFieldSystem.forcefieldblockzappermodifier);
 						}
 				}
 			}
@@ -215,7 +217,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 			}
 		}else{
 			if (entity instanceof EntityPlayer) {
-			ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(world).getorcreateFFStackMap(i, j, k);
+			ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(world).getorcreateFFStackMap(i, j, k,world);
 			
 			if (ffworldmap != null) {
 	

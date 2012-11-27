@@ -63,7 +63,7 @@ public class SecurityHelper {
 					.getWorldMap(world)
 					.getCapacitor()
 					.get(((TileEntityConverter) tileEntity)
-							.getLinkCapacitors_ID()) != null) {
+							.getLinkCapacitor_ID()) != null) {
 				if (Linkgrid
 						.getWorldMap(world)
 						.getSecStation()
@@ -71,7 +71,7 @@ public class SecurityHelper {
 								.getWorldMap(world)
 								.getCapacitor()
 								.get(((TileEntityConverter) tileEntity)
-										.getLinkCapacitors_ID())
+										.getLinkCapacitor_ID())
 								.getSecStation_ID()) != null) {
 					if (!(Linkgrid
 							.getWorldMap(world)
@@ -80,7 +80,7 @@ public class SecurityHelper {
 									.getWorldMap(world)
 									.getCapacitor()
 									.get(((TileEntityConverter) tileEntity)
-											.getLinkCapacitors_ID())
+											.getLinkCapacitor_ID())
 									.getSecStation_ID()).isAccessGranted(
 							entityplayer.username, right))) {
 						
@@ -132,7 +132,7 @@ public class SecurityHelper {
 					.getWorldMap(world)
 					.getCapacitor()
 					.get(((TileEntityExtractor) tileEntity)
-							.getLinkCapacitors_ID()) != null) {
+							.getLinkCapacitor_ID()) != null) {
 				if (Linkgrid
 						.getWorldMap(world)
 						.getSecStation()
@@ -140,7 +140,7 @@ public class SecurityHelper {
 								.getWorldMap(world)
 								.getCapacitor()
 								.get(((TileEntityExtractor) tileEntity)
-										.getLinkCapacitors_ID())
+										.getLinkCapacitor_ID())
 								.getSecStation_ID()) != null) {
 					if (!(Linkgrid
 							.getWorldMap(world)
@@ -149,7 +149,7 @@ public class SecurityHelper {
 									.getWorldMap(world)
 									.getCapacitor()
 									.get(((TileEntityExtractor) tileEntity)
-											.getLinkCapacitors_ID())
+											.getLinkCapacitor_ID())
 									.getSecStation_ID()).isAccessGranted(
 							entityplayer.username, right))) {
 						if (!suppresswarning)

@@ -46,7 +46,7 @@ public class ItemFieldtransporter extends ItemMultitool{
 		
 		ForceFieldWorld wff = WorldMap.getForceFieldWorld(world);
 
-		ForceFieldBlockStack ffworldmap = wff.getorcreateFFStackMap(x,y,z);
+		ForceFieldBlockStack ffworldmap = wff.getorcreateFFStackMap(x,y,z,world);
 		if (ffworldmap != null) {
 			int Sec_Gen_ID = -1;
 			int First_Gen_ID = ffworldmap.getGenratorID();

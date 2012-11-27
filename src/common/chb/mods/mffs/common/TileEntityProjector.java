@@ -43,6 +43,8 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
@@ -630,7 +632,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			
 			for (PointXYZ pnt : tField){
 				
-				PointXYZ tp  = new PointXYZ(pnt.X+this.xCoord,pnt.Y+this.yCoord,pnt.Z+this.zCoord);
+				PointXYZ tp  = new PointXYZ(pnt.X+this.xCoord,pnt.Y+this.yCoord,pnt.Z+this.zCoord,worldObj);
 				
 				if (Forcefielddefine(tp,addtoMap))
 					{
@@ -639,7 +641,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			}
 			for (PointXYZ pnt : tFieldInt){
 				
-				PointXYZ tp  = new PointXYZ(pnt.X+this.xCoord,pnt.Y+this.yCoord,pnt.Z+this.zCoord);
+				PointXYZ tp  = new PointXYZ(pnt.X+this.xCoord,pnt.Y+this.yCoord,pnt.Z+this.zCoord,worldObj);
 				
 				if (calculateBlock(tp))
 					{field_interior.add(tp);}else{return false;}
@@ -692,7 +694,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		
 		ForceFieldBlockStack ffworldmap = WorldMap
 				.getForceFieldWorld(worldObj)
-				.getorcreateFFStackMap(png.X, png.Y, png.Z);
+				.getorcreateFFStackMap(png.X, png.Y, png.Z,worldObj);
 
 		if(!ffworldmap.isEmpty())
 		{
@@ -713,9 +715,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 
 	public void FieldGenerate(boolean init) {
-			TileEntity tileEntity = Linkgrid.getWorldMap(worldObj)
-					.getCapacitor().get(this.getLinkCapacitor_ID());
-			if (tileEntity instanceof TileEntityCapacitor && tileEntity != null) {
+		TileEntityCapacitor tileEntity = getLinkedCapacitor();
+			if (tileEntity != null) {
 				int cost = 0;
 
 				if (init) {
@@ -729,8 +730,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 					cost *= ModularForceFieldSystem.forcefieldblockzappermodifier;
 				}
 
-				((TileEntityCapacitor) tileEntity).Energylost(cost
-						* field_def.size());
+				((TileEntityCapacitor) tileEntity).consumForcePower(cost* field_def.size());
 			}
 
 		blockcounter = 0;
@@ -744,14 +744,14 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 			
 			if(ffb!=null){
-		     if (worldObj.getChunkFromBlockCoords(ffb.getX(), ffb.getZ()).isChunkLoaded) {
+				
+			 PointXYZ png = ffb.getPoint();	
+		     if (worldObj.getChunkFromBlockCoords(png.X,png.Z).isChunkLoaded) {
 		    	 if(!ffb.isEmpty()){
 		            	if (ffb.getProjectorID() == getProjektor_ID()){
 					if (hasOption(ModularForceFieldSystem.MFFSProjectorOptionCutter)) {
-						int blockid = worldObj.getBlockId(ffb.getX(),
-								ffb.getY(), ffb.getZ());
-						TileEntity entity = worldObj.getBlockTileEntity(ffb.getX(),
-								ffb.getY(), ffb.getZ());
+						int blockid = worldObj.getBlockId(png.X,png.Y,png.Z);
+						TileEntity entity = worldObj.getBlockTileEntity(png.X,png.Y,png.Z);
 						
 						if (blockid != ModularForceFieldSystem.MFFSFieldblock.blockID
 								&& blockid != 0
@@ -760,10 +760,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 						
 						{
 							ArrayList<ItemStack> stacks = Functions
-									.getItemStackFromBlock(worldObj,
-											ffb.getX(), ffb.getY(), ffb.getZ());
-							worldObj.setBlockWithNotify(ffb.getX(), ffb.getY(),
-									ffb.getZ(), 0);
+									.getItemStackFromBlock(worldObj,png.X,png.Y,png.Z);
+							worldObj.setBlockWithNotify(png.X,png.Y,png.Z, 0);
 
 							if (ProjectorTyp.TypfromItem(get_type()).Blockdropper && stacks != null) {
 								IInventory inventory = InventoryHelper.findAttachedInventory(worldObj,this.xCoord,this.yCoord,this.zCoord);
@@ -776,16 +774,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 						}
 					}
 
-						if (worldObj.getBlockMaterial(ffb.getX(), ffb.getY(),
-								ffb.getZ()).isLiquid() || worldObj.isAirBlock(ffb.getX(), ffb.getY(),
-								ffb.getZ()) || worldObj.getBlockId(ffb.getX(), ffb.getY(),
-												ffb.getZ()) == ModularForceFieldSystem.MFFSFieldblock.blockID) {
-						if (worldObj.getBlockId(ffb.getX(), ffb.getY(),
-								ffb.getZ()) != ModularForceFieldSystem.MFFSFieldblock.blockID) {
-							worldObj.setBlockAndMetadataWithNotify(
-									ffb.getX(),
-									ffb.getY(),
-									ffb.getZ(),
+						if (worldObj.getBlockMaterial(png.X,png.Y,png.Z).isLiquid() || worldObj.isAirBlock(png.X,png.Y,png.Z) || worldObj.getBlockId(png.X,png.Y,png.Z) == ModularForceFieldSystem.MFFSFieldblock.blockID) {
+						if (worldObj.getBlockId(png.X,png.Y,png.Z) != ModularForceFieldSystem.MFFSFieldblock.blockID) {
+							worldObj.setBlockAndMetadataWithNotify(png.X,png.Y,png.Z,
 									ModularForceFieldSystem.MFFSFieldblock.blockID,
 									ffb.getTyp());
 							blockcounter++; // Count create blocks...
@@ -813,10 +804,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 					if(ffworldmap.isSync())
 					{
-						worldObj.removeBlockTileEntity(ffworldmap.getX(),
-								ffworldmap.getY(), ffworldmap.getZ());
-						worldObj.setBlockWithNotify(ffworldmap.getX(),
-								ffworldmap.getY(), ffworldmap.getZ(), 0);
+						PointXYZ png = ffworldmap.getPoint();
+						worldObj.removeBlockTileEntity(png.X,png.Y,png.Z);
+						worldObj.setBlockWithNotify(png.X,png.Y,png.Z, 0);
 					}
 
 					ffworldmap.setSync(false);
@@ -1139,48 +1129,48 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	
-	public TileEntityCapacitor getLinkedCapacitor(){
-		int capid = getLinkCapacitor_ID();
-		TileEntityCapacitor cap = Linkgrid.getWorldMap(worldObj).getCapacitor().get(capid);
-		
-
-		if (cap != null){
-			
-			
-			int dx = cap.xCoord - this.xCoord;
-			int dy = cap.yCoord - this.yCoord;
-			int dz = cap.zCoord - this.zCoord;
-			
-			if (cap.getTransmitRange() >=Math.sqrt(dx * dx + dy * dy + dz * dz))
-				return cap;
-		}
-		return null;
-	}
 	
-	
-
-	
-	@Override
-	public int getLinkCapacitor_ID(){
+	public TileEntityCapacitor getLinkedCapacitor()
+	{
 		if (getStackInSlot(0) != null)
 		{
 			if(getStackInSlot(0).getItem() instanceof ItemCardPowerLink)
 			{
-				
-			int capid = ((ItemCard)getStackInSlot(0).getItem()).checkandgetID(getStackInSlot(0), "CapacitorID", worldObj);
-			
-			if(capid == 0)
-			{
-				this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-				return 0;
+				ItemCardPowerLink card = (ItemCardPowerLink) getStackInSlot(0).getItem();
+				PointXYZ png = card.getCardTargetPoint(getStackInSlot(0));
+				World world = DimensionManager.getWorld(png.dimensionId);
+					if(world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				{
+				TileEntityCapacitor cap = (TileEntityCapacitor) world.getBlockTileEntity(png.X, png.Y, png.Z);
+				if (cap != null){
+					
+				  if(cap.getCapacitor_ID()== card.getTargetID("CapacitorID",getStackInSlot(0))&&  card.getTargetID("CapacitorID",getStackInSlot(0)) != 0 )
+				  {
+					if (cap.getTransmitRange() >=PointXYZ.distance(cap.getMaschinePoint(), this.getMaschinePoint()))
+					{
+						return cap;
+					}else{
+						return null;
+					}
+				   }
+				}
+			  }
+			  if(world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+					this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 			}
-			return capid;
-			}
-			
 		}
-			
-		return 0;
+		
+		return null;
 	}
+	
+	public int getLinkCapacitor_ID(){
+		TileEntityCapacitor cap = getLinkedCapacitor();
+		if(cap != null)
+			return cap.getCapacitor_ID();
+		return 0;	
+	}
+	
+	
 	
 	
 	public boolean hasOption(Item item){

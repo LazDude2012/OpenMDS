@@ -162,7 +162,7 @@ public final class Linkgrid {
 			}
 
 			for (TileEntityCapacitor tileentity : Capacitors.values()) {
-				if (tileentity.getRemote_Capacitor_ID() == Capacitors_ID) {
+				if (tileentity.getLinkCapacitor_ID() == Capacitors_ID) {
 					int dx = tileentity.xCoord - xCoordr;
 					int dy = tileentity.yCoord - yCoordr;
 					int dz = tileentity.zCoord - zCoordr;
@@ -175,7 +175,7 @@ public final class Linkgrid {
 			
 			
 			for (TileEntityAreaDefenseStation tileentity : DefStation.values()) {
-				if (tileentity.getlinkCapacitors_ID() == Capacitors_ID) {
+				if (tileentity.getLinkCapacitor_ID() == Capacitors_ID) {
 					int dx = tileentity.xCoord - xCoordr;
 					int dy = tileentity.yCoord - yCoordr;
 					int dz = tileentity.zCoord - zCoordr;
@@ -187,7 +187,7 @@ public final class Linkgrid {
 			}
 			
 			for (TileEntityExtractor tileentity : Extractor.values()) {
-				if (tileentity.getLinkCapacitors_ID() == Capacitors_ID) {
+				if (tileentity.getLinkCapacitor_ID() == Capacitors_ID) {
 					int dx = tileentity.xCoord - xCoordr;
 					int dy = tileentity.yCoord - yCoordr;
 					int dz = tileentity.zCoord - zCoordr;
@@ -199,7 +199,7 @@ public final class Linkgrid {
 			}
 			
 			for (TileEntityConverter tileentity : Converter.values()) {
-				if (tileentity.getLinkCapacitors_ID() == Capacitors_ID) {
+				if (tileentity.getLinkCapacitor_ID() == Capacitors_ID) {
 					int dx = tileentity.xCoord - xCoordr;
 					int dy = tileentity.yCoord - yCoordr;
 					int dz = tileentity.zCoord - zCoordr;

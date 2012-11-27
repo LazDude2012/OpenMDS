@@ -23,41 +23,67 @@
  */
 
 package chb.mods.mffs.common;
-
-import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.World;
+import net.minecraftforge.common.DimensionManager;
 
 public class PointXYZ {
 	
 	public int X = 0;
 	public int Y = 0;
 	public int Z = 0;
+	public int dimensionId;
+	
+
 	
 	public PointXYZ(int x, int y, int z) {
+		
 		X=x;
 		Y=y;
 		Z=z;
+		dimensionId = Integer.MAX_VALUE;
+		
 	}
 	
-	public static PointXYZ fromNBT(NBTTagCompound nbtTag){
-		return new PointXYZ(nbtTag.getInteger("X"),nbtTag.getInteger("Y"),nbtTag.getInteger("Z"));
+	
+	public PointXYZ(int x, int y, int z, World worldObj) {
+		
+		X=x;
+		Y=y;
+		Z=z;
+		dimensionId = worldObj.provider.dimensionId;
+		
 	}
 	
-	public NBTTagCompound toNBTTagCompound(){
-		NBTTagCompound nTag = new NBTTagCompound();
-		nTag.setInteger("X", X);
-		nTag.setInteger("Y", Y);
-		nTag.setInteger("Z", Z);
-		return nTag;
+	public PointXYZ(int x, int y, int z, int  dimensionId) {
+		
+		X=x;
+		Y=y;
+		Z=z;
+		this.dimensionId = dimensionId;
+		
 	}
 	
-	public PointXYZ toLocal(PointXYZ localizeTo){
-		return new PointXYZ(X-localizeTo.X, Y-localizeTo.Y, Z-localizeTo.Z);
+	public World getPointWorld()
+	{
+		if(dimensionId!=Integer.MAX_VALUE)
+			return DimensionManager.getWorld(dimensionId);
+		return null;
 	}
 	
-	public PointXYZ toWorld(PointXYZ localTo){
-		return new PointXYZ(X+localTo.X, Y+localTo.Y, Z+localTo.Z);
+	
+	public static int distance(PointXYZ png1, PointXYZ png2)
+	{
+		if(png1.dimensionId == png2.dimensionId)
+		{
+			int dx = png1.X - png2.X;
+			int dy = png1.Y - png2.Y;
+			int dz = png1.Z - png2.Z;
+			return (int) Math.sqrt(dx * dx + dy * dy + dz * dz);
+		}
+		return Integer.MAX_VALUE;
 	}
 	
+
 	
 	@Override
 	public String toString(){
