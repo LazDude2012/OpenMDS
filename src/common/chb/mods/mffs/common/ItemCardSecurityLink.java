@@ -22,7 +22,6 @@ package chb.mods.mffs.common;
 
 import java.util.List;
 
-import chb.mods.mffs.api.ISecurityLinkCard;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
@@ -30,7 +29,7 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
-public class ItemCardSecurityLink extends ItemCard implements ISecurityLinkCard {
+public class ItemCardSecurityLink extends ItemCard  {
 
 	public ItemCardSecurityLink(int i) {
 		super(i);
@@ -38,54 +37,6 @@ public class ItemCardSecurityLink extends ItemCard implements ISecurityLinkCard 
 	
 	}
 
-	
-
-	@Override
-	public boolean isSecurityCardValidity(ItemStack itemstack, World world) {
-
-		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper
-				.getTAGfromItemstack(itemstack);
-		if (nbtTagCompound != null) {
-
-			TileEntityAdvSecurityStation secstation = Linkgrid.getWorldMap(world)
-					.getSecStation()
-					.get(nbtTagCompound.getInteger("Secstation_ID"));
-			if (secstation != null) {
-				return true;
-			}
-
-		}
-
-		return false;
-	}
-
-	public boolean isAccessGranted(ItemStack itemstack,
-			EntityPlayer entityplayer, World world, String string,
-			boolean AccessErrorMessage) {
-		
-		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper
-				.getTAGfromItemstack(itemstack);
-		if (nbtTagCompound != null) {
-
-			TileEntityAdvSecurityStation secstation = Linkgrid.getWorldMap(world)
-					.getSecStation()
-					.get(nbtTagCompound.getInteger("Secstation_ID"));
-			
-			if (secstation != null) {
-
-				if (!secstation.isAccessGranted(entityplayer.username,
-						string)) {
-					if (AccessErrorMessage)
-						Functions.ChattoPlayer(entityplayer,
-								"[MFFS SecurityStation] access denied for "
-										+ entityplayer.username);
-					return false;
-				}
-
-			}
-		}
-		return true;
-	}
 
 	@Override
 	public boolean onItemUseFirst(ItemStack itemstack,

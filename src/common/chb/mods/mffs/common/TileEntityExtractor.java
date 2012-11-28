@@ -37,8 +37,8 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
-public class TileEntityExtractor extends TileEntityMachines implements ISidedInventory
-,INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IElectricityReceiver,IJouleStorage{
+public class TileEntityExtractor extends TileEntityMachines implements 
+INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IElectricityReceiver,IJouleStorage{
 	private ItemStack inventory[];
 
 	private int workmode = 0;
@@ -234,16 +234,19 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	
 	public TileEntityCapacitor getLinkedCapacitor()
 	{
+	
 		if (getStackInSlot(1) != null)
 		{
 			if(getStackInSlot(1).getItem() instanceof ItemCardPowerLink)
 			{
 				ItemCardPowerLink card = (ItemCardPowerLink) getStackInSlot(1).getItem();
 				PointXYZ png = card.getCardTargetPoint(getStackInSlot(1));
-				World world = DimensionManager.getWorld(png.dimensionId);
-					if(world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				if(png != null)
 				{
-				TileEntityCapacitor cap = (TileEntityCapacitor) world.getBlockTileEntity(png.X, png.Y, png.Z);
+					if(png.dimensionId != worldObj.provider.dimensionId) return null;
+					if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				{
+				TileEntityCapacitor cap = (TileEntityCapacitor) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
 				if (cap != null){
 					
 				  if(cap.getCapacitor_ID()== card.getTargetID("CapacitorID",getStackInSlot(1))&&  card.getTargetID("CapacitorID",getStackInSlot(1)) != 0 )
@@ -257,9 +260,10 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 				   }
 				}
 			  }
-			  if(world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
 					this.setInventorySlotContents(1, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 			}
+		  }
 		}
 		
 		return null;
@@ -513,9 +517,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		return "Extractor";
 	}
 
-	public int getInventoryStackLimit() {
-		return 64;
-	}
 
 	public int getSizeInventory() {
 		return inventory.length;
@@ -545,10 +546,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		}
 	}
 
-	@Override
-	public ItemStack getStackInSlotOnClosing(int var1) {
-		return null;
-	}
+
 
 	@Override
 	public int getStartInventorySide(ForgeDirection side) {
@@ -560,35 +558,9 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		return 1;
 	}
 
-	public ItemStack[] getContents() {
-		return inventory;
-	}
-
 	@Override
-	public void openChest() {
-	}
-
-	@Override
-	public void closeChest(){
-	}
-
-	@Override
-	public void onNetworkHandlerUpdate(String field) {
-		if (field.equals("side")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("active")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("WorkCylce")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("capacity")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("workdone")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
+	public void onNetworkHandlerUpdate(String field){ 
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
 
 	@Override

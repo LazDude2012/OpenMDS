@@ -51,12 +51,15 @@ public class GuiAreaDefenseStation extends GuiContainer {
 @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRenderer.drawString("MFFS Defence Station", 5, 5, 0x404040);
-		fontRenderer.drawString((new StringBuilder()).append("FP: ").append(DefenceStation.getLinkPower()).toString(), 30, 50, 0x404040);
-
+		if(DefenceStation.getLinkedCapacitor()!= null){
+		fontRenderer.drawString((new StringBuilder()).append("FE: ").append(DefenceStation.getLinkPower()).toString(), 30, 50, 0x404040);
+		}else{
+			fontRenderer.drawString("FE: No Link/OOR", 30, 50, 0x404040);
+		}
 		fontRenderer.drawString("Typ", 120, 30, 0x404040);
 		fontRenderer.drawString("distance", 110, 65, 0x404040);
 
-		if(DefenceStation.islinkSecStation())
+		if(DefenceStation.getSecStation_ID()!=0)
 		{
 			fontRenderer.drawString("connected", 30, 20, 0x404040);
 		}

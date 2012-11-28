@@ -105,6 +105,7 @@ public abstract class BlockMFFSBase extends BlockContainer {
 			return false;
 		}
 		
+		
 		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
 		{return false;}
 		

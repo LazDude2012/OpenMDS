@@ -50,7 +50,7 @@ public class PointXYZ {
 		X=x;
 		Y=y;
 		Z=z;
-		dimensionId = worldObj.provider.dimensionId;
+		dimensionId =   worldObj.provider.dimensionId;
 		
 	}
 	

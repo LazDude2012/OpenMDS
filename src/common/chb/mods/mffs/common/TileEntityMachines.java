@@ -42,10 +42,12 @@ import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
+import net.minecraftforge.common.ISidedInventory;
 import chb.mods.mffs.api.IMFFS_Wrench;
+import chb.mods.mffs.common.IModularProjector.Slots;
 import chb.mods.mffs.network.NetworkHandlerServer;
 
-public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wrench,IWrenchable,IExtractionHandler{
+public abstract class TileEntityMachines extends TileEntity implements ISidedInventory,IMFFS_Wrench,IWrenchable,IExtractionHandler{
 	private boolean active;
 	private int side;
 	private short ticker;
@@ -234,4 +236,40 @@ public abstract class TileEntityMachines extends TileEntity implements IMFFS_Wre
 	public abstract boolean isItemValid(ItemStack par1ItemStack, int Slot);
 
 	public abstract int getSlotStackLimit(int slt);
+	
+	
+	@Override
+	public void openChest() {}
+
+	@Override
+	public void closeChest() {}
+	
+	
+    @Override
+	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
+			return false;
+		} else {
+			return entityplayer.getDistance((double) xCoord + 0.5D,
+					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
+		}
+	}
+
+
+	@Override
+	public ItemStack getStackInSlotOnClosing(int var1) {
+		return null;
+	}
+	
+    @Override
+	public int getInventoryStackLimit() {
+		return 64;
+	}
+    
+	public int countItemsInSlot(Slots slt){
+		if (this.getStackInSlot(slt.slot) != null)
+			return this.getStackInSlot(slt.slot).stackSize;
+		return 0;
+	}
+	
 }

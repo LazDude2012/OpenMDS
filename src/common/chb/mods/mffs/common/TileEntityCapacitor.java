@@ -54,32 +54,42 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 
 public class TileEntityCapacitor extends TileEntityMachines implements  IForceEnergyCapacitor,
-ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
+INetworkHandlerEventListener,INetworkHandlerListener{
 	private ItemStack inventory[];
 	private int forcePower;
 	private int Capacitor_ID;
-	private int SecStation_ID;
 	private boolean create;
-	private boolean LinkedSecStation;
 	private short linketprojektor;
 	private int capacity;
 	private int SwitchTyp;
 	private int Powerlinkmode;
 	private boolean OnOffSwitch;
+	private int TransmitRange;
 
 	public TileEntityCapacitor() {
 		inventory = new ItemStack[5];
-		SecStation_ID = 0;
 		forcePower =0;
 		Capacitor_ID = 0;
 		linketprojektor = 0;
+		TransmitRange = 8;
 		create = true;
-		LinkedSecStation = false;
 		capacity = 0;
 		SwitchTyp = 0;
 		OnOffSwitch = false;
 		Powerlinkmode= 0;
 	}
+
+	public void setTransmitRange(int transmitRange) {
+		TransmitRange = transmitRange;
+		NetworkHandlerServer.updateTileEntityField(this, "TransmitRange");
+	}
+	
+	public int getTransmitRange() {
+
+		return TransmitRange;
+	}
+	
+	
 
 	public boolean isCreate() {
 		return create;
@@ -131,15 +141,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		return new ContainerCapacitor(inventoryplayer.player, this);
 	}
 
-	public boolean isLinkedSecStation() {
-		return LinkedSecStation;
-	}
-
-	public void setLinkedSecStation(boolean linkedSecStation) {
-		LinkedSecStation = linkedSecStation;
-	}
-
-
 	public Short getLinketProjektor() {
 		return linketprojektor;
 	}
@@ -161,19 +162,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		forcePower = f;
 	}
 
-	public int getSecStation_ID() {
-		return SecStation_ID;
-	}
-	
-	public void setSecStation_ID(int SecStation_ID){
-	
-		if(this.SecStation_ID != SecStation_ID){
-		this.SecStation_ID = SecStation_ID;
-		NetworkHandlerServer.updateTileEntityField(this, "SecStation_ID");
-		}
-	}
-	
-
 
 	public int getCapacitor_ID() {
 		return Capacitor_ID;
@@ -184,18 +172,63 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 	
 	
+	public TileEntityAdvSecurityStation getLinkedSecurityStation()
+	{
+		
+		if (getStackInSlot(4) != null)
+		{
+			if(getStackInSlot(4).getItem() instanceof ItemCardSecurityLink)
+			{
+				ItemCardSecurityLink card = (ItemCardSecurityLink) getStackInSlot(4).getItem();
+				PointXYZ png = card.getCardTargetPoint(getStackInSlot(4));
+				if(png != null)
+				{
+					if(png.dimensionId != worldObj.provider.dimensionId) return null;
+					if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityAdvSecurityStation)
+				{
+						TileEntityAdvSecurityStation sec = (TileEntityAdvSecurityStation) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
+				if (sec != null){
+					
+				  if(sec.getSecurtyStation_ID()== card.getTargetID("Secstation_ID",getStackInSlot(4))&&  card.getTargetID("Secstation_ID",getStackInSlot(4)) != 0 )
+				  {
+                    return sec;
+				   }
+				}
+			  }
+			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+					this.setInventorySlotContents(4, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+			}
+		   }
+		}
+		
+		return null;
+	}
+	
+	
+	
+	public int getSecStation_ID(){
+		TileEntityAdvSecurityStation sec = getLinkedSecurityStation();
+		if(sec != null)
+			return sec.getSecurtyStation_ID();
+		return 0;	
+	}
+	
 	public TileEntityCapacitor getLinkedCapacitor()
 	{
+
+		
 		if (getStackInSlot(2) != null)
 		{
 			if(getStackInSlot(2).getItem() instanceof ItemCardPowerLink)
 			{
 				ItemCardPowerLink card = (ItemCardPowerLink) getStackInSlot(2).getItem();
 				PointXYZ png = card.getCardTargetPoint(getStackInSlot(2));
-				World world = DimensionManager.getWorld(png.dimensionId);
-					if(world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				if(png != null)
 				{
-				TileEntityCapacitor cap = (TileEntityCapacitor) world.getBlockTileEntity(png.X, png.Y, png.Z);
+					if(png.dimensionId != worldObj.provider.dimensionId) return null;
+					if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				{
+				TileEntityCapacitor cap = (TileEntityCapacitor) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
 				if (cap != null){
 					
 				  if(cap.getCapacitor_ID()== card.getTargetID("CapacitorID",getStackInSlot(2))&&  card.getTargetID("CapacitorID",getStackInSlot(2)) != 0 )
@@ -209,8 +242,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				   }
 				}
 			  }
-			  if(world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
 					this.setInventorySlotContents(2, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+			}
 			}
 		}
 		
@@ -225,21 +259,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 	
 	
-
-	public int getTransmitRange() {
-
-		if (getStackInSlot(1) != null) {
-		if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSitemupgradecaprange) {
-			return  8 * (getStackInSlot(1).stackSize+1);
-		}
-	}
-		
-		return 8;
-	}
 	
 	
 	@Override
 	public int getMaxForcePower() {
+				
 		
 		if (getStackInSlot(0) != null) {
 		if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemupgradecapcap) {
@@ -254,6 +278,16 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 	private void checkslots(boolean init) {
 		
+		
+		if (getStackInSlot(1) != null) {
+		if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSitemupgradecaprange) {
+			
+			setTransmitRange(8 * (getStackInSlot(1).stackSize+1));
+			
+		}
+		}else{
+			setTransmitRange(8);
+		}
 
 		if (getStackInSlot(2) != null) {
 			if (getStackInSlot(2).getItem() instanceof IForceEnergyItems) {
@@ -342,40 +376,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				if(this.getPowerlinkmode()!=0 && this.getPowerlinkmode()!=1 && this.getPowerlinkmode()!=2)this.setPowerlinkmode(0);
 				
 			}
-		}
-
-		if (getStackInSlot(4) != null) {
-			if (getStackInSlot(4).getItem() == ModularForceFieldSystem.MFFSItemSecLinkCard) {
-				if (this.getSecStation_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
-						getStackInSlot(4)).getInteger("Secstation_ID")) {
-					this.setSecStation_ID( NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(4)).getInteger("Secstation_ID"));
-				}
-				if (this.getSecStation_ID() == 0) {
-					dropplugins(4,this);
-				}
-				if(Linkgrid.getWorldMap(worldObj)
-				.getSecStation().get(this.getSecStation_ID())!=null)
-				{
-				setLinkedSecStation(true);
-				}
-				else
-				{
-				setLinkedSecStation(false);
-				if (!init) {
-					this.setInventorySlotContents(4, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-				}
-				}
-			} else {
-			    	this.setSecStation_ID(0);
-				    setLinkedSecStation(false);
-					if (getStackInSlot(4).getItem() != ModularForceFieldSystem.MFFSitemcardempty) {
-						dropplugins(4,this);
-					}
-			}
-		} else {
-			this.setSecStation_ID(0);
-			setLinkedSecStation(false);
 		}
 
 
@@ -578,9 +578,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		return inventory[i];
 	}
 
-	public int getInventoryStackLimit() {
-		return 9;
-	}
 
 	public ItemStack decrStackSize(int i, int j) {
 		if (inventory[i] != null) {
@@ -608,33 +605,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 	public String getInvName() {
 		return "Generator";
-	}
-
-	public void closeChest() {
-	}
-
-	public ItemStack getStackInSlotOnClosing(int var1) {
-		return null;
-	}
-
-	@Override
-	public void openChest() {
-	}
-
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
-			return false;
-		} else {
-			return entityplayer.getDistance((double) xCoord + 0.5D,
-					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
-		}
-	}
-
-	public ItemStack[] getContents() {
-		return inventory;
-	}
-
-	public void setMaxStackSize(int arg0) {
 	}
 
 	@Override
@@ -701,19 +671,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	@Override
-	public void onNetworkHandlerUpdate(String field) {
-		if (field.equals("side")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("active")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("linketprojektor")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("capacity")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
+	public void onNetworkHandlerUpdate(String field){ 
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
 
 	@Override
@@ -728,6 +687,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		NetworkedFields.add("capacity");
 		NetworkedFields.add("Capacitor_ID");
 		NetworkedFields.add("SecStation_ID");
+		NetworkedFields.add("TransmitRange");
 
 		return NetworkedFields;
 	}

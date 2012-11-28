@@ -47,15 +47,15 @@ public class ItemDebugger extends  ItemMultitool  {
 		
 		if (!world.isRemote) {
 			
-			if(tileEntity instanceof TileEntityCapacitor)
-				System.out.println(((TileEntityCapacitor)tileEntity).getTransmitRange());
+			if(tileEntity instanceof TileEntityProjector)
+				System.out.println(((TileEntityProjector)tileEntity).getaccesstyp());
     		
 
 			
 		}else{
 			
-			if(tileEntity instanceof TileEntityCapacitor)
-				System.out.println(((TileEntityCapacitor)tileEntity).getTransmitRange());
+			if(tileEntity instanceof TileEntityProjector)
+				System.out.println(((TileEntityProjector)tileEntity).getaccesstyp());
 		}
 
 		return false;

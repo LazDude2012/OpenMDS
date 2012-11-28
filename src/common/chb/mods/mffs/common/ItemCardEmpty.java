@@ -47,21 +47,24 @@ public class ItemCardEmpty extends ItemMFFSBase {
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer,
 			World world, int i, int j, int k, int l, float par8, float par9, float par10) {
 		
+		
+		if (world.isRemote)
+			return false;
+		
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
 		
 
 		if (tileEntity instanceof TileEntityAdvSecurityStation) {
 			
-		
-			
+	
 			if(((TileEntityAdvSecurityStation)tileEntity).isActive()){
 				
 			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"CSR")) {
 	
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
 				
-				((ItemCardSecurityLink)newcard.getItem()).setInformation(newcard, new PointXYZ(i,j,k,world),"Secstation_ID", ((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
 				
+				((ItemCardSecurityLink)newcard.getItem()).setInformation(newcard, new PointXYZ(i,j,k,world),"Secstation_ID", ((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
 				
 				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
 				

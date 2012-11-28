@@ -31,6 +31,7 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
+import net.minecraft.src.WorldClient;
 import net.minecraftforge.common.DimensionManager;
 
 public class ItemCard extends Item {
@@ -58,8 +59,8 @@ public class ItemCard extends Item {
 	@Override
 	public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b){
 		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-		if (tag.hasKey("DId"))
-			info.add("World: " + DimensionManager.getWorld(tag.getInteger("DId")).getWorldInfo().getWorldName());
+		if (tag.hasKey("worldname"))
+			info.add("World: " + tag.getString("worldname"));
 		if (tag.hasKey("X") && tag.hasKey("Y") && tag.hasKey("Z"))
 			info.add("Coords: " + new PointXYZ(tag.getInteger("X"),tag.getInteger("Y"),tag.getInteger("Z"),0).toString());
 		if (tag.hasKey("DId"))
@@ -71,6 +72,7 @@ public class ItemCard extends Item {
 		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
 		
 		nbtTagCompound.setInteger(key, value);
+		nbtTagCompound.setString("worldname", DimensionManager.getWorld(png.dimensionId).getWorldInfo().getWorldName());
 		nbtTagCompound.setInteger("DId", png.dimensionId);
 		nbtTagCompound.setInteger("X", png.X);
 		nbtTagCompound.setInteger("Y", png.Y);
@@ -90,8 +92,11 @@ public class ItemCard extends Item {
 	public PointXYZ getCardTargetPoint(ItemStack itemStack)
 	{
 		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-		if (tag.hasKey("DId") && tag.hasKey("X") && tag.hasKey("Y") && tag.hasKey("Z"))
+		if (tag.hasKey("DId") && tag.hasKey("X") && tag.hasKey("Y") && tag.hasKey("Z")){
 		    return new PointXYZ(tag.getInteger("X"),tag.getInteger("Y"),tag.getInteger("Z"),tag.getInteger("DId"));
+		}else{
+			tag.setBoolean("valid", false);
+		}
 		
 		return null;
 	}

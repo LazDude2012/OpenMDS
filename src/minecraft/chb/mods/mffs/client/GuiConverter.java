@@ -74,7 +74,11 @@ public class GuiConverter extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
     	fontRenderer.drawString("MFFS FE -> EU Converter", 5, 5, 0x404040);
-    	fontRenderer.drawString((new StringBuilder()).append("FE: ").append(Converter.getLinkPower()).toString(), 10, 60, 0x404040);
+		if(Converter.getLinkedCapacitor()!= null){
+			fontRenderer.drawString((new StringBuilder()).append("FE: ").append(Converter.getLinkPower()).toString(), 10, 60, 0x404040);
+		}else{
+			fontRenderer.drawString("FE: No Link/OOR",  10, 60, 0x404040);
+		}
     	fontRenderer.drawString((new StringBuilder()).append("Output: ").append(Converter.getOutput()).append(" EU").toString(), 90, 45, 0x404040);
     }
 }

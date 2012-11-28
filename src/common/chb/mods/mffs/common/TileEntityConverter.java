@@ -51,7 +51,7 @@ import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
 
 public class TileEntityConverter extends TileEntityMachines implements
-		ISidedInventory, INetworkHandlerListener, INetworkHandlerEventListener,
+		INetworkHandlerListener, INetworkHandlerEventListener,
 		IEnergySource {
 	private ItemStack inventory[];
 	private boolean create;
@@ -134,16 +134,19 @@ public class TileEntityConverter extends TileEntityMachines implements
 	
 	public TileEntityCapacitor getLinkedCapacitor()
 	{
+		
 		if (getStackInSlot(0) != null)
 		{
 			if(getStackInSlot(0).getItem() instanceof ItemCardPowerLink)
 			{
 				ItemCardPowerLink card = (ItemCardPowerLink) getStackInSlot(0).getItem();
 				PointXYZ png = card.getCardTargetPoint(getStackInSlot(0));
-				World world = DimensionManager.getWorld(png.dimensionId);
-					if(world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				if(png != null)
 				{
-				TileEntityCapacitor cap = (TileEntityCapacitor) world.getBlockTileEntity(png.X, png.Y, png.Z);
+					if(png.dimensionId != worldObj.provider.dimensionId) return null;
+					if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				{
+				TileEntityCapacitor cap = (TileEntityCapacitor) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
 				if (cap != null){
 					
 				  if(cap.getCapacitor_ID()== card.getTargetID("CapacitorID",getStackInSlot(0))&&  card.getTargetID("CapacitorID",getStackInSlot(0)) != 0 )
@@ -157,9 +160,10 @@ public class TileEntityConverter extends TileEntityMachines implements
 				   }
 				}
 			  }
-			  if(world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
 					this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 			}
+		  }
 		}
 		
 		return null;
@@ -257,14 +261,6 @@ public class TileEntityConverter extends TileEntityMachines implements
 		}
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
-			return false;
-		} else {
-			return entityplayer.getDistance((double) xCoord + 0.5D,
-					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
-		}
-	}
 
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
@@ -316,9 +312,6 @@ public class TileEntityConverter extends TileEntityMachines implements
 		return "Extractor";
 	}
 
-	public int getInventoryStackLimit() {
-		return 64;
-	}
 
 	public int getSizeInventory() {
 		return inventory.length;
@@ -363,28 +356,10 @@ public class TileEntityConverter extends TileEntityMachines implements
 		return 1;
 	}
 
-	public ItemStack[] getContents() {
-		return inventory;
-	}
-
 	@Override
-	public void openChest() {
+	public void onNetworkHandlerUpdate(String field){ 
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
-
-	@Override
-	public void closeChest() {
-	}
-
-	@Override
-	public void onNetworkHandlerUpdate(String field) {
-		if (field.equals("side")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("active")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
-	}
-
 	@Override
 	public void onNetworkHandlerEvent(String event) {
 		

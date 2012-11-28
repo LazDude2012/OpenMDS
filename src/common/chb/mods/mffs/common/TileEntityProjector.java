@@ -69,7 +69,7 @@ import chb.mods.mffs.network.NetworkHandlerClient;
 import chb.mods.mffs.network.NetworkHandlerServer;
 
 public class TileEntityProjector extends TileEntityMachines implements IModularProjector,
-ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
+INetworkHandlerEventListener,INetworkHandlerListener{
 	private ItemStack ProjektorItemStacks[];
 
 	private int[] focusmatrix = { 0, 0, 0, 0 }; // Up 7,Down 8,Right 9,Left 10
@@ -78,8 +78,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	private int[] lavagrafik = { 237, 237, 239, 254, 255, 255 };  // Vanilla Lava  Textur
 	private int[] forcefieldtextur_id= { -10,-10,-10,-10,-10,-10};
 
-	private boolean LinkedSecStation;
-	private int SecStation_ID;
 	private int switchdelay;
 	private short forcefieldblock_meta;
 	private int ProjektorTyp;
@@ -108,8 +106,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		switchdelay = 0;
 		burnout = false;
 		accesstyp = 0;
-		SecStation_ID = 0;
-		LinkedSecStation = false;
 		SwitchTyp = 0;
 		OnOffSwitch = false;
 		capacity = 0;
@@ -142,17 +138,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	   this.SwitchTyp = a;
 	}
 
-	public boolean isLinkedSecStation() {
-		return LinkedSecStation;
-	}
-
-	public void setLinkedSecStation(boolean linkedSecStation) {
-		LinkedSecStation = linkedSecStation;
-	}
-
-	public int getSecStation_ID() {
-		return SecStation_ID;
-	}
 
 	public int getaccesstyp() {
 		return accesstyp;
@@ -301,7 +286,16 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		}
 	}
 
-	public void checkslots(boolean init) {
+	
+	@Override
+	public void onInventoryChanged()
+	{
+		getLinkedSecurityStation();
+		checkslots();
+	}
+	
+	
+	public void checkslots() {
 		
 		
 		if (hasValidTypeMod()){
@@ -320,7 +314,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		}
 		
 		
-
 
 		// Focus function
 
@@ -396,45 +389,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		    }
 		}
 
-		if (getStackInSlot(12) != null) {
-			if (getStackInSlot(12).getItem() == ModularForceFieldSystem.MFFSItemSecLinkCard) {
-				if (SecStation_ID != NBTTagCompoundHelper.getTAGfromItemstack(
-						getStackInSlot(12)).getInteger("Secstation_ID")) {
-					SecStation_ID = NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(12)).getInteger("Secstation_ID");
-				}
-				if (SecStation_ID == 0) {
-					dropplugins(12,this);
-				}
-				if(Linkgrid.getWorldMap(worldObj)
-				.getSecStation().get(this.getSecStation_ID())!=null)
-				{
-				setLinkedSecStation(true);
-				this.setaccesstyp(3);
-				}
-				else
-				{
-				setLinkedSecStation(false);
-				dropplugins(12,this);
-				if(getaccesstyp()==3)
-				{setaccesstyp(0);}
-				}
-			} else {
-			    	SecStation_ID = 0;
-				    setLinkedSecStation(false);
-					if(getaccesstyp() ==3)
-					{setaccesstyp(0);}
-					dropplugins(12,this);
-			}
-		} else {
-			SecStation_ID = 0;
-			setLinkedSecStation(false);
-			if(getaccesstyp() ==3)
-				{setaccesstyp(0);}
-		}
-				
-		
-		
+
 		if(hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage))
 			if(getforcefieldblock_meta() !=ForceFieldTyps.Camouflage.ordinal()){
 				setforcefieldblock_meta((short) ForceFieldTyps.Camouflage.ordinal());
@@ -525,24 +480,25 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 
 			if (this.isCreate() && this.getLinkCapacitor_ID() != 0) {
 				addtogrid();
-				checkslots(true);
+				checkslots();
 				if (this.isActive()) {
 					calculateField(true);
 				}
 				this.setCreate(false);
 			}
 		
+			
+			TileEntityCapacitor cap = getLinkedCapacitor();
+			
+			if(cap != null){
+				setLinkPower(cap.getForcePower());
+                setCapacity(cap.getCapacity());
+			}else{
+				setLinkPower(0);
+				setCapacity(0);
+			}
 
-			if (this.getLinkedCapacitor() != null) {
-				
-				this.setLinkPower(getLinkedCapacitor().getForcePower());
-                this.setCapacity(getLinkedCapacitor().getCapacity());
-				}else{
-					
-					this.setLinkPower(0);
-					this.setCapacity(0);
-					
-				}
+
 
 
 			boolean powerdirekt = worldObj.isBlockGettingPowered(xCoord,
@@ -580,7 +536,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			}
 
 			if (this.getTicker() == 20) {
-				checkslots(false);
 
 				if (isActive()) {
 					FieldGenerate(false);
@@ -632,19 +587,24 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			
 			for (PointXYZ pnt : tField){
 				
+				if(pnt.Y+this.yCoord<255){
 				PointXYZ tp  = new PointXYZ(pnt.X+this.xCoord,pnt.Y+this.yCoord,pnt.Z+this.zCoord,worldObj);
 				
 				if (Forcefielddefine(tp,addtoMap))
 					{
 					field_def.add(tp);
 					}else{return false;}
+				}
 			}
 			for (PointXYZ pnt : tFieldInt){
 				
+				
+				if(pnt.Y+this.yCoord<255){
 				PointXYZ tp  = new PointXYZ(pnt.X+this.xCoord,pnt.Y+this.yCoord,pnt.Z+this.zCoord,worldObj);
 				
 				if (calculateBlock(tp))
 					{field_interior.add(tp);}else{return false;}
+				}
 			}
 			
 			
@@ -734,6 +694,9 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			}
 
 		blockcounter = 0;
+		
+		
+		System.out.println(field_def.size());
 
 		for (PointXYZ pnt : field_def) {
 			if (blockcounter == ModularForceFieldSystem.forcefieldmaxblockpeerTick) {
@@ -741,11 +704,11 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			}
 			ForceFieldBlockStack ffb = WorldMap.getForceFieldWorld(worldObj).getForceFieldStackMap(pnt.X, pnt.Y, pnt.Z);
 
-
 			
 			if(ffb!=null){
 				
 			 PointXYZ png = ffb.getPoint();	
+ 
 		     if (worldObj.getChunkFromBlockCoords(png.X,png.Z).isChunkLoaded) {
 		    	 if(!ffb.isEmpty()){
 		            	if (ffb.getProjectorID() == getProjektor_ID()){
@@ -885,6 +848,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		return forcepower;
 	}
 
+	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (ProjektorItemStacks[i] != null) {
 			if (ProjektorItemStacks[i].stackSize <= j) {
@@ -902,6 +866,7 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		}
 	}
 
+	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		ProjektorItemStacks[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
@@ -909,64 +874,29 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		}
 	}
 
-	public boolean canInteractWith(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
-			return false;
-		} else {
-			return entityplayer.getDistanceSq((double) xCoord + 0.5D,
-					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
-		}
-	}
 
+	@Override
 	public ItemStack getStackInSlot(int i) {
 		return ProjektorItemStacks[i];
 	}
 
+	@Override
 	public String getInvName() {
 		return "Projektor";
 	}
-
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
+    
+    @Override
 	public int getSizeInventory() {
 		return ProjektorItemStacks.length;
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
-			return false;
-		} else {
-			return entityplayer.getDistance((double) xCoord + 0.5D,
-					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
-		}
-	}
 
-	@Override
-	public void openChest() {
-	}
-
-	@Override
-	public void closeChest() {
-	}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int var1) {
-		return null;
-	}
 
 	@Override
 	public Container getContainer(InventoryPlayer inventoryplayer) {
 		return new ContainerProjector(inventoryplayer.player, this);
 	}
 
-	public ItemStack[] getContents() {
-		return ProjektorItemStacks;
-	}
-
-	public void setMaxStackSize(int arg0) {
-	}
 
 	@Override
 	public int getStartInventorySide(ForgeDirection side) {
@@ -1010,18 +940,8 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 	}
 
 	@Override
-	public void onNetworkHandlerUpdate(String field) {
-		
-		
-		if (field.equals("side")) {
-			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("active")) {
-			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("ProjektorTyp")) {
-			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
-		}
+	public void onNetworkHandlerUpdate(String field){ 
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
 
 	@Override
@@ -1111,12 +1031,6 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		return null;
 	}
 
-	
-	public int countItemsInSlot(Slots slt){
-		if (this.getStackInSlot(slt.slot) != null)
-			return this.getStackInSlot(slt.slot).stackSize;
-		return 0;
-	}
 
 	@Override
 	public Set<PointXYZ> getInteriorPoints() {
@@ -1128,8 +1042,51 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 		return field_def;
 	}
 
+	public TileEntityAdvSecurityStation getLinkedSecurityStation()
+	{
+		
+		if (getStackInSlot(12) != null)
+		{
+			if(getStackInSlot(12).getItem() instanceof ItemCardSecurityLink)
+			{
+				ItemCardSecurityLink card = (ItemCardSecurityLink) getStackInSlot(12).getItem();
+				PointXYZ png = card.getCardTargetPoint(getStackInSlot(12));
+				if(png != null)
+				{
+			    if(png.dimensionId != worldObj.provider.dimensionId) return null;
+				if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityAdvSecurityStation)
+				{
+				TileEntityAdvSecurityStation sec = (TileEntityAdvSecurityStation) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
+				if (sec != null){
+					
+				  if(sec.getSecurtyStation_ID()== card.getTargetID("Secstation_ID",getStackInSlot(12))&&  card.getTargetID("Secstation_ID",getStackInSlot(12)) != 0 )
+				  {
+                     if(this.getaccesstyp()!=3)
+                        this.setaccesstyp(3);
+                    return sec;
+				   }
+				}
+			  }
+			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+					this.setInventorySlotContents(12, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+			}
+		   }
+		}
+		
+        if(this.getaccesstyp()==3)
+            this.setaccesstyp(0);
+		return null;
+	}
 	
 	
+	
+	public int getSecStation_ID(){
+		TileEntityAdvSecurityStation sec = getLinkedSecurityStation();
+		if(sec != null)
+			return sec.getSecurtyStation_ID();
+		return 0;	
+	}
+
 	public TileEntityCapacitor getLinkedCapacitor()
 	{
 		if (getStackInSlot(0) != null)
@@ -1138,10 +1095,13 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 			{
 				ItemCardPowerLink card = (ItemCardPowerLink) getStackInSlot(0).getItem();
 				PointXYZ png = card.getCardTargetPoint(getStackInSlot(0));
-				World world = DimensionManager.getWorld(png.dimensionId);
-					if(world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				if(png != null)
 				{
-				TileEntityCapacitor cap = (TileEntityCapacitor) world.getBlockTileEntity(png.X, png.Y, png.Z);
+				if(png.dimensionId != worldObj.provider.dimensionId) return null;
+				
+				if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				{
+				TileEntityCapacitor cap = (TileEntityCapacitor) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
 				if (cap != null){
 					
 				  if(cap.getCapacitor_ID()== card.getTargetID("CapacitorID",getStackInSlot(0))&&  card.getTargetID("CapacitorID",getStackInSlot(0)) != 0 )
@@ -1155,13 +1115,15 @@ ISidedInventory,INetworkHandlerEventListener,INetworkHandlerListener{
 				   }
 				}
 			  }
-			  if(world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
 					this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
 			}
+		   }
 		}
 		
 		return null;
 	}
+	
 	
 	public int getLinkCapacitor_ID(){
 		TileEntityCapacitor cap = getLinkedCapacitor();

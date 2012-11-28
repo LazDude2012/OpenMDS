@@ -46,7 +46,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntityAdvSecurityStation extends TileEntityMachines implements
-		ISidedInventory, INetworkHandlerListener,
+		INetworkHandlerListener,
 		INetworkHandlerEventListener {
 
 	private String MainUser;
@@ -259,14 +259,6 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
-			return false;
-		} else {
-			return entityplayer.getDistance((double) xCoord + 0.5D,
-					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
-		}
-	}
 
 	public int getSizeInventory() {
 		return inventory.length;
@@ -308,16 +300,6 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 		return "Secstation";
 	}
 
-	public void closeChest() {
-	}
-
-	public ItemStack getStackInSlotOnClosing(int var1) {
-		return null;
-	}
-
-	@Override
-	public void openChest() {
-	}
 
 	public boolean RemoteInventory(String username, String right) {
 
@@ -366,9 +348,6 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 		return inventory;
 	}
 
-	public void setMaxStackSize(int arg0) {
-	}
-
 	@Override
 	public int getStartInventorySide(ForgeDirection side) {
 		return 0;
@@ -380,15 +359,10 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 	}
 
 	@Override
-	public void onNetworkHandlerUpdate(String field) {
-
-		if (field.equals("active")) {
-			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
-		}
-		
-
+	public void onNetworkHandlerUpdate(String field){ 
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
-
+	
 	@Override
 	public List<String> getFieldsforUpdate() {
 		List<String> NetworkedFields = new LinkedList<String>();
@@ -410,10 +384,6 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 		return false;
 	}
 
-	@Override
-	public int getSlotStackLimit(int Slot) {
-		return 1;
-	}
 
 	public boolean getLinkOption(String flag) {
 
@@ -472,6 +442,11 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 
 	public void setRights(int a, boolean b) {
 		this.rights[a] = b;
+	}
+
+	@Override
+	public int getSlotStackLimit(int slt) {
+		return 1;
 	}
 
 }

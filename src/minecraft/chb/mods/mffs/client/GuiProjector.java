@@ -95,9 +95,10 @@ public class GuiProjector extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRenderer.drawString("MFFS Projector", 5, 5, 0x404040);
-		fontRenderer.drawString(
-				(new StringBuilder()).append(" ")
-						.append(projector.getLinkPower()).toString(), 30, 60,
-				0x404040);
+		if(projector.getLinkedCapacitor()!=null){
+		fontRenderer.drawString(String.valueOf(projector.getLinkPower()), 30, 60,0x404040);
+		}else{
+			fontRenderer.drawString("No Link/OOR", 30, 60,0x404040);	
+		}
 	}
 }

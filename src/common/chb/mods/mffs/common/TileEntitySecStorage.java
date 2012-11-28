@@ -15,6 +15,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
@@ -35,36 +36,61 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 			dropplugins(a, this);
 		}
 	}
+	
+	public TileEntityAdvSecurityStation getLinkedSecurityStation()
+	{
 
+		if (getStackInSlot(0) != null)
+		{
+			if(getStackInSlot(0).getItem() instanceof ItemCardSecurityLink)
+			{
+				ItemCardSecurityLink card = (ItemCardSecurityLink) getStackInSlot(0).getItem();
+				PointXYZ png = card.getCardTargetPoint(getStackInSlot(0));
+				if(png != null)
+				{
+					if(png.dimensionId != worldObj.provider.dimensionId) return null;
+					
+					if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityAdvSecurityStation)
+				{
+						TileEntityAdvSecurityStation sec = (TileEntityAdvSecurityStation) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
+				if (sec != null){
+					
+				  if(sec.getSecurtyStation_ID()== card.getTargetID("Secstation_ID",getStackInSlot(0))&&  card.getTargetID("Secstation_ID",getStackInSlot(0)) != 0 )
+				  {
+                    return sec;
+				   }
+				}
+			  }
+			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+					this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+			}
+		   }
+		}
+		
+		return null;
+	}
+	
+	
+	
+	public int getSecStation_ID(){
+		TileEntityAdvSecurityStation sec = getLinkedSecurityStation();
+		if(sec != null)
+			return sec.getSecurtyStation_ID();
+		return 0;	
+	}
+	
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 
 			if (getTicker() >= 20) {
 				setTicker((short) 0);
 
-				if (getStackInSlot(0) != null) {
-					if (getStackInSlot(0).getItem() instanceof ItemCardSecurityLink) {
-
-						ItemCardSecurityLink card = (ItemCardSecurityLink) getStackInSlot(
-								0).getItem();
-
-						if (((ItemCardSecurityLink) card)
-								.isSecurityCardValidity(getStackInSlot(0),
-										worldObj)) {
-							if (this.isActive() != true)
-								this.setActive(true);
-							return;
-						} else {
-
-							this.setInventorySlotContents(0, new ItemStack(
-									ModularForceFieldSystem.MFFSitemcardempty));
-						}
-					}
-				}
-
-				if (this.isActive() != false)
-					this.setActive(false);
-				return;
+                if(this.getLinkedSecurityStation()!=null && !this.isActive())
+                	this.setActive(true);
+ 
+                if(this.getLinkedSecurityStation()==null && this.isActive())
+                	this.setActive(false);
+				
 
 			}
 			setTicker((short) (getTicker() + 1));
@@ -113,14 +139,6 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 		nbttagcompound.setTag("Items", nbttaglist);
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
-			return false;
-		} else {
-			return entityplayer.getDistance((double) xCoord + 0.5D,
-					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
-		}
-	}
 
 	public ItemStack getStackInSlot(int i) {
 		return inventory[i];
@@ -130,10 +148,6 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 		return "SecStation";
 	}
 	
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
 
 	public int getSizeInventory() {
 		return inventory.length;
@@ -168,10 +182,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 		}
 	}
 
-	@Override
-	public ItemStack getStackInSlotOnClosing(int var1) {
-		return null;
-	}
+
 
 	@Override
 	public int getStartInventorySide(ForgeDirection side) {
@@ -183,17 +194,6 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 		return 54;
 	}
 
-	public ItemStack[] getContents() {
-		return inventory;
-	}
-
-	@Override
-	public void openChest() {
-	}
-
-	@Override
-	public void closeChest() {
-	}
 
 	@Override
 	public Container getContainer(InventoryPlayer inventoryplayer) {
@@ -212,11 +212,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 		return true;
 	}
 
-	@Override
-	public int getSlotStackLimit(int Slot) {
-		return 64;
-	}
-	
+
 
 
 	@Override
@@ -230,12 +226,15 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 	}
 
 	@Override
-	public void onNetworkHandlerUpdate(String field) {
+	public void onNetworkHandlerUpdate(String field){ 
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+	}
 
-		if (field.equals("active")) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
-
+	@Override
+	public int getSlotStackLimit(int slt) {
+		if(slt==0)
+			return 1;
+		return 64;
 	}
 
 }

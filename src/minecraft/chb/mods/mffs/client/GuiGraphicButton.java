@@ -72,6 +72,7 @@ public class GuiGraphicButton extends GuiButton
             {
                 if(typ == 1)
                 {
+                	
                 switch(((TileEntityProjector)tileEntity).getaccesstyp())
                 {
                 case 0:
@@ -87,6 +88,7 @@ public class GuiGraphicButton extends GuiButton
                 	this.drawTexturedModalRect(this.xPosition, this.yPosition, 32, 80, this.width, this.height);
                 break;
                 }
+                
                 }
                 if(typ == 2)
                 {
