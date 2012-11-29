@@ -34,78 +34,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
 public final class ForceFieldOptions {
-//----------------------------Player / Mob Attack Function----------------------
 
-	public static void DefenseStation(TileEntity Entity, World world, String Typ,String Target)
-	{
-
-		if(Typ.equals("areadefense") && Entity instanceof TileEntityAreaDefenseStation)
-		{
-	      TileEntityAreaDefenseStation  DefenseStation  =  (TileEntityAreaDefenseStation)Entity;
-
-			int xmin = DefenseStation.xCoord - DefenseStation.getDistance();
-			int xmax = DefenseStation.xCoord + DefenseStation.getDistance();
-			int ymin = DefenseStation.yCoord - DefenseStation.getDistance(); if(ymin<0){ymin = 0;}
-	        int ymax = DefenseStation.yCoord + DefenseStation.getDistance(); if(ymax>255){ymax = 255;}
-			int zmin = DefenseStation.zCoord - DefenseStation.getDistance();
-			int zmax = DefenseStation.zCoord + DefenseStation.getDistance();
-
-			List<EntityLiving> LivingEntitylist = world.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(xmin, ymin, zmin, xmax, ymax, zmax));
-
-			for (int i = 0; i < LivingEntitylist.size(); i++) {
-				EntityLiving entityLiving = LivingEntitylist.get(i);
-
-		if(Target.equals("human") && !(entityLiving instanceof EntityPlayer))
-		{continue;}
-
-		if(Target.equals("mobs") && !(entityLiving instanceof EntityMob) && !(entityLiving instanceof EntitySlime) && !(entityLiving instanceof EntityGhast))
-		{continue;}
-
-					 if(DefenseStation.getLinkPower() > (ModularForceFieldSystem.DefenseStationFPpeerAttack))
-					 {
-							if(Target.equals("mobs"))
-							{
-			        			TileEntityCapacitor cap = DefenseStation.getLinkedCapacitor();
-			        			if(cap!=null)
-			        			{
-			        				if(cap.consumForcePower(ModularForceFieldSystem.DefenseStationFPpeerAttack))
-			        				{
-			        					entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.MobDefenseDamage);
-			        					continue;
-			        				}
-			        				
-			        			}
-								
-							continue;
-							}
-
-							if(Target.equals("human") && Linkgrid.getWorldMap(world).getSecStation().get(DefenseStation.getSecStation_ID()) != null)
-							{
-								if(!SecurityHelper.isAccessGranted(DefenseStation, (EntityPlayer)entityLiving, world,"SR"))
-								{
-									
-				        			TileEntityCapacitor cap = DefenseStation.getLinkedCapacitor();
-				        			if(cap!=null)
-				        			{
-				        				if(cap.consumForcePower(ModularForceFieldSystem.DefenseStationFPpeerAttack))
-				        				{
-											Functions.ChattoPlayer((EntityPlayer)entityLiving,"[Defence Area Station] !!! you  are in a restricted area !!! ");
-											((EntityPlayer)entityLiving).inventory.dropAllItems();
-											entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);
-											continue;
-				        				}
-				        				
-				        			}
-							
-									}
-
-							continue;
-							}
-					}
-			}
-		}
-	}
-	
 	//-----------------------------------Block Protected by ForceField---------------------------------------------------------------------
 
 		

@@ -44,7 +44,7 @@ public class ContainerAreaDefenseStation extends Container {
 		addSlotToContainer(new SlotHelper(defstation, 0, 10, 44)); //Power Link
 		addSlotToContainer(new SlotHelper(defstation, 1, 10, 19)); //Security Link
 
-		addSlotToContainer(new SlotHelper(defstation, 2, 128, 13)); //Defense mod
+		addSlotToContainer(new SlotHelper(defstation, 2, 128, 13)); //Distance mod
 		addSlotToContainer(new SlotHelper(defstation, 3, 128, 44)); //Distance mod
 
 		int var3;

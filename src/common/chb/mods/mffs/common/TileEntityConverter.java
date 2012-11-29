@@ -51,7 +51,7 @@ import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
 
 public class TileEntityConverter extends TileEntityMachines implements
-		INetworkHandlerListener, INetworkHandlerEventListener,
+		INetworkHandlerListener, INetworkHandlerEventListener,ISwitchabel,
 		IEnergySource {
 	private ItemStack inventory[];
 	private boolean create;

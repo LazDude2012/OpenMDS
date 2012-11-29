@@ -21,6 +21,7 @@
 package chb.mods.mffs.common;
 
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.GuiContainer;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -48,7 +49,7 @@ public class CommonProxy implements IGuiHandler {
 		
 		
 	try{
-		Constructor mkGui = machType.Gui.getConstructor(new Class[]{EntityPlayer.class, machType.clazz});
+		Constructor mkGui = Class.forName(machType.Gui).getConstructor(new Class[]{EntityPlayer.class, machType.clazz});
 		return mkGui.newInstance(player, (machType.clazz.cast(te)));
 	    }catch(Exception ex) 
 	    {

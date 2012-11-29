@@ -35,13 +35,7 @@ import net.minecraft.src.GuiContainer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
-import chb.mods.mffs.client.GuiAdvSecurityStation;
-import chb.mods.mffs.client.GuiAreaDefenseStation;
-import chb.mods.mffs.client.GuiCapacitor;
-import chb.mods.mffs.client.GuiConverter;
-import chb.mods.mffs.client.GuiExtractor;
-import chb.mods.mffs.client.GuiProjector;
-import chb.mods.mffs.client.GuiSecStorage;
+
 
 public enum MFFSMaschines{
 	
@@ -56,7 +50,7 @@ public enum MFFSMaschines{
 	String inCodeName;
 	String displayName;
 	Class<?extends TileEntity> clazz;
-	Class<?extends GuiContainer> Gui;
+	String Gui;
 	Class<? extends Container> Container;
 	Block block;
 	String recipeic;
@@ -70,8 +64,8 @@ public enum MFFSMaschines{
 		
 		this.inCodeName=nm;
 		this.displayName = dispNm;
+		this.Gui = gui;
 		try{this.clazz =  (Class<? extends TileEntity>) Class.forName(cls);}catch(ClassNotFoundException ex){this.clazz = null;}
-		try{this.Gui =  (Class<?extends GuiContainer>) Class.forName(gui);}catch(ClassNotFoundException ex){this.Gui = null;}
 		try{this.Container =  (Class<?extends Container>) Class.forName(container);}catch(ClassNotFoundException ex){this.Container = null;}
 		this.recipeic=recipeic;
 		this.recipeue=recipeue;

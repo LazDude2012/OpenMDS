@@ -99,7 +99,7 @@ public class ItemProjectorOptionDefenseStation extends ItemProjectorOptionBase  
 									TileEntityCapacitor cap =  projector.getLinkedCapacitor();
 									if(cap != null)
 									{
-									TileEntityAdvSecurityStation SecurityStation = Linkgrid.getWorldMap(world).getSecStation().get(cap.getSecStation_ID());
+									TileEntityAdvSecurityStation SecurityStation = cap.getLinkedSecurityStation();
 
 									if(SecurityStation != null)
 									{
@@ -109,7 +109,7 @@ public class ItemProjectorOptionDefenseStation extends ItemProjectorOptionBase  
 								}
 								if(projector.getaccesstyp()==3)
 								{
-									TileEntityAdvSecurityStation SecurityStation = Linkgrid.getWorldMap(world).getSecStation().get(projector.getSecStation_ID());
+									TileEntityAdvSecurityStation SecurityStation = projector.getLinkedSecurityStation();
 									if(SecurityStation != null)
 									{
 									killswitch = !SecurityStation.isAccessGranted(((EntityPlayer)entityLiving).username,"SR");

@@ -54,7 +54,7 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 
 public class TileEntityCapacitor extends TileEntityMachines implements  IForceEnergyCapacitor,
-INetworkHandlerEventListener,INetworkHandlerListener{
+INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 	private ItemStack inventory[];
 	private int forcePower;
 	private int Capacitor_ID;
@@ -476,8 +476,8 @@ INetworkHandlerEventListener,INetworkHandlerListener{
 
 			if (this.getTicker() == 10) {
 				
-				if(this.getLinketProjektor() != (short) Linkgrid.getWorldMap(worldObj).condevisec(getCapacitor_ID(), xCoord, yCoord, zCoord,getTransmitRange()))
-				setLinketprojektor((short) Linkgrid.getWorldMap(worldObj).condevisec(getCapacitor_ID(), xCoord, yCoord, zCoord,getTransmitRange()));
+				if(this.getLinketProjektor() != (short) Linkgrid.getWorldMap(worldObj).connectedtoCapacitor(this,getTransmitRange()))
+				setLinketprojektor((short) Linkgrid.getWorldMap(worldObj).connectedtoCapacitor(this,getTransmitRange()));
 
 				if(this.getCapacity() != ((getForcePower()/1000)*100)/(getMaxForcePower()/1000))
 				   setCapacity(((getForcePower()/1000)*100)/(getMaxForcePower()/1000));

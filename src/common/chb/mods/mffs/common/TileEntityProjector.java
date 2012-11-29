@@ -69,7 +69,7 @@ import chb.mods.mffs.network.NetworkHandlerClient;
 import chb.mods.mffs.network.NetworkHandlerServer;
 
 public class TileEntityProjector extends TileEntityMachines implements IModularProjector,
-INetworkHandlerEventListener,INetworkHandlerListener{
+INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 	private ItemStack ProjektorItemStacks[];
 
 	private int[] focusmatrix = { 0, 0, 0, 0 }; // Up 7,Down 8,Right 9,Left 10
@@ -696,7 +696,6 @@ INetworkHandlerEventListener,INetworkHandlerListener{
 		blockcounter = 0;
 		
 		
-		System.out.println(field_def.size());
 
 		for (PointXYZ pnt : field_def) {
 			if (blockcounter == ModularForceFieldSystem.forcefieldmaxblockpeerTick) {

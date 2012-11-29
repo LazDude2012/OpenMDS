@@ -28,6 +28,7 @@ public class BlockAreaDefenseStation extends BlockMFFSBase {
 	public BlockAreaDefenseStation(int i) {
 		super(i);
 		setRequiresSelfNotify();
+		setBlockUnbreakable();	
 	}
 
 	@Override
