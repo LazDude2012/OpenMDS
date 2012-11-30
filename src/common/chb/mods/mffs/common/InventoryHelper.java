@@ -61,6 +61,8 @@ public class InventoryHelper {
 		if(inventory instanceof TileEntitySecStorage )
 		   count = 1;
 	
+		if(inventory instanceof TileEntityAreaDefenseStation )
+			 count = 15;
 		
 		for (int a = count; a <= inventory.getSizeInventory() - 1; a++) {
 			ItemStack inventorystack = inventory.getStackInSlot(a);

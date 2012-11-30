@@ -29,6 +29,7 @@ import org.lwjgl.opengl.GL11;
 import chb.mods.mffs.common.TileEntityCapacitor;
 import chb.mods.mffs.common.TileEntityProjector;
 import chb.mods.mffs.common.TileEntityConverter;
+import chb.mods.mffs.common.TileEntityAreaDefenseStation;
 
 public class GuiGraphicButton extends GuiButton
 
@@ -63,6 +64,48 @@ public class GuiGraphicButton extends GuiButton
                 break;
                 case 1:
                 	this.drawTexturedModalRect(this.xPosition, this.yPosition, 64, 80, this.width, this.height);
+                break;
+                }
+                }
+            
+            if((tileEntity instanceof TileEntityAreaDefenseStation) && typ == 1)
+            {
+                switch(((TileEntityAreaDefenseStation)tileEntity).getswitchtyp()) 
+                {
+                case 0:
+                	this.drawTexturedModalRect(this.xPosition, this.yPosition, 80, 80, this.width, this.height);
+                break;
+                case 1:
+                	this.drawTexturedModalRect(this.xPosition, this.yPosition, 64, 80, this.width, this.height);
+                break;
+                }
+                }
+            
+            if((tileEntity instanceof TileEntityAreaDefenseStation) && typ == 2)
+            {
+                switch(((TileEntityAreaDefenseStation)tileEntity).getcontratyp()) 
+                {
+                case 0:
+                	this.drawTexturedModalRect(this.xPosition, this.yPosition, 176, 80, this.width, this.height);
+                break;
+                case 1:
+                	this.drawTexturedModalRect(this.xPosition, this.yPosition, 192, 80, this.width, this.height);
+                break;
+                }
+                }
+            
+            if((tileEntity instanceof TileEntityAreaDefenseStation) && typ == 3)
+            {
+                switch(((TileEntityAreaDefenseStation)tileEntity).getActionmode())
+                {
+                case 0:
+                	this.drawTexturedModalRect(this.xPosition, this.yPosition, 64, 96, this.width, this.height);
+                break;
+                case 1:
+                	this.drawTexturedModalRect(this.xPosition, this.yPosition, 80, 96, this.width, this.height);
+                break;
+                case 2:
+                	this.drawTexturedModalRect(this.xPosition, this.yPosition, 96, 96, this.width, this.height);
                 break;
                 }
                 }

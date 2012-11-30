@@ -53,7 +53,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 	private boolean create;
 	private int SecurtyStation_ID;
 	private ItemStack inventory[];
-	private boolean rights[] = { false, false, false, false, false, false };
+	private boolean rights[] = { false, false, false, false, false, false , false};
 
 	public TileEntityAdvSecurityStation() {
 
@@ -244,6 +244,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 				rights[3] = Card.getlegitimac(getStackInSlot(1), "SR");
 				rights[4] = Card.getlegitimac(getStackInSlot(1), "OSS");
 				rights[5] = Card.getlegitimac(getStackInSlot(1), "RPB");
+				rights[6] = Card.getlegitimac(getStackInSlot(1), "AAI");
 				
 
 			}
@@ -255,6 +256,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 			rights[3] = false;
 			rights[4] = false;
 			rights[5] = false;
+			rights[6] = false;
 		}
 
 	}
@@ -404,6 +406,9 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 		
 		if (flag.contains("(RPB)"))
 			return getRights(5);
+		
+		if (flag.contains("(AAI)"))
+			return getRights(6);
 
 		return false;
 	}
@@ -430,6 +435,8 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 					Card.setlegitimac(getStackInSlot(1), "OSS", !getRights(4));
 				if (flag.contains("(RPB)"))
 					Card.setlegitimac(getStackInSlot(1), "RPB", !getRights(5));
+				if (flag.contains("(AAI)"))
+					Card.setlegitimac(getStackInSlot(1), "AAI", !getRights(6));
 
 			}
 		}

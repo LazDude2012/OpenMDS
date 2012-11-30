@@ -49,6 +49,7 @@ public class GuiAdvSecurityStation extends GuiContainer {
 		flags.add("Stay Right (SR)");
 		flags.add("Open Secure Storage (OSS)");
 		flags.add("Remote Protected Block (RPB)");
+		flags.add("Allow have all Items (AAI)");
 	}
 
 	public GuiAdvSecurityStation(EntityPlayer player,

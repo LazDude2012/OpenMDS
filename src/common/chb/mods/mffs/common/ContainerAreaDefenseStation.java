@@ -29,35 +29,58 @@ import net.minecraft.src.Slot;
 public class ContainerAreaDefenseStation extends Container {
 	private TileEntityAreaDefenseStation defstation;
 
-	 private int linkPower;
     private int capacity;
+    private int SwitchTyp;
+    private int contratyp;
+    private int actionmode;
 	private EntityPlayer player;
 
 	public ContainerAreaDefenseStation(EntityPlayer player,
 			TileEntityAreaDefenseStation tileentity) {
-		linkPower = -1;
 		capacity = -1;
+		SwitchTyp = -1;
+		contratyp = -1;
+		actionmode = -1;
 
 		defstation = tileentity;
 		this.player = player;
 
-		addSlotToContainer(new SlotHelper(defstation, 0, 10, 44)); //Power Link
-		addSlotToContainer(new SlotHelper(defstation, 1, 10, 19)); //Security Link
+		addSlotToContainer(new SlotHelper(defstation, 0, -27, 2)); //Power Link
+		addSlotToContainer(new SlotHelper(defstation, 1, 57, 2)); //Security Link
 
-		addSlotToContainer(new SlotHelper(defstation, 2, 128, 13)); //Distance mod
-		addSlotToContainer(new SlotHelper(defstation, 3, 128, 44)); //Distance mod
+		addSlotToContainer(new SlotHelper(defstation, 2, -26, 26)); //Distance mod
+		addSlotToContainer(new SlotHelper(defstation, 3, -26, 63)); //Distance mod
 
 		int var3;
+		int var4;
+		
+		// illegal items 5+
+		for (var3 = 0; var3 < 2; ++var3) {
+			for (var4 = 0; var4 < 4; ++var4) {
+				this.addSlotToContainer(new SlotHelper(defstation, (var4 + var3 * 4)+5,
+						136 + var4 * 18, 1 + var3 * 18));
+			}
+		}
+		
+		//itembuffer 15+
+		for (var3 = 0; var3 < 5; ++var3) {
+			for (var4 = 0; var4 < 4; ++var4) {
+				this.addSlotToContainer(new SlotHelper(defstation, (var4 + var3 * 4)+15,
+						136 + var4 * 18, 73 + var3 * 18));
+			}
+		}
+		
+		
 
 		for (var3 = 0; var3 < 3; ++var3) {
-			for (int var4 = 0; var4 < 9; ++var4) {
+			for ( var4 = 0; var4 < 9; ++var4) {
 				this.addSlotToContainer(new Slot(player.inventory, var4 + var3 * 9 + 9,
-						8 + var4 * 18, 84 + var3 * 18));
+						-32 + var4 * 18, 109 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlotToContainer(new Slot(player.inventory, var3, 8 + var3 * 18, 142));
+			this.addSlotToContainer(new Slot(player.inventory, var3, -32 + var3 * 18, 167));
 		}
 	}
 
@@ -72,37 +95,44 @@ public class ContainerAreaDefenseStation extends Container {
 		for (int i = 0; i < crafters.size(); i++) {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
-			if (linkPower != defstation.getLinkPower()) {
-				icrafting.sendProgressBarUpdate(this, 0,
-						defstation.getLinkPower() & 0xffff);
-				icrafting.sendProgressBarUpdate(this, 1,
-						defstation.getLinkPower() >>> 16);
-			}
 
             if(capacity != defstation.getCapacity())
-            	icrafting.sendProgressBarUpdate(this, 2, defstation.getCapacity());
+            	icrafting.sendProgressBarUpdate(this, 0, defstation.getCapacity());
+            
+			if (SwitchTyp != defstation.getswitchtyp()) {
+				icrafting.sendProgressBarUpdate(this, 1,
+						defstation.getswitchtyp());
+			}
+			if (contratyp != defstation.getcontratyp()) {
+				icrafting.sendProgressBarUpdate(this, 2,
+						defstation.getcontratyp());
+			}
+			if (actionmode != defstation.getActionmode()) {
+				icrafting.sendProgressBarUpdate(this, 3,
+						defstation.getActionmode());
+			}
 		}
-
-		linkPower = defstation.getLinkPower();
+		actionmode = defstation.getActionmode();
+		contratyp = defstation.getcontratyp();
 		capacity = defstation.getCapacity();
+		SwitchTyp = defstation.getswitchtyp();
 	}
 
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
-		case 0:
-			defstation
-					.setLinkPower((defstation.getLinkPower() & 0xffff0000)
-							| j);
-			break;
-		case 1:
-			defstation
-					.setLinkPower((defstation.getLinkPower() & 0xffff)
-							| (j << 16));
-			break;
 
-        case 2:
+        case 0:
         	defstation.setCapacity(j);
             break;
+		case 1:
+			defstation.setswitchtyp(j);
+			break;
+		case 2:
+			defstation.setcontratyp(j);
+			break;
+		case 3:
+			defstation.setActionmode(j);
+			break;
 		}
 	}
 

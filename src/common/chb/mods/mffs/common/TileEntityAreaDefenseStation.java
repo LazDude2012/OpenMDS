@@ -28,6 +28,8 @@ import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
 import chb.mods.mffs.network.NetworkHandlerServer;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,6 +42,7 @@ import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.InventoryPlayer;
+import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
@@ -58,10 +61,14 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	private boolean create;
 	private int distance;
 	private int SwitchTyp;
+	private int contratyp;
+	private int actionmode;
 	private boolean OnOffSwitch;
 	
 	protected Set<EntityPlayer> warnlist = new HashSet<EntityPlayer>();
 	protected Set<EntityPlayer> actionlist = new HashSet<EntityPlayer>();
+	private ArrayList<ItemStack> ItemList = new ArrayList();
+	private ArrayList<Item> ContraList = new ArrayList();
 	
 	public TileEntityAreaDefenseStation() {
 		Random random = new Random();
@@ -72,6 +79,8 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		capacity = 0;
 		create = true;
 		SwitchTyp = 0;
+		contratyp = 1;
+		actionmode = 0;
 		OnOffSwitch = false;
 	}
 	
@@ -80,6 +89,16 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 	// Start Getter AND Setter
 
+	
+	public int getActionmode() {
+		return actionmode;
+	}
+
+
+	public void setActionmode(int actionmode) {
+		this.actionmode = actionmode;
+	}
+	
 	public boolean getOnOffSwitch() {
 		return OnOffSwitch;
 	}
@@ -87,6 +106,15 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	public void setOnOffSwitch(boolean a) {
 		OnOffSwitch = a;
 	}
+	
+	public int getcontratyp() {
+		return contratyp;
+	}
+
+	public void setcontratyp(int a) {
+		contratyp = a;
+	}
+	
 
 	public int getswitchtyp() {
 		return SwitchTyp;
@@ -122,6 +150,8 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		this.linkPower = linkPower;
 	}
 	
+
+	
 	
 	public int getActionDistance() {
 	if (getStackInSlot(3) != null) {
@@ -131,6 +161,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	  } 
 	return 0;
 	}
+	
 	
 	
 	public int getInfoDistance() {
@@ -251,6 +282,9 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		Defstation_ID = nbttagcompound.getInteger("Defstation_ID");
+		SwitchTyp = nbttagcompound.getInteger("SwitchTyp");
+		contratyp = nbttagcompound.getInteger("contratyp");
+		actionmode= nbttagcompound.getInteger("actionmode");
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		Inventory = new ItemStack[getSizeInventory()];
 		for (int i = 0; i < nbttaglist.tagCount(); i++) {
@@ -267,6 +301,9 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		nbttagcompound.setInteger("Defstation_ID", Defstation_ID);
+		nbttagcompound.setInteger("contratyp", contratyp);
+		nbttagcompound.setInteger("SwitchTyp", SwitchTyp);
+		nbttagcompound.setInteger("actionmode", actionmode);
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < Inventory.length; i++) {
 			if (Inventory[i] != null) {
@@ -282,14 +319,20 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 
 	public void dropplugins() {
-		for (int a = 0; a < this.Inventory.length; a++) {
+		for (int a = 15; a < this.Inventory.length; a++) {
 			dropplugins(a,this);
 		}
 	}
 
+	
+	
 
 	public void Playerscanner()
 	{
+		TileEntityAdvSecurityStation sec = 	getLinkedSecurityStation();
+		
+		if(sec!=null)
+		{
 		int xmin = xCoord - getInfoDistance();
 		int xmax = xCoord + getInfoDistance();
 		int ymin = yCoord - getInfoDistance();
@@ -308,8 +351,11 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			if(!warnlist.contains(player))
 			{
 				warnlist.add(player);
+				if(!sec.isAccessGranted(player.username, "SR"))
+				{
 				player.addChatMessage("!!! [Area Defence] You approach a locked area that's the only warning !!!");
-				player.attackEntityFrom(DamageSource.generic,5);
+				player.attackEntityFrom(DamageSource.generic,1);
+				}
 
 			}
 		}
@@ -319,7 +365,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			if(!actionlist.contains(player))
 			{
 				actionlist.add(player);
-				player.addChatMessage("!!! [Area Defence] Defence activities instituted !!!");
+				DefenceAction(player);
 			}
 		}else{
 			
@@ -339,12 +385,180 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			if(!playerlist.contains(actionplayer))
 				actionlist.remove(actionplayer);
 		}	
+		}
 	}
-	
 	
 	public void DefenceAction(){
 		
+		for(EntityPlayer actionplayer : actionlist)
+		{
+			DefenceAction(actionplayer);
+		}
+	}
+	
+	
+	
+	
+	public void DefenceAction(EntityPlayer player){
 		
+	
+		TileEntityCapacitor cap = this.getLinkedCapacitor();
+		TileEntityAdvSecurityStation sec = 	getLinkedSecurityStation();
+		
+		if(cap!=null)
+		{
+		
+		if(sec!=null)
+		{
+		
+		switch(getActionmode())
+		{
+		case 0: // Inform
+			if(!sec.isAccessGranted(player.username, "SR"))
+			{
+				player.addChatMessage("!!! [Area Defence]  get out immediately you have no right to be here!!!");
+			}
+			
+		break;
+		case 1: // kill
+			
+				if(cap.getForcePower() > ModularForceFieldSystem.DefenseStationFPpeerAttack)
+				{
+					if(!sec.isAccessGranted(player.username, "SR"))
+					{
+						player.addChatMessage("!!! [Area Defence] you have been warned BYE BYE!!!");
+					
+						
+						for(int i=0; i<4;i++) {
+							ItemList.clear();
+							if(player.inventory.armorInventory[i] != null){
+							ItemList.add(player.inventory.armorInventory[i]);
+							player.inventory.armorInventory[i]=null;
+							InventoryHelper.addStacksToInventory(this,ItemList);
+							}
+						}
+						
+						for(int i=0; i<36;i++) {
+							
+							if(player.inventory.mainInventory[i] != null){
+							ItemList.clear();
+							ItemList.add(player.inventory.mainInventory[i]);
+							player.inventory.mainInventory[i]=null;
+							InventoryHelper.addStacksToInventory(this,ItemList);
+							}
+						}
+						
+						cap.consumForcePower(ModularForceFieldSystem.DefenseStationFPpeerAttack);
+						actionlist.remove(player);
+						player.setEntityHealth(0);
+					}
+					
+				}
+				
+			
+			
+		break;
+		case 2: // search
+			
+			
+			if(cap.getForcePower() > 1000)
+			{
+				if(!sec.isAccessGranted(player.username, "AAI"))
+				{
+					
+				   player.addChatMessage("!!! [Area Defence] You  are searched for illegal goods!!!");
+					
+					  ContraList.clear();
+					  
+						for (int place = 5; place < 15; place++) {
+							if (getStackInSlot(place) != null) 
+							{
+								ContraList.add(getStackInSlot(place).getItem());
+							}
+						}	
+				   
+				   
+				  switch(this.getcontratyp())
+				  {
+				  case 0:
+					  
+
+					  
+						for(int i=0; i<4;i++) {
+							ItemList.clear();
+							if(player.inventory.armorInventory[i] != null){
+							
+								if(!ContraList.contains(player.inventory.armorInventory[i].getItem()))
+								{	
+						        	ItemList.add(player.inventory.armorInventory[i]);
+							        player.inventory.armorInventory[i]=null;
+							        InventoryHelper.addStacksToInventory(this,ItemList);
+							        cap.consumForcePower(1000);
+								}
+							}
+						}
+					  
+					  
+						for(int i=0; i<36;i++) {
+							ItemList.clear();
+							if(player.inventory.mainInventory[i] != null){
+							
+								if(!ContraList.contains(player.inventory.mainInventory[i].getItem()))
+								{	
+						        	ItemList.add(player.inventory.mainInventory[i]);
+							        player.inventory.mainInventory[i]=null;
+							        InventoryHelper.addStacksToInventory(this,ItemList);
+							        cap.consumForcePower(1000);
+								}
+							}
+						}
+					  
+
+					  break;
+				  case 1:
+					  
+					  
+						for(int i=0; i<4;i++) {
+							ItemList.clear();
+							if(player.inventory.armorInventory[i] != null){
+							
+								if(ContraList.contains(player.inventory.armorInventory[i].getItem()))
+								{	
+						        	ItemList.add(player.inventory.armorInventory[i]);
+							        player.inventory.armorInventory[i]=null;
+							        InventoryHelper.addStacksToInventory(this,ItemList);
+							        cap.consumForcePower(1000);
+								}
+							}
+						}
+					  
+					  
+						for(int i=0; i<36;i++) {
+							ItemList.clear();
+							if(player.inventory.mainInventory[i] != null){
+							
+								if(ContraList.contains(player.inventory.mainInventory[i].getItem()))
+								{	
+						        	ItemList.add(player.inventory.mainInventory[i]);
+							        player.inventory.mainInventory[i]=null;
+							        InventoryHelper.addStacksToInventory(this,ItemList);
+							        cap.consumForcePower(1000);
+								}
+							}
+						}
+					  
+
+					  break;
+				  
+				  
+				  }
+				
+				}
+			}
+		break;
+		}
+		}
+		}
 	}
 	
 
@@ -396,7 +610,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			}
 			
 
-			if (this.getTicker() == 20) {
+			if (this.getTicker() == 100) {
 				if(this.isActive())
 				{
 					DefenceAction();
@@ -418,10 +632,6 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		}
 	}
 
-	
-	
-	
-	
 	
 
 	@Override
@@ -473,12 +683,12 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 	@Override
 	public int getStartInventorySide(ForgeDirection side) {
-		return 0;
+		return 15;
 	}
 
 	@Override
 	public int getSizeInventorySide(ForgeDirection side) {
-		return 0;
+		return 24;
 	}
 
 	@Override
@@ -497,6 +707,31 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 				this.setswitchtyp(0);
 			}
 		}
+		
+		if (Integer.parseInt(event) == 1) {
+			
+			if (this.getcontratyp() == 0) {
+				this.setcontratyp(1);
+			} else {
+				this.setcontratyp(0);
+			}
+		}
+		
+		if (Integer.parseInt(event) == 2) {
+			
+			   if(getActionmode()!=3)
+			   {
+			   if(getActionmode() == 2)
+			   {
+				   setActionmode(0);
+		       }else{
+		    	   setActionmode(getActionmode()+1);
+		       }
+			   }
+
+		}
+		
+
 
 	}
 	
@@ -514,6 +749,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
+		
 		switch(Slot)
 		{
 		case 0:
@@ -530,17 +766,31 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 				return true;
 		break;
 		}
+		
+		if(Slot>= 5 && Slot <=14)
+			return true;
 
 		return false;
 	}
 
 	@Override
 	public int getSlotStackLimit(int Slot){
+
 		switch(Slot){
+		
+		case 0:
+		case 1:
+			
+			return 1;
+		
 		case 2: //Distance mod
 		case 3:
 			return 64;
 		}
-		return 1;
+		
+		if(Slot>= 5 && Slot <=14)
+			return 1;
+		
+		return 0;
 	}
 }

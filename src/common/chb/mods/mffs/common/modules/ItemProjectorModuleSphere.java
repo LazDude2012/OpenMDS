@@ -94,6 +94,7 @@ public class ItemProjectorModuleSphere extends Module3DBase {
 		if(item instanceof ItemProjectorOptionForceFieldJammer) return true;
 		if(item instanceof ItemProjectorOptionMobDefence) return true;
 		if(item instanceof ItemProjectorOptionSponge) return true;
+		if(item instanceof ItemProjectorOptionBlockBreaker) return true;
 
 		return false;
 	}

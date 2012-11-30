@@ -29,7 +29,7 @@ import net.minecraft.src.Slot;
 public class ContainerAdvSecurityStation extends Container {
 	private TileEntityAdvSecurityStation SecStation;
 	private EntityPlayer player;
-	private boolean rights[]= { false, false, false, false, false,false};
+	private boolean rights[]= { false, false, false, false, false,false,false};
 
 	public ContainerAdvSecurityStation(EntityPlayer player,
 			TileEntityAdvSecurityStation tileentity) {
@@ -103,7 +103,7 @@ public class ContainerAdvSecurityStation extends Container {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
 
-			for(int a = 0; a< 6 ;a++)
+			for(int a = 0; a< 7 ;a++)
 			{
 			if (rights[a] != SecStation.getRights(a)) {
 				if(SecStation.getRights(a))
@@ -118,7 +118,7 @@ public class ContainerAdvSecurityStation extends Container {
 			
 		}
 		
-	for(int a = 0; a< 6 ;a++)
+	for(int a = 0; a< 7 ;a++)
 	{
 		rights[a] = SecStation.getRights(a);
 	}
