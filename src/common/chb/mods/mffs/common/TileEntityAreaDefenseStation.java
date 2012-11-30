@@ -319,7 +319,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 
 	public void dropplugins() {
-		for (int a = 15; a < this.Inventory.length; a++) {
+		for (int a = 0; a < this.Inventory.length; a++) {
 			dropplugins(a,this);
 		}
 	}
