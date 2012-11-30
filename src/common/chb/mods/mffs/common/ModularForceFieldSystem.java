@@ -202,71 +202,31 @@ public class ModularForceFieldSystem {
 
 			MFFSTab = new MFFSCreativeTab(CreativeTabs.getNextID(), "MFFS");
 
-			MonazitOreworldamount = MFFSconfig.get(
-					Configuration.CATEGORY_GENERAL, "MonazitOreWorldGen", 4)
-					.getInt(4);
+			MonazitOreworldamount = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "MonazitOreWorldGen", 4).getInt(4);
+			Admin = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "ForceFieldMaster", "nobody").value;
+			influencedbyothermods = MFFSconfig.get( Configuration.CATEGORY_GENERAL, "influencedbyothermods", true).getBoolean(true);
+			adventuremap = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "adventuremap", false).getBoolean(false);
+			forcefieldremoveonlywaterandlava = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "forcefieldremoveonlywaterandlava", false).getBoolean(false);
 
-			Admin = MFFSconfig.get(Configuration.CATEGORY_GENERAL,
-					"ForceFieldMaster", "nobody").value;
-			influencedbyothermods = MFFSconfig.get(
-					Configuration.CATEGORY_GENERAL, "influencedbyothermods",
-					true).getBoolean(true);
-			adventuremap = MFFSconfig.get(Configuration.CATEGORY_GENERAL,
-					"adventuremap", false).getBoolean(false);
-			forcefieldremoveonlywaterandlava = MFFSconfig.get(
-					Configuration.CATEGORY_GENERAL,
-					"forcefieldremoveonlywaterandlava", false)
-					.getBoolean(false);
+			forcefieldtransportcost = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "forcefieldtransportcost", 10000).getInt(10000);
+			forcefieldblockcost = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "forcefieldblockcost", 1).getInt(1);
+			forcefieldblockcreatemodifier = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "forcefieldblockcreatemodifier", 10).getInt(10);
+			forcefieldblockzappermodifier = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "forcefieldblockzappermodifier", 2).getInt(2);
+			forcefieldmaxblockpeerTick = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "forcefieldmaxblockpeerTick", 5000).getInt(5000);
+			DefenseStationDamage = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "DefenseStationDamage", 10).getInt(10);
+			MobDefenseDamage = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "MobDefenseDamage", 10).getInt(10);
+			DefenseStationFPpeerAttack = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "DefenseStationFPpeerAttack", 25000).getInt(25000);
 
-			forcefieldtransportcost = MFFSconfig.get(
-					Configuration.CATEGORY_GENERAL, "forcefieldtransportcost",
-					10000).getInt(10000);
-			forcefieldblockcost = MFFSconfig.get(
-					Configuration.CATEGORY_GENERAL, "forcefieldblockcost", 1)
-					.getInt(1);
-			forcefieldblockcreatemodifier = MFFSconfig.get(
-					Configuration.CATEGORY_GENERAL,
-					"forcefieldblockcreatemodifier", 10).getInt(10);
-			forcefieldblockzappermodifier = MFFSconfig.get(
-					Configuration.CATEGORY_GENERAL,
-					"forcefieldblockzappermodifier", 2).getInt(2);
-			forcefieldmaxblockpeerTick = MFFSconfig.get(
-					Configuration.CATEGORY_GENERAL,
-					"forcefieldmaxblockpeerTick", 5000).getInt(5000);
-			DefenseStationDamage = MFFSconfig.get(
-					Configuration.CATEGORY_GENERAL, "DefenseStationDamage", 10)
-					.getInt(10);
-			MobDefenseDamage = MFFSconfig.get(Configuration.CATEGORY_GENERAL,
-					"MobDefenseDamage", 10).getInt(10);
-			DefenseStationFPpeerAttack = MFFSconfig.get(
-					Configuration.CATEGORY_GENERAL,
-					"DefenseStationFPpeerAttack", 25000).getInt(25000);
+			ForceciumWorkCylce = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "ForceciumWorkCylce", 250).getInt(250);
+			ForceciumCellWorkCylce = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "ForceciumCellWorkCylce", 230).getInt(230);
+			ExtractorPassForceEnergyGenerate = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "ExtractorPassForceEnergyGenerate", 10000).getInt(10000);
 
-			ForceciumWorkCylce = MFFSconfig.get(Configuration.CATEGORY_GENERAL,
-					"ForceciumWorkCylce", 250).getInt(250);
-			ForceciumCellWorkCylce = MFFSconfig.get(
-					Configuration.CATEGORY_GENERAL, "ForceciumCellWorkCylce",
-					230).getInt(230);
-			ExtractorPassForceEnergyGenerate = MFFSconfig.get(
-					Configuration.CATEGORY_GENERAL,
-					"ExtractorPassForceEnergyGenerate", 10000).getInt(10000);
-
-			MFFSForceEnergyConverter = new BlockConverter(MFFSconfig.getBlock(
-					"MFFSForceEnergyConverter", 687).getInt(687))
-					.setBlockName("MFFSForceEnergyConverter");
+			MFFSForceEnergyConverter = new BlockConverter(MFFSconfig.getBlock("MFFSForceEnergyConverter", 687).getInt(687)).setBlockName("MFFSForceEnergyConverter");
 			
-			MFFSExtractor = new BlockExtractor(MFFSconfig.getBlock(
-					"MFFSExtractor", 682).getInt(682))
-					.setBlockName("MFFSExtractor");
-			MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getBlock(
-					"MFFSMonazitOre", 688).getInt(688))
-					.setBlockName("MFFSMonazitOre");
-			MFFSDefenceStation = new BlockAreaDefenseStation(MFFSconfig
-					.getBlock("MFFSDefenceStation", 681).getInt(681))
-					.setBlockName("MFFSDefenceStation");
-			MFFSCapacitor = new BlockCapacitor(MFFSconfig.getBlock(
-					"MFFSCapacitor", 680).getInt(680))
-					.setBlockName("MFFSCapacitor");
+			MFFSExtractor = new BlockExtractor(MFFSconfig.getBlock("MFFSExtractor", 682).getInt(682)).setBlockName("MFFSExtractor");
+			MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getBlock("MFFSMonazitOre", 688).getInt(688)).setBlockName("MFFSMonazitOre");
+			MFFSDefenceStation = new BlockAreaDefenseStation(MFFSconfig.getBlock("MFFSDefenceStation", 681).getInt(681)).setBlockName("MFFSDefenceStation");
+			MFFSCapacitor = new BlockCapacitor(MFFSconfig.getBlock("MFFSCapacitor", 680).getInt(680)).setBlockName("MFFSCapacitor");
 			MFFSProjector = new BlockProjector(MFFSconfig.getBlock(
 					"MFFSProjector", 685).getInt(685))
 					.setBlockName("MFFSProjector");
