@@ -398,8 +398,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	
 	public boolean StacksToInventory(ItemStack itemstacks)
 	{
-		System.out.println("Stackof:"+itemstacks);
-		
+
 		for (int a = 15; a <= Inventory.length - 1; a++) {
               if(Inventory[a]==null){
             	 setInventorySlotContents(a, itemstacks); 
