@@ -1,7 +1,6 @@
 package chb.mods.mffs.common;
 
 import ic2.api.Items;
-import basiccomponents.BasicComponents;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.src.CraftingManager;
 import net.minecraft.src.Item;

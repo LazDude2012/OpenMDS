@@ -23,7 +23,6 @@
 
 package chb.mods.mffs.common;
 
-import basiccomponents.BasicComponents;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import ic2.api.ExplosionWhitelist;
