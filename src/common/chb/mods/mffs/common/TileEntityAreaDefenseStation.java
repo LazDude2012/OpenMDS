@@ -72,7 +72,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	public TileEntityAreaDefenseStation() {
 		Random random = new Random();
 
-		Inventory = new ItemStack[52];
+		Inventory = new ItemStack[56];
 		Defstation_ID = 0;
 		linkPower = 0;
 		capacity = 0;
@@ -150,6 +150,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	}
 	
 
+
 	
 	
 	public int getActionDistance() {
@@ -159,6 +160,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		}
 	  } 
 	return 0;
+	
 	}
 	
 	
@@ -326,6 +328,11 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	}
 
 	
+	@Override
+	public void onInventoryChanged()
+	{
+		moveitemstacksup();
+	}
 	
 
 	public void Playerscanner()
@@ -394,6 +401,21 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		for(EntityPlayer actionplayer : actionlist)
 		{
 			DefenceAction(actionplayer);
+		}
+	}
+	
+	
+	public void moveitemstacksup()
+	{
+		for (int a = 15; a <= 35 ; a++) {
+			
+			if(Inventory[a]==null && Inventory[a+20]!=null)
+			{
+				Inventory[a] = Inventory[a+20];
+				Inventory[a+20] = null;
+			}
+				
+			
 		}
 	}
 	
@@ -679,6 +701,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		Inventory[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
 			itemstack.stackSize = getInventoryStackLimit();
+			
 		}
 	}
 

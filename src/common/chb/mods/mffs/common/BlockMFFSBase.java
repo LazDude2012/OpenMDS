@@ -68,9 +68,16 @@ public abstract class BlockMFFSBase extends BlockContainer {
         {
 			return false;
         }
+		
+		if(world.isRemote)
+		 return true;
+
 
 		TileEntityMachines tileentity = (TileEntityMachines) world
 				.getBlockTileEntity(i, j, k);
+		
+		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
+		{return false;}
 
 
 		if (entityplayer.getCurrentEquippedItem() != null
@@ -105,9 +112,7 @@ public abstract class BlockMFFSBase extends BlockContainer {
 			return false;
 		}
 		
-		
-		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
-		{return false;}
+
 		
 		if (!world.isRemote)
 		entityplayer.openGui(ModularForceFieldSystem.instance, 0, world,
