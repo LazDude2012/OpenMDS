@@ -67,13 +67,12 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	
 	protected Set<EntityPlayer> warnlist = new HashSet<EntityPlayer>();
 	protected Set<EntityPlayer> actionlist = new HashSet<EntityPlayer>();
-	private ArrayList<ItemStack> ItemList = new ArrayList();
 	private ArrayList<Item> ContraList = new ArrayList();
 	
 	public TileEntityAreaDefenseStation() {
 		Random random = new Random();
 
-		Inventory = new ItemStack[40];
+		Inventory = new ItemStack[52];
 		Defstation_ID = 0;
 		linkPower = 0;
 		capacity = 0;
@@ -397,6 +396,40 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	}
 	
 	
+	public boolean StacksToInventory(ItemStack itemstacks)
+	{
+		System.out.println("Stackof:"+itemstacks);
+		
+		for (int a = 15; a <= Inventory.length - 1; a++) {
+              if(Inventory[a]==null){
+            	 setInventorySlotContents(a, itemstacks); 
+            	 return true;
+              }else{
+            	  if(Inventory[a].getItem() == itemstacks.getItem()
+				 && Inventory[a].getItemDamage() == itemstacks.getItemDamage()
+				 && Inventory[a].stackSize <  Inventory[a].getMaxStackSize())
+            	  {
+            		int free =   Inventory[a].getMaxStackSize() - Inventory[a].stackSize;
+            		
+            		if(free > itemstacks.stackSize)
+            		{
+            			Inventory[a].stackSize +=  itemstacks.stackSize;
+            			return true;
+            		}else{
+            			Inventory[a].stackSize=Inventory[a].getMaxStackSize();
+            			itemstacks.stackSize = itemstacks.stackSize - free;
+            			continue;
+            		}
+  
+            	  }
+              }
+             
+		}
+		
+		return false;
+	}
+	
+	
 	
 	
 	public void DefenceAction(EntityPlayer player){
@@ -430,21 +463,17 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 					
 						
 						for(int i=0; i<4;i++) {
-							ItemList.clear();
 							if(player.inventory.armorInventory[i] != null){
-							ItemList.add(player.inventory.armorInventory[i]);
+							StacksToInventory(player.inventory.armorInventory[i]);
 							player.inventory.armorInventory[i]=null;
-							InventoryHelper.addStacksToInventory(this,ItemList);
 							}
 						}
 						
 						for(int i=0; i<36;i++) {
 							
 							if(player.inventory.mainInventory[i] != null){
-							ItemList.clear();
-							ItemList.add(player.inventory.mainInventory[i]);
-							player.inventory.mainInventory[i]=null;
-							InventoryHelper.addStacksToInventory(this,ItemList);
+								StacksToInventory(player.inventory.mainInventory[i]);
+								player.inventory.mainInventory[i]=null;
 							}
 						}
 						
@@ -485,14 +514,12 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 					  
 						for(int i=0; i<4;i++) {
-							ItemList.clear();
 							if(player.inventory.armorInventory[i] != null){
 							
 								if(!ContraList.contains(player.inventory.armorInventory[i].getItem()))
 								{	
-						        	ItemList.add(player.inventory.armorInventory[i]);
-							        player.inventory.armorInventory[i]=null;
-							        InventoryHelper.addStacksToInventory(this,ItemList);
+									StacksToInventory(player.inventory.armorInventory[i]);
+									player.inventory.armorInventory[i]=null;
 							        cap.consumForcePower(1000);
 								}
 							}
@@ -500,14 +527,13 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 					  
 					  
 						for(int i=0; i<36;i++) {
-							ItemList.clear();
+
 							if(player.inventory.mainInventory[i] != null){
 							
 								if(!ContraList.contains(player.inventory.mainInventory[i].getItem()))
 								{	
-						        	ItemList.add(player.inventory.mainInventory[i]);
-							        player.inventory.mainInventory[i]=null;
-							        InventoryHelper.addStacksToInventory(this,ItemList);
+									StacksToInventory(player.inventory.mainInventory[i]);
+									player.inventory.mainInventory[i]=null;
 							        cap.consumForcePower(1000);
 								}
 							}
@@ -519,14 +545,12 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 					  
 					  
 						for(int i=0; i<4;i++) {
-							ItemList.clear();
 							if(player.inventory.armorInventory[i] != null){
 							
 								if(ContraList.contains(player.inventory.armorInventory[i].getItem()))
 								{	
-						        	ItemList.add(player.inventory.armorInventory[i]);
-							        player.inventory.armorInventory[i]=null;
-							        InventoryHelper.addStacksToInventory(this,ItemList);
+									StacksToInventory(player.inventory.armorInventory[i]);
+									player.inventory.armorInventory[i]=null;
 							        cap.consumForcePower(1000);
 								}
 							}
@@ -534,14 +558,12 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 					  
 					  
 						for(int i=0; i<36;i++) {
-							ItemList.clear();
 							if(player.inventory.mainInventory[i] != null){
 							
 								if(ContraList.contains(player.inventory.mainInventory[i].getItem()))
 								{	
-						        	ItemList.add(player.inventory.mainInventory[i]);
-							        player.inventory.mainInventory[i]=null;
-							        InventoryHelper.addStacksToInventory(this,ItemList);
+									StacksToInventory(player.inventory.mainInventory[i]);
+									player.inventory.mainInventory[i]=null;
 							        cap.consumForcePower(1000);
 								}
 							}
@@ -688,7 +710,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 	@Override
 	public int getSizeInventorySide(ForgeDirection side) {
-		return 24;
+		return 36;
 	}
 
 	@Override
@@ -769,6 +791,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		
 		if(Slot>= 5 && Slot <=14)
 			return true;
+		
 
 		return false;
 	}
@@ -791,6 +814,9 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		if(Slot>= 5 && Slot <=14)
 			return 1;
 		
-		return 0;
+		if(Slot>= 5 && Slot <=14)
+			return 1;
+		
+		return 64;
 	}
 }
