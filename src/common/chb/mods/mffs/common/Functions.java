@@ -68,6 +68,7 @@ public class Functions {
 			((IInventory)tileEntity).setInventorySlotContents(Slot,itemstack);
 			entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
 			Functions.ChattoPlayer(entityplayer, "Success: "+Cardname+" Card installed");
+			((IInventory)tileEntity).onInventoryChanged();
 			return true;
 		}
 		else
@@ -77,6 +78,7 @@ public class Functions {
 				ItemStack itemstackcopy = itemstack.copy();
 				((IInventory)tileEntity).setInventorySlotContents(Slot,itemstackcopy);
 				Functions.ChattoPlayer(entityplayer, "Success: "+Cardname+" Card data copied ");
+				((IInventory)tileEntity).onInventoryChanged();
 				return true;
 			}
 			Functions.ChattoPlayer(entityplayer, "Fail: Slot is not empty");
