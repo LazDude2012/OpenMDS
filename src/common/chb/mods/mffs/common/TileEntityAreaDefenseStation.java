@@ -284,6 +284,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		SwitchTyp = nbttagcompound.getInteger("SwitchTyp");
 		contratyp = nbttagcompound.getInteger("contratyp");
 		actionmode= nbttagcompound.getInteger("actionmode");
+		OnOffSwitch = nbttagcompound.getBoolean("OnOffSwitch");
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		Inventory = new ItemStack[getSizeInventory()];
 		for (int i = 0; i < nbttaglist.tagCount(); i++) {
@@ -303,6 +304,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		nbttagcompound.setInteger("contratyp", contratyp);
 		nbttagcompound.setInteger("SwitchTyp", SwitchTyp);
 		nbttagcompound.setInteger("actionmode", actionmode);
+		nbttagcompound.setBoolean("OnOffSwitch", OnOffSwitch);
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < Inventory.length; i++) {
 			if (Inventory[i] != null) {
