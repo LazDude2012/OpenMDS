@@ -179,7 +179,7 @@ public class ModularForceFieldSystem {
 	@SidedProxy(clientSide = "chb.mods.mffs.client.ClientProxy", serverSide = "chb.mods.mffs.common.CommonProxy")
 	public static CommonProxy proxy;
 
-	@Instance
+	@Instance("ModularForceFieldSystem")
 	public static ModularForceFieldSystem instance;
 
 
