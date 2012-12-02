@@ -401,7 +401,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	
 		
 	
-	public boolean StacksToInventory(IInventory inventory,ItemStack itemstacks)
+	public boolean StacksToInventory(IInventory inventory,ItemStack itemstacks,boolean loop)
 	{
 	
 		int count= 0;
@@ -411,8 +411,6 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		
 		if(inventory instanceof TileEntityAreaDefenseStation )
 		   count = 15;
-		
-		System.out.println(count+"--"+inventory);
 		
 		for (int a = count; a <= inventory.getSizeInventory()-1; a++) {
               if(inventory.getStackInSlot(a)==null){
@@ -439,18 +437,21 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
               }
              
 		}
-		IInventory inv =InventoryHelper.findAttachedInventory(worldObj, xCoord, yCoord, zCoord);
-		
-		if(inv != null)
-		{
-			return StacksToInventory(inv,itemstacks);
-			
-		}else{
+		    if(loop)
+		    addremoteInventory(itemstacks);
+		    
 			return false;
-		}
 		
 	}
 	
+	public void addremoteInventory(ItemStack itemstacks)
+	{
+		IInventory inv =InventoryHelper.findAttachedInventory(worldObj, xCoord, yCoord, zCoord);
+		if(inv != null)
+		{
+		  StacksToInventory(inv,itemstacks,false);
+		}
+	}
 	
 	
 	
@@ -486,7 +487,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 						
 						for(int i=0; i<4;i++) {
 							if(player.inventory.armorInventory[i] != null){
-							StacksToInventory(this,player.inventory.armorInventory[i]);
+							StacksToInventory(this,player.inventory.armorInventory[i],true);
 							player.inventory.armorInventory[i]=null;
 							}
 						}
@@ -494,7 +495,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 						for(int i=0; i<36;i++) {
 							
 							if(player.inventory.mainInventory[i] != null){
-								StacksToInventory(this,player.inventory.mainInventory[i]);
+								StacksToInventory(this,player.inventory.mainInventory[i],true);
 								player.inventory.mainInventory[i]=null;
 							}
 						}
@@ -540,7 +541,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 							
 								if(!ContraList.contains(player.inventory.armorInventory[i].getItem()))
 								{	
-									StacksToInventory(this,player.inventory.armorInventory[i]);
+									StacksToInventory(this,player.inventory.armorInventory[i],true);
 									player.inventory.armorInventory[i]=null;
 							        cap.consumForcePower(1000);
 								}
@@ -554,7 +555,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 							
 								if(!ContraList.contains(player.inventory.mainInventory[i].getItem()))
 								{	
-									StacksToInventory(this,player.inventory.mainInventory[i]);
+									StacksToInventory(this,player.inventory.mainInventory[i],true);
 									player.inventory.mainInventory[i]=null;
 							        cap.consumForcePower(1000);
 								}
@@ -571,7 +572,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 							
 								if(ContraList.contains(player.inventory.armorInventory[i].getItem()))
 								{	
-									StacksToInventory(this,player.inventory.armorInventory[i]);
+									StacksToInventory(this,player.inventory.armorInventory[i],true);
 									player.inventory.armorInventory[i]=null;
 							        cap.consumForcePower(1000);
 								}
@@ -584,7 +585,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 							
 								if(ContraList.contains(player.inventory.mainInventory[i].getItem()))
 								{	
-									StacksToInventory(this,player.inventory.mainInventory[i]);
+									StacksToInventory(this,player.inventory.mainInventory[i],true);
 									player.inventory.mainInventory[i]=null;
 							        cap.consumForcePower(1000);
 								}
