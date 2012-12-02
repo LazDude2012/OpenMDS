@@ -41,6 +41,7 @@ import net.minecraft.src.Container;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
@@ -72,7 +73,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	public TileEntityAreaDefenseStation() {
 		Random random = new Random();
 
-		Inventory = new ItemStack[56];
+		Inventory = new ItemStack[36];
 		Defstation_ID = 0;
 		linkPower = 0;
 		capacity = 0;
@@ -328,12 +329,6 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	}
 
 	
-	@Override
-	public void onInventoryChanged()
-	{
-		moveitemstacksup();
-	}
-	
 
 	public void Playerscanner()
 	{
@@ -404,42 +399,38 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		}
 	}
 	
+		
 	
-	public void moveitemstacksup()
+	public boolean StacksToInventory(IInventory inventory,ItemStack itemstacks)
 	{
-		for (int a = 15; a <= 35 ; a++) {
-			
-			if(Inventory[a]==null && Inventory[a+20]!=null)
-			{
-				Inventory[a] = Inventory[a+20];
-				Inventory[a+20] = null;
-			}
-				
-			
-		}
-	}
 	
-	
-	public boolean StacksToInventory(ItemStack itemstacks)
-	{
-
-		for (int a = 15; a <= Inventory.length - 1; a++) {
-              if(Inventory[a]==null){
-            	 setInventorySlotContents(a, itemstacks); 
+		int count= 0;
+		
+		if(inventory instanceof TileEntitySecStorage )
+		   count = 1;
+		
+		if(inventory instanceof TileEntityAreaDefenseStation )
+		   count = 15;
+		
+		System.out.println(count+"--"+inventory);
+		
+		for (int a = count; a <= inventory.getSizeInventory()-1; a++) {
+              if(inventory.getStackInSlot(a)==null){
+            	  inventory.setInventorySlotContents(a, itemstacks); 
             	 return true;
               }else{
-            	  if(Inventory[a].getItem() == itemstacks.getItem()
-				 && Inventory[a].getItemDamage() == itemstacks.getItemDamage()
-				 && Inventory[a].stackSize <  Inventory[a].getMaxStackSize())
+            	  if(inventory.getStackInSlot(a).getItem() == itemstacks.getItem()
+				 && inventory.getStackInSlot(a).getItemDamage() == itemstacks.getItemDamage()
+				 && inventory.getStackInSlot(a).stackSize <  inventory.getStackInSlot(a).getMaxStackSize())
             	  {
-            		int free =   Inventory[a].getMaxStackSize() - Inventory[a].stackSize;
+            		int free =   inventory.getStackInSlot(a).getMaxStackSize() - inventory.getStackInSlot(a).stackSize;
             		
             		if(free > itemstacks.stackSize)
             		{
-            			Inventory[a].stackSize +=  itemstacks.stackSize;
+            			inventory.getStackInSlot(a).stackSize +=  itemstacks.stackSize;
             			return true;
             		}else{
-            			Inventory[a].stackSize=Inventory[a].getMaxStackSize();
+            			inventory.getStackInSlot(a).stackSize=inventory.getStackInSlot(a).getMaxStackSize();
             			itemstacks.stackSize = itemstacks.stackSize - free;
             			continue;
             		}
@@ -448,8 +439,16 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
               }
              
 		}
+		IInventory inv =InventoryHelper.findAttachedInventory(worldObj, xCoord, yCoord, zCoord);
 		
-		return false;
+		if(inv != null)
+		{
+			return StacksToInventory(inv,itemstacks);
+			
+		}else{
+			return false;
+		}
+		
 	}
 	
 	
@@ -487,7 +486,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 						
 						for(int i=0; i<4;i++) {
 							if(player.inventory.armorInventory[i] != null){
-							StacksToInventory(player.inventory.armorInventory[i]);
+							StacksToInventory(this,player.inventory.armorInventory[i]);
 							player.inventory.armorInventory[i]=null;
 							}
 						}
@@ -495,7 +494,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 						for(int i=0; i<36;i++) {
 							
 							if(player.inventory.mainInventory[i] != null){
-								StacksToInventory(player.inventory.mainInventory[i]);
+								StacksToInventory(this,player.inventory.mainInventory[i]);
 								player.inventory.mainInventory[i]=null;
 							}
 						}
@@ -541,7 +540,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 							
 								if(!ContraList.contains(player.inventory.armorInventory[i].getItem()))
 								{	
-									StacksToInventory(player.inventory.armorInventory[i]);
+									StacksToInventory(this,player.inventory.armorInventory[i]);
 									player.inventory.armorInventory[i]=null;
 							        cap.consumForcePower(1000);
 								}
@@ -555,7 +554,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 							
 								if(!ContraList.contains(player.inventory.mainInventory[i].getItem()))
 								{	
-									StacksToInventory(player.inventory.mainInventory[i]);
+									StacksToInventory(this,player.inventory.mainInventory[i]);
 									player.inventory.mainInventory[i]=null;
 							        cap.consumForcePower(1000);
 								}
@@ -572,7 +571,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 							
 								if(ContraList.contains(player.inventory.armorInventory[i].getItem()))
 								{	
-									StacksToInventory(player.inventory.armorInventory[i]);
+									StacksToInventory(this,player.inventory.armorInventory[i]);
 									player.inventory.armorInventory[i]=null;
 							        cap.consumForcePower(1000);
 								}
@@ -585,7 +584,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 							
 								if(ContraList.contains(player.inventory.mainInventory[i].getItem()))
 								{	
-									StacksToInventory(player.inventory.mainInventory[i]);
+									StacksToInventory(this,player.inventory.mainInventory[i]);
 									player.inventory.mainInventory[i]=null;
 							        cap.consumForcePower(1000);
 								}

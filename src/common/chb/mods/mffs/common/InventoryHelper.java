@@ -54,6 +54,11 @@ public class InventoryHelper {
 		return inv;
 	}
 	
+	
+	
+	
+	
+	
 	public static boolean addStacksToInventory(IInventory inventory, ArrayList<ItemStack> itemstacks) {
 		
 		int count= 0;

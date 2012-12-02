@@ -105,12 +105,6 @@ public void initGui() {
 		
 		fontRenderer.drawString("Action desc:", 55, 48, 0x00008B);
 		
-//		
-//		fontRenderer.drawString("XXXXXXXXXXX", 55, 60, 0x404040);
-//		fontRenderer.drawString("YYYYYYYYYYY", 55, 70, 0x404040);
-//		fontRenderer.drawString("ZZZZZZZZZZZ", 55, 80, 0x404040);
-//		fontRenderer.drawString("ZZZZZZZZZZZ", 55, 90, 0x404040);
-		
 		
 		fontRenderer.drawString("items", 165, 43, 0x228B22);
 		
@@ -144,7 +138,8 @@ public void initGui() {
 		fontRenderer.drawString("perimeter: "+DefenceStation.getActionDistance(), -28, 86, 0x404040);
 		
 		
-		fontRenderer.drawString("int. storage", 140, 170, 0x404040);
+		
+		fontRenderer.drawString("int.buffer: ", 140, 170, 0x404040);
 		
 		
 	}
