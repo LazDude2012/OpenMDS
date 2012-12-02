@@ -53,7 +53,7 @@ public class BlockMonazitOre extends Block {
     @Override
     public int idDropped(int par1, Random par2Random, int par3)
     {
-        return  blockid; 
+        return   ModularForceFieldSystem.MFFSMonazitOre.blockID;
     }
     @Override
     public int quantityDropped(Random par1Random)

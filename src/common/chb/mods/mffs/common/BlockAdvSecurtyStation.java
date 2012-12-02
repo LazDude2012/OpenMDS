@@ -49,6 +49,8 @@ public class BlockAdvSecurtyStation extends BlockMFFSBase {
 		TileEntityAdvSecurityStation tileentity = (TileEntityAdvSecurityStation) world
 				.getBlockTileEntity(i, j, k);
 
+		if(world.isRemote)
+			 return true;
 
 		if(tileentity.isActive())
 		{
