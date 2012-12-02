@@ -734,7 +734,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 	@Override
 	public int getSizeInventorySide(ForgeDirection side) {
-		return 36;
+		return 20;
 	}
 
 	@Override
