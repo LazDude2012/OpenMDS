@@ -46,6 +46,20 @@ public class ItemProjectorModuleContainment extends Module3DBase {
 	}
 	
 
+	@Override
+	public boolean supportsDistance() {
+		return true;
+	}
+
+	@Override
+	public boolean supportsStrength() {
+		return true;
+	}
+
+	@Override
+	public boolean supportsMatrix() {
+		return true;
+	}
 	
 	@Override
 	public void calculateField(IModularProjector projector, Set<PointXYZ> ffLocs, Set<PointXYZ> ffInterior) {

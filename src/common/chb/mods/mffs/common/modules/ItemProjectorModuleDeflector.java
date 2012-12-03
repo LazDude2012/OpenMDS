@@ -46,7 +46,24 @@ public class ItemProjectorModuleDeflector extends ModuleBase {
 		setIconIndex(50);
 	}
 	
-	public boolean supportsStrength = false;
+	@Override
+	public boolean supportsDistance() {
+		return true;
+	}
+
+
+
+	@Override
+	public boolean supportsStrength() {
+		return false;
+	}
+
+
+
+	@Override
+	public boolean supportsMatrix() {
+		return true;
+	}
 	
 
 	@Override

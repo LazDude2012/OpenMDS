@@ -47,10 +47,20 @@ public class ItemProjectorModuleSphere extends Module3DBase {
 		setIconIndex(52);
 	}
 		
-	public boolean supportsMatrixUp = false;
-	public boolean supportsMatrixDown = false;
-	public boolean supportsMatrixRight = false;
-	public boolean supportsMatrixLeft = false;
+	@Override
+	public boolean supportsDistance() {
+		return true;
+	}
+
+	@Override
+	public boolean supportsStrength() {
+		return true;
+	}
+
+	@Override
+	public boolean supportsMatrix() {
+		return false;
+	}
 	
 
 	

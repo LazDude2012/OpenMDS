@@ -423,19 +423,17 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 		if (hasValidTypeMod()) {
 			ModuleBase modTyp = get_type();				
 			
-			if (!modTyp.supportsStrength)
+			if (!modTyp.supportsStrength())
 				dropplugins(6,this);
-			if (!modTyp.supportsDistance)
+			if (!modTyp.supportsDistance())
 				dropplugins(5,this);
 			
-			if (!modTyp.supportsMatrixRight)
-				dropplugins(9,this);
-			if (!modTyp.supportsMatrixLeft)
-				dropplugins(10,this);
-			if (!modTyp.supportsMatrixUp)
+			if (!modTyp.supportsMatrix()){
 				dropplugins(7,this);
-			if (!modTyp.supportsMatrixDown)
-				dropplugins(8,this);
+			    dropplugins(8,this);
+				dropplugins(9,this);
+			    dropplugins(10,this);
+			}
 			
 			if(!this.hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage))
 				dropplugins(11,this);
@@ -971,17 +969,18 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 			switch(Slot)
 			{
 			case 5:
-				if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorDistance )return modTyp.supportsDistance;	
+				if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorDistance )return modTyp.supportsDistance();	
 			break;
 			case 6:
-				if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorStrength )return modTyp.supportsStrength;	
+				if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorStrength )return modTyp.supportsStrength();	
 			break;
 			
 			case 7:
 			case 8:
 			case 9:
 			case 10:
-				if(par1ItemStack.getItem() instanceof ItemProjectorFocusMatrix )return modTyp.supportsMatrixUp;
+				if(par1ItemStack.getItem() instanceof ItemProjectorFocusMatrix )return modTyp.supportsMatrix();
+					
 			break;
 			
 			case 2:

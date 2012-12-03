@@ -46,10 +46,21 @@ public class ItemProjectorModuleTube extends Module3DBase {
 		setIconIndex(51);
 	}
 	
-	public boolean supportsMatrixUp = false;
-	public boolean supportsMatrixDown = false;
-	public boolean supportsMatrixRight = false;
-	public boolean supportsMatrixLeft = false;
+	
+	@Override
+	public boolean supportsDistance() {
+		return true;
+	}
+
+	@Override
+	public boolean supportsStrength() {
+		return true;
+	}
+
+	@Override
+	public boolean supportsMatrix() {
+		return false;
+	}
 	
 
 	
@@ -163,6 +174,7 @@ public class ItemProjectorModuleTube extends Module3DBase {
 		if(item instanceof ItemProjectorOptionMobDefence) return true;
 		if(item instanceof ItemProjectorOptionSponge) return true;
 		if(item instanceof ItemProjectorOptionBlockBreaker) return true;
+		if(item instanceof ItemProjectorOptionTouchDamage) return true;
 
 		return false;
 	}

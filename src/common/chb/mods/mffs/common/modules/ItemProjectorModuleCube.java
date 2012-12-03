@@ -48,12 +48,26 @@ public class ItemProjectorModuleCube extends Module3DBase{
 		setIconIndex(53);
 	}
 	
-	public boolean supportsStrength = false;
-	public boolean supportsMatrixUp = false;
-	public boolean supportsMatrixDown = false;
-	public boolean supportsMatrixRight = false;
-	public boolean supportsMatrixLeft = false;
 	
+	@Override
+	public boolean supportsDistance() {
+		return true;
+	}
+
+
+
+	@Override
+	public boolean supportsStrength() {
+		return false;
+	}
+
+
+
+	@Override
+	public boolean supportsMatrix() {
+		return false;
+	}
+
 	
 	public void calculateField(IModularProjector projector, Set<PointXYZ> ffLocs, Set<PointXYZ> ffInterior) {
 		
@@ -104,6 +118,8 @@ public class ItemProjectorModuleCube extends Module3DBase{
 		
 		return false;
 	}
+
+
 	
 
 }

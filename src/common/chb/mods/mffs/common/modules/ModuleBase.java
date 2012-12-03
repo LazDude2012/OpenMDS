@@ -63,14 +63,11 @@ public abstract class ModuleBase extends Item {
 	public boolean isRepairable() {
 		return false;
 	}
-
-	public boolean supportsDistance = true;
-	public boolean supportsStrength = true;
 	
-	public boolean supportsMatrixUp = true;
-	public boolean supportsMatrixDown = true;
-	public boolean supportsMatrixRight = true;
-	public boolean supportsMatrixLeft = true;
+	public abstract boolean supportsDistance();
+	public abstract boolean supportsStrength();
+	public abstract boolean supportsMatrix();
+
 	
 	/**
 	 * Assume that Y+ (up) is the direction that the projector is facing.

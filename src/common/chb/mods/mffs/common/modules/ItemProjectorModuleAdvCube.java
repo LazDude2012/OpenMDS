@@ -50,9 +50,20 @@ public class ItemProjectorModuleAdvCube extends Module3DBase {
 		setIconIndex(55);
 	}
 	
-	public boolean supportsDistance = false;
-	
+	@Override
+	public boolean supportsDistance() {
+		return false;
+	}
 
+	@Override
+	public boolean supportsStrength() {
+		return true;
+	}
+
+	@Override
+	public boolean supportsMatrix() {
+		return true;
+	}
 	
 	@Override
 	public void calculateField(IModularProjector projector, Set<PointXYZ> ffLocs, Set<PointXYZ> ffInterior) {
