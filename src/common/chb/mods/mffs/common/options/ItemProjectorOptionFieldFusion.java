@@ -36,7 +36,7 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 
-public class ItemProjectorOptionFieldFusion extends ItemProjectorOptionBase implements IInteriorCheck,IChecksOnAll {
+public class ItemProjectorOptionFieldFusion extends ItemProjectorOptionBase implements IInteriorCheck {
 	public ItemProjectorOptionFieldFusion(int i) {
 		super(i);
 		setIconIndex(43);
@@ -89,7 +89,7 @@ public class ItemProjectorOptionFieldFusion extends ItemProjectorOptionBase impl
 			
 			if(Projector != null)
 			{
-			if(Projector.hasOption(ModularForceFieldSystem.MFFSProjectorOptionForceFieldJammer))
+			if(Projector.hasOption(ModularForceFieldSystem.MFFSProjectorOptionFieldFusion))
 			{
     			Projector.getfield_queue().remove(png);       
 				ffworldmap.removebyProjector(Projector.getProjektor_ID());

@@ -99,14 +99,7 @@ public void onPacketData(INetworkManager manager,Packet250CustomPayload packet, 
 			  
 		  }
 		}
-		
-		
-		
-		
-		
-		
-		
-		
+
 	break;
 	case 1:
 		

@@ -28,6 +28,7 @@ import buildcraft.api.transport.IExtractionHandler;
 import buildcraft.api.transport.IPipe;
 import buildcraft.api.transport.PipeManager;
 
+import net.minecraft.src.Block;
 import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.Container;
 import net.minecraft.src.EntityItem;
@@ -255,6 +256,11 @@ public abstract class TileEntityMachines extends TileEntity implements ISidedInv
 		}
 	}
 
+    @Override
+	public ItemStack getWrenchDrop(EntityPlayer entityPlayer){
+    	
+    	return new ItemStack(Block.blocksList[worldObj.getBlockId(xCoord, yCoord, zCoord)]); 
+    }
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int var1) {

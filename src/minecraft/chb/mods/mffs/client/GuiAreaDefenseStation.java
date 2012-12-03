@@ -86,9 +86,7 @@ public void initGui() {
 			fontRenderer.drawString(" without (SR)", 55, 70, 0x404040);
 			fontRenderer.drawString(" gathers his", 55, 80, 0x404040);
 			fontRenderer.drawString(" equipment", 55, 90, 0x404040);
-			
-			
-			
+	
 		break;
 		case 2:
 			fontRenderer.drawString("search", 75, 30, 0x404040);
@@ -97,9 +95,36 @@ public void initGui() {
 			fontRenderer.drawString("without (AAI)", 55, 70, 0x404040);
 			fontRenderer.drawString("and remove", 55, 80, 0x404040);
 			fontRenderer.drawString("banned items", 55, 90, 0x404040);
-			
-			
 		break;
+		
+		case 3:
+			fontRenderer.drawString("NPC kill", 75, 30, 0x404040);
+			
+			fontRenderer.drawString("kill NPC", 55, 60, 0x404040);
+			fontRenderer.drawString("friendly ", 55, 70, 0x404040);
+			fontRenderer.drawString("or", 55, 80, 0x404040);
+			fontRenderer.drawString("hostile ", 55, 90, 0x404040);
+		break;
+		
+		case 4:
+			fontRenderer.drawString("NPC kill", 75, 30, 0x404040);
+			
+			fontRenderer.drawString("kill", 55, 60, 0x404040);
+			fontRenderer.drawString("only  ", 55, 70, 0x404040);
+			fontRenderer.drawString("hostile", 55, 80, 0x404040);
+			fontRenderer.drawString("NPC ", 55, 90, 0x404040);
+		break;
+		
+		
+		case 5:
+			fontRenderer.drawString("NPC kill", 75, 30, 0x404040);
+			
+			fontRenderer.drawString("kill", 55, 60, 0x404040);
+			fontRenderer.drawString("only  ", 55, 70, 0x404040);
+			fontRenderer.drawString("friendly", 55, 80, 0x404040);
+			fontRenderer.drawString("NPC ", 55, 90, 0x404040);
+		break;
+		
 		}
 		
 		

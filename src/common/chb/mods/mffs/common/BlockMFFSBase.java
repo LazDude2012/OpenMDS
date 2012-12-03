@@ -76,8 +76,18 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		TileEntityMachines tileentity = (TileEntityMachines) world
 				.getBlockTileEntity(i, j, k);
 		
+		
+		if(tileentity instanceof TileEntityAdvSecurityStation){
+			if(tileentity.isActive())
+			{
+				if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"CSR"))
+				{return true;}
+			}
+		}
+			
+		
 		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
-		{return false;}
+		{return true;}
 
 
 		if (entityplayer.getCurrentEquippedItem() != null

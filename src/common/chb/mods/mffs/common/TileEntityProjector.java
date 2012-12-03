@@ -635,20 +635,18 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 		
 		for(ItemProjectorOptionBase opt : getOptions())
 		{
-			if(opt instanceof IChecksOnAll){
-				
+		
 				if(opt instanceof ItemProjectorOptionForceFieldJammer){
 					if(((ItemProjectorOptionForceFieldJammer)opt).CheckJammerinfluence(png, worldObj, this))
 			            return false;
 				}
+				
+				
 				if(opt instanceof ItemProjectorOptionFieldFusion){
 					if(((ItemProjectorOptionFieldFusion)opt).checkFieldFusioninfluence(png, worldObj, this))
 			            return true;
 				}
-				
-				
-				
-			}			
+	
 		}
 		
 		

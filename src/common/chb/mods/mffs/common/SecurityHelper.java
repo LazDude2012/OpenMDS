@@ -74,7 +74,7 @@ public class SecurityHelper {
 			if (!(((TileEntityAdvSecurityStation) tileEntity).isAccessGranted(
 					entityplayer.username, right))) {
 
-				if (world.isRemote && !suppresswarning)
+				if (!suppresswarning)
 					Functions.ChattoPlayer(entityplayer,
 							"[Field Security] Fail: access denied");
 				return false;

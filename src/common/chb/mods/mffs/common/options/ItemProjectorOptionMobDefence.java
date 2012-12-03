@@ -82,7 +82,7 @@ public class ItemProjectorOptionMobDefence extends ItemProjectorOptionBase  {
 					{continue;}
 					
 					
-					if (projector.getLinkPower() < ModularForceFieldSystem.DefenseStationFPpeerAttack)
+					if (projector.getLinkPower() < 10000)
 					{break;}	
 					
 					
@@ -90,14 +90,14 @@ public class ItemProjectorOptionMobDefence extends ItemProjectorOptionBase  {
 						
 						if(png.X == (int)entityLiving.posX && png.Y == (int)entityLiving.posY && png.Z == (int)entityLiving.posZ){
 							
-			        		if (projector.getLinkPower() > ModularForceFieldSystem.DefenseStationFPpeerAttack) {
+			        		if (projector.getLinkPower() > 10000) {
 			        			
 			        			TileEntityCapacitor cap = projector.getLinkedCapacitor();
 			        			if(cap!=null)
 			        			{
-			        				if(cap.consumForcePower(ModularForceFieldSystem.DefenseStationFPpeerAttack))
+			        				if(cap.consumForcePower(10000))
 			        				{
-			        					entityLiving.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.MobDefenseDamage);
+			        					entityLiving.attackEntityFrom(DamageSource.generic,10);
 			        				}
 			        				
 			        			}

@@ -39,8 +39,11 @@ import java.util.Set;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Container;
 import net.minecraft.src.DamageSource;
+import net.minecraft.src.EntityGhast;
 import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityMob;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntitySlime;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.Item;
@@ -343,11 +346,18 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		int zmin = zCoord - getInfoDistance();
 		int zmax = zCoord + getInfoDistance();
 		
-		List<EntityPlayer> playerlist = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xmin, ymin, zmin, xmax, ymax, zmax));
-
-		for(EntityPlayer player : playerlist)
+		List<EntityLiving> Livinglist = worldObj.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(xmin, ymin, zmin, xmax, ymax, zmax));
+		
+		
+		for(EntityLiving Living : Livinglist)
 		{
-		int distance = PointXYZ.distance(getMaschinePoint(), new PointXYZ((int)player.posX,(int)player.posY,(int)player.posZ,worldObj));
+			
+		int distance = PointXYZ.distance(getMaschinePoint(), new PointXYZ((int)Living.posX,(int)Living.posY,(int)Living.posZ,worldObj));
+		
+		
+		if(Living instanceof EntityPlayer)
+		{
+		EntityPlayer player = (EntityPlayer) Living;
 		
 		if(distance <=  getInfoDistance())
 		{
@@ -375,19 +385,28 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			if(actionlist.contains(player))
 			   actionlist.remove(player);
 		}
+		}else{
+			
+			if(distance <=  getActionDistance())
+			{
+					DefenceAction(Living);
+			}
+			
+			
 		}
 		
 		for(EntityPlayer warnplayer : warnlist)
 		{
-			if(!playerlist.contains(warnplayer))
+			if(!Livinglist.contains(warnplayer))
 				warnlist.remove(warnplayer);
 		}
 		
 		for(EntityPlayer actionplayer : actionlist)
 		{
-			if(!playerlist.contains(actionplayer))
+			if(!Livinglist.contains(actionplayer))
 				actionlist.remove(actionplayer);
 		}	
+		}
 		}
 	}
 	
@@ -453,8 +472,46 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		}
 	}
 	
-	
-	
+	public void DefenceAction(EntityLiving Living){
+		if(Living instanceof EntityPlayer)
+			return;
+		
+		TileEntityCapacitor cap = this.getLinkedCapacitor();
+		TileEntityAdvSecurityStation sec = 	getLinkedSecurityStation();
+		
+		if(cap!=null)
+		{
+		
+		if(sec!=null)
+		{
+		if(cap.getForcePower() > 10000)
+		{
+		switch(getActionmode())
+		{
+		case 3: //all
+			cap.consumForcePower(10000);
+			Living.setEntityHealth(0);
+			break;
+		case 4: //Hostile
+			if(Living instanceof EntityMob || Living instanceof EntitySlime || Living instanceof EntityGhast){
+				Living.setEntityHealth(0);
+				cap.consumForcePower(10000);
+			}
+			
+			break;
+		case 5://no Hostie
+			
+			if(!(Living instanceof EntityMob) && !(Living instanceof EntitySlime) && !(Living instanceof EntityGhast)){
+				Living.setEntityHealth(0);	
+				cap.consumForcePower(10000);
+			}
+			break;
+		}
+	   }
+	  }
+	 }
+	}
+
 	public void DefenceAction(EntityPlayer player){
 		
 	
@@ -478,7 +535,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		break;
 		case 1: // kill
 			
-				if(cap.getForcePower() > ModularForceFieldSystem.DefenseStationFPpeerAttack)
+				if(cap.getForcePower() > 10000)
 				{
 					if(!sec.isAccessGranted(player.username, "SR"))
 					{
@@ -500,9 +557,9 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 							}
 						}
 						
-						cap.consumForcePower(ModularForceFieldSystem.DefenseStationFPpeerAttack);
 						actionlist.remove(player);
 						player.setEntityHealth(0);
+						cap.consumForcePower(10000);
 					}
 					
 				}
@@ -765,15 +822,13 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		
 		if (Integer.parseInt(event) == 2) {
 			
-			   if(getActionmode()!=3)
-			   {
-			   if(getActionmode() == 2)
+			   if(getActionmode() == 5)
 			   {
 				   setActionmode(0);
 		       }else{
 		    	   setActionmode(getActionmode()+1);
 		       }
-			   }
+			   
 
 		}
 		

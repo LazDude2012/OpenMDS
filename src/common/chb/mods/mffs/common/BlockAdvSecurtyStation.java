@@ -40,25 +40,5 @@ public class BlockAdvSecurtyStation extends BlockMFFSBase {
 		return new TileEntityAdvSecurityStation();
 	}
 
-	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k,
-			EntityPlayer entityplayer, int par6, float par7, float par8,
-			float par9){
-		
-		
-		TileEntityAdvSecurityStation tileentity = (TileEntityAdvSecurityStation) world
-				.getBlockTileEntity(i, j, k);
 
-		if(world.isRemote)
-			 return true;
-
-		if(tileentity.isActive())
-		{
-			if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"CSR"))
-			{return false;}
-		}
-
-       return super.onBlockActivated(world, i, j, k, entityplayer, par6, par7, par8, par9);
-		
-	}
 }

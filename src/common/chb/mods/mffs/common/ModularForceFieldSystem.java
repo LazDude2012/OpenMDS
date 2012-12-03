@@ -84,8 +84,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.11")
-@NetworkMod(versionBounds = "[2.2.8.1.11]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.12")
+@NetworkMod(versionBounds = "[2.2.8.1.12]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
 
 public class ModularForceFieldSystem {
 	
@@ -156,9 +156,6 @@ public class ModularForceFieldSystem {
 	public static int forcefieldtransportcost;
 	public static int forcefieldmaxblockpeerTick;
 
-	public static int DefenseStationDamage;
-	public static int MobDefenseDamage;
-	public static int DefenseStationFPpeerAttack;
 	public static Boolean forcefieldremoveonlywaterandlava;
 
 	public static Boolean influencedbyothermods;
@@ -213,9 +210,7 @@ public class ModularForceFieldSystem {
 			forcefieldblockcreatemodifier = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "forcefieldblockcreatemodifier", 10).getInt(10);
 			forcefieldblockzappermodifier = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "forcefieldblockzappermodifier", 2).getInt(2);
 			forcefieldmaxblockpeerTick = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "forcefieldmaxblockpeerTick", 5000).getInt(5000);
-			DefenseStationDamage = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "DefenseStationDamage", 10).getInt(10);
-			MobDefenseDamage = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "MobDefenseDamage", 10).getInt(10);
-			DefenseStationFPpeerAttack = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "DefenseStationFPpeerAttack", 25000).getInt(25000);
+
 
 			ForceciumWorkCylce = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "ForceciumWorkCylce", 250).getInt(250);
 			ForceciumCellWorkCylce = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "ForceciumCellWorkCylce", 230).getInt(230);

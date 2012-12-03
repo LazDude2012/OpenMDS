@@ -67,7 +67,7 @@ public class ItemProjectorModuleAdvCube extends Module3DBase {
 		int zMout = projector.countItemsInSlot(Slots.FocusDown);
 		int zPout = projector.countItemsInSlot(Slots.FocusUp);
 		int distance = projector.countItemsInSlot(Slots.Distance);
-		int Strength =  projector.countItemsInSlot(Slots.Strength) + 1;
+		int Strength =  projector.countItemsInSlot(Slots.Strength) + 2;
 		
 		for (int y1 = 0; y1 <= Strength; y1++) {
 		for (int x1 = 0 - xMout; x1 < xPout + 1; x1++) {

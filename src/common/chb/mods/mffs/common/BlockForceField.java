@@ -213,7 +213,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
     	
 		if (world.getBlockMetadata(i, j, k) == 1) {
 			if (entity instanceof EntityLiving) {
-				entity.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);
+				entity.attackEntityFrom(DamageSource.generic,10);
 			}
 		}else{
 			if (entity instanceof EntityPlayer) {

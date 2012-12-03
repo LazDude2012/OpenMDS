@@ -20,7 +20,9 @@
 
 package chb.mods.mffs.common;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
@@ -112,6 +114,8 @@ public class ItemCardPowerLink extends ItemCard  {
 		}
 		return false;
 	}
+
+
 	
 	
 			

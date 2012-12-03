@@ -37,6 +37,8 @@ import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.PointXYZ;
 import chb.mods.mffs.common.ProjectorTyp;
 import chb.mods.mffs.common.SecurityHelper;
+import chb.mods.mffs.common.TileEntityProjector;
+import chb.mods.mffs.network.NetworkHandlerServer;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public abstract class ModuleBase extends Item {
@@ -94,6 +96,7 @@ public abstract class ModuleBase extends Item {
 				{
 					((IModularProjector)tileEntity).setInventorySlotContents(1, itemstack.splitStack(1));
 					Functions.ChattoPlayer(entityplayer, "[Projector] Success: <Projector Module "+ ProjectorTyp.TypfromItem(((IModularProjector)tileEntity).getStackInSlot(1).getItem()).displayName+"> installed");
+					((TileEntityProjector) tileEntity).checkslots();
 					return true;
 				}
 				else
