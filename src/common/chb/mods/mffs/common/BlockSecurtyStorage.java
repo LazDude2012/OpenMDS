@@ -68,12 +68,12 @@ public class BlockSecurtyStorage extends BlockMFFSBase {
 					entityplayer.openGui(ModularForceFieldSystem.instance, 0, world,i, j, k);
 				return true;
 			}else{
-				return false;
+				return true;
 				}
 			
 		}else{
 			
-			return false;
+			return true;
 		}
 	  }
 }
