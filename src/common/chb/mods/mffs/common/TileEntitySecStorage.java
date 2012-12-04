@@ -214,6 +214,8 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 
 	@Override
 	public int getSizeInventorySide(ForgeDirection side) {
+		if(isActive())
+			return 0;
 		return 54;
 	}
 
