@@ -71,6 +71,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	
 	protected Set<EntityPlayer> warnlist = new HashSet<EntityPlayer>();
 	protected Set<EntityPlayer> actionlist = new HashSet<EntityPlayer>();
+	protected Set<EntityLiving> NPClist = new HashSet<EntityLiving>();
 	private ArrayList<Item> ContraList = new ArrayList();
 	
 	public TileEntityAreaDefenseStation() {
@@ -333,7 +334,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 	
 
-	public void Playerscanner()
+	public void scanner()
 	{
 		TileEntityAdvSecurityStation sec = 	getLinkedSecurityStation();
 		
@@ -380,6 +381,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 				actionlist.add(player);
 				DefenceAction(player);
 			}
+			
 		}else{
 			
 			if(actionlist.contains(player))
@@ -389,11 +391,21 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			
 			if(distance <=  getActionDistance())
 			{
+				if(!NPClist.contains(Living)){
+					NPClist.add(Living);
 					DefenceAction(Living);
+				}
+			
+				
+			}else{
+				
+				if(NPClist.contains(Living))
+					NPClist.remove(Living);
 			}
 			
 			
 		}
+		
 		
 		for(EntityPlayer warnplayer : warnlist)
 		{
@@ -416,6 +428,8 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		{
 			DefenceAction(actionplayer);
 		}
+		
+		
 	}
 	
 		
@@ -708,7 +722,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			
 			if(this.isActive())
 			{
-				Playerscanner();				
+				scanner();				
 			}
 			
 
@@ -802,7 +816,8 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	@Override
 	public void onNetworkHandlerEvent(String event) {
 		
-	
+		if(!this.isActive()){
+		
 		if (Integer.parseInt(event) == 0) {
 			if (this.getswitchtyp() == 0) {
 				this.setswitchtyp(1);
@@ -832,7 +847,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 		}
 		
-
+		}
 
 	}
 	
