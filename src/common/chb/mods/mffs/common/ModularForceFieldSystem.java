@@ -84,8 +84,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.12")
-@NetworkMod(versionBounds = "[2.2.8.1.12]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.13")
+@NetworkMod(versionBounds = "[2.2.8.1.13]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
 
 public class ModularForceFieldSystem {
 	
@@ -167,6 +167,9 @@ public class ModularForceFieldSystem {
 	public static int ForceciumWorkCylce;
 	public static int ForceciumCellWorkCylce;
 	public static int ExtractorPassForceEnergyGenerate;
+	
+	public static int DefenceStationKillForceEnergy;
+	public static int DefenceStationSearchForceEnergy;
 
 	public static Configuration MFFSconfig;
 
@@ -216,8 +219,10 @@ public class ModularForceFieldSystem {
 			ForceciumCellWorkCylce = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "ForceciumCellWorkCylce", 230).getInt(230);
 			ExtractorPassForceEnergyGenerate = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "ExtractorPassForceEnergyGenerate", 10000).getInt(10000);
 
-			MFFSForceEnergyConverter = new BlockConverter(MFFSconfig.getBlock("MFFSForceEnergyConverter", 687).getInt(687)).setBlockName("MFFSForceEnergyConverter");
+			DefenceStationKillForceEnergy= MFFSconfig.get(Configuration.CATEGORY_GENERAL, "DefenceStationKillForceEnergy", 10000).getInt(10000);
+			DefenceStationSearchForceEnergy = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "DefenceStationSearchForceEnergy", 1000).getInt(1000);
 			
+			MFFSForceEnergyConverter = new BlockConverter(MFFSconfig.getBlock("MFFSForceEnergyConverter", 687).getInt(687)).setBlockName("MFFSForceEnergyConverter");
 			MFFSExtractor = new BlockExtractor(MFFSconfig.getBlock("MFFSExtractor", 682).getInt(682)).setBlockName("MFFSExtractor");
 			MFFSMonazitOre = new BlockMonazitOre(MFFSconfig.getBlock("MFFSMonazitOre", 688).getInt(688)).setBlockName("MFFSMonazitOre");
 			MFFSDefenceStation = new BlockAreaDefenseStation(MFFSconfig.getBlock("MFFSDefenceStation", 681).getInt(681)).setBlockName("MFFSDefenceStation");

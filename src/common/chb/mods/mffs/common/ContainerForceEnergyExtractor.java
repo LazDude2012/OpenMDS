@@ -39,6 +39,7 @@ public class ContainerForceEnergyExtractor extends Container {
 		this.player = player;
 		WorkCylce = -1;
 		workdone = -1;
+		ForceEnergybuffer = -1;
 
 		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 0, 82, 6)); //Forcicum
 		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 1, 145, 20)); //Powerlink

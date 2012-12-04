@@ -422,12 +422,10 @@ public class TileEntityConverter extends TileEntityMachines implements
 			TileEntityCapacitor remotecap = getLinkedCapacitor();
 			if(remotecap != null)
 			{
-				if (remotecap.getForcePower() > (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000)* getOutput()) {
+				if (remotecap.getForcePower() >= (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate/4000)* getOutput()) {
 				
 					int a = EnergyNet.getForWorld(worldObj).emitEnergyFrom(((IEnergySource) (this)), getOutput());
-					remotecap.setForcePower(remotecap.getForcePower()
-							- (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 6000)
-							* (getOutput() - a));
+					remotecap.consumForcePower((ModularForceFieldSystem.ExtractorPassForceEnergyGenerate/4000)* (getOutput()-a));
 					
 				}
 			}

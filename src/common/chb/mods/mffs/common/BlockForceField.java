@@ -306,6 +306,8 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 
 		if (tileEntity!=null && tileEntity instanceof TileEntityForceField )
 		{
+			if(l<0 ||l >5) return 0;
+			
 		return  ((TileEntityForceField)tileEntity).getTexturid(l);
 	}else{
 		if (iblockaccess.getBlockMetadata(i, j, k) == ForceFieldTyps.Camouflage.ordinal())

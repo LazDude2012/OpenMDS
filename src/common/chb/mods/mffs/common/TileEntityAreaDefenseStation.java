@@ -484,18 +484,18 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		
 		if(sec!=null)
 		{
-		if(cap.getForcePower() > 10000)
+		if(cap.getForcePower() > ModularForceFieldSystem.DefenceStationKillForceEnergy)
 		{
 		switch(getActionmode())
 		{
 		case 3: //all
-			cap.consumForcePower(10000);
+			cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
 			Living.setEntityHealth(0);
 			break;
 		case 4: //Hostile
 			if(Living instanceof EntityMob || Living instanceof EntitySlime || Living instanceof EntityGhast){
 				Living.setEntityHealth(0);
-				cap.consumForcePower(10000);
+				cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
 			}
 			
 			break;
@@ -503,7 +503,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			
 			if(!(Living instanceof EntityMob) && !(Living instanceof EntitySlime) && !(Living instanceof EntityGhast)){
 				Living.setEntityHealth(0);	
-				cap.consumForcePower(10000);
+				cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
 			}
 			break;
 		}
@@ -535,7 +535,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		break;
 		case 1: // kill
 			
-				if(cap.getForcePower() > 10000)
+				if(cap.getForcePower() > ModularForceFieldSystem.DefenceStationKillForceEnergy)
 				{
 					if(!sec.isAccessGranted(player.username, "SR"))
 					{
@@ -559,7 +559,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 						
 						actionlist.remove(player);
 						player.setEntityHealth(0);
-						cap.consumForcePower(10000);
+						cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
 					}
 					
 				}
@@ -570,7 +570,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		case 2: // search
 			
 			
-			if(cap.getForcePower() > 1000)
+			if(cap.getForcePower() > ModularForceFieldSystem.DefenceStationSearchForceEnergy)
 			{
 				if(!sec.isAccessGranted(player.username, "AAI"))
 				{
@@ -600,7 +600,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 								{	
 									StacksToInventory(this,player.inventory.armorInventory[i],true);
 									player.inventory.armorInventory[i]=null;
-							        cap.consumForcePower(1000);
+							        cap.consumForcePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy);
 								}
 							}
 						}
@@ -614,7 +614,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 								{	
 									StacksToInventory(this,player.inventory.mainInventory[i],true);
 									player.inventory.mainInventory[i]=null;
-							        cap.consumForcePower(1000);
+							        cap.consumForcePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy);
 								}
 							}
 						}
@@ -631,7 +631,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 								{	
 									StacksToInventory(this,player.inventory.armorInventory[i],true);
 									player.inventory.armorInventory[i]=null;
-							        cap.consumForcePower(1000);
+							        cap.consumForcePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy);
 								}
 							}
 						}
@@ -644,7 +644,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 								{	
 									StacksToInventory(this,player.inventory.mainInventory[i],true);
 									player.inventory.mainInventory[i]=null;
-							        cap.consumForcePower(1000);
+							        cap.consumForcePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy);
 								}
 							}
 						}
