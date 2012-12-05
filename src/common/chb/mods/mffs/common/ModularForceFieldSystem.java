@@ -84,8 +84,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.13")
-@NetworkMod(versionBounds = "[2.2.8.1.13]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.14")
+@NetworkMod(versionBounds = "[2.2.8.1.14]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
 
 public class ModularForceFieldSystem {
 	
@@ -174,7 +174,6 @@ public class ModularForceFieldSystem {
 	public static Configuration MFFSconfig;
 
 	public static String Admin;
-	public static Map<Integer, int[]> idmetatotextur = new HashMap<Integer, int[]>();
 
 	@SidedProxy(clientSide = "chb.mods.mffs.client.ClientProxy", serverSide = "chb.mods.mffs.common.CommonProxy")
 	public static CommonProxy proxy;
@@ -403,66 +402,6 @@ public class ModularForceFieldSystem {
 		
 		GameRegistry.registerWorldGenerator(new MFFSWorldGenerator());
 
-		
-		Generatetexturindex(Block.oreLapis, 0);
-		Generatetexturindex(Block.blockLapis, 0);
-		Generatetexturindex(Block.sandStone, 0);
-		Generatetexturindex(Block.sandStone, 1);
-		Generatetexturindex(Block.sandStone, 2);
-		Generatetexturindex(Block.melon, 0);
-		Generatetexturindex(Block.mycelium, 0);
-		Generatetexturindex(Block.netherBrick, 0);
-		Generatetexturindex(Block.whiteStone, 0);
-		Generatetexturindex(Block.whiteStone, 1);
-		Generatetexturindex(Block.redstoneLampIdle, 0);
-		Generatetexturindex(Block.music, 0);
-		Generatetexturindex(Block.blockGold, 0);
-		Generatetexturindex(Block.blockSteel, 0);
-		Generatetexturindex(Block.brick, 0);
-		Generatetexturindex(Block.tnt, 0);
-		Generatetexturindex(Block.bookShelf, 0);
-		Generatetexturindex(Block.cobblestoneMossy, 0);
-		Generatetexturindex(Block.obsidian, 0);
-		Generatetexturindex(Block.oreDiamond, 0);
-		Generatetexturindex(Block.blockDiamond, 0);
-		Generatetexturindex(Block.workbench, 0);
-		Generatetexturindex(Block.oreRedstone, 0);
-		Generatetexturindex(Block.ice, 0);
-		Generatetexturindex(Block.stone, 0);
-		Generatetexturindex(Block.dirt, 0);
-		Generatetexturindex(Block.cobblestone, 0);
-		Generatetexturindex(Block.bedrock, 0);
-		Generatetexturindex(Block.sand, 0);
-		Generatetexturindex(Block.gravel, 0);
-		Generatetexturindex(Block.oreGold, 0);
-		Generatetexturindex(Block.oreIron, 0);
-		Generatetexturindex(Block.oreCoal, 0);
-		Generatetexturindex(Block.sponge, 0);
-		Generatetexturindex(Block.glass, 0);
-		Generatetexturindex(Block.blockSnow, 0);
-		Generatetexturindex(Block.blockClay, 0);
-		Generatetexturindex(Block.jukebox, 0);
-		Generatetexturindex(Block.netherrack, 0);
-		Generatetexturindex(Block.slowSand, 0);
-		Generatetexturindex(Block.glowStone, 0);
-		Generatetexturindex(Block.stoneBrick, 0);
-		Generatetexturindex(Block.stoneBrick, 1);
-		Generatetexturindex(Block.stoneBrick, 2);
-
-		for (int meta = 0; meta < 4; meta++) {
-			Generatetexturindex(Block.planks, meta);
-			Generatetexturindex(Block.wood, meta);
-		}
-
-		for (int meta = 0; meta < 12; meta++) {
-			Generatetexturindex(Block.mushroomCapBrown, meta);
-			Generatetexturindex(Block.mushroomCapRed, meta);
-		}
-
-		for (int meta = 0; meta < 16; meta++) {
-			Generatetexturindex(Block.cloth, meta);
-		}
-		
 
 		LanguageRegistry.instance().addNameForObject(
 				MFFSitemupgradeexctractorboost, "en_US",
@@ -553,12 +492,7 @@ public class ModularForceFieldSystem {
 
 	}
 
-	private void Generatetexturindex(Block block, int meta) {
-		int[] index = new int[6];
-		for (int side = 0; side < 6; side++)
-			index[side] = block.getBlockTextureFromSideAndMetadata(side, meta);
-		idmetatotextur.put(block.blockID + meta * 1000, index);
-	}
+
 	
 
 	

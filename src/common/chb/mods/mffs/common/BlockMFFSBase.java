@@ -44,7 +44,8 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		super(i, Material.iron);
 		this.texturindex = 0;
 		blockid = i;
-		setHardness(25F);
+		setBlockUnbreakable();
+		setRequiresSelfNotify();
 		setResistance(25F);
 		setStepSound(soundMetalFootstep);
 		setRequiresSelfNotify();

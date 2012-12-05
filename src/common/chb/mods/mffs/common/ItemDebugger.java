@@ -47,15 +47,32 @@ public class ItemDebugger extends  ItemMultitool  {
 		
 		if (!world.isRemote) {
 			
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getTexturid(0));
+			
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getTexturfile());
+			
 			if(tileEntity instanceof TileEntityProjector)
-				System.out.println(((TileEntityProjector)tileEntity).getaccesstyp());
-    		
+				System.out.println(((TileEntityProjector)tileEntity).getForceFieldTexturfile());
+
+			if(tileEntity instanceof TileEntityProjector)
+				System.out.println(((TileEntityProjector)tileEntity).getForceFieldTexturID());
 
 			
 		}else{
 			
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getTexturid(0));
+			
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getTexturfile());
+			
 			if(tileEntity instanceof TileEntityProjector)
-				System.out.println(((TileEntityProjector)tileEntity).getaccesstyp());
+				System.out.println(((TileEntityProjector)tileEntity).getForceFieldTexturfile());
+			
+			if(tileEntity instanceof TileEntityProjector)
+				System.out.println(((TileEntityProjector)tileEntity).getForceFieldTexturID());
 		}
 
 		return false;

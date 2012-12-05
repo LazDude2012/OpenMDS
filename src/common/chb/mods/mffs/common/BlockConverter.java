@@ -32,7 +32,6 @@ public class BlockConverter extends BlockMFFSBase {
 	
 	public BlockConverter(int i) {
 		super(i);
-		setRequiresSelfNotify();
 	}
 
 	

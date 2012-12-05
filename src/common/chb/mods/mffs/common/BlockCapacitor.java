@@ -27,7 +27,6 @@ import net.minecraft.src.World;
 public class BlockCapacitor extends BlockMFFSBase {
 	public BlockCapacitor(int i) {
 		super(i);
-		setRequiresSelfNotify();
 	}
 
 	@Override

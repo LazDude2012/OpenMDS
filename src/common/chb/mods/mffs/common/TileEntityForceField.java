@@ -38,6 +38,7 @@ import net.minecraft.src.TileEntity;
 public class TileEntityForceField extends TileEntity {
 private Random random = new Random();
 private int[] texturid = {-76,-76,-76,-76,-76,-76};
+private String texturfile;
 private int Ticker = 0 ;
 
 	public int getTicker() {
@@ -51,6 +52,14 @@ public void setTicker(int ticker) {
 	public TileEntityForceField() {
 	}
 
+	public String getTexturfile() {
+		return texturfile;
+	}
+
+	public void setTexturfile(String texturfile) {
+		this.texturfile = texturfile;
+	}
+
 	public int[] getTexturid()
 	{
 		return texturid;
@@ -61,23 +70,11 @@ public void setTicker(int ticker) {
 		return texturid[l];
 	}
 
-	public void  setTexturid(String[] remotetextur )
-	{
-		this.texturid[0] = Integer.parseInt(remotetextur[0].trim());
-		this.texturid[1] = Integer.parseInt(remotetextur[1].trim());
-		this.texturid[2] = Integer.parseInt(remotetextur[2].trim());
-		this.texturid[3] = Integer.parseInt(remotetextur[3].trim());
-		this.texturid[4] = Integer.parseInt(remotetextur[4].trim());
-		this.texturid[5] = Integer.parseInt(remotetextur[5].trim());
-
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		this.setTicker((short) 0);
-	}
 
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			if (this.getTicker() >= 20) {
-				if(texturid[0] == -76)
+				if(texturid[0] == -76 || texturfile == null)
 				{
 					UpdateTextur();
 				}
@@ -88,7 +85,7 @@ public void setTicker(int ticker) {
 			this.setTicker((short) (this.getTicker() + 1));
 		}else{
 			if (this.getTicker() >= 20 + random.nextInt(20)) {
-				if(texturid[0] == -76)
+				if(texturid[0] == -76 || texturfile == null)
 				{
 					ForceFieldClientUpdatehandler.getWorldMap(ModularForceFieldSystem.proxy.getClientWorld()).addto(xCoord, yCoord, zCoord);
 				}
@@ -99,14 +96,43 @@ public void setTicker(int ticker) {
 			this.setTicker((short) (this.getTicker() + 1));
 		}
 		}
-
-	public void  setTexturid(int[] texturid )
+	
+	
+	
+	public void  setTexturid(String remotetextu)
 	{
+		
+		String[] textur = remotetextu.split("/");
+		
+		this.texturid[0] = Integer.parseInt(textur[0].trim());
+		this.texturid[1] = Integer.parseInt(textur[1].trim());
+		this.texturid[2] = Integer.parseInt(textur[2].trim());
+		this.texturid[3] = Integer.parseInt(textur[3].trim());
+		this.texturid[4] = Integer.parseInt(textur[4].trim());
+		this.texturid[5] = Integer.parseInt(textur[5].trim());
+
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+		this.setTicker((short) 0);
+	}
+
+	
+
+	public void  setTexturid(String texturid ,TileEntityProjector proj)
+	{
+		
 		try{
-		if(this.texturid != texturid)
+		if(!texturid.equalsIgnoreCase(this.texturid[0]+"/"+this.texturid[1]+"/"+this.texturid[2]+"/"+this.texturid[3]+"/"+this.texturid[4]+"/"+this.texturid[5]))
 		{
-		this.texturid = texturid;
-		ForceFieldServerUpdatehandler.getWorldMap(worldObj).addto(xCoord, yCoord, zCoord, texturid, worldObj.provider.dimensionId);
+			
+		    String[] textur = texturid.split("/");
+			this.texturid[0] = Integer.parseInt(textur[0].trim());
+			this.texturid[1] = Integer.parseInt(textur[1].trim());
+			this.texturid[2] = Integer.parseInt(textur[2].trim());
+			this.texturid[3] = Integer.parseInt(textur[3].trim());
+			this.texturid[4] = Integer.parseInt(textur[4].trim());
+			this.texturid[5] = Integer.parseInt(textur[5].trim());	
+
+		ForceFieldServerUpdatehandler.getWorldMap(worldObj).addto(xCoord, yCoord, zCoord,  worldObj.provider.dimensionId,proj.xCoord,proj.yCoord,proj.zCoord);
 		}
 		}catch(Exception ex)
 		{
@@ -114,7 +140,7 @@ public void setTicker(int ticker) {
 		}
 	}
 
-	public void UpdateTextur()
+	public void UpdateTextur() // Serverside
 	{
 		if (worldObj.isRemote == false) {
 		ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(worldObj).getForceFieldStackMap(WorldMap.Cordhash(this.xCoord, this.yCoord, this.zCoord));
@@ -128,7 +154,8 @@ public void setTicker(int ticker) {
 
 				if(projector != null)
 				{
-					setTexturid(projector.getForcefieldtextur_id());
+					setTexturid(projector.getForceFieldTexturID(),projector);
+					setTexturfile(projector.getForceFieldTexturfile());
 				}
 			}
 		}

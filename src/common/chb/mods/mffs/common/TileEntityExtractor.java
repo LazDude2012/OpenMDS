@@ -254,43 +254,11 @@ INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IEle
 			}
 	}
 	
-	
 	public TileEntityCapacitor getLinkedCapacitor()
 	{
-	
-		if (getStackInSlot(1) != null)
-		{
-			if(getStackInSlot(1).getItem() instanceof ItemCardPowerLink)
-			{
-				ItemCardPowerLink card = (ItemCardPowerLink) getStackInSlot(1).getItem();
-				PointXYZ png = card.getCardTargetPoint(getStackInSlot(1));
-				if(png != null)
-				{
-					if(png.dimensionId != worldObj.provider.dimensionId) return null;
-					if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
-				{
-				TileEntityCapacitor cap = (TileEntityCapacitor) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
-				if (cap != null){
-					
-				  if(cap.getCapacitor_ID()== card.getTargetID("CapacitorID",getStackInSlot(1))&&  card.getTargetID("CapacitorID",getStackInSlot(1)) != 0 )
-				  {
-					if (cap.getTransmitRange() >=PointXYZ.distance(cap.getMaschinePoint(), this.getMaschinePoint()))
-					{
-						return cap;
-					}else{
-						return null;
-					}
-				   }
-				}
-			  }
-			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
-					this.setInventorySlotContents(1, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-			}
-		  }
-		}
-		
-		return null;
+		return ItemCardPowerLink.getLinkedCapacitor(this, 1, worldObj);
 	}
+	
 	
 	public int getLinkCapacitor_ID(){
 		TileEntityCapacitor cap = getLinkedCapacitor();

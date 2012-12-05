@@ -73,11 +73,8 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 	private ItemStack ProjektorItemStacks[];
 
 	private int[] focusmatrix = { 0, 0, 0, 0 }; // Up 7,Down 8,Right 9,Left 10
-	private int[] nullgrafik = { 180, 180, 180, 180, 180, 180 };
-	private int[] watergrafik = { 205, 205, 207, 222, 223, 223 }; // Vanilla Water Textur
-	private int[] lavagrafik = { 237, 237, 239, 254, 255, 255 };  // Vanilla Lava  Textur
-	private int[] forcefieldtextur_id= { -10,-10,-10,-10,-10,-10};
-
+	private String ForceFieldTexturids ="-76/-76/-76/-76/-76/-76";
+	private String ForceFieldTexturfile = "/terrain.png";
 	private int switchdelay;
 	private short forcefieldblock_meta;
 	private int ProjektorTyp;
@@ -147,17 +144,24 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 		this.accesstyp = accesstyp;
 	}
 
-	public int getForcefieldtextur_id(int l) {
-		return forcefieldtextur_id[l];
+	public String getForceFieldTexturfile() {
+		return ForceFieldTexturfile;
 	}
 
-	public int[] getForcefieldtextur_id() {
-		return forcefieldtextur_id;
+	public void setForceFieldTexturfile(String forceFieldTexturfile) {
+		ForceFieldTexturfile = forceFieldTexturfile;
+		NetworkHandlerServer.updateTileEntityField(this, "ForceFieldTexturfile");
+	}
+	
+	public String getForceFieldTexturID() {
+		return ForceFieldTexturids;
 	}
 
-	public void setForcefieldtextur_id(int[] forcefieldtextur_id) {
-		this.forcefieldtextur_id = forcefieldtextur_id;
+	public void setForceFieldTexturID(String forceFieldTexturids) {
+		ForceFieldTexturids = forceFieldTexturids;
+		NetworkHandlerServer.updateTileEntityField(this, "ForceFieldTexturids");
 	}
+	
 
 	public int getProjektor_Typ() {
 		return ProjektorTyp;
@@ -355,36 +359,48 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 		
 
 		if (getStackInSlot(11) != null) {
-			int[] grafikindex = null;
+			
+	
+			
+			if(getStackInSlot(11).itemID <4095){
 
-		if (getStackInSlot(11).getItem() == Item.bucketLava)
-				{
-			grafikindex=lavagrafik;
-				}
-		if (getStackInSlot(11).getItem() == Item.bucketWater)
-		{
-			grafikindex=watergrafik;
-		}
-		if(grafikindex == null)
-		{
-			grafikindex = ModularForceFieldSystem.idmetatotextur.get(getStackInSlot(11).itemID
-					+ (getStackInSlot(11).getItemDamage() * 1000));
-		}
+		    String ForcefieldTexturtemp ="180/180/180/180/180/180";
+			String Texturfile = "/terrain.png";
 
-				if(grafikindex != null)
-				{
-					if(grafikindex != this.getForcefieldtextur_id())
+			int[] index = new int[6];
+			for (int side = 0; side < 6; side++){
+			  index[side] = Block.blocksList[getStackInSlot(11).itemID].getBlockTextureFromSideAndMetadata(side, getStackInSlot(11).getItemDamage());
+			}
+			  ForcefieldTexturtemp = index[0]+"/"+index[1]+"/"+index[2]+"/"+index[3]+"/"+index[4]+"/"+index[5];
+			  Texturfile = Block.blocksList[getStackInSlot(11).itemID].getTextureFile();
+			
+
+					if( !ForcefieldTexturtemp.equalsIgnoreCase(ForceFieldTexturids)  || !ForceFieldTexturfile.equalsIgnoreCase(getForceFieldTexturfile()))
 					{
-						this.setForcefieldtextur_id(grafikindex);
+						if (getStackInSlot(11).getItem() == Item.bucketLava)
+							this.setForceFieldTexturID("237/237/239/254/255/255");	
+						
+						if (getStackInSlot(11).getItem() == Item.bucketWater)
+							 this.setForceFieldTexturID("205/205/207/222/223/223");
+						
+						if(getStackInSlot(11).getItem() != Item.bucketLava && getStackInSlot(11).getItem() != Item.bucketWater) 
+							this.setForceFieldTexturID(ForcefieldTexturtemp);
+							
+						this.setForceFieldTexturfile(Texturfile);
 						UpdateForcefieldTexttur();
 					}
-				}else{
-					dropplugins(11,this);
-				}
-		} else {
-			if(this.getForcefieldtextur_id()!= nullgrafik)
+					
+		}else{
+			
+			this.dropplugins(11, this);
+		}
+
+		
+		}else {
+			if(!ForceFieldTexturids.equalsIgnoreCase("-76/-76/-76/-76/-76/-76"))
 			{
-				this.setForcefieldtextur_id(nullgrafik);
+				this.setForceFieldTexturID("-76/-76/-76/-76/-76/-76");
+				this.setForceFieldTexturfile("/terrain.png");
 				UpdateForcefieldTexttur();
 		    }
 		}
@@ -950,6 +966,9 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 		NetworkedFields.add("burnout");
 		NetworkedFields.add("camoflage");
 		NetworkedFields.add("Projektor_ID");
+		NetworkedFields.add("ForceFieldTexturfile");
+		NetworkedFields.add("ForceFieldTexturids");
+	
 
 		return NetworkedFields;
 	}
@@ -959,7 +978,7 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 		
 		if(Slot == 1 &&  par1ItemStack.getItem() instanceof ModuleBase)return true;
 		if(Slot==0 && par1ItemStack.getItem() instanceof ItemCardPowerLink)return true;
-		if(Slot == 11 && this.hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage))return true;
+		if(Slot == 11 && par1ItemStack.itemID < 4096  && this.hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage))return true;
 		if(Slot==12 && par1ItemStack.getItem() instanceof ItemCardSecurityLink)return true;	
 		
 		if(hasValidTypeMod())
@@ -1037,44 +1056,24 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 	{
 		return field_def;
 	}
-
+	
+	
 	public TileEntityAdvSecurityStation getLinkedSecurityStation()
 	{
-		
-		if (getStackInSlot(12) != null)
+		TileEntityAdvSecurityStation sec =ItemCardSecurityLink.getLinkedSecurityStation(this, 12, worldObj);
+		if(sec != null)
 		{
-			if(getStackInSlot(12).getItem() instanceof ItemCardSecurityLink)
-			{
-				ItemCardSecurityLink card = (ItemCardSecurityLink) getStackInSlot(12).getItem();
-				PointXYZ png = card.getCardTargetPoint(getStackInSlot(12));
-				if(png != null)
-				{
-			    if(png.dimensionId != worldObj.provider.dimensionId) return null;
-				if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityAdvSecurityStation)
-				{
-				TileEntityAdvSecurityStation sec = (TileEntityAdvSecurityStation) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
-				if (sec != null){
-					
-				  if(sec.getSecurtyStation_ID()== card.getTargetID("Secstation_ID",getStackInSlot(12))&&  card.getTargetID("Secstation_ID",getStackInSlot(12)) != 0 )
-				  {
-                     if(this.getaccesstyp()!=3)
-                        this.setaccesstyp(3);
-                    return sec;
-				   }
-				}
-			  }
-			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
-					this.setInventorySlotContents(12, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-			}
-		   }
+            if(this.getaccesstyp()!=3)
+                this.setaccesstyp(3);
+            return sec;
 		}
 		
         if(this.getaccesstyp()==3)
             this.setaccesstyp(0);
 		return null;
 	}
-	
-	
+
+
 	
 	public int getSecStation_ID(){
 		TileEntityAdvSecurityStation sec = getLinkedSecurityStation();
@@ -1083,43 +1082,12 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 		return 0;	
 	}
 
+	
 	public TileEntityCapacitor getLinkedCapacitor()
 	{
-		if (getStackInSlot(0) != null)
-		{
-			if(getStackInSlot(0).getItem() instanceof ItemCardPowerLink)
-			{
-				ItemCardPowerLink card = (ItemCardPowerLink) getStackInSlot(0).getItem();
-				PointXYZ png = card.getCardTargetPoint(getStackInSlot(0));
-				if(png != null)
-				{
-				if(png.dimensionId != worldObj.provider.dimensionId) return null;
-				
-				if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
-				{
-				TileEntityCapacitor cap = (TileEntityCapacitor) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
-				if (cap != null){
-					
-				  if(cap.getCapacitor_ID()== card.getTargetID("CapacitorID",getStackInSlot(0))&&  card.getTargetID("CapacitorID",getStackInSlot(0)) != 0 )
-				  {
-					if (cap.getTransmitRange() >=PointXYZ.distance(cap.getMaschinePoint(), this.getMaschinePoint()))
-					{
-						return cap;
-					}else{
-						return null;
-					}
-				   }
-				}
-			  }
-			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
-					this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-			}
-		   }
-		}
-		
-		return null;
+		return ItemCardPowerLink.getLinkedCapacitor(this, 0, worldObj);
 	}
-	
+		
 	
 	public int getLinkCapacitor_ID(){
 		TileEntityCapacitor cap = getLinkedCapacitor();

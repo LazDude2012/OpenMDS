@@ -134,40 +134,10 @@ public class TileEntityConverter extends TileEntityMachines implements
 	
 	public TileEntityCapacitor getLinkedCapacitor()
 	{
-		
-		if (getStackInSlot(0) != null)
-		{
-			if(getStackInSlot(0).getItem() instanceof ItemCardPowerLink)
-			{
-				ItemCardPowerLink card = (ItemCardPowerLink) getStackInSlot(0).getItem();
-				PointXYZ png = card.getCardTargetPoint(getStackInSlot(0));
-				if(png != null)
-				{
-					if(png.dimensionId != worldObj.provider.dimensionId) return null;
-					if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
-				{
-				TileEntityCapacitor cap = (TileEntityCapacitor) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
-				if (cap != null){
-					
-				  if(cap.getCapacitor_ID()== card.getTargetID("CapacitorID",getStackInSlot(0))&&  card.getTargetID("CapacitorID",getStackInSlot(0)) != 0 )
-				  {
-					if (cap.getTransmitRange() >=PointXYZ.distance(cap.getMaschinePoint(), this.getMaschinePoint()))
-					{
-						return cap;
-					}else{
-						return null;
-					}
-				   }
-				}
-			  }
-			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
-					this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-			}
-		  }
-		}
-		
-		return null;
+		return ItemCardPowerLink.getLinkedCapacitor(this, 0, worldObj);
 	}
+	
+
 	
 	public int getLinkCapacitor_ID(){
 		TileEntityCapacitor cap = getLinkedCapacitor();

@@ -25,6 +25,8 @@ import java.io.DataOutputStream;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
+import chb.mods.mffs.common.ForceFieldBlockStack;
+import chb.mods.mffs.common.Linkgrid;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.TileEntityAdvSecurityStation;
 import chb.mods.mffs.common.TileEntityAreaDefenseStation;
@@ -34,6 +36,7 @@ import chb.mods.mffs.common.TileEntityMachines;
 import chb.mods.mffs.common.TileEntityProjector;
 import chb.mods.mffs.common.TileEntityForceField;
 import chb.mods.mffs.common.TileEntityConverter;
+import chb.mods.mffs.common.WorldMap;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
@@ -115,6 +118,7 @@ public void onPacketData(INetworkManager manager,Packet250CustomPayload packet, 
 	break;		
 	case 10:
 		
+
 		int Dim =dat.readInt() ;
 		String Corrdinsaten = dat.readUTF(); 
 		
@@ -132,8 +136,24 @@ public void onPacketData(INetworkManager manager,Packet250CustomPayload packet, 
 		 TileEntity servertileEntity = worldserver.getBlockTileEntity(Integer.parseInt(corr[2].trim()), Integer.parseInt(corr[1].trim()),Integer.parseInt(corr[0].trim()));
 		 if(servertileEntity instanceof TileEntityForceField)
 		 {
-			 ForceFieldServerUpdatehandler.getWorldMap(worldserver).addto(servertileEntity.xCoord, servertileEntity.yCoord, servertileEntity.zCoord, ((TileEntityForceField)servertileEntity).getTexturid(), Dim);
+			 
+			 
+				ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(worldserver).getForceFieldStackMap(WorldMap.Cordhash(servertileEntity.xCoord, servertileEntity.yCoord, servertileEntity.zCoord));
 
+				if(ffworldmap != null)
+				{
+					if(!ffworldmap.isEmpty())
+
+					{
+					 TileEntityProjector projector = Linkgrid.getWorldMap(worldserver).getProjektor().get(ffworldmap.getProjectorID());
+
+						if(projector != null)
+						{
+							ForceFieldServerUpdatehandler.getWorldMap(worldserver).addto(servertileEntity.xCoord, servertileEntity.yCoord, servertileEntity.zCoord, Dim,projector.xCoord,projector.yCoord,projector.zCoord);
+						}
+					}
+				}
+			 
 		 }
 		 }
 		}

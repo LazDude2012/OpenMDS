@@ -70,6 +70,10 @@ public abstract class TileEntityMachines extends TileEntity implements ISidedInv
 	}
 
 	public  void dropplugins(int slot ,IInventory inventory ) {
+	
+		if(worldObj.isRemote)
+			return;
+			
 		if (inventory.getStackInSlot(slot) != null) {
 			if(inventory.getStackInSlot(slot).getItem() instanceof ItemCardSecurityLink
 		     || inventory.getStackInSlot(slot).getItem() instanceof ItemCardPowerLink

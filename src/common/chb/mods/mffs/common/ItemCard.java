@@ -81,7 +81,7 @@ public class ItemCard extends Item {
 	}
 	
 	
-	public int getTargetID(String key,ItemStack itemStack)
+	public int getValuefromKey(String key,ItemStack itemStack)
 	{
 		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
 		if (tag.hasKey(key))

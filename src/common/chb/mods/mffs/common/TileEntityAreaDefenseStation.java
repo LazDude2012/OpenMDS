@@ -35,6 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Container;
@@ -69,9 +70,9 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	private int actionmode;
 	private boolean OnOffSwitch;
 	
-	protected Set<EntityPlayer> warnlist = new HashSet<EntityPlayer>();
-	protected Set<EntityPlayer> actionlist = new HashSet<EntityPlayer>();
-	protected Set<EntityLiving> NPClist = new HashSet<EntityLiving>();
+	protected List<EntityPlayer> warnlist = new ArrayList<EntityPlayer>();
+	protected List<EntityPlayer> actionlist = new ArrayList<EntityPlayer>();
+	protected List<EntityLiving> NPClist = new ArrayList<EntityLiving>();
 	private ArrayList<Item> ContraList = new ArrayList();
 	
 	public TileEntityAreaDefenseStation() {
@@ -179,39 +180,14 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	return getActionDistance()+ 3;
 	}
 	
+	
+	
 	public TileEntityAdvSecurityStation getLinkedSecurityStation()
 	{
-		
-		if (getStackInSlot(1) != null)
-		{
-			if(getStackInSlot(1).getItem() instanceof ItemCardSecurityLink)
-			{
-				ItemCardSecurityLink card = (ItemCardSecurityLink) getStackInSlot(1).getItem();
-				PointXYZ png = card.getCardTargetPoint(getStackInSlot(1));
-				if(png != null)
-				{
-					if(png.dimensionId != worldObj.provider.dimensionId) return null;
-				
-					if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityAdvSecurityStation)
-				{
-						TileEntityAdvSecurityStation sec = (TileEntityAdvSecurityStation) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
-				if (sec != null){
-					
-				  if(sec.getSecurtyStation_ID()== card.getTargetID("Secstation_ID",getStackInSlot(1))&&  card.getTargetID("Secstation_ID",getStackInSlot(1)) != 0 )
-				  {
-                    return sec;
-				   }
-				}
-			  }
-			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
-					this.setInventorySlotContents(1, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-			}
-		   }
-		}
-		
-		return null;
+		return ItemCardSecurityLink.getLinkedSecurityStation(this, 1, worldObj);
 	}
 	
+
 	
 	
 	public int getSecStation_ID(){
@@ -221,42 +197,12 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		return 0;	
 	}
 	
+	
 	public TileEntityCapacitor getLinkedCapacitor()
 	{
-		
-		if (getStackInSlot(0) != null)
-		{
-			if(getStackInSlot(0).getItem() instanceof ItemCardPowerLink)
-			{
-				ItemCardPowerLink card = (ItemCardPowerLink) getStackInSlot(0).getItem();
-				PointXYZ png = card.getCardTargetPoint(getStackInSlot(0));
-				if(png != null)
-				{
-					if(png.dimensionId != worldObj.provider.dimensionId) return null;
-					if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
-				{
-				TileEntityCapacitor cap = (TileEntityCapacitor) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
-				if (cap != null){
-					
-				  if(cap.getCapacitor_ID()== card.getTargetID("CapacitorID",getStackInSlot(0))&&  card.getTargetID("CapacitorID",getStackInSlot(0)) != 0 )
-				  {
-					if (cap.getTransmitRange() >=PointXYZ.distance(cap.getMaschinePoint(), this.getMaschinePoint()))
-					{
-						return cap;
-					}else{
-						return null;
-					}
-				   }
-				}
-			  }
-			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
-					this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-			}
-			}
-		}
-		
-		return null;
+		return ItemCardPowerLink.getLinkedCapacitor(this, 0, worldObj);
 	}
+	
 	
 	public int getLinkCapacitor_ID(){
 		TileEntityCapacitor cap = getLinkedCapacitor();
@@ -424,10 +370,12 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	
 	public void DefenceAction(){
 		
-		for(EntityPlayer actionplayer : actionlist)
+		 for (int i = 0; i < actionlist.size(); i++)
 		{
-			DefenceAction(actionplayer);
+			DefenceAction(actionlist.get(i));
 		}
+		
+
 		
 		
 	}

@@ -31,12 +31,58 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import net.minecraftforge.common.ISidedInventory;
 
 public class ItemCardPowerLink extends ItemCard  {
 
 	public ItemCardPowerLink(int i) {
 		super(i);
 		setIconIndex(17);
+	}
+	
+	public static TileEntityCapacitor getLinkedCapacitor(ISidedInventory inventiory,int slot,World world)
+	{
+		if (inventiory.getStackInSlot(slot) != null)
+		{
+			if(inventiory.getStackInSlot(slot).getItem() instanceof ItemCardPowerLink)
+			{
+				ItemCardPowerLink card = (ItemCardPowerLink) inventiory.getStackInSlot(slot).getItem();
+				PointXYZ png = card.getCardTargetPoint(inventiory.getStackInSlot(slot));
+				if(png != null)
+				{
+					if(png.dimensionId != world.provider.dimensionId) return null;
+					
+				if(world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				{
+					TileEntityCapacitor cap = (TileEntityCapacitor) world.getBlockTileEntity(png.X, png.Y, png.Z);
+				if (cap != null){
+					
+				  if(cap.getCapacitor_ID()== card.getValuefromKey("CapacitorID",inventiory.getStackInSlot(slot))&&  card.getValuefromKey("CapacitorID",inventiory.getStackInSlot(slot)) != 0 )
+				  {
+                    return cap;
+				   }
+				}
+			  }else{
+				  
+				  int Cap_ID =card.getValuefromKey("CapacitorID",inventiory.getStackInSlot(slot));
+				  if(Cap_ID!=0)
+				  {
+					  TileEntityCapacitor cap =  Linkgrid.getWorldMap(world).getCapacitor().get(Cap_ID);
+					  if (cap != null){
+						  
+						  ((ItemCard)card).setInformation(inventiory.getStackInSlot(slot), cap.getMaschinePoint(), "CapacitorID", Cap_ID);
+						  return cap;
+					  }
+				  }
+			
+			  }
+			  if(world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+				  inventiory.setInventorySlotContents(slot, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+			}
+		   }
+		}
+		
+		return null;
 	}
 
 	

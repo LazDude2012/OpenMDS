@@ -34,8 +34,7 @@ public class BlockSecurtyStorage extends BlockMFFSBase {
 
 	public BlockSecurtyStorage(int i) {
 		super(i);
-		setRequiresSelfNotify();
-		setBlockUnbreakable();	
+		setRequiresSelfNotify();	
 	}
 
 	@Override

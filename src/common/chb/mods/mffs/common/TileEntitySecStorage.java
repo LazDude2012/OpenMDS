@@ -60,39 +60,13 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 		}
 	}
 	
+	
+	
 	public TileEntityAdvSecurityStation getLinkedSecurityStation()
 	{
-
-		if (getStackInSlot(0) != null)
-		{
-			if(getStackInSlot(0).getItem() instanceof ItemCardSecurityLink)
-			{
-				ItemCardSecurityLink card = (ItemCardSecurityLink) getStackInSlot(0).getItem();
-				PointXYZ png = card.getCardTargetPoint(getStackInSlot(0));
-				if(png != null)
-				{
-					if(png.dimensionId != worldObj.provider.dimensionId) return null;
-					
-					if(worldObj.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityAdvSecurityStation)
-				{
-						TileEntityAdvSecurityStation sec = (TileEntityAdvSecurityStation) worldObj.getBlockTileEntity(png.X, png.Y, png.Z);
-				if (sec != null){
-					
-				  if(sec.getSecurtyStation_ID()== card.getTargetID("Secstation_ID",getStackInSlot(0))&&  card.getTargetID("Secstation_ID",getStackInSlot(0)) != 0 )
-				  {
-                    return sec;
-				   }
-				}
-			  }
-			  if(worldObj.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
-					this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-			}
-		   }
-		}
-		
-		return null;
+		return ItemCardSecurityLink.getLinkedSecurityStation(this, 0, worldObj);
 	}
-	
+
 	
 	
 	public int getSecStation_ID(){

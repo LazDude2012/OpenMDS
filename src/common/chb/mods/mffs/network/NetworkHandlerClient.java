@@ -71,18 +71,20 @@ public void onPacketData(INetworkManager manager,Packet250CustomPayload packet, 
 	{
 	case 100:
 	
-		
 		String DataPacket = dat.readUTF();
 		
 		for(String blockupdate : DataPacket.split(">"))
 		{
 		  if(blockupdate.length() > 0)
 		  {
-			  String[] splitttextur = blockupdate.split("#");
-			  String[] Texturid = splitttextur[1].split("/");
-			  String[] Dim = splitttextur[0].split("<");
-			  String[] Corrdinaten = Dim[1].split("/");
+
+			  String[] projector = blockupdate.split("<");
+			  String[] Corrdinaten = projector[1].split("/");
+			  String[] temp =projector[0].split("!");
+			  String[] Dim = temp[1].split("/");
+			  String[] ProjectorCorr = temp[0].split("/");
 			  
+
 			  if(Integer.parseInt(Dim[0].trim()) == world.provider.dimensionId)
 			  {
 				  if (world.getChunkFromBlockCoords(Integer.parseInt(Corrdinaten[0].trim()), Integer.parseInt(Corrdinaten[2].trim())).isChunkLoaded)
@@ -90,7 +92,14 @@ public void onPacketData(INetworkManager manager,Packet250CustomPayload packet, 
 					  TileEntity te = world.getBlockTileEntity(Integer.parseInt(Corrdinaten[0].trim()), Integer.parseInt(Corrdinaten[1].trim()), Integer.parseInt(Corrdinaten[2].trim()));
 					  if(te instanceof TileEntityForceField)
 					  {
-						  ((TileEntityForceField)te).setTexturid(Texturid);
+	
+						  TileEntity proj = world.getBlockTileEntity(Integer.parseInt(ProjectorCorr[2].trim()), Integer.parseInt(ProjectorCorr[1].trim()), Integer.parseInt(ProjectorCorr[0].trim()));
+                          if(proj instanceof TileEntityProjector)
+                          {
+                        	  ((TileEntityForceField)te).setTexturfile(((TileEntityProjector)proj).getForceFieldTexturfile());
+                        	  ((TileEntityForceField)te).setTexturid(((TileEntityProjector)proj).getForceFieldTexturID());
+                             
+                          }
 		  
 					  }
 				  }

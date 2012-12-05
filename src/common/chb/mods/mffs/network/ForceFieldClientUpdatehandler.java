@@ -37,10 +37,11 @@ public final class ForceFieldClientUpdatehandler implements IScheduledTickHandle
 		}
 		
 		
-		if(str.length()> 0)
+		if(str.length()>0)
+		{
 		NetworkHandlerClient.requestForceFieldInitialData(ModularForceFieldSystem.proxy.getClientWorld().provider.dimensionId, str.toString());
 		str.setLength(0);
-		
+		}
 	}
 
 	@Override

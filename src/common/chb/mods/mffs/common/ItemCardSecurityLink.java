@@ -28,6 +28,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import net.minecraftforge.common.ISidedInventory;
 
 public class ItemCardSecurityLink extends ItemCard  {
 
@@ -37,6 +38,52 @@ public class ItemCardSecurityLink extends ItemCard  {
 	
 	}
 
+	public static TileEntityAdvSecurityStation getLinkedSecurityStation(ISidedInventory inventiory,int slot,World world)
+	{
+		if (inventiory.getStackInSlot(slot) != null)
+		{
+			if(inventiory.getStackInSlot(slot).getItem() instanceof ItemCardSecurityLink)
+			{
+				ItemCardSecurityLink card = (ItemCardSecurityLink) inventiory.getStackInSlot(slot).getItem();
+				PointXYZ png = card.getCardTargetPoint(inventiory.getStackInSlot(slot));
+				if(png != null)
+				{
+					if(png.dimensionId != world.provider.dimensionId) return null;
+					
+				if(world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityAdvSecurityStation)
+				{
+				TileEntityAdvSecurityStation sec = (TileEntityAdvSecurityStation) world.getBlockTileEntity(png.X, png.Y, png.Z);
+				if (sec != null){
+					
+				  if(sec.getSecurtyStation_ID()== card.getValuefromKey("Secstation_ID",inventiory.getStackInSlot(slot))&&  card.getValuefromKey("Secstation_ID",inventiory.getStackInSlot(slot)) != 0 )
+				  {
+                    return sec;
+				   }
+				}
+			  }else{
+				  
+				  int Sec_ID =card.getValuefromKey("Secstation_ID",inventiory.getStackInSlot(slot));
+				  if(Sec_ID!=0)
+				  {
+					  TileEntityAdvSecurityStation sec =  Linkgrid.getWorldMap(world).getSecStation().get(Sec_ID);
+					  if (sec != null){
+						  
+						  ((ItemCard)card).setInformation(inventiory.getStackInSlot(slot), sec.getMaschinePoint(), "Secstation_ID", Sec_ID);
+						  return sec;
+					  }
+				  }
+			
+			  }
+			  if(world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+				  inventiory.setInventorySlotContents(slot, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+			}
+		   }
+		}
+		
+		return null;
+	}
+	
+	
 
 	@Override
 	public boolean onItemUseFirst(ItemStack itemstack,

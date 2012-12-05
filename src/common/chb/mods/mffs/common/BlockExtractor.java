@@ -30,7 +30,6 @@ public class BlockExtractor extends BlockMFFSBase {
 
 	public BlockExtractor(int i) {
 		super(i);
-		setRequiresSelfNotify();
 	}
 
 	@Override

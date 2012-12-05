@@ -23,9 +23,11 @@ package chb.mods.mffs.client;
 import net.minecraft.src.Block;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
+import net.minecraft.src.TileEntity;
 import net.minecraftforge.client.ForgeHooksClient;
 import chb.mods.mffs.common.ForceFieldTyps;
 import chb.mods.mffs.common.ModularForceFieldSystem;
+import chb.mods.mffs.common.TileEntityForceField;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class ForceFieldRenderer implements ISimpleBlockRenderingHandler {
@@ -35,6 +37,18 @@ public class ForceFieldRenderer implements ISimpleBlockRenderingHandler {
 		if(block == ModularForceFieldSystem.MFFSFieldblock) {
 			if(world.getBlockMetadata(x, y, z) == ForceFieldTyps.Camouflage.ordinal())
 			{
+				TileEntity te = world.getBlockTileEntity(x, y, z);
+				if(te instanceof TileEntityForceField)
+				{
+					if(((TileEntityForceField)te).getTexturfile()!=null)
+					{	
+	                ForgeHooksClient.bindTexture(((TileEntityForceField)te).getTexturfile(), 0);
+					renderer.renderStandardBlock(block, x, y, z);
+				    return true;
+					}
+				}
+				
+				
                 ForgeHooksClient.bindTexture("/terrain.png", 0);
 				renderer.renderStandardBlock(block, x, y, z);
 			}else
