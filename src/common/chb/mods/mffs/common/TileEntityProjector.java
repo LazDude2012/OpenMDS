@@ -374,7 +374,7 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 			  ForcefieldTexturtemp = index[0]+"/"+index[1]+"/"+index[2]+"/"+index[3]+"/"+index[4]+"/"+index[5];
 			  Texturfile = Block.blocksList[getStackInSlot(11).itemID].getTextureFile();
 			
-
+			  
 					if( !ForcefieldTexturtemp.equalsIgnoreCase(ForceFieldTexturids)  || !ForceFieldTexturfile.equalsIgnoreCase(getForceFieldTexturfile()))
 					{
 						if (getStackInSlot(11).getItem() == Item.bucketLava)

@@ -30,6 +30,7 @@ import chb.mods.mffs.network.NetworkHandlerServer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -282,6 +283,8 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 	public void scanner()
 	{
+		try{
+			
 		TileEntityAdvSecurityStation sec = 	getLinkedSecurityStation();
 		
 		if(sec!=null)
@@ -313,7 +316,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 				warnlist.add(player);
 				if(!sec.isAccessGranted(player.username, "SR"))
 				{
-				player.addChatMessage("!!! [Area Defence] You approach a locked area that's the only warning !!!");
+				player.addChatMessage("!!! [Area Defence] Warning you now in my Scanning range !!!");
 				player.attackEntityFrom(DamageSource.generic,1);
 				}
 
@@ -352,19 +355,22 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			
 		}
 		
-		
-		for(EntityPlayer warnplayer : warnlist)
+		 for (int i = 0; i < warnlist.size(); i++)
 		{
-			if(!Livinglist.contains(warnplayer))
-				warnlist.remove(warnplayer);
+			if(!Livinglist.contains(warnlist.get(i)))
+				warnlist.remove(warnlist.get(i));
 		}
 		
-		for(EntityPlayer actionplayer : actionlist)
+		 for (int i = 0; i < actionlist.size(); i++)
 		{
-			if(!Livinglist.contains(actionplayer))
-				actionlist.remove(actionplayer);
+			if(!Livinglist.contains(actionlist.get(i)))
+				actionlist.remove(actionlist.get(i));
 		}	
 		}
+		}
+		}catch(ConcurrentModificationException ex)
+		{
+			System.err.println("[ModularForceFieldSystem] catch ConcurrentModificationException Crash <TileEntityAreaDefenseStation:scanner> ");
 		}
 	}
 	
@@ -374,10 +380,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		{
 			DefenceAction(actionlist.get(i));
 		}
-		
 
-		
-		
 	}
 	
 		
