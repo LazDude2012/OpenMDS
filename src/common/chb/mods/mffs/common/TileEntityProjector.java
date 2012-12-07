@@ -75,6 +75,8 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 	private int[] focusmatrix = { 0, 0, 0, 0 }; // Up 7,Down 8,Right 9,Left 10
 	private String ForceFieldTexturids ="-76/-76/-76/-76/-76/-76";
 	private String ForceFieldTexturfile = "/terrain.png";
+	private int ForcefieldCamoblockid;
+	private int ForcefieldCamoblockmeta;
 	private int switchdelay;
 	private short forcefieldblock_meta;
 	private int ProjektorTyp;
@@ -142,6 +144,26 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 
 	public void setaccesstyp(int accesstyp) {
 		this.accesstyp = accesstyp;
+	}
+
+	
+	
+	public int getForcefieldCamoblockmeta() {
+		return ForcefieldCamoblockmeta;
+	}
+
+	public void setForcefieldCamoblockmeta(int forcefieldCamoblockmeta) {
+		ForcefieldCamoblockmeta = forcefieldCamoblockmeta;
+		NetworkHandlerServer.updateTileEntityField(this, "ForcefieldCamoblockmeta");
+	}
+
+	public int getForcefieldCamoblockid() {
+		return ForcefieldCamoblockid;
+	}
+
+	public void setForcefieldCamoblockid(int forcefieldCamoblockid) {
+		ForcefieldCamoblockid = forcefieldCamoblockid;
+		NetworkHandlerServer.updateTileEntityField(this, "ForcefieldCamoblockid");
 	}
 
 	public String getForceFieldTexturfile() {
@@ -386,8 +408,11 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 						if(getStackInSlot(11).getItem() != Item.bucketLava && getStackInSlot(11).getItem() != Item.bucketWater) 
 							this.setForceFieldTexturID(ForcefieldTexturtemp);
 							
+						this.setForcefieldCamoblockmeta(getStackInSlot(11).getItemDamage());
+						this.setForcefieldCamoblockid(getStackInSlot(11).itemID);
 						this.setForceFieldTexturfile(Texturfile);
 						UpdateForcefieldTexttur();
+
 					}
 					
 		}else{
@@ -968,6 +993,8 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 		NetworkedFields.add("Projektor_ID");
 		NetworkedFields.add("ForceFieldTexturfile");
 		NetworkedFields.add("ForceFieldTexturids");
+		NetworkedFields.add("ForcefieldCamoblockid");
+		NetworkedFields.add("ForcefieldCamoblockmeta");
 	
 
 		return NetworkedFields;

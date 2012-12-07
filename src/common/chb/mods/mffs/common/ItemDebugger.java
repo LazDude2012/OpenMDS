@@ -48,6 +48,12 @@ public class ItemDebugger extends  ItemMultitool  {
 		if (!world.isRemote) {
 			
 			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getForcefieldCamoblockmeta());
+			
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getForcefieldCamoblockid());
+			
+			if(tileEntity instanceof TileEntityForceField)
 				System.out.println(((TileEntityForceField)tileEntity).getTexturid(0));
 			
 			if(tileEntity instanceof TileEntityForceField)
@@ -58,11 +64,20 @@ public class ItemDebugger extends  ItemMultitool  {
 
 			if(tileEntity instanceof TileEntityProjector)
 				System.out.println(((TileEntityProjector)tileEntity).getForceFieldTexturID());
+			
+			if(tileEntity instanceof TileEntityProjector)
+				System.out.println(((TileEntityProjector)tileEntity).getForcefieldCamoblockid());
 
 			
 		}else{
 			
 			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getForcefieldCamoblockmeta());
+			
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getForcefieldCamoblockid());
+			
+			if(tileEntity instanceof TileEntityForceField)
 				System.out.println(((TileEntityForceField)tileEntity).getTexturid(0));
 			
 			if(tileEntity instanceof TileEntityForceField)
@@ -73,6 +88,9 @@ public class ItemDebugger extends  ItemMultitool  {
 			
 			if(tileEntity instanceof TileEntityProjector)
 				System.out.println(((TileEntityProjector)tileEntity).getForceFieldTexturID());
+			
+			if(tileEntity instanceof TileEntityProjector)
+				System.out.println(((TileEntityProjector)tileEntity).getForcefieldCamoblockid());
 		}
 
 		return false;

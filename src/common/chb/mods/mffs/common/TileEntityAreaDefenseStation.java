@@ -355,8 +355,14 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			
 		}
 		
+
+	
+		}
+		
+		
 		 for (int i = 0; i < warnlist.size(); i++)
 		{
+	
 			if(!Livinglist.contains(warnlist.get(i)))
 				warnlist.remove(warnlist.get(i));
 		}
@@ -365,13 +371,16 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		{
 			if(!Livinglist.contains(actionlist.get(i)))
 				actionlist.remove(actionlist.get(i));
-		}	
 		}
+		
+		
+		
 		}
 		}catch(ConcurrentModificationException ex)
 		{
 			System.err.println("[ModularForceFieldSystem] catch ConcurrentModificationException Crash <TileEntityAreaDefenseStation:scanner> ");
 		}
+
 	}
 	
 	public void DefenceAction(){

@@ -98,7 +98,8 @@ public void onPacketData(INetworkManager manager,Packet250CustomPayload packet, 
                           {
                         	  ((TileEntityForceField)te).setTexturfile(((TileEntityProjector)proj).getForceFieldTexturfile());
                         	  ((TileEntityForceField)te).setTexturid(((TileEntityProjector)proj).getForceFieldTexturID());
-                             
+                        	  ((TileEntityForceField)te).setForcefieldCamoblockid(((TileEntityProjector)proj).getForcefieldCamoblockid());
+                        	  ((TileEntityForceField)te).setForcefieldCamoblockmeta(((TileEntityProjector)proj).getForcefieldCamoblockmeta());
                           }
 		  
 					  }

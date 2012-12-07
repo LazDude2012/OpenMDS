@@ -40,8 +40,10 @@ private Random random = new Random();
 private int[] texturid = {-76,-76,-76,-76,-76,-76};
 private String texturfile;
 private int Ticker = 0 ;
+private int ForcefieldCamoblockid;
+private int ForcefieldCamoblockmeta;
 
-	public int getTicker() {
+public int getTicker() {
 	return Ticker;
 }
 
@@ -50,6 +52,24 @@ public void setTicker(int ticker) {
 }
 
 	public TileEntityForceField() {
+	}
+
+	
+	
+	public int getForcefieldCamoblockmeta() {
+		return ForcefieldCamoblockmeta;
+	}
+
+	public void setForcefieldCamoblockmeta(int forcefieldCamoblockmeta) {
+		ForcefieldCamoblockmeta = forcefieldCamoblockmeta;
+	}
+
+	public int getForcefieldCamoblockid() {
+		return ForcefieldCamoblockid;
+	}
+
+	public void setForcefieldCamoblockid(int forcefieldCamoblockid) {
+		ForcefieldCamoblockid = forcefieldCamoblockid;
 	}
 
 	public String getTexturfile() {
@@ -156,6 +176,8 @@ public void setTicker(int ticker) {
 				{
 					setTexturid(projector.getForceFieldTexturID(),projector);
 					setTexturfile(projector.getForceFieldTexturfile());
+				    setForcefieldCamoblockid(projector.getForcefieldCamoblockid());
+				    setForcefieldCamoblockmeta(projector.getForcefieldCamoblockmeta());
 				}
 			}
 		}

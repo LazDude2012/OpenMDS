@@ -167,11 +167,9 @@ public class ItemProjectorModuleTube extends Module3DBase {
 	public boolean supportsOption(Item item) {
 		
 		if(item instanceof ItemProjectorOptionCamoflage) return true;
-		if(item instanceof ItemProjectorOptionDefenseStation) return true;
 		if(item instanceof ItemProjectorOptionFieldFusion) return true;
 		if(item instanceof ItemProjectorOptionFieldManipulator) return true;
 		if(item instanceof ItemProjectorOptionForceFieldJammer) return true;
-		if(item instanceof ItemProjectorOptionMobDefence) return true;
 		if(item instanceof ItemProjectorOptionSponge) return true;
 		if(item instanceof ItemProjectorOptionBlockBreaker) return true;
 		if(item instanceof ItemProjectorOptionTouchDamage) return true;

@@ -34,15 +34,15 @@ public class MFFSWorldGenerator implements IWorldGenerator{
 			chunkX = chunkX << 4;
 			chunkZ = chunkZ << 4;
 
-	                	WorldGenMinable worldGenMinable = new WorldGenMinable(ModularForceFieldSystem.MFFSMonazitOre.blockID, 0,ModularForceFieldSystem.MonazitOreworldamount);
+	                	WorldGenMinable worldGenMinable = new WorldGenMinable(ModularForceFieldSystem.MFFSMonazitOre.blockID, 0,ModularForceFieldSystem.MonazitOreworldamount+1);
 
-	                    for (int i = 0; i < ModularForceFieldSystem.MonazitOreworldamount; i++)
+	                    for (int i = 0; i < ModularForceFieldSystem.MonazitOreworldamount+1; i++)
 	                    {
 	                        int x = chunkX + rand.nextInt(16);
 	                        int y = rand.nextInt(80) + 0;
 	                        int z = chunkZ + rand.nextInt(16);
 
-	            			int randAmount = rand.nextInt(ModularForceFieldSystem.MonazitOreworldamount);
+	            			int randAmount = rand.nextInt(ModularForceFieldSystem.MonazitOreworldamount+1);
 
 	                    	worldGenMinable.generate(world, rand, x, y, z);
 	                    }

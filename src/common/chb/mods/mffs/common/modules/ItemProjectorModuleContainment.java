@@ -140,7 +140,6 @@ public class ItemProjectorModuleContainment extends Module3DBase {
 		if(item instanceof ItemProjectorOptionCamoflage) return true;
 		if(item instanceof ItemProjectorOptionDefenseStation) return true;
 		if(item instanceof ItemProjectorOptionFieldFusion) return true;
-		if(item instanceof ItemProjectorOptionFieldManipulator) return true;
 		if(item instanceof ItemProjectorOptionForceFieldJammer) return true;
 		if(item instanceof ItemProjectorOptionMobDefence) return true;
 		if(item instanceof ItemProjectorOptionSponge) return true;

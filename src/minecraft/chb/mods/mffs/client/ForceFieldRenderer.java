@@ -40,6 +40,19 @@ public class ForceFieldRenderer implements ISimpleBlockRenderingHandler {
 				TileEntity te = world.getBlockTileEntity(x, y, z);
 				if(te instanceof TileEntityForceField)
 				{
+					
+					if(((TileEntityForceField)te).getForcefieldCamoblockid()!=-1 && ((TileEntityForceField)te).getForcefieldCamoblockid() < 146)
+					{
+					Block customblock =	Block.blocksList[((TileEntityForceField)te).getForcefieldCamoblockid()];
+					if(customblock != null)
+					{
+					ForgeHooksClient.bindTexture(((TileEntityForceField)te).getTexturfile(), 0);
+					renderer.renderBlockByRenderType(customblock, x, y, z);
+					return true;
+					}
+
+					}
+					
 					if(((TileEntityForceField)te).getTexturfile()!=null)
 					{	
 	                ForgeHooksClient.bindTexture(((TileEntityForceField)te).getTexturfile(), 0);
