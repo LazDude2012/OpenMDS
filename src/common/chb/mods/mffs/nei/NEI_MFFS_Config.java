@@ -18,6 +18,7 @@ public class NEI_MFFS_Config implements IConfigureNEI {
 		API.hideItem(ModularForceFieldSystem.MFFSitemfc.shiftedIndex);
 		API.hideItem(ModularForceFieldSystem.MFFSItemIDCard.shiftedIndex);
 		API.hideItem(ModularForceFieldSystem.MFFSItemSecLinkCard.shiftedIndex);
+		API.hideItem(ModularForceFieldSystem.MFFSFieldblock.blockID);
 
 		MultiItemRange blocks = new MultiItemRange();
 		MultiItemRange items = new MultiItemRange();
@@ -30,7 +31,6 @@ public class NEI_MFFS_Config implements IConfigureNEI {
 		blocks.add(ModularForceFieldSystem.MFFSSecurtyStation);
 		blocks.add(ModularForceFieldSystem.MFFSCapacitor);
 		blocks.add(ModularForceFieldSystem.MFFSProjector);
-		blocks.add(ModularForceFieldSystem.MFFSFieldblock);
 		blocks.add(ModularForceFieldSystem.MFFSSecurtyStorage);
 		blocks.add(ModularForceFieldSystem.MFFSMonazitOre);
 
