@@ -24,6 +24,7 @@ import ic2.api.NetworkHelper;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
+import net.minecraft.src.GuiErrorScreen;
 
 import org.lwjgl.opengl.GL11;
 

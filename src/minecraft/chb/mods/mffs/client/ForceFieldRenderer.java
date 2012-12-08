@@ -20,7 +20,10 @@
 
 package chb.mods.mffs.client;
 
+import java.lang.reflect.Constructor;
+
 import net.minecraft.src.Block;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.TileEntity;
@@ -40,17 +43,16 @@ public class ForceFieldRenderer implements ISimpleBlockRenderingHandler {
 				TileEntity te = world.getBlockTileEntity(x, y, z);
 				if(te instanceof TileEntityForceField)
 				{
-					
-					if(((TileEntityForceField)te).getForcefieldCamoblockid()!=-1 && ((TileEntityForceField)te).getForcefieldCamoblockid() < 146)
+					if(ForceFieldTyps.Camouflage.ordinal()==((TileEntityForceField)te).getForcefieldCamoblockmeta()
+						&& ((TileEntityForceField)te).getForcefieldCamoblockid() != 327	&& ((TileEntityForceField)te).getForcefieldCamoblockid() != 326	)
 					{
 					Block customblock =	Block.blocksList[((TileEntityForceField)te).getForcefieldCamoblockid()];
 					if(customblock != null)
 					{
-					ForgeHooksClient.bindTexture(((TileEntityForceField)te).getTexturfile(), 0);
+					ForgeHooksClient.bindTexture(customblock.getTextureFile(), 1);
 					renderer.renderBlockByRenderType(customblock, x, y, z);
 					return true;
 					}
-
 					}
 					
 					if(((TileEntityForceField)te).getTexturfile()!=null)

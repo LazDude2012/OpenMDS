@@ -189,7 +189,7 @@ return true;
 		{
 			int powerleft = this.getForceEnergy(itemstack);
 			ItemStack hand = entityplayer.inventory.getCurrentItem();
-			hand= new ItemStack(ModularForceFieldSystem.MFFSitemWrench, 1);
+			hand= new ItemStack(ModularForceFieldSystem.MFFSitemManuelBook, 1);
 			ForceEnergyItems.charge(hand, powerleft,entityplayer);
 		return hand;
 		}

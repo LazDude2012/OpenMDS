@@ -29,11 +29,12 @@ import net.minecraft.src.GuiContainer;
 import net.minecraft.src.TileEntity;
 
 public enum ForceFieldTyps {
+Camouflage(2),
 Default(1),
 Zapper(3),
 Area(1),
-Containment(1),
-Camouflage(2);
+Containment(1);
+
 	
 int costmodi;
 

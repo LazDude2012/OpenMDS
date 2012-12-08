@@ -26,6 +26,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 import java.lang.reflect.Constructor;
+import chb.mods.mffs.client.GuiManuelScreen;
 
 public class CommonProxy implements IGuiHandler {
 	
@@ -39,6 +40,12 @@ public class CommonProxy implements IGuiHandler {
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+		
+		if(ID!=0)
+		{
+			return new GuiManuelScreen(new ContainerDummy());
+		}
+		
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		if (te == null)
 		{
@@ -60,8 +67,8 @@ public class CommonProxy implements IGuiHandler {
 	}
 
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
- {			TileEntity te = world.getBlockTileEntity(x, y, z);
+	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {		
+	 TileEntity te = world.getBlockTileEntity(x, y, z);
 			if (te == null)
 			{
 				return null;
@@ -80,7 +87,7 @@ public class CommonProxy implements IGuiHandler {
 				return null;
 
 		}
-	}
+
 
 	public World getClientWorld() {
 		return null;

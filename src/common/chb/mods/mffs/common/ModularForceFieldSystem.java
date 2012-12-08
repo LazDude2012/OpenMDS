@@ -84,8 +84,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.16")
-@NetworkMod(versionBounds = "[2.2.8.1.16]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.17a")
+@NetworkMod(versionBounds = "[2.2.8.1.17a]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
 
 public class ModularForceFieldSystem {
 	
@@ -121,6 +121,7 @@ public class ModularForceFieldSystem {
 	public static Item MFFSitemfc;
 	public static Item MFFSItemIDCard;
 	public static Item MFFSItemSecLinkCard;
+	public static Item MFFSitemManuelBook;
 
 	public static Item MFFSitemupgradeexctractorboost;
 	public static Item MFFSitemupgradecaprange;
@@ -146,6 +147,8 @@ public class ModularForceFieldSystem {
 
 	public static Item MFFSProjectorFFDistance;
 	public static Item MFFSProjectorFFStrenght;
+	
+
 
 	public static int MonazitOreworldamount = 4;
 
@@ -254,6 +257,10 @@ public class ModularForceFieldSystem {
 			MFFSitemMFDdebugger = new ItemDebugger(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemMFDdebugger", 11111)
 					.getInt(11111)).setItemName("itemMFDdebugger");
+			MFFSitemManuelBook = new ItemManuelBook(MFFSconfig.getItem(
+					Configuration.CATEGORY_ITEM, "itemManuelBook", 11112)
+					.getInt(11112)).setItemName("itemManuelBook"); 
+			
 			MFFSitemcardempty = new ItemCardEmpty(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemcardempty", 11115)
 					.getInt(11115)).setItemName("itemcardempty");
@@ -368,6 +375,9 @@ public class ModularForceFieldSystem {
 			MFFSitemForcicumCell = new ItemForcicumCell(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemForcicumCell", 11146)
 					.getInt(11146)).setItemName("itemForcicumCell");
+			
+			
+			
 
 		} catch (Exception e) {
 			FMLLog.log(Level.SEVERE, e,
@@ -418,6 +428,8 @@ public class ModularForceFieldSystem {
 				"MFFS MultiTool <Switch>");
 		LanguageRegistry.instance().addNameForObject(MFFSitemWrench, "en_US",
 				"MFFS MultiTool <Wrench>");
+		LanguageRegistry.instance().addNameForObject(MFFSitemManuelBook, "en_US",
+				"MFFS MultiTool <Guide>");
 		LanguageRegistry.instance().addNameForObject(MFFSitemFocusmatix,
 				"en_US", "MFFS Projector Focus Matrix");
 		LanguageRegistry.instance().addNameForObject(MFFSitemFieldTeleporter,

@@ -79,7 +79,6 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 
 	        if(ForceField  != null){
 	        	
-	        	
 	        	if(ForceField.getTexturid(1) == 67 || ForceField.getTexturid(1) == 205)
 	        	{
 	        		return 1;
