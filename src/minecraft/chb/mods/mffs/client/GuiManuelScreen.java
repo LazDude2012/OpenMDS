@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
+import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.Versioninfo;
 
 import net.minecraft.src.Container;
@@ -12,6 +13,10 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.RenderHelper;
+import net.minecraft.src.RenderItem;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
@@ -80,6 +85,7 @@ public class GuiManuelScreen extends GuiContainer
     	pages.clear();
     	pages.add("Table of Content");
     	pages.add("Changelog");
+    	pages.add("Monazit/Forcicium/-Cell");
     }
     
     private void getcontent(int page)
@@ -87,22 +93,40 @@ public class GuiManuelScreen extends GuiContainer
     	switch(page)
     	{
     	case 0:
-    	
-        fontRenderer.drawString("Table of Content", 50, 20, 0xFFFFFF);	
+    	 fontRenderer.drawString("Table of Content", 50, 20, 0xFFFFFF);	
     	for(int p=0;p<pages.size();p++)	
     	{
     	 fontRenderer.drawString("["+p+"]: "+ pages.get(p), -20, 40+(p*10), 0xFFFFFF);		
     	}
     	break;
     	case 1:
-    		
     	 fontRenderer.drawString("Changelog", 50, 20, 0xFFFFFF);
-    	
-    	 fontRenderer.drawString("add:    MFFS MultiTool <Guide> ", -20, 40, 0xFFFFFF);
-    	 fontRenderer.drawString("change: Projector Camo System", -20, 50, 0xFFFFFF);
-    		
+         fontRenderer.drawString("add MFFS MultiTool <Guide> (in progress) ", -20, 40, 0xFFFFFF);
+    	 fontRenderer.drawString("Projector Camo System add Mod Blocks", -20, 60, 0xFFFFFF);
+    	 fontRenderer.drawString("(graphic errors possible if not supportet)", -20, 70, 0xFFFFFF);
+    	 fontRenderer.drawString("update UE API to 1.2.0", -20, 90, 0xFFFFFF);
     	break;	
-    	}
+	case 2:
+		RenderItem renderItem = new RenderItem();
+        RenderHelper.enableGUIStandardItemLighting();
+        renderItem.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(ModularForceFieldSystem.MFFSMonazitOre), -10, 20);
+        renderItem.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(ModularForceFieldSystem.MFFSitemForcicium), -10, 40);
+        renderItem.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(ModularForceFieldSystem.MFFSitemForcicumCell), -10, 60);
+        RenderHelper.disableStandardItemLighting();
+		
+        fontRenderer.drawString("Monazit Ore (Block/WorldGen)", 20, 25, 0xFFFFFF);
+        fontRenderer.drawString("Forcicium (Item/for Crafting)", 20, 45, 0xFFFFFF);
+        fontRenderer.drawString("Forcicium Cell (Item/from Crafting)", 20, 65, 0xFFFFFF);
+   		
+        fontRenderer.drawString("Monazite can be found between 80 and 0", -20, 80, 0xFFFFFF);
+        fontRenderer.drawString("Use furnace to get 4 Forcicium", -20, 90, 0xFFFFFF);
+        fontRenderer.drawString("Use IC Macerator to get 8 Forcicium", -20, 100, 0xFFFFFF);
+        fontRenderer.drawString("Forcicium Cell can store 1kForcicium", -20, 110, 0xFFFFFF);
+        fontRenderer.drawString("if in hand right click to activate", -20, 120, 0xFFFFFF);
+        fontRenderer.drawString("when active remove Forcicium from  ", -20, 130, 0xFFFFFF);
+        fontRenderer.drawString("Player Inventory and stores it", -20, 140, 0xFFFFFF);
+   	break;	
+   	}
     }
 
     

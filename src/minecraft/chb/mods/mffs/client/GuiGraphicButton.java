@@ -119,6 +119,22 @@ public class GuiGraphicButton extends GuiButton
                 }
                 }
             
+            if((tileEntity instanceof TileEntityAreaDefenseStation) && typ == 4)
+            {
+                switch(((TileEntityAreaDefenseStation)tileEntity).getScanmode()) 
+                {
+                case 0:
+                	this.drawTexturedModalRect(this.xPosition, this.yPosition, 160, 96, this.width, this.height);
+                break;
+                case 1:
+                	this.drawTexturedModalRect(this.xPosition, this.yPosition, 176, 96, this.width, this.height);
+                break;
+                }
+            	
+            }
+            
+            
+            
             
             if(tileEntity instanceof TileEntityProjector)
             {

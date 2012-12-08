@@ -69,6 +69,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	private int SwitchTyp;
 	private int contratyp;
 	private int actionmode;
+	private int scanmode;
 	private boolean OnOffSwitch;
 	
 	protected List<EntityPlayer> warnlist = new ArrayList<EntityPlayer>();
@@ -87,6 +88,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		SwitchTyp = 0;
 		contratyp = 1;
 		actionmode = 0;
+		scanmode = 1;
 		OnOffSwitch = false;
 	}
 	
@@ -96,6 +98,16 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	// Start Getter AND Setter
 
 	
+
+	public int getScanmode() {
+		return scanmode;
+	}
+
+	public void setScanmode(int scanmode) {
+		this.scanmode = scanmode;
+	}
+
+
 	public int getActionmode() {
 		return actionmode;
 	}
@@ -238,6 +250,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		SwitchTyp = nbttagcompound.getInteger("SwitchTyp");
 		contratyp = nbttagcompound.getInteger("contratyp");
 		actionmode= nbttagcompound.getInteger("actionmode");
+		scanmode= nbttagcompound.getInteger("scanmode");
 		OnOffSwitch = nbttagcompound.getBoolean("OnOffSwitch");
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		Inventory = new ItemStack[getSizeInventory()];
@@ -259,6 +272,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		nbttagcompound.setInteger("SwitchTyp", SwitchTyp);
 		nbttagcompound.setInteger("actionmode", actionmode);
 		nbttagcompound.setBoolean("OnOffSwitch", OnOffSwitch);
+		nbttagcompound.setInteger("scanmode", scanmode);
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < Inventory.length; i++) {
 			if (Inventory[i] != null) {
@@ -289,28 +303,37 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		
 		if(sec!=null)
 		{
-		int xmin = xCoord - getInfoDistance();
-		int xmax = xCoord + getInfoDistance();
-		int ymin = yCoord - getInfoDistance();
-		int ymax = yCoord + getInfoDistance();
-		int zmin = zCoord - getInfoDistance();
-		int zmax = zCoord + getInfoDistance();
+		double xmininfo = xCoord- getInfoDistance();
+		double xmaxinfo = xCoord+ getInfoDistance();
+		double ymininfo = yCoord- getInfoDistance();
+		double ymaxinfo = yCoord+ getInfoDistance();
+		double zmininfo = zCoord- getInfoDistance();
+		double zmaxinfo = zCoord+ getInfoDistance();
 		
-		List<EntityLiving> Livinglist = worldObj.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(xmin, ymin, zmin, xmax, ymax, zmax));
+		double xminaction = xCoord - getActionDistance();
+		double xmaxaction = xCoord+ getActionDistance();
+		double yminaction = yCoord- getActionDistance();
+		double ymaxaction = yCoord+ + getActionDistance();
+		double zminaction = zCoord- getActionDistance();
+		double zmaxaction = zCoord+ getActionDistance();
+		
+
+		List<EntityLiving> infoLivinglist = worldObj.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(xmininfo, ymininfo, zmininfo, xmaxinfo, ymaxinfo, zmaxinfo));
+		List<EntityLiving> actionLivinglist = worldObj.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(xminaction, yminaction, zminaction, xmaxaction, ymaxaction, zmaxaction));
 		
 		
-		for(EntityLiving Living : Livinglist)
+		for(EntityLiving Living : infoLivinglist)
 		{
+			if(Living instanceof EntityPlayer)
+			{
+			EntityPlayer player = (EntityPlayer) Living;
+			int distance = (int) Math.round(PointXYZ.distance(getMaschinePoint(), new PointXYZ((int)Living.posX,(int)Living.posY,(int)Living.posZ,worldObj)));
 			
-		int distance = PointXYZ.distance(getMaschinePoint(), new PointXYZ((int)Living.posX,(int)Living.posY,(int)Living.posZ,worldObj));
-		
-		
-		if(Living instanceof EntityPlayer)
-		{
-		EntityPlayer player = (EntityPlayer) Living;
-		
-		if(distance <=  getInfoDistance())
-		{
+			if(distance > getInfoDistance() && this.getScanmode()==1){
+				continue;
+			}
+			
+			
 			if(!warnlist.contains(player))
 			{
 				warnlist.add(player);
@@ -321,67 +344,72 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 				}
 
 			}
+			
+		   }		
 		}
 		
-		if(distance <=  getActionDistance())
+		
+		for(EntityLiving Living : actionLivinglist)
 		{
+		  if(Living instanceof EntityPlayer)
+		  {
+		   EntityPlayer player = (EntityPlayer) Living;
+		   
+		   int distance = (int) Math.round(PointXYZ.distance(getMaschinePoint(), new PointXYZ((int)Living.posX,(int)Living.posY,(int)Living.posZ,worldObj)));
+			if(distance > getActionDistance() && this.getScanmode()==1)
+				continue;
+			
 			if(!actionlist.contains(player))
 			{
 				actionlist.add(player);
 				DefenceAction(player);
 			}
 			
-		}else{
-			
-			if(actionlist.contains(player))
-			   actionlist.remove(player);
-		}
-		}else{
-			
-			if(distance <=  getActionDistance())
-			{
+		  }else{
+			  
+			  int distance = (int) Math.round(PointXYZ.distance(getMaschinePoint(), new PointXYZ((int)Living.posX,(int)Living.posY,(int)Living.posZ,worldObj)));	
+				if(distance > getActionDistance() && this.getScanmode()==1)
+					continue;
+				
 				if(!NPClist.contains(Living)){
 					NPClist.add(Living);
 					DefenceAction(Living);
 				}
 			
-				
-			}else{
-				
-				if(NPClist.contains(Living))
-					NPClist.remove(Living);
-			}
-			
-			
+			  
+		  }
 		}
+		
+		
+		
 		
 
-	
-		}
-		
-		
-		 for (int i = 0; i < warnlist.size(); i++)
+		for (int i = 0; i < actionlist.size(); i++)
 		{
-	
-			if(!Livinglist.contains(warnlist.get(i)))
-				warnlist.remove(warnlist.get(i));
-		}
-		
-		 for (int i = 0; i < actionlist.size(); i++)
-		{
-			if(!Livinglist.contains(actionlist.get(i)))
+			if(!actionLivinglist.contains(actionlist.get(i)))
 				actionlist.remove(actionlist.get(i));
 		}
 		
-		
-		
-		}
-		}catch(ConcurrentModificationException ex)
+	
+		for (int i = 0; i < warnlist.size(); i++)
 		{
-			System.err.println("[ModularForceFieldSystem] catch ConcurrentModificationException Crash <TileEntityAreaDefenseStation:scanner> ");
+	
+			if(!infoLivinglist.contains(warnlist.get(i)))
+				warnlist.remove(warnlist.get(i));
 		}
-
+		
+		
+		
+		
+		}
+		}catch(Exception ex)
+		{
+			System.err.println("[ModularForceFieldSystem] catch  Crash <TileEntityAreaDefenseStation:scanner> ");
+		}
+		
+		
 	}
+	
 	
 	public void DefenceAction(){
 		
@@ -465,10 +493,12 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		case 3: //all
 			cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
 			Living.setEntityHealth(0);
+			NPClist.remove(Living);
 			break;
 		case 4: //Hostile
 			if(Living instanceof EntityMob || Living instanceof EntitySlime || Living instanceof EntityGhast){
 				Living.setEntityHealth(0);
+				NPClist.remove(Living);
 				cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
 			}
 			
@@ -477,6 +507,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			
 			if(!(Living instanceof EntityMob) && !(Living instanceof EntitySlime) && !(Living instanceof EntityGhast)){
 				Living.setEntityHealth(0);	
+				NPClist.remove(Living);
 				cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
 			}
 			break;
@@ -705,6 +736,8 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 				this.setTicker((short) (this.getTicker() + 1));
 			}
+			
+			
 		}
 	}
 
@@ -802,13 +835,19 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 				   setActionmode(0);
 		       }else{
 		    	   setActionmode(getActionmode()+1);
-		       }
-			   
-
+		       }  
 		}
 		
+		if (Integer.parseInt(event) == 3) {
+			
+			if (this.getScanmode() == 0) {
+				this.setScanmode(1);
+			} else {
+				this.setScanmode(0);
+			}
+		} 
 		}
-
+		
 	}
 	
 	@Override

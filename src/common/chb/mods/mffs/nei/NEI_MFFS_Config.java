@@ -14,6 +14,7 @@ public class NEI_MFFS_Config implements IConfigureNEI {
 		API.hideItem(ModularForceFieldSystem.MFFSitemSwitch.shiftedIndex);
 		API.hideItem(ModularForceFieldSystem.MFFSitemFieldTeleporter.shiftedIndex);
 		API.hideItem(ModularForceFieldSystem.MFFSitemMFDidtool.shiftedIndex);
+		API.hideItem(ModularForceFieldSystem.MFFSitemManuelBook.shiftedIndex);
 
 		API.hideItem(ModularForceFieldSystem.MFFSitemfc.shiftedIndex);
 		API.hideItem(ModularForceFieldSystem.MFFSItemIDCard.shiftedIndex);

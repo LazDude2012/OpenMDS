@@ -60,12 +60,14 @@ public void initGui() {
 	controlList.add(new GuiGraphicButton(0, (width / 2) + 107, (height / 2) -104,DefenceStation,1));
 	controlList.add(new GuiGraphicButton(1, (width / 2) + 47, (height / 2)- 38,DefenceStation,2));
 	controlList.add(new GuiGraphicButton(2, (width / 2) - 36, (height / 2) - 58,DefenceStation,3));
+	controlList.add(new GuiGraphicButton(3, (width / 2) +90, (height / 2) - 104,DefenceStation,4));
     super.initGui();
 }
 
 @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		fontRenderer.drawString("MFFS Defence Station", -10, -17, 0x404040);
+		fontRenderer.drawString("MFFS Defence Station", -30, -17, 0x404040);
+		fontRenderer.drawString("scan mode: ", 120, -17, 0x404040);
 		
 		switch(DefenceStation.getActionmode())
 		{

@@ -33,6 +33,7 @@ public class ContainerAreaDefenseStation extends Container {
     private int SwitchTyp;
     private int contratyp;
     private int actionmode;
+    private int scanmode;
 	private EntityPlayer player;
 
 	public ContainerAreaDefenseStation(EntityPlayer player,
@@ -41,6 +42,7 @@ public class ContainerAreaDefenseStation extends Container {
 		SwitchTyp = -1;
 		contratyp = -1;
 		actionmode = -1;
+		scanmode = -1;
 
 		defstation = tileentity;
 		this.player = player;
@@ -111,7 +113,12 @@ public class ContainerAreaDefenseStation extends Container {
 				icrafting.sendProgressBarUpdate(this, 3,
 						defstation.getActionmode());
 			}
+			if (scanmode != defstation.getScanmode()) {
+				icrafting.sendProgressBarUpdate(this, 4,
+						defstation.getScanmode());
+			}
 		}
+		scanmode = defstation.getScanmode();
 		actionmode = defstation.getActionmode();
 		contratyp = defstation.getcontratyp();
 		capacity = defstation.getCapacity();
@@ -132,6 +139,9 @@ public class ContainerAreaDefenseStation extends Container {
 			break;
 		case 3:
 			defstation.setActionmode(j);
+			break;
+		case 4:
+			defstation.setScanmode(j);
 			break;
 		}
 	}

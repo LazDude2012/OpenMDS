@@ -27,12 +27,14 @@ import ic2.api.Direction;
 import ic2.api.EnergyNet;
 import ic2.api.IEnergySink;
 
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import universalelectricity.core.electricity.ElectricityManager;
-import universalelectricity.core.implement.IElectricityReceiver;
-import universalelectricity.core.implement.IJouleStorage;
+import universalelectricity.core.electricity.Electricity;
+import universalelectricity.core.electricity.ElectricityConnections;
+import universalelectricity.core.implement.IConductor;
+import universalelectricity.core.vector.Vector3;
 
 import buildcraft.api.gates.IOverrideDefaultTriggers;
 import buildcraft.api.gates.ITrigger;
@@ -61,7 +63,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntityExtractor extends TileEntityMachines implements 
-INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IElectricityReceiver,IJouleStorage{
+INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink{
 	private ItemStack inventory[];
 
 	private int workmode = 0;
@@ -78,7 +80,7 @@ INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IEle
 	private int capacity;
 	private IPowerProvider powerProvider;
 	private boolean addedToEnergyNet;
-	private double wattHours = 0;
+
 
 
 
@@ -104,6 +106,7 @@ INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IEle
 		}
 
 	}
+	
 
 	public int getCapacity(){
 		return capacity;
@@ -194,6 +197,8 @@ INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IEle
 	}
 
 	public void addtogrid() {
+		
+		
 		if (Extractor_ID == 0) {
 			Extractor_ID = Linkgrid.getWorldMap(worldObj)
 					.newID(this);
@@ -362,6 +367,7 @@ INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IEle
 				addtogrid();
 				checkslots(true);
 				create = false;
+				
 			}
 
 			if (!addedToEnergyNet && ModularForceFieldSystem.ic2found) {
@@ -551,7 +557,16 @@ INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IEle
 
 	@Override
 	public void onNetworkHandlerUpdate(String field){ 
+		
+		if(field.equalsIgnoreCase("side") && ModularForceFieldSystem.uefound)
+		{
+
+		  ElectricityConnections.registerConnector(this, EnumSet.of(ForgeDirection.getOrientation(this.getFacing()).getOpposite()));
+			
+		}
+		
 		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+		
 	}
 
 	@Override
@@ -706,67 +721,31 @@ INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink,IEle
 	}
 
 	public void converUEtoWorkEnergy(){
-		if(this.getWorkEnergy() < this.getMaxWorkEnergy())
+		
+		ForgeDirection inputDirection = ForgeDirection.getOrientation(this.getFacing()).getOpposite();
+		
+		TileEntity inputTile = Vector3.getTileEntityFromSide(this.worldObj, Vector3.get(this), inputDirection);
+
+		if (inputTile != null)
 		{
-	      if(getWorkEnergy() + (wattHours/30) > getMaxWorkEnergy())
-	      {
-	    	     setWorkEnergy(getMaxWorkEnergy());
-	    	     wattHours = 0;
-	      }else{
-	             setWorkEnergy((int) (getWorkEnergy() + (wattHours/30)));
-	             wattHours = 0;
+		 if (inputTile instanceof IConductor)
+		 {
+		  if (this.getWorkEnergy()  >= this.getMaxWorkEnergy())
+		  {
+		   ((IConductor) inputTile).getNetwork().stopRequesting(this);
+		  }
+		   else
+		  {
+		   ((IConductor) inputTile).getNetwork().startRequesting(this,this.getMaxWorkEnergy() - this.getWorkEnergy()/120 , 120);
+		  
+		   this.setWorkEnergy((int) (getWorkEnergy() + ((IConductor) inputTile).getNetwork().consumeElectricity(this).getWatts()/2));
 	      }
-		}
-	}
+		  }
+		}	
+		
+		System.out.println(getWorkEnergy());
+		
 
-	@Override
-	public void onDisable(int duration) {
-		}
-
-	@Override
-	public boolean isDisabled() {
-		return false;
-	}
-
-	@Override
-	public boolean canConnect(ForgeDirection side) {
-		return true;
-	}
-
-	@Override
-	public double getVoltage() {
-		return 120;
-	}
-
-	@Override
-	public void onReceive(Object sender, double amps, double voltage,ForgeDirection side) {
-		wattHours = wattHours +(amps*voltage);
-	}
-
-	@Override
-	public double wattRequest() {
-		return Math.ceil(this.getMaxJoules() - this.wattHours);
-	}
-
-	@Override
-	public boolean canReceiveFromSide(ForgeDirection side) {
-		return true;
-	}
-
-	@Override
-	public double getJoules(Object... data) {
-		return wattHours;
-	}
-
-	@Override
-	public void setJoules(double wattHours, Object... data) {
-		this.wattHours = wattHours;
-	}
-
-
-	@Override
-	public double getMaxJoules(Object... data) {
-		return 120000;
 	}
 
 

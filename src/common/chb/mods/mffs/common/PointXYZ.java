@@ -71,14 +71,14 @@ public class PointXYZ {
 	}
 	
 	
-	public static int distance(PointXYZ png1, PointXYZ png2)
+	public static double distance(PointXYZ png1, PointXYZ png2)
 	{
 		if(png1.dimensionId == png2.dimensionId)
 		{
 			int dx = png1.X - png2.X;
 			int dy = png1.Y - png2.Y;
 			int dz = png1.Z - png2.Z;
-			return (int) Math.sqrt(dx * dx + dy * dy + dz * dz);
+			return  Math.sqrt(dx * dx + dy * dy + dz * dz);
 		}
 		return Integer.MAX_VALUE;
 	}
