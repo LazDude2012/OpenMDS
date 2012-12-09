@@ -190,7 +190,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 
 	@Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		if (world.getBlockMetadata(i, j, k) == 1) {
+		if (world.getBlockMetadata(i, j, k) == ForceFieldTyps.Zapper.ordinal()) {
 			float f = 0.0625F;
 			return AxisAlignedBB.getBoundingBox(i + f, j + f, k + f, i + 1 - f, j + 1 - f, k + 1 - f);
 		}
@@ -210,7 +210,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k,
 			Entity entity) {
     	
-		if (world.getBlockMetadata(i, j, k) == 1) {
+		if (world.getBlockMetadata(i, j, k) == ForceFieldTyps.Zapper.ordinal()) {
 			if (entity instanceof EntityLiving) {
 				entity.attackEntityFrom(DamageSource.generic,10);
 			}
@@ -313,7 +313,13 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 		{
 			 return 180;
 		}else{
-			return iblockaccess.getBlockMetadata(i, j, k);
+			
+			if(iblockaccess.getBlockMetadata(i, j, k) == ForceFieldTyps.Default.ordinal()) return 0;
+			if(iblockaccess.getBlockMetadata(i, j, k) == ForceFieldTyps.Zapper.ordinal()) return 1;
+			if(iblockaccess.getBlockMetadata(i, j, k) == ForceFieldTyps.Area.ordinal()) return 2;
+			if(iblockaccess.getBlockMetadata(i, j, k) == ForceFieldTyps.Containment.ordinal()) return 3;
+			
+			return 5;
 		}
 	}
 	}

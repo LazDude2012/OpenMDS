@@ -92,9 +92,6 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		OnOffSwitch = false;
 	}
 	
-	
-	
-
 	// Start Getter AND Setter
 
 	
@@ -303,21 +300,20 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		
 		if(sec!=null)
 		{
-		double xmininfo = xCoord- getInfoDistance();
-		double xmaxinfo = xCoord+ getInfoDistance();
-		double ymininfo = yCoord- getInfoDistance();
-		double ymaxinfo = yCoord+ getInfoDistance();
-		double zmininfo = zCoord- getInfoDistance();
-		double zmaxinfo = zCoord+ getInfoDistance();
+		int xmininfo = xCoord- getInfoDistance();
+		int xmaxinfo = xCoord+ getInfoDistance()+1;
+		int ymininfo = yCoord- getInfoDistance();
+		int ymaxinfo = yCoord+ getInfoDistance()+1;
+		int zmininfo = zCoord- getInfoDistance();
+		int zmaxinfo = zCoord+ getInfoDistance()+1;
 		
-		double xminaction = xCoord - getActionDistance();
-		double xmaxaction = xCoord+ getActionDistance();
-		double yminaction = yCoord- getActionDistance();
-		double ymaxaction = yCoord+ + getActionDistance();
-		double zminaction = zCoord- getActionDistance();
-		double zmaxaction = zCoord+ getActionDistance();
+		int xminaction = xCoord - getActionDistance();
+		int xmaxaction = xCoord+ getActionDistance()+1;
+		int yminaction = yCoord- getActionDistance();
+		int ymaxaction = yCoord+ + getActionDistance()+1;
+		int zminaction = zCoord- getActionDistance();
+		int zmaxaction = zCoord+ getActionDistance()+1;
 		
-
 		List<EntityLiving> infoLivinglist = worldObj.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(xmininfo, ymininfo, zmininfo, xmaxinfo, ymaxinfo, zmaxinfo));
 		List<EntityLiving> actionLivinglist = worldObj.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(xminaction, yminaction, zminaction, xmaxaction, ymaxaction, zmaxaction));
 		
@@ -327,7 +323,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			if(Living instanceof EntityPlayer)
 			{
 			EntityPlayer player = (EntityPlayer) Living;
-			int distance = (int) Math.round(PointXYZ.distance(getMaschinePoint(), new PointXYZ((int)Living.posX,(int)Living.posY,(int)Living.posZ,worldObj)));
+			int distance = (int) PointXYZ.distance(getMaschinePoint(), new PointXYZ((int)Living.posX,(int)Living.posY,(int)Living.posZ,worldObj));
 			
 			if(distance > getInfoDistance() && this.getScanmode()==1){
 				continue;

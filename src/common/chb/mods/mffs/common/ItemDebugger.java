@@ -47,6 +47,10 @@ public class ItemDebugger extends  ItemMultitool  {
 		
 		if (!world.isRemote) {
 			
+		    
+			 System.out.println(world.getBlockMetadata(x, y, z));
+                
+			
 			if(tileEntity instanceof TileEntityForceField)
 				System.out.println(((TileEntityForceField)tileEntity).getForcefieldCamoblockmeta());
 			

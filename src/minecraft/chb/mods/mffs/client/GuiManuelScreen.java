@@ -103,8 +103,10 @@ public class GuiManuelScreen extends GuiContainer
     	 fontRenderer.drawString("Changelog", 50, 20, 0xFFFFFF);
          fontRenderer.drawString("add MFFS MultiTool <Guide> (in progress) ", -20, 40, 0xFFFFFF);
     	 fontRenderer.drawString("Projector Camo System add Mod Blocks", -20, 60, 0xFFFFFF);
-    	 fontRenderer.drawString("(graphic errors possible if not supportet)", -20, 70, 0xFFFFFF);
-    	 fontRenderer.drawString("update UE API to 1.2.0", -20, 90, 0xFFFFFF);
+    	 fontRenderer.drawString("fix ForceField Typs bug", -20, 70, 0xFFFFFF);
+       	 fontRenderer.drawString("(graphic errors possible if not supportet)", -20, 80, 0xFFFFFF);
+       	 
+    	 fontRenderer.drawString("update UE API to 1.2.0", -20, 100, 0xFFFFFF);
     	break;	
 	case 2:
 		RenderItem renderItem = new RenderItem();
