@@ -1,6 +1,6 @@
 package chb.mods.mffs.common;
 
-import basiccomponent.BasicComponents;
+import basiccomponents.BasicComponents;
 import ic2.api.Items;
 import net.minecraft.src.Block;
 import net.minecraft.src.CraftingManager;
