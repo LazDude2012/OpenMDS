@@ -20,6 +20,8 @@
 
 package chb.mods.mffs.common;
 
+import ic2.api.IWrenchable;
+import net.minecraft.src.Block;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
@@ -46,7 +48,6 @@ public class ItemWrench extends ItemMultitool  {
 		
 		TileEntity tileentity =  world.getBlockTileEntity(x,y,z);
 		
-		
 		if(tileentity instanceof TileEntityProjector)
 		{
 			if(((TileEntityProjector)tileentity).isBurnout())
@@ -55,7 +56,7 @@ public class ItemWrench extends ItemMultitool  {
 				if(ForceEnergyItems.use(stack, 10000, false,player))
 				{
 					ForceEnergyItems.use(stack, 10000, true,player);
-					((TileEntityProjector)tileentity).setBurnout(false);
+					((TileEntityProjector)tileentity).setBurnedOut(false);
 					Functions.ChattoPlayer(player,"[MultiTool] Projector repaired");
 					return true;
 				}else{
@@ -67,6 +68,31 @@ public class ItemWrench extends ItemMultitool  {
 				
 			}
 		}
+		
+		if(tileentity instanceof IWrenchable && !(tileentity instanceof IMFFS_Wrench))
+		{
+			if(ForceEnergyItems.use(stack, 1000, false,player))
+			{
+				
+				if(((IWrenchable)tileentity).wrenchCanSetFacing(player, side))
+				{
+					
+					((IWrenchable)tileentity).setFacing((short) side);
+					ForceEnergyItems.use(stack, 1000, true,player);
+					return true;
+					
+				}
+				
+			}else{
+		
+				Functions.ChattoPlayer(player,"[MultiTool] Fail: not enough FP please charge need min 1000");
+			}
+		
+			
+		}
+		
+		
+		
 		
 
 
@@ -92,9 +118,9 @@ public class ItemWrench extends ItemMultitool  {
 					}
 					
 					
-					if(tileentity instanceof TileEntitySecurityStation)
+					if(tileentity instanceof TileEntityAdvSecurityStation)
 					{
-					if(((TileEntitySecurityStation)tileentity).isActive())
+					if(((TileEntityAdvSecurityStation)tileentity).isActive())
 					return false;
 					}
 					
@@ -116,7 +142,7 @@ public class ItemWrench extends ItemMultitool  {
 					return true;
 				}else{
 					
-		            world.spawnEntityInWorld(new EntityItem(world,x,y,z, new ItemStack(tileentity.getBlockType())));
+		            world.spawnEntityInWorld(new EntityItem(world,x,y,z, new ItemStack(Block.blocksList[world.getBlockId(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord)]) ));
 		            world.setBlockWithNotify(x, y, z, 0);
 				}
 

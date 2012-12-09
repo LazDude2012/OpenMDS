@@ -20,15 +20,26 @@
 
 package chb.mods.mffs.common;
 
-import net.minecraft.src.CreativeTabs;
-import net.minecraft.src.Item;
+import java.util.List;
 
-public class ItemForcePowerCrystal extends Item{
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
+import chb.mods.mffs.api.IForceEnergyItems;
+import net.minecraft.src.CreativeTabs;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
+
+public class ItemForcePowerCrystal extends ItemMFFSBase  implements IForceEnergyItems{
 	public ItemForcePowerCrystal(int i) {
 		super(i);
 		setIconIndex(96);
 		setMaxStackSize(1);
-		setCreativeTab(CreativeTabs.tabMaterials);
+		setMaxDamage(100);
+		
+		
 	}
 	@Override
 	public String getTextureFile() {
@@ -38,4 +49,71 @@ public class ItemForcePowerCrystal extends Item{
 	public boolean isRepairable() {
 		return false;
 	}
+	
+	@Override
+	public boolean isDamageable()
+	{
+	return true;
+	}
+	@Override
+	public int getforceEnergyTransferMax() {
+		return 100000;
+	}
+	@Override
+	public int getItemDamage(ItemStack itemStack) {
+		
+		if(getForceEnergy(itemStack) == 0)
+		return -1;
+		
+		
+		return 101-((getForceEnergy(itemStack)*100)/getMaxForceEnergy());
+		
+	}
+	@Override
+	public int getMaxForceEnergy() {
+		return 5000000;
+	}
+	@Override
+	public void setForceEnergy(ItemStack itemStack, int ForceEnergy) {
+	       
+		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
+	       nbtTagCompound.setInteger("ForceEnergy", ForceEnergy);
+		
+	}
+	
+    @Override
+    public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b)
+    {
+        String tooltip = String.format( "%d FE/%d FE ",getForceEnergy(itemStack),getMaxForceEnergy());
+        info.add(tooltip);
+    }
+    
+	@Override
+	public int getForceEnergy(ItemStack itemstack) {
+    	
+		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
+    	if(nbtTagCompound != null)
+    	{
+    		return nbtTagCompound.getInteger("ForceEnergy");
+    	}
+       return 0;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(int i, CreativeTabs tabs, List itemList)
+	{
+		ItemStack charged = new ItemStack(this, 1);
+		charged.setItemDamage(1);
+		setForceEnergy(charged, getMaxForceEnergy());
+		itemList.add(charged);
+		
+		ItemStack empty = new ItemStack(this, 1);
+		empty.setItemDamage(100);
+		setForceEnergy(empty, 0);
+		itemList.add(empty);
+		
+		
+	}
+	
+	
 }

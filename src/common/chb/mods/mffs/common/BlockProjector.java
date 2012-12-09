@@ -30,8 +30,8 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
 public class BlockProjector extends BlockMFFSBase {
-	public BlockProjector(int i, int texturindex) {
-		super(i, texturindex);
+	public BlockProjector(int i) {
+		super(i);
 		setRequiresSelfNotify();
 	}
 
@@ -51,47 +51,16 @@ public class BlockProjector extends BlockMFFSBase {
 			EntityPlayer entityplayer, int par6, float par7, float par8,
 			float par9){
 		
-		if (entityplayer.isSneaking())
-        {
-			return false;
-        }
-
-		TileEntityProjector tileentity = (TileEntityProjector) world
-				.getBlockTileEntity(i, j, k);
-
-		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
-		{return false;}
-
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {
-			return false;
-		}
+		TileEntityProjector tileentity = (TileEntityProjector) world.getBlockTileEntity(i, j, k);
 		
-		
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemMultitool)) {
-			return false;
-		}
-
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardPowerLink)) {
-			return false;
-		}
-
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemProjectorModuleBase)) {
-			return false;
-		}
-
 		if(tileentity.isBurnout())
 		{
 			return false;
 		}
 
-		if (!world.isRemote)
-		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_PROJECTOR, world,i, j, k);
+		return super.onBlockActivated(world, i, j, k, entityplayer, par6, par7, par8, par9);
+
 		
-		return true;
 	}
 
 	public void randomDisplayTick(World world, int i, int j, int k,

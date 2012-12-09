@@ -26,12 +26,12 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import chb.mods.mffs.common.ModularForceFieldSystem;
+import chb.mods.mffs.common.TileEntityAdvSecurityStation;
 import chb.mods.mffs.common.TileEntityAreaDefenseStation;
 import chb.mods.mffs.common.TileEntityCapacitor;
 import chb.mods.mffs.common.TileEntityExtractor;
 import chb.mods.mffs.common.TileEntityMachines;
 import chb.mods.mffs.common.TileEntityProjector;
-import chb.mods.mffs.common.TileEntitySecurityStation;
 import chb.mods.mffs.common.TileEntityForceField;
 import chb.mods.mffs.common.TileEntityConverter;
 
@@ -39,7 +39,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.NetworkManager;
+import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
@@ -57,7 +57,7 @@ public class NetworkHandlerClient implements IPacketHandler{
 private static final boolean DEBUG = false;
 
 @Override
-public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, Player player) {
+public void onPacketData(INetworkManager manager,Packet250CustomPayload packet, Player player) {
 	
 
 	ByteArrayDataInput dat = ByteStreams.newDataInput(packet.data);
@@ -71,18 +71,20 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 	{
 	case 100:
 	
-		
 		String DataPacket = dat.readUTF();
 		
 		for(String blockupdate : DataPacket.split(">"))
 		{
 		  if(blockupdate.length() > 0)
 		  {
-			  String[] splitttextur = blockupdate.split("#");
-			  String[] Texturid = splitttextur[1].split("/");
-			  String[] Dim = splitttextur[0].split("<");
-			  String[] Corrdinaten = Dim[1].split("/");
+
+			  String[] projector = blockupdate.split("<");
+			  String[] Corrdinaten = projector[1].split("/");
+			  String[] temp =projector[0].split("!");
+			  String[] Dim = temp[1].split("/");
+			  String[] ProjectorCorr = temp[0].split("/");
 			  
+
 			  if(Integer.parseInt(Dim[0].trim()) == world.provider.dimensionId)
 			  {
 				  if (world.getChunkFromBlockCoords(Integer.parseInt(Corrdinaten[0].trim()), Integer.parseInt(Corrdinaten[2].trim())).isChunkLoaded)
@@ -90,35 +92,24 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 					  TileEntity te = world.getBlockTileEntity(Integer.parseInt(Corrdinaten[0].trim()), Integer.parseInt(Corrdinaten[1].trim()), Integer.parseInt(Corrdinaten[2].trim()));
 					  if(te instanceof TileEntityForceField)
 					  {
-						  ((TileEntityForceField)te).setTexturid(Texturid);
+	
+						  TileEntity proj = world.getBlockTileEntity(Integer.parseInt(ProjectorCorr[2].trim()), Integer.parseInt(ProjectorCorr[1].trim()), Integer.parseInt(ProjectorCorr[0].trim()));
+                          if(proj instanceof TileEntityProjector)
+                          {
+                        	  ((TileEntityForceField)te).setTexturfile(((TileEntityProjector)proj).getForceFieldTexturfile());
+                        	  ((TileEntityForceField)te).setTexturid(((TileEntityProjector)proj).getForceFieldTexturID());
+                        	  ((TileEntityForceField)te).setForcefieldCamoblockid(((TileEntityProjector)proj).getForcefieldCamoblockid());
+                        	  ((TileEntityForceField)te).setForcefieldCamoblockmeta(((TileEntityProjector)proj).getForcefieldCamoblockmeta());
+                          }
 		  
 					  }
 				  }
 			  }
 			  
 			  
-//			  System.out.println(Dim[0]);
-//			  System.out.println(Corrdinaten[0]);
-//			  System.out.println(Corrdinaten[1]);
-//			  System.out.println(Corrdinaten[2]);
-//			  System.out.println(Texturid[0]);
-//			  System.out.println(Texturid[1]);
-//			  System.out.println(Texturid[2]);
-//			  System.out.println(Texturid[3]);
-//			  System.out.println(Texturid[4]);
-//			  System.out.println(Texturid[5]);
-//			  System.out.println("-------------------------");
-			  
 		  }
 		}
-		
-		
-		
-		
-		
-		
-		
-		
+
 	break;
 	case 1:
 		
@@ -205,10 +196,10 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 			 } 
 		 }
 		 
-		 if(tileEntity instanceof TileEntitySecurityStation)
+		 if(tileEntity instanceof TileEntityAdvSecurityStation)
 		 {
 			 try{
-				 Field f = ReflectionHelper.findField(TileEntitySecurityStation.class, fieldname);
+				 Field f = ReflectionHelper.findField(TileEntityAdvSecurityStation.class, fieldname);
 				 reflectionsetvalue(f, tileEntity,dat,fieldname);
 			 }catch(Exception e)
 			 {
@@ -233,7 +224,8 @@ public static void reflectionsetvalue(Field f,TileEntity tileEntity,ByteArrayDat
 		 if(f.getType().equals(java.lang.Boolean.TYPE)){f.setBoolean(tileEntity, Boolean.parseBoolean(dat.readUTF()));}
 		 if(f.getType().equals(java.lang.Short.TYPE)){f.setShort(tileEntity, Short.parseShort(dat.readUTF()));}
 		 if(f.getType().equals(java.lang.Float.TYPE)){f.setFloat(tileEntity, Float.parseFloat(dat.readUTF()));}
-
+		 if(f.getType().equals(java.lang.String.class)){f.set(tileEntity, dat.readUTF());}
+		
 		 
 		 if(tileEntity instanceof INetworkHandlerListener )
 		 {
@@ -345,7 +337,7 @@ public static Packet requestInitialData(TileEntity tileEntity,boolean senddirekt
 }
 
 
-public static void fireTileEntityEvent(TileEntity tileEntity,int event){
+public static void fireTileEntityEvent(TileEntity tileEntity,String event){
 	
 	
 	if(tileEntity instanceof INetworkHandlerEventListener)
@@ -369,7 +361,7 @@ public static void fireTileEntityEvent(TileEntity tileEntity,int event){
 			dos.writeInt(z);
 			dos.writeInt(typ);
 			dos.writeInt(Dimension);
-			dos.writeInt(event);
+			dos.writeUTF(event);
 		
 			} catch (Exception e) {
 				if(DEBUG)
@@ -386,6 +378,7 @@ public static void fireTileEntityEvent(TileEntity tileEntity,int event){
 		
 	}
 }
+
 
 
 }

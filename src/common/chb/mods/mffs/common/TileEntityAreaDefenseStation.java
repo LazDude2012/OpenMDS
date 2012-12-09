@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,104 +13,140 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
 
 package chb.mods.mffs.common;
 
+import chb.mods.mffs.common.IModularProjector.Slots;
+import chb.mods.mffs.common.options.ItemProjectorOptionDefenseStation;
+import chb.mods.mffs.common.options.ItemProjectorOptionMobDefence;
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
 import chb.mods.mffs.network.NetworkHandlerServer;
 
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.ConcurrentModificationException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Container;
+import net.minecraft.src.DamageSource;
+import net.minecraft.src.EntityGhast;
+import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityMob;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntitySlime;
+import net.minecraft.src.IInventory;
 import net.minecraft.src.InventoryPlayer;
+import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.Packet;
+import net.minecraft.src.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntityAreaDefenseStation extends TileEntityMachines implements
-ISidedInventory,INetworkHandlerListener {
-	private ItemStack ProjektorItemStacks[];
+ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel {
+	private ItemStack Inventory[];
 	private int Defstation_ID;
-	private int linkCapacitors_ID;
-	private int linkSecStation_ID;
 	private int linkPower;
-	private int maxlinkPower;
-	private boolean linkSecStation;
-	private boolean linkGenerator;
+	private int capacity;
 	private boolean create;
 	private int distance;
-	private boolean[] Typ = {false,false};
-	private boolean canwork;
-
+	private int SwitchTyp;
+	private int contratyp;
+	private int actionmode;
+	private int scanmode;
+	private boolean OnOffSwitch;
+	
+	protected List<EntityPlayer> warnlist = new ArrayList<EntityPlayer>();
+	protected List<EntityPlayer> actionlist = new ArrayList<EntityPlayer>();
+	protected List<EntityLiving> NPClist = new ArrayList<EntityLiving>();
+	private ArrayList<Item> ContraList = new ArrayList();
+	
 	public TileEntityAreaDefenseStation() {
 		Random random = new Random();
 
-		ProjektorItemStacks = new ItemStack[4];
+		Inventory = new ItemStack[36];
 		Defstation_ID = 0;
-		linkCapacitors_ID = 0;
-		linkSecStation = false;
-		linkGenerator = false;
 		linkPower = 0;
-		maxlinkPower = 1000000;
+		capacity = 0;
 		create = true;
-		linkSecStation_ID = 0;
-		canwork = false;
+		SwitchTyp = 0;
+		contratyp = 1;
+		actionmode = 0;
+		scanmode = 1;
+		OnOffSwitch = false;
 	}
-
+	
 	// Start Getter AND Setter
 
-	public boolean isOptionDefenceStation() {
-		return Typ[0];
+	
+
+	public int getScanmode() {
+		return scanmode;
 	}
 
-	public void setOptionDefenceStation(boolean b) {
-		Typ[0] = b;
+	public void setScanmode(int scanmode) {
+		this.scanmode = scanmode;
 	}
 
-	public boolean isOptionMobDefense() {
-		return Typ[1];
+
+	public int getActionmode() {
+		return actionmode;
 	}
 
-	public void setOptionMobDefense(boolean b) {
-		Typ[1] = b;
+
+	public void setActionmode(int actionmode) {
+		this.actionmode = actionmode;
+	}
+	
+	public boolean getOnOffSwitch() {
+		return OnOffSwitch;
 	}
 
-	public boolean isCanwork() {
-		return canwork;
+	public void setOnOffSwitch(boolean a) {
+		OnOffSwitch = a;
+	}
+	
+	public int getcontratyp() {
+		return contratyp;
 	}
 
-	public void setCanwork(boolean canwork) {
-		this.canwork = canwork;
+	public void setcontratyp(int a) {
+		contratyp = a;
+	}
+	
+
+	public int getswitchtyp() {
+		return SwitchTyp;
 	}
 
-	public int getDistance() {
-		return distance;
+	public void setswitchtyp(int a) {
+		SwitchTyp = a;
+	}
+	
+	public int getCapacity(){
+		return capacity;
 	}
 
-	public void setDistance(int distance) {
-		this.distance = distance;
+	public void setCapacity(int Capacity){
+		this.capacity = Capacity;
 	}
-
-	public boolean isLinkGenerator() {
-		return linkGenerator;
-	}
-
-	public void setLinkGenerator(boolean linkGenerator) {
-		this.linkGenerator = linkGenerator;
-	}
+	
 
 	public boolean isCreate() {
 		return create;
@@ -120,30 +156,6 @@ ISidedInventory,INetworkHandlerListener {
 		this.create = create;
 	}
 
-	public int getMaxlinkPower() {
-		return maxlinkPower;
-	}
-
-	public void setMaxlinkPower(int maxlinkPower) {
-		this.maxlinkPower = maxlinkPower;
-	}
-
-	public int getSecStation_ID() {
-		return linkSecStation_ID;
-	}
-
-	public void setSecStation_ID(int linkSecStation_ID) {
-		this.linkSecStation_ID = linkSecStation_ID;
-	}
-
-	public boolean islinkSecStation() {
-		return linkSecStation;
-	}
-
-	public void setlinkSecStation(boolean b) {
-		this.linkSecStation = b;
-		NetworkHandlerServer.updateTileEntityField(this, "linkSecStation");
-	}
 
 	public int getLinkPower() {
 		return linkPower;
@@ -152,14 +164,63 @@ ISidedInventory,INetworkHandlerListener {
 	public void setLinkPower(int linkPower) {
 		this.linkPower = linkPower;
 	}
+	
 
-	public int getlinkCapacitors_ID() {
-		return linkCapacitors_ID;
+
+	
+	
+	public int getActionDistance() {
+	if (getStackInSlot(3) != null) {
+		if (getStackInSlot(3).getItem() == ModularForceFieldSystem.MFFSProjectorFFDistance) {
+			return (getStackInSlot(3).stackSize);
+		}
+	  } 
+	return 0;
+	
+	}
+	
+	
+	
+	public int getInfoDistance() {
+	if (getStackInSlot(2) != null) {
+		if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSProjectorFFDistance) {
+			return getActionDistance() + (getStackInSlot(2).stackSize+3);
+		}
+	  } 
+	return getActionDistance()+ 3;
+	}
+	
+	
+	
+	public TileEntityAdvSecurityStation getLinkedSecurityStation()
+	{
+		return ItemCardSecurityLink.getLinkedSecurityStation(this, 1, worldObj);
+	}
+	
+
+	
+	
+	public int getSecStation_ID(){
+		TileEntityAdvSecurityStation sec = getLinkedSecurityStation();
+		if(sec != null)
+			return sec.getSecurtyStation_ID();
+		return 0;	
+	}
+	
+	
+	public TileEntityCapacitor getLinkedCapacitor()
+	{
+		return ItemCardPowerLink.getLinkedCapacitor(this, 0, worldObj);
+	}
+	
+	
+	public int getLinkCapacitor_ID(){
+		TileEntityCapacitor cap = getLinkedCapacitor();
+		if(cap != null)
+			return cap.getCapacitor_ID();
+		return 0;	
 	}
 
-	public void setlinkCapacitors_ID(int linkCapacitors_ID) {
-		this.linkCapacitors_ID = linkCapacitors_ID;
-	}
 
 	// End Getter AND Setter
 
@@ -169,6 +230,8 @@ ISidedInventory,INetworkHandlerListener {
 					.newID(this);
 		}
 		Linkgrid.getWorldMap(worldObj).getDefStation().put(Defstation_ID, this);
+
+		registerChunkLoading();
 	}
 
 	public void removefromgrid() {
@@ -177,32 +240,42 @@ ISidedInventory,INetworkHandlerListener {
 	}
 
 	// Start NBT Read/ Save
-
+	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		Defstation_ID = nbttagcompound.getInteger("Defstation_ID");
+		SwitchTyp = nbttagcompound.getInteger("SwitchTyp");
+		contratyp = nbttagcompound.getInteger("contratyp");
+		actionmode= nbttagcompound.getInteger("actionmode");
+		scanmode= nbttagcompound.getInteger("scanmode");
+		OnOffSwitch = nbttagcompound.getBoolean("OnOffSwitch");
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
-		ProjektorItemStacks = new ItemStack[getSizeInventory()];
+		Inventory = new ItemStack[getSizeInventory()];
 		for (int i = 0; i < nbttaglist.tagCount(); i++) {
 			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist
 					.tagAt(i);
 			byte byte0 = nbttagcompound1.getByte("Slot");
-			if (byte0 >= 0 && byte0 < ProjektorItemStacks.length) {
-				ProjektorItemStacks[byte0] = ItemStack
+			if (byte0 >= 0 && byte0 < Inventory.length) {
+				Inventory[byte0] = ItemStack
 						.loadItemStackFromNBT(nbttagcompound1);
 			}
 		}
 	}
-
+	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		nbttagcompound.setInteger("Defstation_ID", Defstation_ID);
+		nbttagcompound.setInteger("contratyp", contratyp);
+		nbttagcompound.setInteger("SwitchTyp", SwitchTyp);
+		nbttagcompound.setInteger("actionmode", actionmode);
+		nbttagcompound.setBoolean("OnOffSwitch", OnOffSwitch);
+		nbttagcompound.setInteger("scanmode", scanmode);
 		NBTTagList nbttaglist = new NBTTagList();
-		for (int i = 0; i < ProjektorItemStacks.length; i++) {
-			if (ProjektorItemStacks[i] != null) {
+		for (int i = 0; i < Inventory.length; i++) {
+			if (Inventory[i] != null) {
 				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
 				nbttagcompound1.setByte("Slot", (byte) i);
-				ProjektorItemStacks[i].writeToNBT(nbttagcompound1);
+				Inventory[i].writeToNBT(nbttagcompound1);
 				nbttaglist.appendTag(nbttagcompound1);
 			}
 		}
@@ -210,185 +283,440 @@ ISidedInventory,INetworkHandlerListener {
 		nbttagcompound.setTag("Items", nbttaglist);
 	}
 
-	// Stop NBT Read/ Save
-
-	// Start Slot / Upgrades System
 
 	public void dropplugins() {
-		for (int a = 0; a < this.ProjektorItemStacks.length; a++) {
+		for (int a = 0; a < this.Inventory.length; a++) {
 			dropplugins(a,this);
 		}
 	}
 
-	public void checkslots() {
-		if (getStackInSlot(0) != null) {
-			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemfc) {
-				if (getlinkCapacitors_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
-						getStackInSlot(0)).getInteger("CapacitorID")) {
-					setlinkCapacitors_ID(NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(0)).getInteger("CapacitorID"));
-					}
+	
 
-				if(Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID())!=null)
-				{
-				 int transmit =	Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID()).getTransmitRange();
-				 int gen_x=Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID()).xCoord - this.xCoord;
-			     int gen_y=Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID()).yCoord - this.yCoord;
-			     int gen_z=Linkgrid.getWorldMap(worldObj).getCapacitor().get(this.getlinkCapacitors_ID()).zCoord - this.zCoord;
-
-				 if(Math.sqrt(gen_x * gen_x + gen_y * gen_y + gen_z * gen_z) <= transmit)
-				 {
-					 setLinkGenerator(true);
-				 }
-				 else
-				 {
-					setLinkGenerator(false);
-					setlinkCapacitors_ID(0);
-				 }
-				}
-				else
-				{
-	 	    	setLinkGenerator(false);
-	 	    	setlinkCapacitors_ID(0);
-	 	    	this.setInventorySlotContents(0, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-				}
-			}
-		} else {
-			setLinkGenerator(false);
-			setlinkCapacitors_ID(0);
-		}
-
-		if (getStackInSlot(1) != null) {
-			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSItemSecLinkCard) {
-				if (getSecStation_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
-						getStackInSlot(1)).getInteger("Secstation_ID")) {
-					setSecStation_ID(NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(1)).getInteger("Secstation_ID"));
-				}
-				if (getSecStation_ID() == 0) {
-					dropplugins(1,this);
-				}
-
-				if(Linkgrid.getWorldMap(worldObj)
-				.getSecStation().get(this.getSecStation_ID())!=null)
-				{
-					if(!this.islinkSecStation())
-					    setlinkSecStation(true);
-				}
-				else
-				{
-					if(this.islinkSecStation())
-					    setlinkSecStation(false);
-					dropplugins(1,this);
-				}
-			} else {
-				if(this.islinkSecStation())
-				    setlinkSecStation(false);
-			}
-		} else {
-			if(this.islinkSecStation())
-			    setlinkSecStation(false);
-			setSecStation_ID(0);
-		}
-
-		if(getStackInSlot(2)!= null)
+	public void scanner()
+	{
+		try{
+			
+		TileEntityAdvSecurityStation sec = 	getLinkedSecurityStation();
+		
+		if(sec!=null)
 		{
-		if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSProjectorOptionDefenceStation) {
-				this.setOptionDefenceStation(true);
-				setCanwork(true);
-            }else{
-            	this.setOptionDefenceStation(false);
-            }
+		int xmininfo = xCoord- getInfoDistance();
+		int xmaxinfo = xCoord+ getInfoDistance()+1;
+		int ymininfo = yCoord- getInfoDistance();
+		int ymaxinfo = yCoord+ getInfoDistance()+1;
+		int zmininfo = zCoord- getInfoDistance();
+		int zmaxinfo = zCoord+ getInfoDistance()+1;
+		
+		int xminaction = xCoord - getActionDistance();
+		int xmaxaction = xCoord+ getActionDistance()+1;
+		int yminaction = yCoord- getActionDistance();
+		int ymaxaction = yCoord+ + getActionDistance()+1;
+		int zminaction = zCoord- getActionDistance();
+		int zmaxaction = zCoord+ getActionDistance()+1;
+		
+		List<EntityLiving> infoLivinglist = worldObj.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(xmininfo, ymininfo, zmininfo, xmaxinfo, ymaxinfo, zmaxinfo));
+		List<EntityLiving> actionLivinglist = worldObj.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(xminaction, yminaction, zminaction, xmaxaction, ymaxaction, zmaxaction));
+		
+		
+		for(EntityLiving Living : infoLivinglist)
+		{
+			if(Living instanceof EntityPlayer)
+			{
+			EntityPlayer player = (EntityPlayer) Living;
+			int distance = (int) PointXYZ.distance(getMaschinePoint(), new PointXYZ((int)Living.posX,(int)Living.posY,(int)Living.posZ,worldObj));
+			
+			if(distance > getInfoDistance() && this.getScanmode()==1){
+				continue;
+			}
+			
+			
+			if(!warnlist.contains(player))
+			{
+				warnlist.add(player);
+				if(!sec.isAccessGranted(player.username, "SR"))
+				{
+				player.addChatMessage("!!! [Area Defence] Warning you now in my Scanning range !!!");
+				player.attackEntityFrom(DamageSource.generic,1);
+				}
 
-		if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSProjectorOptionMoobEx) {
-			this.setOptionMobDefense(true);
-			setCanwork(true);
-        }else{
-        	this.setOptionMobDefense(false);
-        }
+			}
+			
+		   }		
+		}
+		
+		
+		for(EntityLiving Living : actionLivinglist)
+		{
+		  if(Living instanceof EntityPlayer)
+		  {
+		   EntityPlayer player = (EntityPlayer) Living;
+		   
+		   int distance = (int) Math.round(PointXYZ.distance(getMaschinePoint(), new PointXYZ((int)Living.posX,(int)Living.posY,(int)Living.posZ,worldObj)));
+			if(distance > getActionDistance() && this.getScanmode()==1)
+				continue;
+			
+			if(!actionlist.contains(player))
+			{
+				actionlist.add(player);
+				DefenceAction(player);
+			}
+			
+		  }else{
+			  
+			  int distance = (int) Math.round(PointXYZ.distance(getMaschinePoint(), new PointXYZ((int)Living.posX,(int)Living.posY,(int)Living.posZ,worldObj)));	
+				if(distance > getActionDistance() && this.getScanmode()==1)
+					continue;
+				
+				if(!NPClist.contains(Living)){
+					NPClist.add(Living);
+					DefenceAction(Living);
+				}
+			
+			  
+		  }
+		}
+		
+		
+		
+		
 
-		}else{
-			setCanwork(false);
+		for (int i = 0; i < actionlist.size(); i++)
+		{
+			if(!actionLivinglist.contains(actionlist.get(i)))
+				actionlist.remove(actionlist.get(i));
+		}
+		
+	
+		for (int i = 0; i < warnlist.size(); i++)
+		{
+	
+			if(!infoLivinglist.contains(warnlist.get(i)))
+				warnlist.remove(warnlist.get(i));
+		}
+		
+		
+		
+		
+		}
+		}catch(Exception ex)
+		{
+			System.err.println("[ModularForceFieldSystem] catch  Crash <TileEntityAreaDefenseStation:scanner> ");
+		}
+		
+		
+	}
+	
+	
+	public void DefenceAction(){
+		
+		 for (int i = 0; i < actionlist.size(); i++)
+		{
+			DefenceAction(actionlist.get(i));
 		}
 
-		if (getStackInSlot(3) != null) {
-			if (getStackInSlot(3).getItem() == ModularForceFieldSystem.MFFSProjectorFFDistance) {
-				setDistance(getStackInSlot(3).stackSize+1);
-			}
-		} else {
-			setDistance(0);
+	}
+	
+		
+	
+	public boolean StacksToInventory(IInventory inventory,ItemStack itemstacks,boolean loop)
+	{
+	
+		int count= 0;
+		
+		if(inventory instanceof TileEntitySecStorage )
+		   count = 1;
+		
+		if(inventory instanceof TileEntityAreaDefenseStation )
+		   count = 15;
+		
+		for (int a = count; a <= inventory.getSizeInventory()-1; a++) {
+              if(inventory.getStackInSlot(a)==null){
+            	  inventory.setInventorySlotContents(a, itemstacks); 
+            	 return true;
+              }else{
+            	  if(inventory.getStackInSlot(a).getItem() == itemstacks.getItem()
+				 && inventory.getStackInSlot(a).getItemDamage() == itemstacks.getItemDamage()
+				 && inventory.getStackInSlot(a).stackSize <  inventory.getStackInSlot(a).getMaxStackSize())
+            	  {
+            		int free =   inventory.getStackInSlot(a).getMaxStackSize() - inventory.getStackInSlot(a).stackSize;
+            		
+            		if(free > itemstacks.stackSize)
+            		{
+            			inventory.getStackInSlot(a).stackSize +=  itemstacks.stackSize;
+            			return true;
+            		}else{
+            			inventory.getStackInSlot(a).stackSize=inventory.getStackInSlot(a).getMaxStackSize();
+            			itemstacks.stackSize = itemstacks.stackSize - free;
+            			continue;
+            		}
+  
+            	  }
+              }
+             
+		}
+		    if(loop)
+		    addremoteInventory(itemstacks);
+		    
+			return false;
+		
+	}
+	
+	public void addremoteInventory(ItemStack itemstacks)
+	{
+		IInventory inv =InventoryHelper.findAttachedInventory(worldObj, xCoord, yCoord, zCoord);
+		if(inv != null)
+		{
+		  StacksToInventory(inv,itemstacks,false);
 		}
 	}
+	
+	public void DefenceAction(EntityLiving Living){
+		if(Living instanceof EntityPlayer)
+			return;
+		
+		TileEntityCapacitor cap = this.getLinkedCapacitor();
+		TileEntityAdvSecurityStation sec = 	getLinkedSecurityStation();
+		
+		if(cap!=null)
+		{
+		
+		if(sec!=null)
+		{
+		if(cap.getForcePower() > ModularForceFieldSystem.DefenceStationKillForceEnergy)
+		{
+		switch(getActionmode())
+		{
+		case 3: //all
+			cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
+			Living.setEntityHealth(0);
+			NPClist.remove(Living);
+			break;
+		case 4: //Hostile
+			if(Living instanceof EntityMob || Living instanceof EntitySlime || Living instanceof EntityGhast){
+				Living.setEntityHealth(0);
+				NPClist.remove(Living);
+				cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
+			}
+			
+			break;
+		case 5://no Hostie
+			
+			if(!(Living instanceof EntityMob) && !(Living instanceof EntitySlime) && !(Living instanceof EntityGhast)){
+				Living.setEntityHealth(0);	
+				NPClist.remove(Living);
+				cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
+			}
+			break;
+		}
+	   }
+	  }
+	 }
+	}
 
-	// Stop Slot / Upgrades System
+	public void DefenceAction(EntityPlayer player){
+		
+	
+		TileEntityCapacitor cap = this.getLinkedCapacitor();
+		TileEntityAdvSecurityStation sec = 	getLinkedSecurityStation();
+		
+		if(cap!=null)
+		{
+		
+		if(sec!=null)
+		{
+		
+		switch(getActionmode())
+		{
+		case 0: // Inform
+			if(!sec.isAccessGranted(player.username, "SR"))
+			{
+				player.addChatMessage("!!! [Area Defence]  get out immediately you have no right to be here!!!");
+			}
+			
+		break;
+		case 1: // kill
+			
+				if(cap.getForcePower() > ModularForceFieldSystem.DefenceStationKillForceEnergy)
+				{
+					if(!sec.isAccessGranted(player.username, "SR"))
+					{
+						player.addChatMessage("!!! [Area Defence] you have been warned BYE BYE!!!");
+					
+						
+						for(int i=0; i<4;i++) {
+							if(player.inventory.armorInventory[i] != null){
+							StacksToInventory(this,player.inventory.armorInventory[i],true);
+							player.inventory.armorInventory[i]=null;
+							}
+						}
+						
+						for(int i=0; i<36;i++) {
+							
+							if(player.inventory.mainInventory[i] != null){
+								StacksToInventory(this,player.inventory.mainInventory[i],true);
+								player.inventory.mainInventory[i]=null;
+							}
+						}
+						
+						actionlist.remove(player);
+						player.setEntityHealth(0);
+						cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
+					}
+					
+				}
+				
+			
+			
+		break;
+		case 2: // search
+			
+			
+			if(cap.getForcePower() > ModularForceFieldSystem.DefenceStationSearchForceEnergy)
+			{
+				if(!sec.isAccessGranted(player.username, "AAI"))
+				{
+					
+				   player.addChatMessage("!!! [Area Defence] You  are searched for illegal goods!!!");
+					
+					  ContraList.clear();
+					  
+						for (int place = 5; place < 15; place++) {
+							if (getStackInSlot(place) != null) 
+							{
+								ContraList.add(getStackInSlot(place).getItem());
+							}
+						}	
+				   
+				   
+				  switch(this.getcontratyp())
+				  {
+				  case 0:
+					  
+
+					  
+						for(int i=0; i<4;i++) {
+							if(player.inventory.armorInventory[i] != null){
+							
+								if(!ContraList.contains(player.inventory.armorInventory[i].getItem()))
+								{	
+									StacksToInventory(this,player.inventory.armorInventory[i],true);
+									player.inventory.armorInventory[i]=null;
+							        cap.consumForcePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy);
+								}
+							}
+						}
+					  
+					  
+						for(int i=0; i<36;i++) {
+
+							if(player.inventory.mainInventory[i] != null){
+							
+								if(!ContraList.contains(player.inventory.mainInventory[i].getItem()))
+								{	
+									StacksToInventory(this,player.inventory.mainInventory[i],true);
+									player.inventory.mainInventory[i]=null;
+							        cap.consumForcePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy);
+								}
+							}
+						}
+					  
+
+					  break;
+				  case 1:
+					  
+					  
+						for(int i=0; i<4;i++) {
+							if(player.inventory.armorInventory[i] != null){
+							
+								if(ContraList.contains(player.inventory.armorInventory[i].getItem()))
+								{	
+									StacksToInventory(this,player.inventory.armorInventory[i],true);
+									player.inventory.armorInventory[i]=null;
+							        cap.consumForcePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy);
+								}
+							}
+						}
+					  
+					  
+						for(int i=0; i<36;i++) {
+							if(player.inventory.mainInventory[i] != null){
+							
+								if(ContraList.contains(player.inventory.mainInventory[i].getItem()))
+								{	
+									StacksToInventory(this,player.inventory.mainInventory[i],true);
+									player.inventory.mainInventory[i]=null;
+							        cap.consumForcePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy);
+								}
+							}
+						}
+					  
+
+					  break;
+				  
+				  
+				  }
+				
+				}
+			}
+		break;
+		}
+		}
+		}
+	}
+	
 
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
-			if (this.isCreate() && this.getlinkCapacitors_ID() != 0) {
+			if (this.isCreate() && this.getLinkCapacitor_ID() != 0) {
 				addtogrid();
-				checkslots();
 				this.setCreate(false);
 			}
 
-			if (this.getlinkCapacitors_ID() != 0) {
-				this.setLinkGenerator(true);
-				try {
-					this.setLinkPower(Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getlinkCapacitors_ID())
-							.getForcePower());
-					this.setMaxlinkPower(Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getlinkCapacitors_ID())
-							.getMaxForcePower());
-				} catch (java.lang.NullPointerException ex) {
-					this.setLinkGenerator(false);
-					this.setLinkPower(0);
-					this.setMaxlinkPower(1000000);
+			if (getLinkCapacitor_ID() != 0) {
+
+				TileEntityCapacitor remotecap = getLinkedCapacitor();
+				if(remotecap != null)
+				{
+					setCapacity(remotecap.getCapacity());
+					setLinkPower(remotecap.getForcePower());
+				}else{
+					setCapacity(0);
+					setLinkPower(0);
 				}
+				
 			} else {
-				this.setLinkGenerator(false);
-				this.setLinkPower(0);
-				this.setMaxlinkPower(1000000);
+				setCapacity(0);
+				setLinkPower(0);
 			}
 
-			boolean securityStationneed = true;
+			
+			boolean powerdirekt = worldObj.isBlockGettingPowered(xCoord,
+					yCoord, zCoord);
+			boolean powerindrekt = worldObj.isBlockIndirectlyGettingPowered(
+					xCoord, yCoord, zCoord);
 
-			if(isOptionDefenceStation() && !islinkSecStation())
+			if (getswitchtyp() == 0)
+				setOnOffSwitch(powerdirekt || powerindrekt);
+
+			if (getOnOffSwitch() &&  getLinkedCapacitor()!= null && getLinkedSecurityStation()!=null
+					&& !isActive())
+				setActive(true);
+
+			if ((!getOnOffSwitch() || getLinkedCapacitor()==null || getLinkedSecurityStation()==null) && isActive())
+				setActive(false);
+
+
+			
+			if(this.isActive())
 			{
-				securityStationneed = false;
+				scanner();				
 			}
+			
 
-			if ( isCanwork()
-					&& securityStationneed
-					&& this.isLinkGenerator()
-					&& this.getLinkPower() > ModularForceFieldSystem.DefenseStationFPpeerAttack)
-
-			{
-				if (isActive() != true) {
-					setActive(true);
-					worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-				}
-			}
-			if ( !isCanwork()
-
-					|| !securityStationneed
-					|| !this.isLinkGenerator()
-					|| this.getLinkPower() < ModularForceFieldSystem.DefenseStationFPpeerAttack) {
-				if (isActive() != false) {
-					setActive(false);
-					worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-				}
-			}
-
-
-			if (this.getTicker() == 20) {
-				checkslots();
+			if (this.getTicker() == 100) {
 				if(this.isActive())
 				{
-					if(this.isOptionDefenceStation())
-					{ ForceFieldOptions.DefenseStation(this, worldObj,"areadefense","human");}
-
-					if(this.isOptionMobDefense())
-					{ForceFieldOptions.DefenseStation(this, worldObj,"areadefense","mobs");}
+					DefenceAction();
 				}
 				this.setTicker((short) 0);
 			}
@@ -397,97 +725,61 @@ ISidedInventory,INetworkHandlerListener {
 			if(Defstation_ID==0)
 			{
 				if (this.getTicker() >= 20+random.nextInt(20)) {
-					
 					NetworkHandlerClient.requestInitialData(this,true);
 
 					this.setTicker((short) 0);
 				}
-				
+
 				this.setTicker((short) (this.getTicker() + 1));
 			}
+			
+			
 		}
 	}
 
-	public int Forcepowerneed(int blocks, boolean init) {
-		int forcepower;
-		forcepower = blocks * ModularForceFieldSystem.forcefieldblockcost;
-		if (init) {
-			forcepower = (forcepower * ModularForceFieldSystem.forcefieldblockcreatemodifier)
-					+ (forcepower * 5);
-		}
-		return forcepower;
-	}
+	
 
+	@Override
 	public ItemStack decrStackSize(int i, int j) {
-		if (ProjektorItemStacks[i] != null) {
-			if (ProjektorItemStacks[i].stackSize <= j) {
-				ItemStack itemstack = ProjektorItemStacks[i];
-				ProjektorItemStacks[i] = null;
+		if (Inventory[i] != null) {
+			if (Inventory[i].stackSize <= j) {
+				ItemStack itemstack = Inventory[i];
+				Inventory[i] = null;
 				return itemstack;
 			}
-			ItemStack itemstack1 = ProjektorItemStacks[i].splitStack(j);
-			if (ProjektorItemStacks[i].stackSize == 0) {
-				ProjektorItemStacks[i] = null;
+			ItemStack itemstack1 = Inventory[i].splitStack(j);
+			if (Inventory[i].stackSize == 0) {
+				Inventory[i] = null;
 			}
 			return itemstack1;
 		} else {
 			return null;
 		}
 	}
-
+	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		ProjektorItemStacks[i] = itemstack;
+		Inventory[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
 			itemstack.stackSize = getInventoryStackLimit();
+			
 		}
 	}
 
-	public boolean canInteractWith(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
-			return false;
-		} else {
-			return entityplayer.getDistanceSq((double) xCoord + 0.5D,
-					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
-		}
-	}
 
+	@Override
 	public ItemStack getStackInSlot(int i) {
-		return ProjektorItemStacks[i];
+		return Inventory[i];
 	}
-
+	@Override
 	public String getInvName() {
 		return "Defstation";
 	}
 
-	public int getInventoryStackLimit() {
-		return 32;
-	}
-
+	@Override
 	public int getSizeInventory() {
-		return ProjektorItemStacks.length;
+		return Inventory.length;
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
-			return false;
-		} else {
-			return entityplayer.getDistance((double) xCoord + 0.5D,
-					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
-		}
-	}
-
-	@Override
-	public void openChest() {
-	}
-
-	@Override
-	public void closeChest() {
-	}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int var1) {
-		return null;
-	}
 
 	@Override
 	public Container getContainer(InventoryPlayer inventoryplayer) {
@@ -495,52 +787,76 @@ ISidedInventory,INetworkHandlerListener {
 	}
 
 
-	public ItemStack[] getContents() {
-		return ProjektorItemStacks;
-	}
-
-	public void setMaxStackSize(int arg0) {
-	}
-
 	@Override
 	public int getStartInventorySide(ForgeDirection side) {
-		return 0;
+		return 15;
 	}
 
 	@Override
 	public int getSizeInventorySide(ForgeDirection side) {
-		return 0;
+		return 20;
 	}
 
-	
-	
 	@Override
-	public void onNetworkHandlerUpdate(String field) {
+	public void onNetworkHandlerUpdate(String field){ 
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+	}
+
+	@Override
+	public void onNetworkHandlerEvent(String event) {
 		
+		if(!this.isActive()){
 		
+		if (Integer.parseInt(event) == 0) {
+			if (this.getswitchtyp() == 0) {
+				this.setswitchtyp(1);
+			} else {
+				this.setswitchtyp(0);
+			}
+		}
 		
-		if (field.equals("active")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		if (Integer.parseInt(event) == 1) {
+			
+			if (this.getcontratyp() == 0) {
+				this.setcontratyp(1);
+			} else {
+				this.setcontratyp(0);
+			}
+		}
+		
+		if (Integer.parseInt(event) == 2) {
+			
+			   if(getActionmode() == 5)
+			   {
+				   setActionmode(0);
+		       }else{
+		    	   setActionmode(getActionmode()+1);
+		       }  
+		}
+		
+		if (Integer.parseInt(event) == 3) {
+			
+			if (this.getScanmode() == 0) {
+				this.setScanmode(1);
+			} else {
+				this.setScanmode(0);
+			}
+		} 
 		}
 		
 	}
-
+	
 	@Override
 	public List<String> getFieldsforUpdate() {
 		List<String> NetworkedFields = new LinkedList<String>();
 		NetworkedFields.clear();
 
-		NetworkedFields.add("linkSecStation");
 		NetworkedFields.add("active");
 		NetworkedFields.add("side");
 		NetworkedFields.add("Defstation_ID");
 
-
-
 		return NetworkedFields;
 	}
-
-
 
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
@@ -549,25 +865,47 @@ ISidedInventory,INetworkHandlerListener {
 		{
 		case 0:
 		     if(par1ItemStack.getItem() instanceof ItemCardPowerLink)
-	        	return true;	
+	        	return true;
 		break;
 		case 1:
 			if(par1ItemStack.getItem() instanceof ItemCardSecurityLink)
-				return true;		
-		break;
-		case 2:
-			if(par1ItemStack.getItem() instanceof ItemProjectorOptionDefenseStation || par1ItemStack.getItem() instanceof ItemProjectorOptionMobDefence)
 				return true;
 		break;
+		case 2:
 		case 3:
 			if(par1ItemStack.getItem() instanceof ItemProjectorFieldModulatorDistance)
-				return true;	
+				return true;
 		break;
 		}
 		
+		if(Slot>= 5 && Slot <=14)
+			return true;
+		
+
 		return false;
 	}
 
+	@Override
+	public int getSlotStackLimit(int Slot){
 
-
+		switch(Slot){
+		
+		case 0:
+		case 1:
+			
+			return 1;
+		
+		case 2: //Distance mod
+		case 3:
+			return 64;
+		}
+		
+		if(Slot>= 5 && Slot <=14)
+			return 1;
+		
+		if(Slot>= 5 && Slot <=14)
+			return 1;
+		
+		return 64;
+	}
 }

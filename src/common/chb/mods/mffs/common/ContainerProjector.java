@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -33,7 +33,6 @@ public class ContainerProjector extends Container {
 	private int SwitchTyp;
 	private int accesstyp;
 	private int capacity;
-	private boolean camoflage;
 	private EntityPlayer player;
 
 	public ContainerProjector(EntityPlayer player,
@@ -45,7 +44,6 @@ public class ContainerProjector extends Container {
 		SwitchTyp = -1;
 		accesstyp = -1;
 		capacity = -1;
-		camoflage = false;
 
 		addSlotToContainer(new SlotHelper(projectorentity, 0, 11, 41)); // Linkcard
 		addSlotToContainer(new SlotHelper(projectorentity, 1, 11, 18)); // Typ Slot
@@ -88,9 +86,8 @@ public class ContainerProjector extends Container {
 		return projectorentity.isUseableByPlayer(entityplayer);
 	}
 	@Override
-	public ItemStack transferStackInSlot(int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
 		ItemStack itemstack = null;
-
 		Slot slot = (Slot) inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
 			ItemStack itemstack1 = slot.getStack();
@@ -101,7 +98,7 @@ public class ContainerProjector extends Container {
 				slot.onSlotChanged();
 			}
 			if (itemstack1.stackSize != itemstack.stackSize) {
-				slot.onPickupFromSlot(itemstack1);
+				slot.onSlotChanged();
 			} else {
 				return null;
 			}
@@ -117,38 +114,30 @@ public class ContainerProjector extends Container {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
 			if (linkPower != projectorentity.getLinkPower()) {
-				icrafting.updateCraftingInventoryInfo(this, 0,
+				icrafting.sendProgressBarUpdate(this, 0,
 						projectorentity.getLinkPower() & 0xffff);
-				icrafting.updateCraftingInventoryInfo(this, 1,
+				icrafting.sendProgressBarUpdate(this, 1,
 						projectorentity.getLinkPower() >>> 16);
 			}
 			if (capacity != projectorentity.getCapacity()) {
-				icrafting.updateCraftingInventoryInfo(this, 2,
+				icrafting.sendProgressBarUpdate(this, 2,
 						projectorentity.getCapacity());
 			}
 			if (SwitchTyp != projectorentity.getswitchtyp()) {
-				icrafting.updateCraftingInventoryInfo(this, 3,
+				icrafting.sendProgressBarUpdate(this, 3,
 						projectorentity.getswitchtyp());
 			}
 			if (accesstyp != projectorentity.getaccesstyp()) {
-				icrafting.updateCraftingInventoryInfo(this, 4,
+				icrafting.sendProgressBarUpdate(this, 4,
 						projectorentity.getaccesstyp());
 			}
-			if (camoflage != projectorentity.isOptioncamouflage()) {
-				if(projectorentity.isOptioncamouflage())
-				{
-					icrafting.updateCraftingInventoryInfo(this, 5, 1);
-				}else{
-					icrafting.updateCraftingInventoryInfo(this, 5, 0);
-				}
-			}
+
 		}
 
 		linkPower = projectorentity.getLinkPower();
 		SwitchTyp = projectorentity.getswitchtyp();
 		accesstyp = projectorentity.getaccesstyp();
 		capacity =  projectorentity.getCapacity();
-		camoflage = projectorentity.isOptioncamouflage();
 	}
 
 	public void updateProgressBar(int i, int j) {
@@ -166,18 +155,13 @@ public class ContainerProjector extends Container {
 		case 2:
 			projectorentity.setCapacity(j);
 			break;
-			
+
 		case 3:
 			projectorentity.setswitchtyp(j);
 			break;
 		case 4:
 			projectorentity.setaccesstyp(j);
-			break;	
-		case 5:
-			if(j==1){projectorentity.setOptioncamouflage(true);}
-			else{projectorentity.setOptioncamouflage(false);}
-			break;	
-
+			break;
 		}
 	}
 }

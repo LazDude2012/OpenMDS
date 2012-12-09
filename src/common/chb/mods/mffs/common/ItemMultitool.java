@@ -22,6 +22,9 @@ package chb.mods.mffs.common;
 
 import java.util.List;
 
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
+
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
@@ -29,8 +32,10 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
+import chb.mods.mffs.api.IForceEnergyItems;
 
-public abstract class ItemMultitool extends  Item  implements IForceEnergyItems{
+
+public abstract class ItemMultitool extends  ItemMFFSBase  implements IForceEnergyItems{
 	private int typ;
 
 	protected ItemMultitool(int id,int typ) {
@@ -39,7 +44,6 @@ public abstract class ItemMultitool extends  Item  implements IForceEnergyItems{
 		setIconIndex(typ);
 		setMaxStackSize(1);
 		setMaxDamage(100);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 
 	@Override
@@ -97,7 +101,7 @@ public abstract class ItemMultitool extends  Item  implements IForceEnergyItems{
 	    
 
 	    @Override
-	    public void addInformation(ItemStack itemStack, List info)
+	    public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b)
 	    {
 	        String tooltip = String.format( "%d FE/%d FE ",getForceEnergy(itemStack),getMaxForceEnergy());
 	        info.add(tooltip);
@@ -122,5 +126,15 @@ public abstract class ItemMultitool extends  Item  implements IForceEnergyItems{
 		{
 			return 101-((getForceEnergy(itemStack)*100)/getMaxForceEnergy());
 			
+
+		}
+
+		@SideOnly(Side.CLIENT)
+		public void getSubItems(int i, CreativeTabs tabs, List itemList)
+		{
+			ItemStack charged = new ItemStack(this, 1);
+			charged.setItemDamage(1);
+			setForceEnergy(charged, getMaxForceEnergy());
+			itemList.add(charged);
 		}
 }

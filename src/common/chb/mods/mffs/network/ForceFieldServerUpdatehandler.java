@@ -31,6 +31,13 @@ public class ForceFieldServerUpdatehandler implements IScheduledTickHandler {
 			
 			while(!this.getWorldMap(world).queue.isEmpty()) {
 				
+				
+				str.append(this.getWorldMap(world).queue.pop());
+				str.append("/");
+				str.append(this.getWorldMap(world).queue.pop());
+				str.append("/");
+				str.append(this.getWorldMap(world).queue.pop());
+				str.append("!");
 				str.append(this.getWorldMap(world).queue.pop());
 				str.append("<");
 				str.append(this.getWorldMap(world).queue.pop());
@@ -38,20 +45,8 @@ public class ForceFieldServerUpdatehandler implements IScheduledTickHandler {
 				str.append(this.getWorldMap(world).queue.pop());
 				str.append("/");
 				str.append(this.getWorldMap(world).queue.pop());
-				str.append("#");
-				str.append(this.getWorldMap(world).queue.pop());
-				str.append("/");
-				str.append(this.getWorldMap(world).queue.pop());
-				str.append("/");
-				str.append(this.getWorldMap(world).queue.pop());
-				str.append("/");
-				str.append(this.getWorldMap(world).queue.pop());
-				str.append("/");
-				str.append(this.getWorldMap(world).queue.pop());
-				str.append("/");
-				str.append(this.getWorldMap(world).queue.pop());
 				str.append(">");
-				
+
 				if(str.length()> 7500)
 				break;	
 			}
@@ -126,19 +121,17 @@ public static class ForceFieldpacket{
 	
 	protected Stack<Integer> queue = new Stack<Integer>();
 	
-	public void addto(int x,int y ,int z, int[] texuturid,int dimensionId)
+	public void addto(int x,int y ,int z,int dimensionId,int px,int py,int pz)
 	{
 
-		queue.push(texuturid[5]);
-		queue.push(texuturid[4]);
-		queue.push(texuturid[3]);
-		queue.push(texuturid[2]);
-		queue.push(texuturid[1]);
-		queue.push(texuturid[0]);
+
 		queue.push(z);
 		queue.push(y);
 		queue.push(x);
 		queue.push(dimensionId);
+		queue.push(px);
+		queue.push(py);
+		queue.push(pz);
 	}
 
 

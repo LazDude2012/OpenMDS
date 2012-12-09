@@ -1,8 +1,46 @@
+/*  
+    Copyright (C) 2012 Thunderdark
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+    Contributors:
+    
+    Matchlighter
+    Thunderdark 
+
+ */
+
 package chb.mods.mffs.common;
 
+import ic2.api.Direction;
+import ic2.api.EnergyNet;
+import ic2.api.IEnergySink;
 
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
+
+import universalelectricity.core.electricity.Electricity;
+import universalelectricity.core.electricity.ElectricityConnections;
+import universalelectricity.core.implement.IConductor;
+import universalelectricity.core.vector.Vector3;
+
+import buildcraft.api.gates.IOverrideDefaultTriggers;
+import buildcraft.api.gates.ITrigger;
+import buildcraft.api.power.IPowerProvider;
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerFramework;
 
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -19,15 +57,16 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
+import net.minecraft.src.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
-public class TileEntityExtractor extends TileEntityMachines implements ISidedInventory
-,INetworkHandlerListener{
-	
-
+public class TileEntityExtractor extends TileEntityMachines implements 
+INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink{
 	private ItemStack inventory[];
-	
+
+	private int workmode = 0;
     private boolean create;
 	private int Extractor_ID;
 	protected int WorkEnergy;
@@ -35,19 +74,20 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	private int ForceEnergybuffer;
 	private int MaxForceEnergyBuffer;
 	private int WorkCylce;
-	private int LinkCapacitor_ID;
 	private int workTicker;
 	private int workdone;
 	private int maxworkcylce;
 	private int capacity;
-	
-	
+	private IPowerProvider powerProvider;
+	private boolean addedToEnergyNet;
+
+
+
+
 	public TileEntityExtractor() {
-		
 		inventory = new ItemStack[5];
 		create = true;
 		Extractor_ID = 0;
-		LinkCapacitor_ID = 0;
 		WorkEnergy = 0;
 		MaxWorkEnergy = 4000;
 		ForceEnergybuffer = 0;
@@ -56,16 +96,22 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		workTicker = 20;
 		maxworkcylce = 125;
 		capacity = 0;
+		addedToEnergyNet = false;
+
+		
+			
+		if(ModularForceFieldSystem.buildcraftfound){	
+		powerProvider = PowerFramework.currentFramework.createPowerProvider();
+		powerProvider.configure(10, 2, (int) (getMaxWorkEnergy() / 2.5),(int) (getMaxWorkEnergy() / 2.5),(int) (getMaxWorkEnergy() / 2.5));
+		}
+
 	}
 	
-	
-	
-	
+
 	public int getCapacity(){
 		return capacity;
 	}
 
-	
 	public void setCapacity(int Capacity){
 		if(this.capacity != Capacity)
 		{
@@ -73,7 +119,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		NetworkHandlerServer.updateTileEntityField(this, "capacity");
 		}
 	}
-	
+
 	public int getMaxworkcylce() {
 		return maxworkcylce;
 	}
@@ -93,56 +139,34 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		}
 	}
 
-	
 	public int getWorkTicker() {
 		return workTicker;
 	}
-
 
 	public void setWorkTicker(int workTicker) {
 		this.workTicker = workTicker;
 	}
 
 
-
-
-	public int getLinkCapacitors_ID() {
-		return LinkCapacitor_ID;
-	}
-	
-	public void setLinkCapacitor_ID(int id){
-		this.LinkCapacitor_ID = id;
-	}
-	
 	public int getExtractor_ID() {
 		return Extractor_ID;
 	}
-
-
-
 
 	public int getMaxForceEnergyBuffer() {
 		return MaxForceEnergyBuffer;
 	}
 
-
-
 	public void setMaxForceEnergyBuffer(int maxForceEnergyBuffer) {
 		MaxForceEnergyBuffer = maxForceEnergyBuffer;
 	}
-	
+
 	public int getForceEnergybuffer() {
 		return ForceEnergybuffer;
 	}
 
-
-
 	public void setForceEnergybuffer(int forceEnergybuffer) {
 		ForceEnergybuffer = forceEnergybuffer;
-		
 	}
-
-
 
 	public void setWorkCylce(int i)
 	{
@@ -151,11 +175,11 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		NetworkHandlerServer.updateTileEntityField(this,"WorkCylce");
 		}
 	}
-	
+
 	public int getWorkCylce(){
 		return WorkCylce;
 	}
-	
+
 	public int getWorkEnergy() {
 		return WorkEnergy;
 	}
@@ -168,13 +192,12 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		return MaxWorkEnergy;
 	}
 
-
 	public void setMaxWorkEnergy(int maxWorkEnergy) {
 		MaxWorkEnergy = maxWorkEnergy;
 	}
-	
-	
+
 	public void addtogrid() {
+		
 		
 		if (Extractor_ID == 0) {
 			Extractor_ID = Linkgrid.getWorldMap(worldObj)
@@ -182,19 +205,18 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		}
 		Linkgrid.getWorldMap(worldObj).getExtractor().put(Extractor_ID, this);
 	}
-	
 
 	public void removefromgrid() {
 		Linkgrid.getWorldMap(worldObj).getExtractor().remove(getExtractor_ID());
 		dropplugins();
 	}
-	
+
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
 			dropplugins(a,this);
 		}
 	}
-	
+
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
 			return false;
@@ -203,77 +225,53 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
 		}
 	}
-	
-	
+
 	public void checkslots(boolean init) {
-		if (getStackInSlot(1) != null) {
-			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSitemfc) {
-				if (getLinkCapacitors_ID() != NBTTagCompoundHelper.getTAGfromItemstack(
-						getStackInSlot(1)).getInteger("CapacitorID")) {
-					setLinkCapacitor_ID(NBTTagCompoundHelper.getTAGfromItemstack(
-							getStackInSlot(1)).getInteger("CapacitorID"));
-				}
 
-				if (Linkgrid.getWorldMap(worldObj).getCapacitor()
-						.get(this.getLinkCapacitors_ID()) != null) {
-					int transmit = Linkgrid.getWorldMap(worldObj)
-							.getCapacitor().get(this.getLinkCapacitors_ID())
-							.getTransmitRange();
-					int gen_x = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkCapacitors_ID()).xCoord
-							- this.xCoord;
-					int gen_y = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkCapacitors_ID()).yCoord
-							- this.yCoord;
-					int gen_z = Linkgrid.getWorldMap(worldObj).getCapacitor()
-							.get(this.getLinkCapacitors_ID()).zCoord
-							- this.zCoord;
-
-					if (Math.sqrt(gen_x * gen_x + gen_y * gen_y + gen_z * gen_z) <= transmit) {
-
-					} else {
-						setLinkCapacitor_ID(0);
-					}
-				} else {
-					setLinkCapacitor_ID(0);
-					if (!init) {
-						this.setInventorySlotContents(1, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-					}
-				}
-			}
-		} else {
-		    this.setLinkCapacitor_ID(0);
-		}
-		
 		if (getStackInSlot(2) != null) {
 			if (getStackInSlot(2).getItem() == ModularForceFieldSystem.MFFSitemupgradecapcap) {
-				
 				setMaxForceEnergyBuffer(1000000 + (getStackInSlot(2).stackSize * 100000));
-				
 			 }else{
 				 setMaxForceEnergyBuffer(1000000);
 			 }
 			}else{
 				setMaxForceEnergyBuffer(1000000);
 			}
-		
+
 		if (getStackInSlot(3) != null) {
 			if (getStackInSlot(3).getItem() == ModularForceFieldSystem.MFFSitemupgradeexctractorboost) {
-		
 				setWorkTicker(20 - getStackInSlot(3).stackSize);
-			
-	
 			}else{
 				setWorkTicker(20);
-		
 			}
 		}else{
 			setWorkTicker(20);
 		}
-		
+
+		if (getStackInSlot(4) != null) {
+			if (getStackInSlot(4).getItem() == ModularForceFieldSystem.MFFSitemForcicumCell) {
+				workmode = 1;
+				setMaxWorkEnergy(200000);
+			}
+			}else{
+				workmode = 0;
+				setMaxWorkEnergy(4000);
+			}
+	}
+	
+	public TileEntityCapacitor getLinkedCapacitor()
+	{
+		return ItemCardPowerLink.getLinkedCapacitor(this, 1, worldObj);
 	}
 	
 	
+	public int getLinkCapacitor_ID(){
+		TileEntityCapacitor cap = getLinkedCapacitor();
+		if(cap != null)
+			return cap.getCapacitor_ID();
+		return 0;	
+	}
+
 	private boolean hasPowertoConvert()
 	{
 		if(WorkEnergy >= MaxWorkEnergy-1)
@@ -283,23 +281,27 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		}
 		return false;
 	}
-	
+
 	private boolean hasfreeForceEnergyStorage()
 	{
 		if(this.MaxForceEnergyBuffer > this.ForceEnergybuffer)
 		 return true;
 		return false;
 	}
-	
-	
+
 	private boolean hasStufftoConvert()
 	{
 		if (WorkCylce > 0)
 		{
 			return true;
-			
 		}else{
-		
+		if(ModularForceFieldSystem.adventuremap)
+		{
+	    	 setMaxworkcylce(ModularForceFieldSystem.ForceciumCellWorkCylce);
+			 setWorkCylce(getMaxworkcylce());
+			 return true;
+		}
+
 		if (getStackInSlot(0) != null) {
 				if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemForcicium) {
 		    	  setMaxworkcylce(ModularForceFieldSystem.ForceciumWorkCylce);
@@ -307,9 +309,8 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 			      decrStackSize(0, 1);
 			      return true;
 				}
-				
+
 				if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemForcicumCell) {
-					
 					if(((ItemForcicumCell)getStackInSlot(0).getItem()).useForcecium(1, getStackInSlot(0)))
 					{
 				    	  setMaxworkcylce(ModularForceFieldSystem.ForceciumCellWorkCylce);
@@ -317,135 +318,152 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 						  return true;
 					}
 					}
-
-		
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public void transferForceEnergy()
 	{
 		if(this.getForceEnergybuffer() > 0)
-		{	
-		if(LinkCapacitor_ID!=0)
 		{
-			TileEntityCapacitor RemoteCap =Linkgrid.getWorldMap(worldObj).getCapacitor().get(LinkCapacitor_ID);	
+		if(getLinkCapacitor_ID()!=0)
+		{
+			TileEntityCapacitor RemoteCap =getLinkedCapacitor();
 			if(RemoteCap != null)
 			{
 			      int maxtrasferrate = ModularForceFieldSystem.ExtractorPassForceEnergyGenerate*2;
 			      int forceenergyspace = RemoteCap.getMaxForcePower() - RemoteCap.getForcePower();
-			      
+
 				  if(this.getForceEnergybuffer() > maxtrasferrate)
 				  {
 					    if(forceenergyspace > maxtrasferrate)
 					    {
 					    	RemoteCap.setForcePower(RemoteCap.getForcePower() + maxtrasferrate);
-			                this.setForceEnergybuffer(this.getForceEnergybuffer() - maxtrasferrate);		    
+			                this.setForceEnergybuffer(this.getForceEnergybuffer() - maxtrasferrate);
 					    }else{
 					    	RemoteCap.setForcePower(RemoteCap.getForcePower() + forceenergyspace);
-			                this.setForceEnergybuffer(this.getForceEnergybuffer() - forceenergyspace);	
+			                this.setForceEnergybuffer(this.getForceEnergybuffer() - forceenergyspace);
 					    }
-		                
 				  }else{
-					  
 					    if(forceenergyspace > this.getForceEnergybuffer())
 					    {
 					    	RemoteCap.setForcePower(RemoteCap.getForcePower() + this.getForceEnergybuffer());
-			                this.setForceEnergybuffer(this.getForceEnergybuffer() - this.getForceEnergybuffer());		    
+			                this.setForceEnergybuffer(this.getForceEnergybuffer() - this.getForceEnergybuffer());
 					    }else{
 					    	RemoteCap.setForcePower(RemoteCap.getForcePower() + forceenergyspace);
-			                this.setForceEnergybuffer(this.getForceEnergybuffer() - forceenergyspace);	
+			                this.setForceEnergybuffer(this.getForceEnergybuffer() - forceenergyspace);
 					    }
-					  
-					  
 				  }
 			}
 		}
 		}
 	}
-	
-	public void converMJtoWorkEnergy(){}
-	public void converUEtoWorkEnergy(){}
-	
+
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
-			
-			
-			if (create && this.getLinkCapacitors_ID() != 0) {
+			if (create && this.getLinkCapacitor_ID() != 0) {
 				addtogrid();
 				checkslots(true);
 				create = false;
+				
 			}
 
-		
+			if (!addedToEnergyNet && ModularForceFieldSystem.ic2found) {
+				EnergyNet.getForWorld(worldObj).addTileEntity(this);
+				addedToEnergyNet = true;
+				}
+
 			if (this.getTicker() >= getWorkTicker()) {
-				
+				checkslots(false);
+
+				if(workmode==0)
+				{
+				if(ModularForceFieldSystem.buildcraftfound)
 				converMJtoWorkEnergy();
-				converUEtoWorkEnergy();	
-				
+
+				if(ModularForceFieldSystem.uefound)
+				converUEtoWorkEnergy();
+
 				if(this.getWorkdone() != getWorkEnergy() * 100 / getMaxWorkEnergy())
 				setWorkdone( getWorkEnergy() * 100 / getMaxWorkEnergy());
-				
+
+				if(getWorkdone() > 100){setWorkdone(100);}
+
 				if(this.getCapacity() != (getForceEnergybuffer()*100)/getMaxForceEnergyBuffer())
 					   setCapacity((getForceEnergybuffer()*100)/getMaxForceEnergyBuffer());
-				
-				checkslots(false);
+
 				if(this.hasfreeForceEnergyStorage() && this.hasStufftoConvert())
 				{
-							
 				 if (isActive() != true) {
 					 setActive(true);
 					}
 
 					if(this.hasPowertoConvert()){
-						
 						  setWorkCylce(getWorkCylce()-1);
-						  setForceEnergybuffer(getForceEnergybuffer()+ ModularForceFieldSystem.ExtractorPassForceEnergyGenerate);	
+						  setForceEnergybuffer(getForceEnergybuffer()+ ModularForceFieldSystem.ExtractorPassForceEnergyGenerate);
 					}
 				}else{
-					
 					if (isActive() != false) {
 						setActive(false);
 					}
-					
 				}
-			
+
 				transferForceEnergy();
-				
+
 				this.setTicker((short) 0);
 			}
-		
-			this.setTicker((short) (this.getTicker() + 1));
-			
-				
 
+			if(workmode==1)
+			{
+				if(this.getWorkdone() != getWorkEnergy() * 100 / getMaxWorkEnergy())
+					setWorkdone( getWorkEnergy() * 100 / getMaxWorkEnergy());
+
+				if(ModularForceFieldSystem.buildcraftfound)
+				converMJtoWorkEnergy();
+
+				if(ModularForceFieldSystem.uefound)
+				converUEtoWorkEnergy();
+
+			   	if(((ItemForcicumCell)getStackInSlot(4).getItem()).getForceciumlevel(getStackInSlot(4)) < ((ItemForcicumCell)getStackInSlot(4).getItem()).getMaxForceciumlevel())
+				{
+			      if (isActive() != true) {
+					setActive(true);
+					}
+	             if(this.hasPowertoConvert()){
+	                         ((ItemForcicumCell)getStackInSlot(4).getItem()).setForceciumlevel(getStackInSlot(4),((ItemForcicumCell)getStackInSlot(4).getItem()).getForceciumlevel(getStackInSlot(4))+1);
+						 }
+						}else{
+					if (isActive() != false) {
+						setActive(false);
+						}
+					}
+
+				this.setTicker((short) 0);
+			}
+			}
+
+			this.setTicker((short) (this.getTicker() + 1));
 		}else {
 			if(Extractor_ID==0)
 			{
 				if (this.getTicker() >= 20+random.nextInt(20)) {
-					
 					NetworkHandlerClient.requestInitialData(this,true);
 
 					this.setTicker((short) 0);
 				}
-				
+
 				this.setTicker((short) (this.getTicker() + 1));
 			}
 		}
 	}
-	
-	
+
 	@Override
 	public Container getContainer(InventoryPlayer inventoryplayer) {
 		return new ContainerForceEnergyExtractor(inventoryplayer.player,this);
 	}
 
-	
-
-	
-	
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 
@@ -453,7 +471,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		 ForceEnergybuffer = nbttagcompound.getInteger("ForceEnergybuffer");
 		 WorkEnergy = nbttagcompound.getInteger("WorkEnergy");
 		 WorkCylce = nbttagcompound.getInteger("WorkCylce");
-		 
+
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		inventory = new ItemStack[getSizeInventory()];
 		for (int i = 0; i < nbttaglist.tagCount(); i++) {
@@ -466,7 +484,6 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 			}
 		}
 	}
-
 
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
@@ -488,7 +505,7 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 
 		nbttagcompound.setTag("Items", nbttaglist);
 	}
-	
+
 	public ItemStack getStackInSlot(int i) {
 		return inventory[i];
 	}
@@ -497,21 +514,18 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		return "Extractor";
 	}
 
-	public int getInventoryStackLimit() {
-		return 64;
-	}
 
 	public int getSizeInventory() {
 		return inventory.length;
 	}
-	
+
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		inventory[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
 			itemstack.stackSize = getInventoryStackLimit();
 		}
 	}
-	
+
 	public ItemStack decrStackSize(int i, int j) {
 		if (inventory[i] != null) {
 			if (inventory[i].stackSize <= j) {
@@ -528,11 +542,8 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 			return null;
 		}
 	}
-	
-	@Override
-	public ItemStack getStackInSlotOnClosing(int var1) {
-		return null;
-	}
+
+
 
 	@Override
 	public int getStartInventorySide(ForgeDirection side) {
@@ -543,49 +554,20 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 	public int getSizeInventorySide(ForgeDirection side) {
 		return 1;
 	}
-	
-	
-	public ItemStack[] getContents() {
-		return inventory;
-	}
-	
-	@Override
-	public void openChest() {
-	}
 
 	@Override
-	public void closeChest(){ 
-	}
-
-
-
-
-
-	@Override
-	public void onNetworkHandlerUpdate(String field) {
+	public void onNetworkHandlerUpdate(String field){ 
 		
-	
-	
-		if (field.equals("side")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
+		if(field.equalsIgnoreCase("side") && ModularForceFieldSystem.uefound)
+		{
+
+		  ElectricityConnections.registerConnector(this, EnumSet.of(ForgeDirection.getOrientation(this.getFacing()).getOpposite()));
+			
 		}
-		if (field.equals("active")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("WorkCylce")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("capacity")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
-		if (field.equals("workdone")) {
-			worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		}
+		
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+		
 	}
-
-
-
-
 
 	@Override
 	public List<String> getFieldsforUpdate() {
@@ -600,38 +582,171 @@ public class TileEntityExtractor extends TileEntityMachines implements ISidedInv
 		NetworkedFields.add("workdone");
 		NetworkedFields.add("Extractor_ID");
 
-
 		return NetworkedFields;
 	}
 
-
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
-		
 		switch(Slot)
 		{
 		case 0:
-			if(par1ItemStack.getItem() instanceof ItemForcicium || par1ItemStack.getItem() instanceof ItemForcicumCell )
+			if((par1ItemStack.getItem() instanceof ItemForcicium || par1ItemStack.getItem() instanceof ItemForcicumCell) && getStackInSlot(4) == null)
 			return true;
 		break;
-		
+
 		case 1:
 			if(par1ItemStack.getItem() instanceof  ItemCardPowerLink)
 			return true;
 		break;
-		
+
 		case 2:
 			if(par1ItemStack.getItem() instanceof  ItemCapacitorUpgradeCapacity)
 			return true;
 		break;
-		
+
 		case 3:
 			if(par1ItemStack.getItem() instanceof  ItemExtractorUpgradeBooster)
 			return true;
 		break;
-		
+
+		case 4:
+			if(par1ItemStack.getItem() instanceof  ItemForcicumCell && getStackInSlot(0) == null)
+			return true;
+		break;
 		}
 		return false;
 	}
+
+	@Override
+	public int getSlotStackLimit(int Slot){
+		switch(Slot){
+		case 0: //Forcicium
+			return 64;
+		case 1: //Powerlink
+			return 1;
+		case 2: //Cap upgrade
+			return 9;
+		case 3: //Boost upgrade
+			return 19;
+		case 4: //Forcicium cell
+			return 1;
+		}
+		return 1;
+	}
+
+	@Override
+	public boolean demandsEnergy() {
+		if(this.getWorkEnergy()< this.MaxWorkEnergy)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public int injectEnergy(Direction directionFrom, int amount) {
+	if(this.getWorkEnergy()< this.MaxWorkEnergy)
+	{
+	if((MaxWorkEnergy - WorkEnergy) > amount)
+	{
+	WorkEnergy = WorkEnergy + amount;
+	return 0;
+	}else{
+	WorkEnergy = WorkEnergy + (MaxWorkEnergy - WorkEnergy);
+	return 0 ; //amount- (MaxWorkEnergy - WorkEnergy);
+	}
+	}
+	return 0;
+	}
+
+	@Override
+	public void invalidate() {
+		if (addedToEnergyNet) {
+			EnergyNet.getForWorld(worldObj).removeTileEntity(this);
+			addedToEnergyNet = false;
+		}
+
+		super.invalidate();
+	}
+
+	@Override
+	public boolean isAddedToEnergyNet() {
+		return addedToEnergyNet;
+	}
+
+	@Override
+	public boolean acceptsEnergyFrom(TileEntity tileentity, Direction direction) {
+		return true;
+	}
+
+	public void converMJtoWorkEnergy(){
+		if(this.getWorkEnergy() < this.getMaxWorkEnergy())
+		{
+	      float use = powerProvider.useEnergy(1, (float) (this.getMaxWorkEnergy() - this.getWorkEnergy() / 2.5), true);
+
+	      if(getWorkEnergy() + (use *2.5) > getMaxWorkEnergy())
+	      {
+	    	     setWorkEnergy(getMaxWorkEnergy());
+	      }else{
+	             setWorkEnergy((int) (getWorkEnergy() + (use *2.5)));
+	      }
+		}
+	}
+
+	@Override
+	public void setPowerProvider(IPowerProvider provider) {
+		this.powerProvider = provider;
+	}
+
+	@Override
+	public IPowerProvider getPowerProvider() {
+		return powerProvider;
+	}
+
+	@Override
+	public void doWork() {}
+
+	@Override
+	public int powerRequest() {
+		double workEnergyinMJ = getWorkEnergy()  / 2.5;
+		double MaxWorkEnergyinMj = getMaxWorkEnergy()  / 2.5;
+
+		return (int) Math.round(MaxWorkEnergyinMj - workEnergyinMJ) ;
+	}
+
+	@Override
+	public LinkedList<ITrigger> getTriggers() {
+		return null;
+	}
+
+	public void converUEtoWorkEnergy(){
+		
+		ForgeDirection inputDirection = ForgeDirection.getOrientation(this.getFacing()).getOpposite();
+		
+		TileEntity inputTile = Vector3.getTileEntityFromSide(this.worldObj, Vector3.get(this), inputDirection);
+
+		if (inputTile != null)
+		{
+		 if (inputTile instanceof IConductor)
+		 {
+		  if (this.getWorkEnergy()  >= this.getMaxWorkEnergy())
+		  {
+		   ((IConductor) inputTile).getNetwork().stopRequesting(this);
+		  }
+		   else
+		  {
+		   ((IConductor) inputTile).getNetwork().startRequesting(this,this.getMaxWorkEnergy() - this.getWorkEnergy()/120 , 120);
+		  
+		   this.setWorkEnergy((int) (getWorkEnergy() + ((IConductor) inputTile).getNetwork().consumeElectricity(this).getWatts()/2));
+	      }
+		  }
+		}	
+		
+		System.out.println(getWorkEnergy());
+		
+
+	}
+
 
 }

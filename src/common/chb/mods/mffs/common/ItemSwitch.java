@@ -47,23 +47,23 @@ public class ItemSwitch extends ItemMultitool {
 				.getBlockTileEntity(x,y,z);
 
 		
-		if(tileentity instanceof TileEntityConverter)
+		if(tileentity instanceof ISwitchabel)
 		{
 			
-			  if(SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+			  if(SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
 			  {
 
-					if(((TileEntityConverter)tileentity).getswitchtyp() == 1)
+					if(((ISwitchabel)tileentity).getswitchtyp() == 1)
 					{
 						if(ForceEnergyItems.use(itemstack, 1000, false,entityplayer))
 						{
 					     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
 
-							if(((TileEntityConverter)tileentity).getOnOffSwitch())
+							if(((ISwitchabel)tileentity).getOnOffSwitch())
 							{
-								((TileEntityConverter)tileentity).setOnOffSwitch(false);
+								((ISwitchabel)tileentity).setOnOffSwitch(false);
 							}else{
-								((TileEntityConverter)tileentity).setOnOffSwitch(true);
+								((ISwitchabel)tileentity).setOnOffSwitch(true);
 							}
 							
 						return true;
@@ -83,81 +83,6 @@ public class ItemSwitch extends ItemMultitool {
 			
 		}
 		
-		
-		
-		
-		
-		
-		if(tileentity instanceof TileEntityProjector)
-
-		{
-			
-			if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
-			{return false;}
-
-			if(((TileEntityProjector)tileentity).getswitchtyp() == 1)
-			{
-				if(ForceEnergyItems.use(itemstack, 1000, false,entityplayer))
-				{
-			     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
-
-					if(((TileEntityProjector)tileentity).getOnOffSwitch())
-					{
-						((TileEntityProjector)tileentity).setOnOffSwitch(false);
-					}else{
-						((TileEntityProjector)tileentity).setOnOffSwitch(true);
-					}
-					
-				return true;
-				}else{
-					
-					Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: not enough FP please charge");
-					return false;
-				}
-			}else{
-			
-				Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: Wrong Mode");
-				return false;
-			}
-		}
-
-		if(tileentity instanceof TileEntityCapacitor)
-
-		{
-			if(Linkgrid.getWorldMap(world).getSecStation().get(((TileEntityCapacitor)tileentity).getSecStation_ID()) != null)
-			{
-				if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
-				{
-					Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: access denied");
-					return false;
-				}
-			}
-
-			if(((TileEntityCapacitor)tileentity).getswitchtyp() == 1)
-			{
-				if(ForceEnergyItems.use(itemstack, 1000, false,entityplayer))
-				{
-			     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
-			     
-					if(((TileEntityCapacitor)tileentity).getOnOffSwitch())
-					{
-						((TileEntityCapacitor)tileentity).setOnOffSwitch(false);
-					}else{
-						((TileEntityCapacitor)tileentity).setOnOffSwitch(true);
-					}
-
-				return true;
-				}else{
-					
-					Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: not enough FP please charge");
-					return false;
-				}
-			}else{
-			
-				Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: component in wrong mode");
-				return false;
-			}
-		}
 		
 		return false;
 }

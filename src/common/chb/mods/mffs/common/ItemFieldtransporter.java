@@ -46,7 +46,7 @@ public class ItemFieldtransporter extends ItemMultitool{
 		
 		ForceFieldWorld wff = WorldMap.getForceFieldWorld(world);
 
-		ForceFieldBlockStack ffworldmap = wff.getorcreateFFStackMap(x,y,z);
+		ForceFieldBlockStack ffworldmap = wff.getorcreateFFStackMap(x,y,z,world);
 		if (ffworldmap != null) {
 			int Sec_Gen_ID = -1;
 			int First_Gen_ID = ffworldmap.getGenratorID();
@@ -73,10 +73,10 @@ public class ItemFieldtransporter extends ItemMultitool{
 			passtrue = true;
 			break;
 			case 2:
-				passtrue = SecurityHelper.isAccessGranted(generator, entityplayer, world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
+				passtrue = SecurityHelper.isAccessGranted(generator, entityplayer, world,"FFB");
 			break;
 			case 3:
-				passtrue = SecurityHelper.isAccessGranted(projector, entityplayer, world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
+				passtrue = SecurityHelper.isAccessGranted(projector, entityplayer, world,"FFB");
 			break;
 
 			}
@@ -189,7 +189,7 @@ return true;
 		{
 			int powerleft = this.getForceEnergy(itemstack);
 			ItemStack hand = entityplayer.inventory.getCurrentItem();
-			hand= new ItemStack(ModularForceFieldSystem.MFFSitemWrench, 1);
+			hand= new ItemStack(ModularForceFieldSystem.MFFSitemManuelBook, 1);
 			ForceEnergyItems.charge(hand, powerleft,entityplayer);
 		return hand;
 		}

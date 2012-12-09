@@ -27,6 +27,8 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import chb.mods.mffs.api.ForcefieldProtected;
+import chb.mods.mffs.api.IForceEnergyItems;
 
 public class ItemDebugger extends  ItemMultitool  {
 	protected StringBuffer info = new StringBuffer();
@@ -45,44 +47,54 @@ public class ItemDebugger extends  ItemMultitool  {
 		
 		if (!world.isRemote) {
 			
-			if (tileEntity instanceof TileEntityProjector) {
-				info.setLength(0);
-				info.append("Projector: ").append(((TileEntityProjector) tileEntity).getForcefieldtextur_id(0));
-				Functions.ChattoPlayer(entityplayer, info.toString());
-			}
+		    
+			 System.out.println(world.getBlockMetadata(x, y, z));
+                
 			
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getForcefieldCamoblockmeta());
 			
-			if (tileEntity instanceof TileEntityCapacitor) {
-				info.setLength(0);
-				info.append("Capacitor: ").append(((TileEntityCapacitor) tileEntity).getCapacitor_ID());
-				Functions.ChattoPlayer(entityplayer, info.toString());
-			}
-			if (tileEntity instanceof TileEntitySecurityStation) {
-				info.setLength(0);
-				info.append("Capacitor: ").append(((TileEntitySecurityStation) tileEntity).getSecurtyStation_ID());
-				Functions.ChattoPlayer(entityplayer, info.toString());
-			}
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getForcefieldCamoblockid());
 			
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getTexturid(0));
+			
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getTexturfile());
+			
+			if(tileEntity instanceof TileEntityProjector)
+				System.out.println(((TileEntityProjector)tileEntity).getForceFieldTexturfile());
+
+			if(tileEntity instanceof TileEntityProjector)
+				System.out.println(((TileEntityProjector)tileEntity).getForceFieldTexturID());
+			
+			if(tileEntity instanceof TileEntityProjector)
+				System.out.println(((TileEntityProjector)tileEntity).getForcefieldCamoblockid());
+
 			
 		}else{
 			
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getForcefieldCamoblockmeta());
 			
-			if (tileEntity instanceof TileEntityProjector) {
-				info.setLength(0);
-				info.append("Projector: ").append(((TileEntityProjector) tileEntity).getForcefieldtextur_id(0));
-				Functions.ChattoPlayer(entityplayer, info.toString());
-			}
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getForcefieldCamoblockid());
 			
-			if (tileEntity instanceof TileEntityCapacitor) {
-				info.setLength(0);
-				info.append("Capacitor: ").append(((TileEntityCapacitor) tileEntity).getCapacitor_ID());
-				Functions.ChattoPlayer(entityplayer, info.toString());
-			}
-			if (tileEntity instanceof TileEntitySecurityStation) {
-				info.setLength(0);
-				info.append("Capacitor: ").append(((TileEntitySecurityStation) tileEntity).getSecurtyStation_ID());
-				Functions.ChattoPlayer(entityplayer, info.toString());
-			}
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getTexturid(0));
+			
+			if(tileEntity instanceof TileEntityForceField)
+				System.out.println(((TileEntityForceField)tileEntity).getTexturfile());
+			
+			if(tileEntity instanceof TileEntityProjector)
+				System.out.println(((TileEntityProjector)tileEntity).getForceFieldTexturfile());
+			
+			if(tileEntity instanceof TileEntityProjector)
+				System.out.println(((TileEntityProjector)tileEntity).getForceFieldTexturID());
+			
+			if(tileEntity instanceof TileEntityProjector)
+				System.out.println(((TileEntityProjector)tileEntity).getForcefieldCamoblockid());
 		}
 
 		return false;
@@ -93,10 +105,6 @@ public class ItemDebugger extends  ItemMultitool  {
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
 		
-		System.out.println("Capacitor:" +Linkgrid.getWorldMap(world).getCapacitor().size());
-		System.out.println("Converter:" +Linkgrid.getWorldMap(world).getConverter().size());
-		System.out.println("Extractor:" +Linkgrid.getWorldMap(world).getExtractor().size());
-		System.out.println("Projector:" +Linkgrid.getWorldMap(world).getProjektor().size());
 	
 		
 		return itemstack;

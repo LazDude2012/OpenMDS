@@ -31,10 +31,10 @@ import net.minecraft.src.World;
 public final class Linkgrid {
 	private static Map WorldpowernetMap = new HashMap();
 
-	static class Worldlinknet {
+	 public static class Worldlinknet {
 		private Map<Integer, TileEntityProjector> Projektor = new Hashtable<Integer, TileEntityProjector>();
 		private Map<Integer, TileEntityCapacitor> Capacitors = new Hashtable<Integer, TileEntityCapacitor>();
-		private Map<Integer, TileEntitySecurityStation> SecStation = new Hashtable<Integer, TileEntitySecurityStation>();
+		private Map<Integer, TileEntityAdvSecurityStation> SecStation = new Hashtable<Integer, TileEntityAdvSecurityStation>();
 		private Map<Integer, TileEntityAreaDefenseStation> DefStation = new Hashtable<Integer, TileEntityAreaDefenseStation>();
 		private Map<Integer, TileEntityExtractor> Extractor = new Hashtable<Integer, TileEntityExtractor>();
 		private Map<Integer, TileEntityConverter> Converter = new Hashtable<Integer, TileEntityConverter>();
@@ -59,8 +59,8 @@ public final class Linkgrid {
 		public Map<Integer, TileEntityCapacitor> getCapacitor() {
 			return Capacitors;
 		}
-
-		public Map<Integer, TileEntitySecurityStation> getSecStation() {
+		
+		public Map<Integer, TileEntityAdvSecurityStation> getSecStation() {
 			return SecStation;
 		}
 
@@ -108,12 +108,13 @@ public final class Linkgrid {
 				
 			}
 			
-			if(tileEntity instanceof TileEntitySecurityStation){
+			
+			if(tileEntity instanceof TileEntityAdvSecurityStation){
 				
 				while (SecStation.get(tempID) != null) {
 					tempID = random.nextInt();
 				}
-				SecStation.put(tempID, (TileEntitySecurityStation) tileEntity);
+				SecStation.put(tempID, (TileEntityAdvSecurityStation) tileEntity);
 				
 			}
 			
@@ -138,35 +139,25 @@ public final class Linkgrid {
 			return tempID;
 		}
 		
-		
-		
 
 		public static int myRandom(int low, int high) {
 			return (int) (Math.random() * (high - low) + low);
 		}
 
-		public int condevisec(int Capacitors_ID, int xCoordr, int yCoordr,
-				int zCoordr, int i) {
+		
+		public int connectedtoCapacitor(TileEntityCapacitor Cap, int range) {
 			int counter = 0;
 			for (TileEntityProjector tileentity : Projektor.values()) {
-				if (tileentity.getLinkCapacitor_ID() == Capacitors_ID) {
-					int dx = tileentity.xCoord - xCoordr;
-					int dy = tileentity.yCoord - yCoordr;
-					int dz = tileentity.zCoord - zCoordr;
-
-					if (i >= Math.sqrt(dx * dx + dy * dy + dz * dz)) {
+				if (tileentity.getLinkCapacitor_ID() == Cap.getCapacitor_ID()) {
+					if (range >= PointXYZ.distance(tileentity.getMaschinePoint(),Cap.getMaschinePoint())) {
 						counter++;
 					}
 				}
 			}
 
 			for (TileEntityCapacitor tileentity : Capacitors.values()) {
-				if (tileentity.getRemote_Capacitor_ID() == Capacitors_ID) {
-					int dx = tileentity.xCoord - xCoordr;
-					int dy = tileentity.yCoord - yCoordr;
-					int dz = tileentity.zCoord - zCoordr;
-
-					if (i >= Math.sqrt(dx * dx + dy * dy + dz * dz)) {
+				if (tileentity.getLinkCapacitor_ID() == Cap.getCapacitor_ID()) {
+					if (range >= PointXYZ.distance(tileentity.getMaschinePoint(),Cap.getMaschinePoint())) {
 						counter++;
 					}
 				}
@@ -174,36 +165,24 @@ public final class Linkgrid {
 			
 			
 			for (TileEntityAreaDefenseStation tileentity : DefStation.values()) {
-				if (tileentity.getlinkCapacitors_ID() == Capacitors_ID) {
-					int dx = tileentity.xCoord - xCoordr;
-					int dy = tileentity.yCoord - yCoordr;
-					int dz = tileentity.zCoord - zCoordr;
-
-					if (i >= Math.sqrt(dx * dx + dy * dy + dz * dz)) {
+				if (tileentity.getLinkCapacitor_ID() == Cap.getCapacitor_ID()) {
+					if (range >= PointXYZ.distance(tileentity.getMaschinePoint(),Cap.getMaschinePoint())) {
 						counter++;
 					}
 				}
 			}
 			
 			for (TileEntityExtractor tileentity : Extractor.values()) {
-				if (tileentity.getLinkCapacitors_ID() == Capacitors_ID) {
-					int dx = tileentity.xCoord - xCoordr;
-					int dy = tileentity.yCoord - yCoordr;
-					int dz = tileentity.zCoord - zCoordr;
-
-					if (i >= Math.sqrt(dx * dx + dy * dy + dz * dz)) {
+				if (tileentity.getLinkCapacitor_ID() == Cap.getCapacitor_ID()) {
+					if (range >= PointXYZ.distance(tileentity.getMaschinePoint(),Cap.getMaschinePoint())) {
 						counter++;
 					}
 				}
 			}
 			
 			for (TileEntityConverter tileentity : Converter.values()) {
-				if (tileentity.getLinkCapacitors_ID() == Capacitors_ID) {
-					int dx = tileentity.xCoord - xCoordr;
-					int dy = tileentity.yCoord - yCoordr;
-					int dz = tileentity.zCoord - zCoordr;
-
-					if (i >= Math.sqrt(dx * dx + dy * dy + dz * dz)) {
+				if (tileentity.getLinkCapacitor_ID() == Cap.getCapacitor_ID()) {
+					if (range >= PointXYZ.distance(tileentity.getMaschinePoint(),Cap.getMaschinePoint())) {
 						counter++;
 					}
 				}

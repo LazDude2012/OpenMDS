@@ -25,6 +25,7 @@ import java.util.Random;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
+import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
@@ -52,6 +53,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 		setBlockUnbreakable();
 		setResistance(999F);
 		setTickRandomly(true);
+
 	}
 	
 	@Override
@@ -71,11 +73,12 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 	@Override
 	public int getRenderBlockPass() {
 
-		if(ModularForceFieldSystem.proxy.getClientWorld().getBlockMetadata(posx , posy, posz) == ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE)
+		if(ModularForceFieldSystem.proxy.getClientWorld().getBlockMetadata(posx , posy, posz) == ForceFieldTyps.Camouflage.ordinal())
 		{
 			TileEntityForceField ForceField   =	(TileEntityForceField) ModularForceFieldSystem.proxy.getClientWorld().getBlockTileEntity(posx , posy, posz);
 
 	        if(ForceField  != null){
+	        	
 	        	if(ForceField.getTexturid(1) == 67 || ForceField.getTexturid(1) == 205)
 	        	{
 	        		return 1;
@@ -111,7 +114,59 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
     {
         return false;
     }
+	
+	
+	@Override
+	 public void onNeighborBlockChange(World world, int x, int y, int z, int blockid) {
+		if(blockid  != ModularForceFieldSystem.MFFSFieldblock.blockID)
+	    {
+			for(int x1 = -1 ;x1<=1; x1++){
+				for(int y1 = -1 ;y1<=1; y1++){
+					for(int z1 = -1 ;z1<=1; z1++){
+					if(world.getBlockId(x+x1, y+y1,z+z1)!= ModularForceFieldSystem.MFFSFieldblock.blockID )
+					{
+						if(world.getBlockId(x+x1, y+y1,z+z1)==0)
+						{
+							breakBlock(world, x+x1, y+y1, z+z1,0,0);
+						}
+					}
+			}
+		}
+	}
+		}
+	 }
 
+	@Override
+	public void breakBlock(World world, int i, int j, int k,int a,int b){
+		ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(world).getForceFieldStackMap(WorldMap.Cordhash(i, j, k));
+		
+		if (ffworldmap != null) {
+				if(!ffworldmap.isEmpty()) {
+					TileEntityProjector Projector  =	Linkgrid.getWorldMap(world).getProjektor().get(ffworldmap.getProjectorID());
+			if(Projector != null){
+				if(!Projector.isActive()){
+					ffworldmap.removebyProjector(ffworldmap.getProjectorID());
+				}else{
+					world.setBlockAndMetadataWithNotify(i, j, k,ModularForceFieldSystem.MFFSFieldblock.blockID,ffworldmap.getTyp());
+					world.markBlockForUpdate(i, j, k);
+					ffworldmap.setSync(true);
+
+					TileEntityCapacitor cap =Projector.getLinkedCapacitor();
+					
+					if (cap != null) {
+						
+						if (ffworldmap.getTyp() == 1) {
+							cap.Energylost(ModularForceFieldSystem.forcefieldblockcost* ModularForceFieldSystem.forcefieldblockcreatemodifier);
+						} else {
+							cap.Energylost(ModularForceFieldSystem.forcefieldblockcost* ModularForceFieldSystem.forcefieldblockcreatemodifier* ModularForceFieldSystem.forcefieldblockzappermodifier);
+						}
+				}
+			}
+			}
+		}
+		}
+	}
+	
 
     @Override
     public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {
@@ -121,7 +176,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
     	
 	ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(par1World).getForceFieldStackMap(WorldMap.Cordhash(par2, par3, par4));
 
-	if(ffworldmap != null)
+	if(ffworldmap != null && !ModularForceFieldSystem.adventuremap)
 	{
 		 par5EntityPlayer.attackEntityFrom(DamageSource.generic,10);
 		 Functions.ChattoPlayer((EntityPlayer)par5EntityPlayer,"[Force Field] Attention High Energy Field");
@@ -135,7 +190,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 
 	@Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		if (world.getBlockMetadata(i, j, k) == 1) {
+		if (world.getBlockMetadata(i, j, k) == ForceFieldTyps.Zapper.ordinal()) {
 			float f = 0.0625F;
 			return AxisAlignedBB.getBoundingBox(i + f, j + f, k + f, i + 1 - f, j + 1 - f, k + 1 - f);
 		}
@@ -149,20 +204,19 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 		return AxisAlignedBB.getBoundingBox((float) i, j, (float) k, (float) (i + 0), j + 0, (float) (k + 0));
 	}
     
-    
 
     
     @Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k,
 			Entity entity) {
     	
-		if (world.getBlockMetadata(i, j, k) == 1) {
+		if (world.getBlockMetadata(i, j, k) == ForceFieldTyps.Zapper.ordinal()) {
 			if (entity instanceof EntityLiving) {
-				entity.attackEntityFrom(DamageSource.generic,ModularForceFieldSystem.DefenseStationDamage);
+				entity.attackEntityFrom(DamageSource.generic,10);
 			}
 		}else{
 			if (entity instanceof EntityPlayer) {
-			ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(world).getorcreateFFStackMap(i, j, k);
+			ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(world).getorcreateFFStackMap(i, j, k,world);
 			
 			if (ffworldmap != null) {
 	
@@ -188,17 +242,17 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 				passtrue = true;
 				break;
 				case 2:
-					passtrue = SecurityHelper.isAccessGranted(generator, ((EntityPlayer) entity), world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
+					passtrue = SecurityHelper.isAccessGranted(generator, ((EntityPlayer) entity), world,"FFB");
 				break;
 				case 3:
-					passtrue = SecurityHelper.isAccessGranted(projector, ((EntityPlayer) entity), world,ModularForceFieldSystem.PERSONALID_LIMITEDACCESS);
+					passtrue = SecurityHelper.isAccessGranted(projector, ((EntityPlayer) entity), world,"FFB");
 				break;
 				}
 			
 				if(!passtrue)
 				{
 					((EntityPlayer) entity).setEntityHealth(0);
-				
+
 				}else{
 					((EntityPlayer) entity).attackEntityFrom(DamageSource.generic,1);
 				}
@@ -251,13 +305,21 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 
 		if (tileEntity!=null && tileEntity instanceof TileEntityForceField )
 		{
+			if(l<0 ||l >5) return 0;
+			
 		return  ((TileEntityForceField)tileEntity).getTexturid(l);
 	}else{
-		if (iblockaccess.getBlockMetadata(i, j, k) == ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE)
+		if (iblockaccess.getBlockMetadata(i, j, k) == ForceFieldTyps.Camouflage.ordinal())
 		{
 			 return 180;
 		}else{
-			return iblockaccess.getBlockMetadata(i, j, k);
+			
+			if(iblockaccess.getBlockMetadata(i, j, k) == ForceFieldTyps.Default.ordinal()) return 0;
+			if(iblockaccess.getBlockMetadata(i, j, k) == ForceFieldTyps.Zapper.ordinal()) return 1;
+			if(iblockaccess.getBlockMetadata(i, j, k) == ForceFieldTyps.Area.ordinal()) return 2;
+			if(iblockaccess.getBlockMetadata(i, j, k) == ForceFieldTyps.Containment.ordinal()) return 3;
+			
+			return 5;
 		}
 	}
 	}
@@ -283,7 +345,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k,
 			Random random) {
-		if (world.getBlockMetadata(i, j, k) == ModularForceFieldSystem.FORCEFIELBOCKMETA_ZAPPER) {
+		if (world.getBlockMetadata(i, j, k) == ForceFieldTyps.Zapper.ordinal()) {
 			double d = i + Math.random()+ 0.2D;
 			double d1 = j + Math.random() + 0.2D;
 			double d2 = k + Math.random() + 0.2D;
@@ -322,7 +384,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 
 	@Override
 	public TileEntity createTileEntity(World world, int meta) {
-		if(meta == ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE)
+		if(meta == ForceFieldTyps.Camouflage.ordinal())
 		{
 			
 				return new TileEntityForceField();

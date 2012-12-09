@@ -1,8 +1,34 @@
+/*  
+    Copyright (C) 2012 Thunderdark
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+    Contributors:
+    
+    Matchlighter
+    Thunderdark 
+
+ */
+
 package chb.mods.mffs.common;
 
 import ic2.api.Items;
 
 import java.util.List;
+
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
@@ -14,16 +40,16 @@ import net.minecraft.src.Slot;
 import net.minecraft.src.World;
 
 
-public class ItemForcicumCell extends  Item {
+public class ItemForcicumCell extends ItemMFFSBase {
 	
 	private boolean ic = false;
+	private boolean aktiv =  false;
 	
 	protected ItemForcicumCell(int id) {
 		super(id);
 		setIconIndex(98);
 		setMaxStackSize(1);
 		setMaxDamage(100);
-		setCreativeTab(CreativeTabs.tabMaterials);
 		
 		if(Items.getItem("matter") != null)
 		{
@@ -62,13 +88,16 @@ public class ItemForcicumCell extends  Item {
     	
 		if (world.isRemote==false)
 			{
+			
+		if(aktiv)
+		{
     	
     	if(getForceciumlevel(itemStack) < getMaxForceciumlevel())
     	{
         	if(entity instanceof EntityPlayer)
         	{
         	
-    		List<Slot> slots = ((EntityPlayer)entity).inventorySlots.inventorySlots;
+    		List<Slot> slots = ((EntityPlayer)entity).inventoryContainer.inventorySlots;
     		for (Slot slot : slots) {
     			if (slot.getStack() != null) {
     				if (slot.getStack().getItem() == ModularForceFieldSystem.MFFSitemForcicium) {
@@ -123,10 +152,11 @@ public class ItemForcicumCell extends  Item {
     	
     	itemStack.setItemDamage(getItemDamage(itemStack));
     }
+	}
     }
 	
     @Override
-    public void addInformation(ItemStack itemStack, List info)
+    public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b)
     {
         String tooltip = String.format( "%d / %d  Forcicum  ",getForceciumlevel(itemStack),getMaxForceciumlevel());
         info.add(tooltip);
@@ -171,5 +201,41 @@ public class ItemForcicumCell extends  Item {
     	}
        return 0;
     }
+    
+	@Override
+	public ItemStack onItemRightClick(ItemStack itemstack, World world,
+			EntityPlayer entityplayer) {
+		if (world.isRemote==false)
+		{
+       if(!aktiv)
+       {
+    	   aktiv= true;
+    	   entityplayer.addChatMessage("[Forcicum Cell] Active");
+       }else{
+    	   aktiv= false;
+    	   entityplayer.addChatMessage("[Forcicum Cell] Inactive");
+       }
+		
+		
+		
+		}
+		return itemstack;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(int i, CreativeTabs tabs, List itemList)
+	{
+		ItemStack charged = new ItemStack(this, 1);
+		charged.setItemDamage(1);
+		setForceciumlevel(charged, getMaxForceciumlevel());
+		itemList.add(charged);
+		
+		
+		ItemStack empty = new ItemStack(this, 1);
+		empty.setItemDamage(100);
+		setForceciumlevel(empty, 0);
+		itemList.add(empty);
+	}
+	
 	
 }

@@ -52,7 +52,7 @@ public class GuiCapacitor extends GuiContainer {
 		drawTexturedModalRect(w + 8, k + 71, 176, 0, i1+1, 79);
 	}
 	@Override
-	protected void drawGuiContainerForegroundLayer() {
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRenderer.drawString("Force Energy Capacitor", 5, 5, 0x404040);
 		fontRenderer.drawString("Force Energy", 15, 50, 0x404040);
 		fontRenderer.drawString(
@@ -72,7 +72,7 @@ public class GuiCapacitor extends GuiContainer {
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandlerClient.fireTileEntityEvent(Core, guibutton.id);
+		NetworkHandlerClient.fireTileEntityEvent(Core, String.valueOf(guibutton.id));
 	}
 
 	public void initGui() {

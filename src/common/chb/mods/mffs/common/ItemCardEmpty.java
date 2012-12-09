@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,13 +13,14 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
 
 package chb.mods.mffs.common;
 
+import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
@@ -27,12 +28,11 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
-public class ItemCardEmpty extends Item {
+public class ItemCardEmpty extends ItemMFFSBase {
 	public ItemCardEmpty(int i) {
 		super(i);
 		setIconIndex(16);
 		setMaxStackSize(1);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {
@@ -44,39 +44,70 @@ public class ItemCardEmpty extends Item {
 	}
 
 	@Override
-	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer,
-			World world, int i, int j, int k, int l) {
+	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer,
+			World world, int i, int j, int k, int l, float par8, float par9, float par10) {
+		
+		
+		if (world.isRemote)
+			return false;
+		
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
+		
 
-		if (!world.isRemote) {
-			if (tileEntity instanceof TileEntityCapacitor) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
-				  {
+		if (tileEntity instanceof TileEntityAdvSecurityStation) {
+			
+	
+			if(((TileEntityAdvSecurityStation)tileEntity).isActive()){
+				
+			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"CSR")) {
+	
+				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
+				
+				
+				((ItemCardSecurityLink)newcard.getItem()).setInformation(newcard, new PointXYZ(i,j,k,world),"Secstation_ID", ((TileEntityAdvSecurityStation)tileEntity).getSecurtyStation_ID());
+				
+				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
+				
 
-				
-				ItemStack newcard =  new ItemStack(ModularForceFieldSystem.MFFSitemfc);
-				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("CapacitorID", ((TileEntityCapacitor)tileEntity).getCapacitor_ID());
-				entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
-				
-				entityplayer.addChatMessage("[Capacitor] Success: <Power-Link> Card create");
-				
-				return true;
-				 }
-			}
-
-			if (tileEntity instanceof TileEntitySecurityStation) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
-				  {
-
-				ItemStack newcard =   new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
-				NBTTagCompoundHelper.getTAGfromItemstack(newcard).setInteger("Secstation_ID", ((TileEntitySecurityStation)tileEntity).getSecurtyStation_ID());
-				entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = newcard;
-				
 				Functions.ChattoPlayer(entityplayer, "[Security Station] Success: <Security Station Link>  Card create");
+
 				return true;
-				 }
-			}
+			  }
+			 }else{
+				
+			
+				Functions.ChattoPlayer(entityplayer, "[Security Station] Fail: Security Station must be Active  for create" );
+			 }
+		
+	 }
+		
+		
+		
+		if (tileEntity instanceof TileEntityCapacitor) {
+			
+			
+			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB")) {
+				  				  
+				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSitemfc);
+				((ItemCardPowerLink)newcard.getItem()).setInformation(newcard, new PointXYZ(i,j,k,world),"CapacitorID",((TileEntityCapacitor)tileEntity).getCapacitor_ID());
+				
+				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, newcard);
+				
+
+				entityplayer.addChatMessage("[Capacitor] Success: <Power-Link> Card create");
+
+				return true;
+			 }
 		}
+		
+		
+		
+		
+		
+		
+		
+		
+
 		return false;
 	}
 }

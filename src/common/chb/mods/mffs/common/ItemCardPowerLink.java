@@ -20,29 +20,71 @@
 
 package chb.mods.mffs.common;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
+
+import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
+import net.minecraftforge.common.ISidedInventory;
 
-public class ItemCardPowerLink extends Item  {
-	private StringBuffer info = new StringBuffer();
+public class ItemCardPowerLink extends ItemCard  {
 
 	public ItemCardPowerLink(int i) {
 		super(i);
 		setIconIndex(17);
-		setMaxStackSize(1);
-	}
-	@Override
-	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/items.png";
-	}
-	@Override
-	public boolean isRepairable() {
-		return false;
 	}
 	
+	public static TileEntityCapacitor getLinkedCapacitor(ISidedInventory inventiory,int slot,World world)
+	{
+		if (inventiory.getStackInSlot(slot) != null)
+		{
+			if(inventiory.getStackInSlot(slot).getItem() instanceof ItemCardPowerLink)
+			{
+				ItemCardPowerLink card = (ItemCardPowerLink) inventiory.getStackInSlot(slot).getItem();
+				PointXYZ png = card.getCardTargetPoint(inventiory.getStackInSlot(slot));
+				if(png != null)
+				{
+					if(png.dimensionId != world.provider.dimensionId) return null;
+					
+				if(world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+				{
+					TileEntityCapacitor cap = (TileEntityCapacitor) world.getBlockTileEntity(png.X, png.Y, png.Z);
+				if (cap != null){
+					
+				  if(cap.getCapacitor_ID()== card.getValuefromKey("CapacitorID",inventiory.getStackInSlot(slot))&&  card.getValuefromKey("CapacitorID",inventiory.getStackInSlot(slot)) != 0 )
+				  {
+                    return cap;
+				   }
+				}
+			  }else{
+				  
+				  int Cap_ID =card.getValuefromKey("CapacitorID",inventiory.getStackInSlot(slot));
+				  if(Cap_ID!=0)
+				  {
+					  TileEntityCapacitor cap =  Linkgrid.getWorldMap(world).getCapacitor().get(Cap_ID);
+					  if (cap != null){
+						  
+						  ((ItemCard)card).setInformation(inventiory.getStackInSlot(slot), cap.getMaschinePoint(), "CapacitorID", Cap_ID);
+						  return cap;
+					  }
+				  }
+			
+			  }
+			  if(world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+				  inventiory.setInventorySlotContents(slot, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
+			}
+		   }
+		}
+		
+		return null;
+	}
+
 	
 	@Override
 	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer,
@@ -53,7 +95,7 @@ public class ItemCardPowerLink extends Item  {
 			
 
 			if (tileEntity instanceof TileEntityConverter) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
 				  {
 
 					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 0,"<Power-Link>");
@@ -64,7 +106,7 @@ public class ItemCardPowerLink extends Item  {
 			
 			
 			if (tileEntity instanceof TileEntityProjector) {
-			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
 			  {
 
 				  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 0,"<Power-Link>");
@@ -73,7 +115,7 @@ public class ItemCardPowerLink extends Item  {
             }
 			
 			if (tileEntity instanceof TileEntityExtractor ) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
 				  {
 				
 						if(((TileEntityExtractor)tileEntity).getStackInSlot(1)==null)
@@ -100,7 +142,7 @@ public class ItemCardPowerLink extends Item  {
 			
 			
 			if (tileEntity instanceof TileEntityAreaDefenseStation) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
 				  {
 		
 					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 0,"<Power-Link>");
@@ -108,7 +150,7 @@ public class ItemCardPowerLink extends Item  {
 			}
 			
 			if (tileEntity instanceof TileEntityCapacitor) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
 				  {
 		
 					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 2,"<Power-Link>");
@@ -118,6 +160,10 @@ public class ItemCardPowerLink extends Item  {
 		}
 		return false;
 	}
+
+
 	
+	
+			
 
 }

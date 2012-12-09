@@ -22,6 +22,7 @@ package chb.mods.mffs.common;
 
 import java.util.Random;
 
+import net.minecraft.src.Block;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
@@ -33,19 +34,22 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
+import chb.mods.mffs.common.modules.ModuleBase;
+
 public abstract class BlockMFFSBase extends BlockContainer {
 	private int blockid;
 	private int texturindex;
 
-	public BlockMFFSBase(int i, int texturindex) {
+	public BlockMFFSBase(int i) {
 		super(i, Material.iron);
-		this.texturindex = texturindex;
+		this.texturindex = 0;
 		blockid = i;
-		setHardness(25F);
+		setBlockUnbreakable();
+		setRequiresSelfNotify();
 		setResistance(25F);
 		setStepSound(soundMetalFootstep);
 		setRequiresSelfNotify();
-		setCreativeTab(CreativeTabs.tabBlock);
+		setCreativeTab(ModularForceFieldSystem.MFFSTab);
 	}
 
 	@Override
@@ -55,8 +59,81 @@ public abstract class BlockMFFSBase extends BlockContainer {
 	public abstract String getTextureFile();
 
 	@Override
-	public abstract boolean onBlockActivated(World world, int i, int j, int k,EntityPlayer entityplayer, int par6, float par7, float par8, float par9);
+	public boolean onBlockActivated(World world, int i, int j, int k,
+			EntityPlayer entityplayer, int par6, float par7, float par8,
+			float par9){
+		
+		
+		
+		if (entityplayer.isSneaking())
+        {
+			return false;
+        }
+		
+		if(world.isRemote)
+		 return true;
 
+
+		TileEntityMachines tileentity = (TileEntityMachines) world
+				.getBlockTileEntity(i, j, k);
+		
+		
+		if(tileentity instanceof TileEntityAdvSecurityStation){
+			if(tileentity.isActive())
+			{
+				if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"CSR"))
+				{return true;}
+			}
+		}
+			
+		
+		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
+		{return true;}
+
+
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {
+			return false;
+		}
+		
+
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardEmpty)) {
+			return false;
+		}
+
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ModuleBase)) {
+			return false;
+		}
+
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemMultitool)) {
+			return false;
+		}
+
+		
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardPowerLink)) {
+			return false;
+		}
+		
+		if (entityplayer.getCurrentEquippedItem() != null
+				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardSecurityLink)) {
+			return false;
+		}
+		
+
+		
+		if (!world.isRemote)
+		entityplayer.openGui(ModularForceFieldSystem.instance, 0, world,
+				i, j, k);
+		
+	
+		return true;
+	}
+	
+	
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k) {
 		
@@ -76,9 +153,9 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		{
 			((TileEntityProjector)tileEntity).addtogrid();
 		}
-		if(tileEntity instanceof TileEntitySecurityStation)
+		if(tileEntity instanceof TileEntityAdvSecurityStation)
 		{
-			((TileEntitySecurityStation)tileEntity).addtogrid();
+			((TileEntityAdvSecurityStation)tileEntity).addtogrid();
 		}
 		if(tileEntity instanceof TileEntityExtractor)
 		{
@@ -105,9 +182,10 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		{
 			((TileEntityProjector)tileEntity).removefromgrid();
 		}
-		if(tileEntity instanceof TileEntitySecurityStation)
+
+		if(tileEntity instanceof TileEntityAdvSecurityStation)
 		{
-			((TileEntitySecurityStation)tileEntity).removefromgrid();
+			((TileEntityAdvSecurityStation)tileEntity).removefromgrid();
 		}
 		if(tileEntity instanceof TileEntityExtractor)
 		{
@@ -118,13 +196,15 @@ public abstract class BlockMFFSBase extends BlockContainer {
 			((TileEntityConverter)tileEntity).removefromgrid();
 		}
 		
+		if(tileEntity instanceof TileEntitySecStorage)
+		{
+			((TileEntitySecStorage)tileEntity).removefromgrid();
+		}
+		
 		world.removeBlockTileEntity(i, j, k);
 	}
 
-	@Override
-	protected int damageDropped(int i) {
-		return i;
-	}
+
 
 	public int idDropped(int i, Random random) {
 		return blockID;
@@ -166,6 +246,8 @@ public abstract class BlockMFFSBase extends BlockContainer {
 			((TileEntityMachines)tileEntity).setSide((short) 4);
 		}
 		}
+		
+		
 	}
 	
 	@Override
@@ -175,8 +257,12 @@ public abstract class BlockMFFSBase extends BlockContainer {
 
 		int facing = (tileentity instanceof TileEntityMachines) ? ((TileEntityMachines) tileentity)
 				.getSide() : 1;
-		int typ = (tileentity instanceof TileEntityProjector) ? ((TileEntityProjector) tileentity)
-				.getProjektor_Typ() : 0;
+				
+		int typ = 	0;	
+		
+		if(tileentity instanceof TileEntityProjector)
+			typ = ((TileEntityProjector) tileentity).getProjektor_Typ();
+			
 
 		if (isActive(iblockaccess, i, j, k)) {
 			if (facing == l ) {

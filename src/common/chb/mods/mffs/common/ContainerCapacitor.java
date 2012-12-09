@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -33,14 +33,12 @@ public class ContainerCapacitor extends Container {
 	private int forcepower;
 	private int SwitchTyp;
 	private int Powerlinkmode;
-	private short transmitrange;
 	private short linketprojektor;
 	private EntityPlayer player;
 
 	public ContainerCapacitor(EntityPlayer player,
 			TileEntityCapacitor tileentity) {
 		forcepower = -1;
-		transmitrange = -1;
 		linketprojektor = -1;
 		capacity = -1;
 		SwitchTyp= -1 ;
@@ -48,11 +46,10 @@ public class ContainerCapacitor extends Container {
 		generatorentity = tileentity;
 		this.player = player;
 
-		addSlotToContainer(new SlotHelper(generatorentity, 4, 154, 47));
-		addSlotToContainer(new SlotHelper(generatorentity, 0, 154, 5));
-		addSlotToContainer(new SlotHelper(generatorentity, 1, 154, 26));
-		addSlotToContainer(new SlotHelper(generatorentity, 2, 107, 47));
-	
+		addSlotToContainer(new SlotHelper(generatorentity, 4, 154, 47)); //Security Link
+		addSlotToContainer(new SlotHelper(generatorentity, 0, 154, 5)); //Capacity upgrade
+		addSlotToContainer(new SlotHelper(generatorentity, 1, 154, 26)); //Range upgrade
+		addSlotToContainer(new SlotHelper(generatorentity, 2, 107, 47)); //Force Energy/ext. Powerlink
 
 		int var3;
 
@@ -79,40 +76,31 @@ public class ContainerCapacitor extends Container {
 		for (int i = 0; i < crafters.size(); i++) {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
-			if (transmitrange != generatorentity.getTransmitRange()) {
-				icrafting.updateCraftingInventoryInfo(this, 0,
-						generatorentity.getTransmitRange());
-			}
 			if (linketprojektor != generatorentity.getLinketProjektor()) {
-				icrafting.updateCraftingInventoryInfo(this, 1,
+				icrafting.sendProgressBarUpdate(this, 1,
 						generatorentity.getLinketProjektor());
 			}
 
 			if (forcepower != generatorentity.getForcePower()) {
-				icrafting.updateCraftingInventoryInfo(this, 2,
+				icrafting.sendProgressBarUpdate(this, 2,
 						generatorentity.getForcePower() & 0xffff);
-				icrafting.updateCraftingInventoryInfo(this, 3,
+				icrafting.sendProgressBarUpdate(this, 3,
 						generatorentity.getForcePower() >>> 16);
 			}
 			if (capacity != generatorentity.getCapacity()) {
-				icrafting.updateCraftingInventoryInfo(this, 4,
+				icrafting.sendProgressBarUpdate(this, 4,
 						generatorentity.getCapacity());
 			}
 			if (SwitchTyp != generatorentity.getswitchtyp()) {
-				icrafting.updateCraftingInventoryInfo(this, 5,
+				icrafting.sendProgressBarUpdate(this, 5,
 						generatorentity.getswitchtyp());
 			}
 			if (Powerlinkmode != generatorentity.getPowerlinkmode()) {
-				icrafting.updateCraftingInventoryInfo(this, 6,
+				icrafting.sendProgressBarUpdate(this, 6,
 						generatorentity.getPowerlinkmode());
 			}
-			
-			
-
-
 		}
 
-		transmitrange = (short) generatorentity.getTransmitRange();
 		linketprojektor = generatorentity.getLinketProjektor();
 		forcepower = generatorentity.getForcePower();
 		capacity = generatorentity.getCapacity();
@@ -122,11 +110,6 @@ public class ContainerCapacitor extends Container {
 
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
-		case 0:
-
-			generatorentity.setTransmitrange((short) j);
-			break;
-
 		case 1:
 
 			generatorentity.setLinketprojektor((short) j);
@@ -144,11 +127,11 @@ public class ContainerCapacitor extends Container {
 		case 4:
 			generatorentity.setCapacity(j);
 			break;
-			
+
 		case 5:
 			generatorentity.setswitchtyp(j);
 			break;
-			
+
 		case 6:
 			generatorentity.setPowerlinkmode(j);
 			break;
@@ -158,9 +141,9 @@ public class ContainerCapacitor extends Container {
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return generatorentity.isUseableByPlayer(entityplayer);
 	}
-	
+
 	@Override
-	public ItemStack transferStackInSlot(int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
@@ -172,7 +155,7 @@ public class ContainerCapacitor extends Container {
 				slot.onSlotChanged();
 			}
 			if (itemstack1.stackSize != itemstack.stackSize) {
-				slot.onPickupFromSlot(itemstack1);
+				slot.onSlotChanged();
 			} else {
 				return null;
 			}

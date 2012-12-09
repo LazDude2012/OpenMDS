@@ -1,4 +1,4 @@
-/*  
+/*
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Contributors:
     Thunderdark - initial implementation
 */
@@ -35,15 +35,15 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Packet;
 import net.minecraft.src.TileEntity;
 
-
 public class TileEntityForceField extends TileEntity {
-	
 private Random random = new Random();
 private int[] texturid = {-76,-76,-76,-76,-76,-76};
+private String texturfile;
 private int Ticker = 0 ;
+private int ForcefieldCamoblockid;
+private int ForcefieldCamoblockmeta;
 
-
-	public int getTicker() {
+public int getTicker() {
 	return Ticker;
 }
 
@@ -52,6 +52,32 @@ public void setTicker(int ticker) {
 }
 
 	public TileEntityForceField() {
+	}
+
+	
+	
+	public int getForcefieldCamoblockmeta() {
+		return ForcefieldCamoblockmeta;
+	}
+
+	public void setForcefieldCamoblockmeta(int forcefieldCamoblockmeta) {
+		ForcefieldCamoblockmeta = forcefieldCamoblockmeta;
+	}
+
+	public int getForcefieldCamoblockid() {
+		return ForcefieldCamoblockid;
+	}
+
+	public void setForcefieldCamoblockid(int forcefieldCamoblockid) {
+		ForcefieldCamoblockid = forcefieldCamoblockid;
+	}
+
+	public String getTexturfile() {
+		return texturfile;
+	}
+
+	public void setTexturfile(String texturfile) {
+		this.texturfile = texturfile;
 	}
 
 	public int[] getTexturid()
@@ -63,69 +89,70 @@ public void setTicker(int ticker) {
 	{
 		return texturid[l];
 	}
-	
-	public void  setTexturid(String[] remotetextur )
-	{
-	
-		this.texturid[0] = Integer.parseInt(remotetextur[0].trim());
-		this.texturid[1] = Integer.parseInt(remotetextur[1].trim());
-		this.texturid[2] = Integer.parseInt(remotetextur[2].trim());
-		this.texturid[3] = Integer.parseInt(remotetextur[3].trim());
-		this.texturid[4] = Integer.parseInt(remotetextur[4].trim());
-		this.texturid[5] = Integer.parseInt(remotetextur[5].trim());
-		
-		worldObj.markBlockNeedsUpdate(xCoord, yCoord, zCoord);
-		this.setTicker((short) 0);
-		
-	}
-	
-	
+
+
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
-			
 			if (this.getTicker() >= 20) {
-				
-				if(texturid[0] == -76)
+				if(texturid[0] == -76 || texturfile == null)
 				{
 					UpdateTextur();
-
 				}
 
 				this.setTicker((short) 0);
 			}
-			
-			this.setTicker((short) (this.getTicker() + 1));
 
-				
+			this.setTicker((short) (this.getTicker() + 1));
 		}else{
-			
-			
 			if (this.getTicker() >= 20 + random.nextInt(20)) {
-				
-				if(texturid[0] == -76)
+				if(texturid[0] == -76 || texturfile == null)
 				{
 					ForceFieldClientUpdatehandler.getWorldMap(ModularForceFieldSystem.proxy.getClientWorld()).addto(xCoord, yCoord, zCoord);
-
 				}
 
 				this.setTicker((short) 0);
 			}
-			
+
 			this.setTicker((short) (this.getTicker() + 1));
-	
-
 		}
 		}
 	
 	
-
-	public void  setTexturid(int[] texturid )
+	
+	public void  setTexturid(String remotetextu)
 	{
+		
+		String[] textur = remotetextu.split("/");
+		
+		this.texturid[0] = Integer.parseInt(textur[0].trim());
+		this.texturid[1] = Integer.parseInt(textur[1].trim());
+		this.texturid[2] = Integer.parseInt(textur[2].trim());
+		this.texturid[3] = Integer.parseInt(textur[3].trim());
+		this.texturid[4] = Integer.parseInt(textur[4].trim());
+		this.texturid[5] = Integer.parseInt(textur[5].trim());
+
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+		this.setTicker((short) 0);
+	}
+
+	
+
+	public void  setTexturid(String texturid ,TileEntityProjector proj)
+	{
+		
 		try{
-		if(this.texturid != texturid)
+		if(!texturid.equalsIgnoreCase(this.texturid[0]+"/"+this.texturid[1]+"/"+this.texturid[2]+"/"+this.texturid[3]+"/"+this.texturid[4]+"/"+this.texturid[5]))
 		{
-		this.texturid = texturid;
-		ForceFieldServerUpdatehandler.getWorldMap(worldObj).addto(xCoord, yCoord, zCoord, texturid, worldObj.provider.dimensionId);
+			
+		    String[] textur = texturid.split("/");
+			this.texturid[0] = Integer.parseInt(textur[0].trim());
+			this.texturid[1] = Integer.parseInt(textur[1].trim());
+			this.texturid[2] = Integer.parseInt(textur[2].trim());
+			this.texturid[3] = Integer.parseInt(textur[3].trim());
+			this.texturid[4] = Integer.parseInt(textur[4].trim());
+			this.texturid[5] = Integer.parseInt(textur[5].trim());	
+
+		ForceFieldServerUpdatehandler.getWorldMap(worldObj).addto(xCoord, yCoord, zCoord,  worldObj.provider.dimensionId,proj.xCoord,proj.yCoord,proj.zCoord);
 		}
 		}catch(Exception ex)
 		{
@@ -133,13 +160,9 @@ public void setTicker(int ticker) {
 		}
 	}
 
-
-
-	public void UpdateTextur()
+	public void UpdateTextur() // Serverside
 	{
 		if (worldObj.isRemote == false) {
-			
-		
 		ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(worldObj).getForceFieldStackMap(WorldMap.Cordhash(this.xCoord, this.yCoord, this.zCoord));
 
 		if(ffworldmap != null)
@@ -151,15 +174,15 @@ public void setTicker(int ticker) {
 
 				if(projector != null)
 				{
-					setTexturid(projector.getForcefieldtextur_id());
-
+					setTexturid(projector.getForceFieldTexturID(),projector);
+					setTexturfile(projector.getForceFieldTexturfile());
+				    setForcefieldCamoblockid(projector.getForcefieldCamoblockid());
+				    setForcefieldCamoblockmeta(projector.getForcefieldCamoblockmeta());
 				}
 			}
 		}
 	}
 	}
-
-
 
 	public ItemStack[] getContents() {
 		return null;
@@ -167,6 +190,4 @@ public void setTicker(int ticker) {
 
 	public void setMaxStackSize(int arg0) {
 	}
-
-
 }

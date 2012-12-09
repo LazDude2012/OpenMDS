@@ -23,15 +23,21 @@ package chb.mods.mffs.common;
 import java.util.Random;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
 
 public class BlockMonazitOre extends Block {
+	
+	private int blockid;
+	
 	public BlockMonazitOre(int i) {
 		super(i, Material.rock);
 		setHardness(3.0F);
 		setResistance(5.0F);
 		setStepSound(soundStoneFootstep);
+		blockid = i;
+		setCreativeTab(ModularForceFieldSystem.MFFSTab);
 	}
 
 	@Override
@@ -47,11 +53,11 @@ public class BlockMonazitOre extends Block {
     @Override
     public int idDropped(int par1, Random par2Random, int par3)
     {
-        return ModularForceFieldSystem.MFFSitemForcicium.shiftedIndex;
+        return   ModularForceFieldSystem.MFFSMonazitOre.blockID;
     }
     @Override
     public int quantityDropped(Random par1Random)
     {
-        return 4 + par1Random.nextInt(2);
+        return 1 ;
     }
 }

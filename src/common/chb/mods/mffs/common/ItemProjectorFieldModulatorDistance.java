@@ -23,12 +23,11 @@ package chb.mods.mffs.common;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Item;
 
-public class ItemProjectorFieldModulatorDistance extends Item  {
+public class ItemProjectorFieldModulatorDistance extends ItemMFFSBase  {
 	public ItemProjectorFieldModulatorDistance(int i) {
 		super(i);
 		setIconIndex(64);
 		setMaxStackSize(64);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	@Override
 	public String getTextureFile() {

@@ -24,10 +24,13 @@ import ic2.api.NetworkHelper;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiContainer;
+import net.minecraft.src.GuiErrorScreen;
 
 import org.lwjgl.opengl.GL11;
 
 import chb.mods.mffs.common.ContainerProjector;
+import chb.mods.mffs.common.ModularForceFieldSystem;
+import chb.mods.mffs.common.ProjectorTyp;
 import chb.mods.mffs.common.TileEntityProjector;
 import chb.mods.mffs.network.NetworkHandlerClient;
 
@@ -53,16 +56,17 @@ public class GuiProjector extends GuiContainer {
 		int i1 = (79 * projector.getCapacity() / 100);
 		drawTexturedModalRect(w + 8, k + 71, 176, 0, i1 + 1, 79);
 
-		if (projector.getProjektor_Typ() != 0 ) {
-			if (projector.getProjektor_Typ() != 7){
+		if (projector.hasValidTypeMod()) {
+			
+			if ( ProjectorTyp.TypfromItem(projector.get_type()).ProTyp != 7){
 				drawTexturedModalRect(w + 119, k + 43, 177, 143, 16, 16);
 			}
 
-			if (projector.getProjektor_Typ() != 4   && projector.getProjektor_Typ() != 2 ) {
+			if (ProjectorTyp.TypfromItem(projector.get_type()).ProTyp != 4   && ProjectorTyp.TypfromItem(projector.get_type()).ProTyp != 2 ) {
 				drawTexturedModalRect(w + 155, k + 43, 177, 143, 16, 16);
 			}
 
-			if (projector.getProjektor_Typ() == 1 || projector.getProjektor_Typ() == 2 || projector.getProjektor_Typ() == 6|| projector.getProjektor_Typ() == 7) {
+			if (ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 1 || ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 2 || ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 6|| ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 7) {
 				drawTexturedModalRect(w + 137, k + 8, 177, 143, 16, 16);
 
 				drawTexturedModalRect(w + 137, k + 42, 177, 143, 16, 16);
@@ -72,14 +76,14 @@ public class GuiProjector extends GuiContainer {
 				drawTexturedModalRect(w + 120, k + 25, 177, 143, 16, 16);
 			}
 
-			if (projector.isOptioncamouflage()) {
+			if (projector.hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage)) {
 				drawTexturedModalRect(w + 137, k + 25, 177, 143, 16, 16); // center
 			}
 		}
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandlerClient.fireTileEntityEvent(projector, guibutton.id);
+		NetworkHandlerClient.fireTileEntityEvent(projector, String.valueOf(guibutton.id));
 	}
 
 	public void initGui() {
@@ -90,11 +94,12 @@ public class GuiProjector extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer() {
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRenderer.drawString("MFFS Projector", 5, 5, 0x404040);
-		fontRenderer.drawString(
-				(new StringBuilder()).append(" ")
-						.append(projector.getLinkPower()).toString(), 30, 60,
-				0x404040);
+		if(projector.getLinkedCapacitor()!=null){
+		fontRenderer.drawString(String.valueOf(projector.getLinkPower()), 30, 60,0x404040);
+		}else{
+			fontRenderer.drawString("No Link/OOR", 30, 60,0x404040);	
+		}
 	}
 }

@@ -25,9 +25,8 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
 public class BlockCapacitor extends BlockMFFSBase {
-	public BlockCapacitor(int i, int texturindex) {
-		super(i, texturindex);
-		setRequiresSelfNotify();
+	public BlockCapacitor(int i) {
+		super(i);
 	}
 
 	@Override
@@ -42,46 +41,4 @@ public class BlockCapacitor extends BlockMFFSBase {
 		return new TileEntityCapacitor();
 	}
 
-	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k,
-			EntityPlayer entityplayer, int par6, float par7, float par8,
-			float par9){
-		
-		if (entityplayer.isSneaking())
-        {
-			return false;
-        }
-
-		TileEntityCapacitor tileentity = (TileEntityCapacitor) world
-				.getBlockTileEntity(i, j, k);
-
-		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,ModularForceFieldSystem.PERSONALID_FULLACCESS))
-		{return false;}
-
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {
-			return false;
-		}
-		
-
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemMultitool)) {
-			return false;
-		}
-
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardEmpty)) {
-			return false;
-		}
-
-		if (entityplayer.getCurrentEquippedItem() != null
-				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardSecurityLink)) {
-			return false;
-		}
-		if (!world.isRemote)
-		entityplayer.openGui(ModularForceFieldSystem.instance, ModularForceFieldSystem.GUI_CAPACITOR, world,
-				i, j, k);
-		
-		return true;
-	}
 }

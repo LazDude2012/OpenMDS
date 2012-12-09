@@ -25,21 +25,24 @@ import java.io.DataOutputStream;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
+import chb.mods.mffs.common.ForceFieldBlockStack;
+import chb.mods.mffs.common.Linkgrid;
 import chb.mods.mffs.common.ModularForceFieldSystem;
+import chb.mods.mffs.common.TileEntityAdvSecurityStation;
 import chb.mods.mffs.common.TileEntityAreaDefenseStation;
 import chb.mods.mffs.common.TileEntityCapacitor;
 import chb.mods.mffs.common.TileEntityExtractor;
 import chb.mods.mffs.common.TileEntityMachines;
 import chb.mods.mffs.common.TileEntityProjector;
-import chb.mods.mffs.common.TileEntitySecurityStation;
 import chb.mods.mffs.common.TileEntityForceField;
 import chb.mods.mffs.common.TileEntityConverter;
+import chb.mods.mffs.common.WorldMap;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.NetworkManager;
+import net.minecraft.src.INetworkManager;
 import net.minecraft.src.Packet;
 import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.TileEntity;
@@ -57,7 +60,8 @@ public class NetworkHandlerServer implements IPacketHandler{
 private static final boolean DEBUG = false;
 
 @Override
-public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, Player player) {
+public void onPacketData(INetworkManager manager,Packet250CustomPayload packet, Player player) {
+
 	
 
 	ByteArrayDataInput dat = ByteStreams.newDataInput(packet.data);
@@ -99,7 +103,7 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 	
 	case 3:
 		int dimension2 = dat.readInt() ;
-		int evt = dat.readInt() ;
+		String evt = dat.readUTF();
 		
 		World serverworld2 = DimensionManager.getWorld(dimension2);
 		TileEntity servertileEntity2 = serverworld2.getBlockTileEntity(x, y, z);
@@ -114,6 +118,7 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 	break;		
 	case 10:
 		
+
 		int Dim =dat.readInt() ;
 		String Corrdinsaten = dat.readUTF(); 
 		
@@ -131,8 +136,24 @@ public void onPacketData(NetworkManager manager,Packet250CustomPayload packet, P
 		 TileEntity servertileEntity = worldserver.getBlockTileEntity(Integer.parseInt(corr[2].trim()), Integer.parseInt(corr[1].trim()),Integer.parseInt(corr[0].trim()));
 		 if(servertileEntity instanceof TileEntityForceField)
 		 {
-			 ForceFieldServerUpdatehandler.getWorldMap(worldserver).addto(servertileEntity.xCoord, servertileEntity.yCoord, servertileEntity.zCoord, ((TileEntityForceField)servertileEntity).getTexturid(), Dim);
+			 
+			 
+				ForceFieldBlockStack ffworldmap = WorldMap.getForceFieldWorld(worldserver).getForceFieldStackMap(WorldMap.Cordhash(servertileEntity.xCoord, servertileEntity.yCoord, servertileEntity.zCoord));
 
+				if(ffworldmap != null)
+				{
+					if(!ffworldmap.isEmpty())
+
+					{
+					 TileEntityProjector projector = Linkgrid.getWorldMap(worldserver).getProjektor().get(ffworldmap.getProjectorID());
+
+						if(projector != null)
+						{
+							ForceFieldServerUpdatehandler.getWorldMap(worldserver).addto(servertileEntity.xCoord, servertileEntity.yCoord, servertileEntity.zCoord, Dim,projector.xCoord,projector.yCoord,projector.zCoord);
+						}
+					}
+				}
+			 
 		 }
 		 }
 		}
@@ -250,15 +271,16 @@ public static void updateTileEntityField(TileEntity tileEntity, String varname)
 	}
  }
  
- if(tileEntity instanceof TileEntitySecurityStation)
+ if(tileEntity instanceof TileEntityAdvSecurityStation)
  {
 	 try {	
-        Field f = ReflectionHelper.findField(TileEntitySecurityStation.class, varname);
+        Field f = ReflectionHelper.findField(TileEntityAdvSecurityStation.class, varname);
         f.get(tileEntity);
     	dos.writeUTF(String.valueOf(f.get(tileEntity)));
 	} catch (Exception e) {
 		if(DEBUG)
-		System.out.println(e.getLocalizedMessage());
+			System.out.println(e.getMessage());
+
 	}
  }
  

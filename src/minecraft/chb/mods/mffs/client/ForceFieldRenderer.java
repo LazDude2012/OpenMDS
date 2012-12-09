@@ -20,11 +20,17 @@
 
 package chb.mods.mffs.client;
 
+import java.lang.reflect.Constructor;
+
 import net.minecraft.src.Block;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
+import net.minecraft.src.TileEntity;
 import net.minecraftforge.client.ForgeHooksClient;
+import chb.mods.mffs.common.ForceFieldTyps;
 import chb.mods.mffs.common.ModularForceFieldSystem;
+import chb.mods.mffs.common.TileEntityForceField;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class ForceFieldRenderer implements ISimpleBlockRenderingHandler {
@@ -32,8 +38,32 @@ public class ForceFieldRenderer implements ISimpleBlockRenderingHandler {
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
 			Block block, int modelId, RenderBlocks renderer) {
 		if(block == ModularForceFieldSystem.MFFSFieldblock) {
-			if(world.getBlockMetadata(x, y, z) == ModularForceFieldSystem.FORCEFIELBOCKMETA_CAMOFLAGE)
+			if(world.getBlockMetadata(x, y, z) == ForceFieldTyps.Camouflage.ordinal())
 			{
+				TileEntity te = world.getBlockTileEntity(x, y, z);
+				if(te instanceof TileEntityForceField)
+				{
+					if(ForceFieldTyps.Camouflage.ordinal()==((TileEntityForceField)te).getForcefieldCamoblockmeta()
+						&& ((TileEntityForceField)te).getForcefieldCamoblockid() != 327	&& ((TileEntityForceField)te).getForcefieldCamoblockid() != 326	)
+					{
+					Block customblock =	Block.blocksList[((TileEntityForceField)te).getForcefieldCamoblockid()];
+					if(customblock != null)
+					{
+					ForgeHooksClient.bindTexture(customblock.getTextureFile(), 1);
+					renderer.renderBlockByRenderType(customblock, x, y, z);
+					return true;
+					}
+					}
+					
+					if(((TileEntityForceField)te).getTexturfile()!=null)
+					{	
+	                ForgeHooksClient.bindTexture(((TileEntityForceField)te).getTexturfile(), 0);
+					renderer.renderStandardBlock(block, x, y, z);
+				    return true;
+					}
+				}
+				
+				
                 ForgeHooksClient.bindTexture("/terrain.png", 0);
 				renderer.renderStandardBlock(block, x, y, z);
 			}else

@@ -25,17 +25,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class ForceFieldBlockStack {
-	private int x;
-	private int y;
-	private int z;
+	private PointXYZ png;
 	private boolean sync;
 	public Queue<ForceFieldBlock> blocks = new LinkedList<ForceFieldBlock>();
 
-	public ForceFieldBlockStack(int x,int y, int z)
+	public ForceFieldBlockStack(PointXYZ png)
 	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.png = png;
 		sync = false;
 	}
 
@@ -109,15 +105,8 @@ public class ForceFieldBlockStack {
     	blocks.offer(new ForceFieldBlock(Generator_Id,Projektor_ID,typ));
     }
 
-	public int getX() {
-		return x;
+	public PointXYZ getPoint() {
+		return png;
 	}
 
-	public int getY() {
-		return y;
-	}
-
-	public int getZ() {
-		return z;
-	}
 }
