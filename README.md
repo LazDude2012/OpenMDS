@@ -1,5 +1,3 @@
-Modular Force Field System V2 is a Minecraft Mod and part of the [FTB Modpack](http://feed-the-beast.com/#download_wrapper).
+Open Force Field System is a mod for Minecraft that adds forcefields.
 
- Developed by Thunderdark, Matchlighter
- 
- Bughunter: Lightone
+TODO: improve readme
