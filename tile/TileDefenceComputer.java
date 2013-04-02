@@ -1,21 +1,25 @@
 package OpenMDS.tile;
 
+import OpenMDS.api.I6WayWrenchable;
 import OpenMDS.api.IAttunementReader;
 import OpenMDS.api.IDefenceAttachment;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
-public class TileDefenceComputer extends TileEntity implements IAttunementReader,IInventory
+public class TileDefenceComputer extends TileEntity implements IAttunementReader,IInventory,I6WayWrenchable
 {
 	public int[] attunements = new int[0];
 	public String[] priorities = new String[0];
 	public boolean isAttached = false;
 	public IDefenceAttachment attachedModule;
 	public ItemStack[] inventory = new ItemStack[0];
+	public ForgeDirection currentfacing;
 
 	@Override
 	public int GetAttunementFromPriority(int priority)
@@ -60,6 +64,34 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 				}
 			}
 		}
+	}
+
+	/**
+	 * Reads a tile entity from NBT.
+	 */
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	{
+		this.xCoord = par1NBTTagCompound.getInteger("x");
+		this.yCoord = par1NBTTagCompound.getInteger("y");
+		this.zCoord = par1NBTTagCompound.getInteger("z");
+		this.isAttached = par1NBTTagCompound.getBoolean("attached");
+		this.currentfacing = ForgeDirection.getOrientation(par1NBTTagCompound.getInteger("facing"));
+		if(isAttached)
+		{
+			CheckForAttachment();
+		}
+	}
+
+	/**
+	 * Writes a tile entity to NBT.
+	 */
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+	{
+		par1NBTTagCompound.setInteger("x", this.xCoord);
+		par1NBTTagCompound.setInteger("y", this.yCoord);
+		par1NBTTagCompound.setInteger("z", this.zCoord);
+		par1NBTTagCompound.setBoolean("attached",this.isAttached);
+		par1NBTTagCompound.setInteger("facing",currentfacing.ordinal());
 	}
 
 	@Override
@@ -147,6 +179,18 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	public boolean isStackValidForSlot(int i, ItemStack itemstack)
 	{
 		return true;
+	}
+
+	@Override
+	public void RotateTo(ForgeDirection direction)
+	{
+		currentfacing = direction;
+	}
+
+	@Override
+	public ForgeDirection GetCurrentFacing()
+	{
+		return currentfacing;
 	}
 
 	public void OpenGui(World world, EntityPlayer player, int x, int y, int z)
