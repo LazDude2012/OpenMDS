@@ -7,8 +7,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
-public class TileDefenceComputer extends TileEntity implements IAttunementReader, IInventory
+public class TileDefenceComputer extends TileEntity implements IAttunementReader,IInventory
 {
 	public int[] attunements = new int[0];
 	public String[] priorities = new String[0];
@@ -19,87 +20,137 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	@Override
 	public int GetAttunementFromPriority(int priority)
 	{
-		return 0;  //To change body of implemented methods use File | Settings | File Templates.
+		return attunements[priority];
 	}
 
 	@Override
 	public void SetAttunementForPriority(int attunement, int priority)
 	{
-		//To change body of implemented methods use File | Settings | File Templates.
+		attunements[priority] = attunement;
 	}
 
 	@Override
 	public String GetPriorityName(int priority)
 	{
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
+		return priorities[priority];
 	}
 
 	public void Attach(IDefenceAttachment par1)
 	{
 		attachedModule = par1;
 		priorities = par1.GetPriorityList();
+		attunements = new int[priorities.length];
+		isAttached = true;
+		inventory = new ItemStack[priorities.length];
+	}
 
+	public void CheckForAttachment()
+	{
+		for(int x = xCoord-1;x <= xCoord+1; x++)
+		{
+			for(int y = yCoord-1;y <= yCoord +1; y++)
+			{
+				for(int z = zCoord-1; z <= zCoord +1; z++)
+				{
+					TileEntity te = worldObj.getBlockTileEntity(x,y,z);
+					if(te instanceof IDefenceAttachment)
+					{
+						Attach((IDefenceAttachment)te);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
 	public int getSizeInventory()
 	{
-		return inventory.length;
+		return priorities.length;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int var1)
+	public ItemStack getStackInSlot(int i)
 	{
-		if(inventory.length > var1)
-		return inventory[var1];
+		if(inventory.length >= i){
+			return inventory[i];
+		}
+		else throw new RuntimeException("The hell?");
 	}
 
 	@Override
-	public ItemStack decrStackSize(int var1, int var2)
+	public ItemStack decrStackSize(int i, int j)
 	{
-		return null;
+		if(inventory.length < i) throw new RuntimeException("The hell?");
+		ItemStack temp = inventory[i];
+		if(temp.stackSize - j <= 0){
+			inventory[i].stackSize = 0;
+			return inventory[i];
+		}else{
+			inventory[i].stackSize -= j;
+			return inventory[i];
+		}
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int var1)
+	public ItemStack getStackInSlotOnClosing(int i)
 	{
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
+		if(inventory.length>= i)
+		{
+			return inventory[i];
+		}
+		throw new RuntimeException("The hell?");
 	}
 
 	@Override
-	public void setInventorySlotContents(int var1, ItemStack var2)
+	public void setInventorySlotContents(int i, ItemStack itemstack)
 	{
-		if(inventory.length> var1)
-			inventory[var1] = var2;
+		if(inventory.length>= i)
+			inventory[i]=itemstack;
+		else throw new RuntimeException("The hell?");
 	}
 
 	@Override
 	public String getInvName()
 	{
-		return "Defence Computer";
+		if(isAttached) return "Defence Computer: "+ attachedModule.GetName();
+		else return "Defence Computer";
+	}
+
+	@Override
+	public boolean isInvNameLocalized()
+	{
+		return false;
 	}
 
 	@Override
 	public int getInventoryStackLimit()
 	{
-		return 0;  //To change body of implemented methods use File | Settings | File Templates.
+		return 1;
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer var1)
+	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
-		return true;  //To change body of implemented methods use File | Settings | File Templates.
+		return true;
 	}
 
 	@Override
 	public void openChest()
 	{
-		//To change body of implemented methods use File | Settings | File Templates.
+		CheckForAttachment();
 	}
 
 	@Override
-	public void closeChest()
+	public void closeChest() {}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack)
 	{
-		//To change body of implemented methods use File | Settings | File Templates.
+		return true;
+	}
+
+	public void OpenGui(World world, EntityPlayer player, int x, int y, int z)
+	{
+
 	}
 }

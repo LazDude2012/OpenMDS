@@ -8,6 +8,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
 
 @Mod(modid="OpenMDS",version = "ALPHA 1", name="Open Modular Defence System")
 @NetworkMod(clientSideRequired = true,serverSideRequired = true,channels="OpenMDS",
@@ -17,6 +18,15 @@ public class OpenMDS
 {
 	@SidedProxy(clientSide="OpenMDS.client.ClientProxy",serverSide="OpenMDS.common.CommonProxy")
 	public CommonProxy proxy = new CommonProxy();
+
+	//region  Static fields
+	public static Block blockDefenceComputer;
+	public static Block blockAttunementBench;
+
+	public static int DEFENCECOMP_GUI = 1;
+	//endregion
+
+
 
 	@Mod.Init
 	public void Init(FMLInitializationEvent e)
