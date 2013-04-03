@@ -1,19 +1,63 @@
 package OpenMDS.block;
 
+import OpenMDS.common.OpenMDS;
 import OpenMDS.tile.TileAttunementBench;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockAttunementBench extends BlockContainer
 {
+	public Icon[] icons;
 	public BlockAttunementBench(int i)
 	{
 		super(i, Material.rock);
+		this.setCreativeTab(OpenMDS.tabMDS);
+	}
+
+
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister register)
+	{
+		icons = new Icon[4];
+		icons[0]=register.registerIcon("OpenMDS:blockAttunementBenchTop");
+		icons[1]=register.registerIcon("OpenMDS:blockAttunementBenchSide");
+		icons[2]=register.registerIcon("OpenMDS:blockAttunementBenchTopActive");
+		icons[3]=register.registerIcon("OpenMDS:blockAttunementBenchSideActive");
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side)
+	{
+		TileAttunementBench tile = (TileAttunementBench)world.getBlockTileEntity(x,y,z);
+		if(tile.getStackInSlot(0) != null)
+		{
+			if (side == 1) return icons[2];
+			else return icons[3];
+		} else {
+			if(side == 1) return icons[0];
+			else return icons[1];
+		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getBlockTextureFromSideAndMetadata(int side, int meta)
+	{
+		if(side == 1) return icons[0];
+		else return icons[1];
 	}
 
 	@Override

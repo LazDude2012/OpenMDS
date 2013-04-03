@@ -69,6 +69,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	/**
 	 * Reads a tile entity from NBT.
 	 */
+	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		this.xCoord = par1NBTTagCompound.getInteger("x");
@@ -85,13 +86,14 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	/**
 	 * Writes a tile entity to NBT.
 	 */
+	@Override
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		par1NBTTagCompound.setInteger("x", this.xCoord);
 		par1NBTTagCompound.setInteger("y", this.yCoord);
 		par1NBTTagCompound.setInteger("z", this.zCoord);
 		par1NBTTagCompound.setBoolean("attached",this.isAttached);
-		par1NBTTagCompound.setInteger("facing",currentfacing.ordinal());
+		par1NBTTagCompound.setInteger("facing",this.currentfacing.ordinal());
 	}
 
 	@Override

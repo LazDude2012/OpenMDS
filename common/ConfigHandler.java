@@ -11,6 +11,7 @@ public class ConfigHandler
 	public static int blockAttunementBenchID;
 
 	public static int itemAttunementCrystalID;
+	public static int itemSpannerID;
 
 	public static void Load(FMLPreInitializationEvent e)
 	{
@@ -24,5 +25,8 @@ public class ConfigHandler
 
 		Property attunementcrystalproperty = config.getItem("item","AttunementCrystalID",21000,"The ItemID for the Attunement Crystal");
 		itemAttunementCrystalID = attunementcrystalproperty.getInt() - 256;
+
+		Property spannerproperty = config.getItem("item","DefenceSpannerID",21001,"The ItemID for the Attunement Crystal");
+		itemSpannerID = spannerproperty.getInt();
     }
 }

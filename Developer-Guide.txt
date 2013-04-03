@@ -1,0 +1,16 @@
+Welcome to the OpenMDS team!
+
+Here are the basics of how OpenMDS works internally:
+
+Each defensive item you'd like to add can have a list of "priorities". What does this mean? I'll explain in a second.
+The Defence Computer, the base for all defence systems, holds Attunements, in the form of Attunement Crystals. (or technically anything
+that implements IAttunable)
+
+Basically, when writing an attachment, you need to have your priorities sent to the computer, which then matches them with
+attunements. These attunements can then be retrieved by your attachment and used.
+
+How do I use attunements?
+Basically, attunements are super-simple. Just check if a player's inventory contains an IAtttunable with the same attunement, and if so, perform
+your desired action.
+
+Please implement I6WayWrenchable in your tile entities; this way, we can rotate your blocks with the Defence Spanner.

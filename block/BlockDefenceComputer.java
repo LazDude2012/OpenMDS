@@ -1,6 +1,8 @@
 package OpenMDS.block;
 
 import OpenMDS.api.I6WayWrenchable;
+import OpenMDS.common.MDSUtils;
+import OpenMDS.common.OpenMDS;
 import OpenMDS.tile.TileDefenceComputer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -8,9 +10,12 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -21,7 +26,7 @@ public class BlockDefenceComputer extends BlockContainer
 	public BlockDefenceComputer(int i)
 	{
 		super(i, Material.rock);
-		this.setCreativeTab(CreativeTabs.tabMisc);
+		this.setCreativeTab(OpenMDS.tabMDS);
 	}
 
 	@Override
@@ -30,6 +35,16 @@ public class BlockDefenceComputer extends BlockContainer
 		this.normalicon=register.registerIcon("OpenMDS:blockDefenceComputerNormal");
 		this.poweredsideicon = register.registerIcon("OpenMDS:blockDefenceComputerPoweredSide");
 		this.unpoweredsideicon = register.registerIcon("OpenMDS:blockDefenceComputerUnpoweredSide");
+	}
+
+	@Override
+	/**
+	 * Called when the block is placed in the world.
+	 */
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving placer, ItemStack placedItemStack)
+	{
+		TileDefenceComputer tile = (TileDefenceComputer)world.getBlockTileEntity(x,y,z);
+		tile.RotateTo(MDSUtils.GetFDFromEntity(placer,true));
 	}
 
 	@Override
