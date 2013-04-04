@@ -6,6 +6,8 @@ import OpenMDS.client.ClientPacketHandler;
 import OpenMDS.client.ClientProxy;
 import OpenMDS.item.ItemAttunementCrystal;
 import OpenMDS.item.ItemSpanner;
+import OpenMDS.tile.TileAttunementBench;
+import OpenMDS.tile.TileDefenceComputer;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -20,9 +22,8 @@ import net.minecraft.item.Item;
 
 @Mod(modid="OpenMDS",version = "ALPHA 1", name="Open Modular Defence System")
 @NetworkMod(clientSideRequired = true,serverSideRequired = true,
-clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels="OpenMDS",packetHandler = ClientPacketHandler.class),
-serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels="OpenMDS",packetHandler = ServerPacketHandler.class),
-channels="OpenMDS")
+clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels={"OpenMDS","OpenMDS_TDC"},packetHandler = ClientPacketHandler.class),
+serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels={"OpenMDS","OpenMDS_TDC"},packetHandler = ServerPacketHandler.class))
 public class OpenMDS
 {
 	@SidedProxy(clientSide="OpenMDS.client.ClientProxy",serverSide="OpenMDS.common.CommonProxy")
@@ -41,6 +42,9 @@ public class OpenMDS
 	public static GuiHandler guiHandler;
 
 	public static CreativeTabs tabMDS = new TabMDS(CreativeTabs.getNextID(),"MDSTabMDS");
+
+	@Mod.Instance
+	public static OpenMDS instance;
 	//endregion
 
 	@Mod.PreInit
@@ -62,19 +66,22 @@ public class OpenMDS
 	{
 		blockAttunementBench = new BlockAttunementBench(ConfigHandler.blockAttunementBenchID);
 		GameRegistry.registerBlock(blockAttunementBench, "blockAttunementBench");
-		LanguageRegistry.addName(blockAttunementBench,"Attunement Bench");
+		LanguageRegistry.instance().addNameForObject(blockAttunementBench, "en-US","Attunement Bench");
+		GameRegistry.registerTileEntity(TileAttunementBench.class,"tileAttunementBench");
+
 		blockDefenceComputer = new BlockDefenceComputer(ConfigHandler.blockDefenceComputerID);
 		GameRegistry.registerBlock(blockDefenceComputer, "blockDefenceComputer");
-		LanguageRegistry.addName(blockDefenceComputer, "Defence Computer");
+		LanguageRegistry.instance().addNameForObject(blockDefenceComputer, "en-US", "Defence Computer");
+		GameRegistry.registerTileEntity(TileDefenceComputer.class,"tileDefenceComputer");
 	}
 
 	private void RegisterItems()
 	{
 		itemAttunementCrystal = new ItemAttunementCrystal(ConfigHandler.itemAttunementCrystalID);
 		GameRegistry.registerItem(itemAttunementCrystal, "itemAttunementCrystal");
-		LanguageRegistry.addName(itemAttunementCrystal, "Attunement Crystal");
+		LanguageRegistry.instance().addNameForObject(itemAttunementCrystal, "en-US", "Attunement Crystal");
 		itemDefenceSpanner = new ItemSpanner(ConfigHandler.itemSpannerID);
 		GameRegistry.registerItem(itemDefenceSpanner,"itemDefenceSpanner");
-		LanguageRegistry.addName(itemDefenceSpanner, "Defence Spanner");
+		LanguageRegistry.instance().addNameForObject(itemDefenceSpanner, "en-US", "Defence Spanner");
 	}
 }

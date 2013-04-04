@@ -1,5 +1,6 @@
 package OpenMDS.client;
 
+import OpenMDS.tile.TileDefenceComputer;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -24,6 +25,6 @@ public class ClientPacketHandler implements IPacketHandler
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 	{
-		DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
+		if(packet.channel == "OpenMDS_TDC") TileDefenceComputer.HandleUpdatePacketBytes(packet.data);
 	}
 }

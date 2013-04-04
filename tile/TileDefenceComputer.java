@@ -3,6 +3,10 @@ package OpenMDS.tile;
 import OpenMDS.api.I6WayWrenchable;
 import OpenMDS.api.IAttunementReader;
 import OpenMDS.api.IDefenceAttachment;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteStreams;
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -11,9 +15,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 public class TileDefenceComputer extends TileEntity implements IAttunementReader,IInventory,I6WayWrenchable
 {
@@ -75,9 +84,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
-		this.xCoord = par1NBTTagCompound.getInteger("x");
-		this.yCoord = par1NBTTagCompound.getInteger("y");
-		this.zCoord = par1NBTTagCompound.getInteger("z");
+		super.readFromNBT(par1NBTTagCompound);
 		this.isAttached = par1NBTTagCompound.getBoolean("attached");
 		this.currentfacing = ForgeDirection.getOrientation(par1NBTTagCompound.getInteger("facing"));
 		if(isAttached)
@@ -85,17 +92,47 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 			CheckForAttachment();
 		}
 	}
+
+	@Override
 	public Packet getDescriptionPacket()
 	{
-		NBTTagCompound nbttagcompound = new NBTTagCompound();
-		this.writeToNBT(nbttagcompound);
-		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 3, nbttagcompound);
+		try
+		{
+			ByteOutputStream bstream = new ByteOutputStream();
+			DataOutputStream stream = new DataOutputStream(bstream);
+			stream.writeInt(xCoord);
+			stream.writeInt(yCoord);
+			stream.writeInt(zCoord);
+			stream.writeInt(isAttached ? 1 : 0);
+			stream.writeInt(currentfacing.ordinal());
+			Packet250CustomPayload pkt = new Packet250CustomPayload();
+			pkt.channel = "OpenMDS_TDC";
+			pkt.data = bstream.toByteArray();
+			pkt.length = bstream.size();
+			pkt.isChunkDataPacket = true;
+			return pkt;
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	public static void HandleUpdatePacketBytes(byte[] bytes)
 	{
-		this.readFromNBT(pkt.customParam1);
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		ByteArrayDataInput badi = ByteStreams.newDataInput(bytes);
+		int xloc = badi.readInt();
+		int yloc = badi.readInt();
+		int zloc = badi.readInt();
+		boolean attch = (badi.readInt()==1);
+		ForgeDirection facing = ForgeDirection.getOrientation(badi.readInt());
+		TileDefenceComputer tile = new TileDefenceComputer();
+		tile.xCoord = xloc;
+		tile.yCoord = yloc;
+		tile.zCoord = zloc;
+		tile.isAttached = attch;
+		tile.RotateTo(facing);
 	}
 	/**
 	 * Writes a tile entity to NBT.
@@ -103,9 +140,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	@Override
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
-		par1NBTTagCompound.setInteger("x", this.xCoord);
-		par1NBTTagCompound.setInteger("y", this.yCoord);
-		par1NBTTagCompound.setInteger("z", this.zCoord);
+		super.writeToNBT(par1NBTTagCompound);
 		par1NBTTagCompound.setBoolean("attached",this.isAttached);
 		par1NBTTagCompound.setInteger("facing",this.currentfacing.ordinal());
 	}
