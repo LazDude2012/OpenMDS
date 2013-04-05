@@ -1,7 +1,5 @@
 package OpenMDS.common;
 
-import cpw.mods.fml.common.network.IGuiHandler;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 public class CommonProxy
@@ -9,5 +7,9 @@ public class CommonProxy
 	public void registerRenderInfo()
 	{
 
+	}
+	public World getClientWorld()
+	{
+		return null;
 	}
 }

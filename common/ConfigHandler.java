@@ -17,6 +17,8 @@ public class ConfigHandler
 	{
 		Configuration config = new Configuration(e.getSuggestedConfigurationFile());
 
+		config.load();
+
 		Property defencecomputerproperty = config.getBlock("block","DefenceComputerID",2100,"The BlockID for the Defence Computer");
 		blockDefenceComputerID = defencecomputerproperty.getInt();
 
@@ -28,5 +30,7 @@ public class ConfigHandler
 
 		Property spannerproperty = config.getItem("item","DefenceSpannerID",21001,"The ItemID for the Attunement Crystal");
 		itemSpannerID = spannerproperty.getInt();
+
+		config.save();
     }
 }

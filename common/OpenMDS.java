@@ -19,6 +19,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 @Mod(modid="OpenMDS",version = "ALPHA 1", name="Open Modular Defence System")
 @NetworkMod(clientSideRequired = true,serverSideRequired = true,
@@ -36,8 +37,8 @@ public class OpenMDS
 	public static Item itemAttunementCrystal;
 	public static Item itemDefenceSpanner;
 
-	public static int DEFENCECOMP_GUI = 1;
-	public static int ATTUNEMENT_GUI = 2;
+	final public static int DEFENCECOMP_GUI = 1;
+	final public static int ATTUNEMENT_GUI = 2;
 
 	public static GuiHandler guiHandler;
 
@@ -66,12 +67,12 @@ public class OpenMDS
 	{
 		blockAttunementBench = new BlockAttunementBench(ConfigHandler.blockAttunementBenchID);
 		GameRegistry.registerBlock(blockAttunementBench, "blockAttunementBench");
-		LanguageRegistry.instance().addNameForObject(blockAttunementBench, "en-US","Attunement Bench");
+		LanguageRegistry.addName(blockAttunementBench, "Attunement Bench");
 		GameRegistry.registerTileEntity(TileAttunementBench.class,"tileAttunementBench");
 
 		blockDefenceComputer = new BlockDefenceComputer(ConfigHandler.blockDefenceComputerID);
 		GameRegistry.registerBlock(blockDefenceComputer, "blockDefenceComputer");
-		LanguageRegistry.instance().addNameForObject(blockDefenceComputer, "en-US", "Defence Computer");
+		LanguageRegistry.addName(blockDefenceComputer, "Defence Computer");
 		GameRegistry.registerTileEntity(TileDefenceComputer.class,"tileDefenceComputer");
 	}
 
@@ -79,9 +80,9 @@ public class OpenMDS
 	{
 		itemAttunementCrystal = new ItemAttunementCrystal(ConfigHandler.itemAttunementCrystalID);
 		GameRegistry.registerItem(itemAttunementCrystal, "itemAttunementCrystal");
-		LanguageRegistry.instance().addNameForObject(itemAttunementCrystal, "en-US", "Attunement Crystal");
+		LanguageRegistry.addName(new ItemStack(itemAttunementCrystal,1), "Attunement Crystal");
 		itemDefenceSpanner = new ItemSpanner(ConfigHandler.itemSpannerID);
 		GameRegistry.registerItem(itemDefenceSpanner,"itemDefenceSpanner");
-		LanguageRegistry.instance().addNameForObject(itemDefenceSpanner, "en-US", "Defence Spanner");
+		LanguageRegistry.addName(new ItemStack(itemDefenceSpanner,1), "Defence Spanner");
 	}
 }

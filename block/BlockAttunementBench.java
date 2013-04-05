@@ -22,6 +22,7 @@ public class BlockAttunementBench extends BlockContainer
 	{
 		super(i, Material.rock);
 		this.setCreativeTab(OpenMDS.tabMDS);
+		this.setUnlocalizedName("BlockAttunementBench");
 	}
 
 

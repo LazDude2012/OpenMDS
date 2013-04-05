@@ -19,6 +19,7 @@ public class ItemSpanner extends Item {
 		super(id);
 		setMaxStackSize(1);
 		setCreativeTab(OpenMDS.tabMDS);
+		setUnlocalizedName("ItemDefenceSpanner");
 	}
 
 	@Override

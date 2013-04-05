@@ -27,6 +27,7 @@ public class BlockDefenceComputer extends BlockContainer
 	{
 		super(i, Material.rock);
 		this.setCreativeTab(OpenMDS.tabMDS);
+		this.setUnlocalizedName("BlockDefenceComputer");
 	}
 
 	@Override
@@ -55,10 +56,10 @@ public class BlockDefenceComputer extends BlockContainer
 		ForgeDirection fd = ForgeDirection.getOrientation(side);
 		if(tile.isAttached)
 		{
-			if(fd == tile.currentfacing) return poweredsideicon;
+			if(fd == tile.GetCurrentFacing()) return poweredsideicon;
 			else return normalicon;
 		}
-		else if(fd == tile.currentfacing) return unpoweredsideicon;
+		else if(fd == tile.GetCurrentFacing()) return unpoweredsideicon;
 		else return normalicon;
 	}
 
@@ -73,14 +74,12 @@ public class BlockDefenceComputer extends BlockContainer
 	{
 		return new TileDefenceComputer();
 	}
-	public void onBlockActivated(World world, int x, int y, int z, EntityPlayer player, float hitX, float hitY, float hitZ)
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,int side, float hitX, float hitY, float hitZ)
 	{
+		if(player.getHeldItem()==new ItemStack(OpenMDS.itemDefenceSpanner, 1)) return false;
 		TileDefenceComputer tile = (TileDefenceComputer)world.getBlockTileEntity(x,y,z);
-		if(tile.isAttached)
-		{
-			tile.OpenGui(world,player,x,y,z);
-		}else{
-			player.addChatMessage("This defence computer doesn't have an attachment.");
-		}
+		tile.OpenGui(world, player, x,y,z);
+		return true;
 	}
 }

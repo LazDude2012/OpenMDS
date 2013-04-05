@@ -3,6 +3,7 @@ package OpenMDS.tile;
 import OpenMDS.api.I6WayWrenchable;
 import OpenMDS.api.IAttunementReader;
 import OpenMDS.api.IDefenceAttachment;
+import OpenMDS.common.OpenMDS;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
@@ -18,6 +19,7 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 
 import java.io.ByteArrayOutputStream;
@@ -30,8 +32,10 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	public String[] priorities = new String[0];
 	public boolean isAttached = false;
 	public IDefenceAttachment attachedModule;
-	public ItemStack[] inventory = new ItemStack[0];
-	public ForgeDirection currentfacing;
+	public ItemStack[] inventory = new ItemStack[5];
+	private ForgeDirection currentfacing;
+	private boolean deferUpdate;
+	public boolean[] slots = new boolean[10];
 
 	@Override
 	public int GetAttunementFromPriority(int priority)
@@ -87,10 +91,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 		super.readFromNBT(par1NBTTagCompound);
 		this.isAttached = par1NBTTagCompound.getBoolean("attached");
 		this.currentfacing = ForgeDirection.getOrientation(par1NBTTagCompound.getInteger("facing"));
-		if(isAttached)
-		{
-			CheckForAttachment();
-		}
+		if(isAttached) this.deferUpdate = true;
 	}
 
 	@Override
@@ -103,6 +104,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 			stream.writeInt(xCoord);
 			stream.writeInt(yCoord);
 			stream.writeInt(zCoord);
+			stream.writeInt(worldObj.getWorldInfo().getDimension());
 			stream.writeInt(isAttached ? 1 : 0);
 			stream.writeInt(currentfacing.ordinal());
 			Packet250CustomPayload pkt = new Packet250CustomPayload();
@@ -119,20 +121,22 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 		}
 	}
 
-	public static void HandleUpdatePacketBytes(byte[] bytes)
+	public static void HandleUpdatePacketBytes(byte[] bytes, World world)
 	{
 		ByteArrayDataInput badi = ByteStreams.newDataInput(bytes);
 		int xloc = badi.readInt();
 		int yloc = badi.readInt();
 		int zloc = badi.readInt();
+		int dimension = badi.readInt();
 		boolean attch = (badi.readInt()==1);
 		ForgeDirection facing = ForgeDirection.getOrientation(badi.readInt());
-		TileDefenceComputer tile = new TileDefenceComputer();
+		TileDefenceComputer tile = (TileDefenceComputer)world.getBlockTileEntity(xloc,yloc,zloc);
 		tile.xCoord = xloc;
 		tile.yCoord = yloc;
 		tile.zCoord = zloc;
 		tile.isAttached = attch;
 		tile.RotateTo(facing);
+		world.markBlockForUpdate(xloc,yloc,zloc);
 	}
 	/**
 	 * Writes a tile entity to NBT.
@@ -171,6 +175,16 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 		}else{
 			inventory[i].stackSize -= j;
 			return inventory[i];
+		}
+	}
+
+	@Override
+	public void updateEntity()
+	{
+		if(deferUpdate)
+		{
+			CheckForAttachment();
+			deferUpdate = false;
 		}
 	}
 
@@ -246,6 +260,6 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 
 	public void OpenGui(World world, EntityPlayer player, int x, int y, int z)
 	{
-
+		player.openGui(OpenMDS.instance,OpenMDS.DEFENCECOMP_GUI, world,x,y,z);
 	}
 }
