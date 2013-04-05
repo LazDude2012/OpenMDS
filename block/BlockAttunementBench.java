@@ -1,6 +1,7 @@
 package OpenMDS.block;
 
 import OpenMDS.common.OpenMDS;
+import OpenMDS.item.ItemSpanner;
 import OpenMDS.tile.TileAttunementBench;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -65,5 +66,13 @@ public class BlockAttunementBench extends BlockContainer
 	public TileEntity createNewTileEntity(World world)
 	{
 		return new TileAttunementBench();  //To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,int side, float hitX, float hitY, float hitZ)
+	{
+		if(player.getHeldItem() == new ItemStack(OpenMDS.itemDefenceSpanner,1)) return false;
+		player.openGui(OpenMDS.instance,OpenMDS.ATTUNEMENT_GUI,world,x,y,z);
+		return true;
 	}
 }

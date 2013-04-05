@@ -6,7 +6,12 @@ import OpenMDS.common.OpenMDS;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+
+import java.util.List;
 
 public class ItemAttunementCrystal extends Item implements IAttunable
 {
@@ -21,22 +26,19 @@ public class ItemAttunementCrystal extends Item implements IAttunable
 	}
 
 	@Override
+	public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List tooltips, boolean par4)
+	{
+		int attunement = stack.getItemDamage();
+		Colours[] colours = attunementToColours(attunement);
+		tooltips.add(EnumChatFormatting.GRAY + colours[0].name().toLowerCase() + ", " +
+		colours[1].name().toLowerCase()+ ", " + colours[2].name().toLowerCase());
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void updateIcons(IconRegister register)
 	{
 		this.iconIndex = register.registerIcon("OpenMDS:itemAttunementCrystal");
-	}
-
-	@Override
-	public int GetAttunement()
-	{
-		return attunement;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	@Override
-	public void SetAttunement(int i)
-	{
-		attunement = i;
 	}
 
 	/**

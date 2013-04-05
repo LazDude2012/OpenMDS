@@ -23,6 +23,7 @@ public class GuiDefenceComputer extends GuiContainer {
 	public void initGui()
 	{
 		super.initGui();
+		// PARAMS: ID, x, y, width, height, text
 		settings = new GuiButton(1,(this.width - 256) / 2 + 181, (this.height - 228) / 2 + 117, 64, 16, "Settings...");
 		settings.enabled = tile_entity.isAttached;
 	}

@@ -2,6 +2,5 @@ package OpenMDS.api;
 
 public interface IAttunable
 {
-	public int GetAttunement();
-	public void SetAttunement(int i);
+	//THIS IS A DUMMY INTERFACE; IT'S USED TO DIFFERENTIATE ATTUNABLE ITEMS FROM NON-ATTUNABLE ONES.
 }
