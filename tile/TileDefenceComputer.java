@@ -1,12 +1,9 @@
 package OpenMDS.tile;
 
-import OpenMDS.api.I6WayWrenchable;
-import OpenMDS.api.IAttunementReader;
-import OpenMDS.api.IDefenceAttachment;
-import OpenMDS.common.OpenMDS;
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteStreams;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -16,9 +13,13 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import OpenMDS.api.I6WayWrenchable;
+import OpenMDS.api.IAttunementReader;
+import OpenMDS.api.IDefenceAttachment;
+import OpenMDS.common.OpenMDS;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteStreams;
 
 public class TileDefenceComputer extends TileEntity implements IAttunementReader,IInventory,I6WayWrenchable
 {
@@ -98,7 +99,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	{
 		try
 		{
-			ByteOutputStream bstream = new ByteOutputStream();
+			ByteArrayOutputStream bstream = new ByteArrayOutputStream();
 			DataOutputStream stream = new DataOutputStream(bstream);
 			stream.writeInt(xCoord);
 			stream.writeInt(yCoord);
@@ -110,6 +111,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 			pkt.data = bstream.toByteArray();
 			pkt.length = bstream.size();
 			pkt.isChunkDataPacket = true;
+			stream.close();
 			return pkt;
 		}
 		catch (IOException e)
