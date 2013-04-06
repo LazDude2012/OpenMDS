@@ -100,19 +100,19 @@ public class TileAttunementBench extends TileEntity implements IInventory
 		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 3, nbt);
 	}
 
-	public Packet250CustomPayload GetCustomPacket()
+	public static Packet250CustomPayload GetCustomPacket(World world, int x, int y, int z, ItemStack stack)
 	{
 		try
 		{
 			ByteOutputStream bstream = new ByteOutputStream();
 			DataOutputStream stream = new DataOutputStream(bstream);
-			stream.writeInt(xCoord);
-			stream.writeInt(yCoord);
-			stream.writeInt(zCoord);
-			stream.writeInt(worldObj.getWorldInfo().getDimension());
-			stream.writeInt(inventory.getItem().itemID);
-			stream.writeInt(inventory.getItemDamage());
-			stream.writeInt(inventory.stackSize);
+			stream.writeInt(x);
+			stream.writeInt(y);
+			stream.writeInt(z);
+			stream.writeInt(world.getWorldInfo().getDimension());
+			stream.writeInt(stack.getItem().itemID);
+			stream.writeInt(stack.getItemDamage());
+			stream.writeInt(stack.stackSize);
 			Packet250CustomPayload pkt = new Packet250CustomPayload();
 			pkt.channel = "OpenMDS_TAB";
 			pkt.data = bstream.toByteArray();

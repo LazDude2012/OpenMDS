@@ -49,8 +49,7 @@ public class GuiAttunementBench extends GuiContainer {
 		centrecolour.enabled = (tile.getStackInSlot(1)!= null);
 		rightcolour.enabled=(tile.getStackInSlot(1)!=null);
 		if(tile.getStackInSlot(1)== null || !(tile.getStackInSlot(1).getItem() instanceof IAttunable)) return;
-		ItemStack stack = tile.getStackInSlot(1);
-		Colours[] tempcolours = ItemAttunementCrystal.attunementToColours(stack.getItemDamage());
+		Colours[] tempcolours = ItemAttunementCrystal.attunementToColours(tile.getStackInSlot(1).getItemDamage());
 		leftcolour.displayString = "Left: "+ tempcolours[0].name().toLowerCase();
 		centrecolour.displayString = "Centre: "+ tempcolours[1].name().toLowerCase();
 		rightcolour.displayString = "Right: "+ tempcolours[2].name().toLowerCase();
@@ -76,7 +75,7 @@ public class GuiAttunementBench extends GuiContainer {
 	public void actionPerformed(GuiButton button)
 	{
 		if(! (tile.getStackInSlot(1).getItem() instanceof IAttunable)) return;
-		ItemStack stack = tile.getStackInSlot(1);
+		ItemStack stack = tile.getStackInSlot(1).copy();
 		Colours[] tempcolours = ItemAttunementCrystal.attunementToColours(stack.getItemDamage());
 		left=tempcolours[0].ordinal();
 		centre=tempcolours[1].ordinal();
@@ -105,7 +104,6 @@ public class GuiAttunementBench extends GuiContainer {
 		leftcolour.displayString = "Left: "+ tempcolours[0].name().toLowerCase();
 		centrecolour.displayString = "Centre: "+ tempcolours[1].name().toLowerCase();
 		rightcolour.displayString = "Right: "+ tempcolours[2].name().toLowerCase();
-		tile.setInventorySlotContents(1,stack);
-		PacketDispatcher.sendPacketToServer(tile.GetCustomPacket());
+		PacketDispatcher.sendPacketToServer(TileAttunementBench.GetCustomPacket(tile.worldObj, tile.xCoord,tile.yCoord,tile.zCoord,stack));
 	}
 }
