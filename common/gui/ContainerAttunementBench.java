@@ -5,6 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class ContainerAttunementBench extends Container
 {
@@ -35,6 +37,58 @@ public class ContainerAttunementBench extends Container
 		{
 			addSlotToContainer(new Slot(playerInv,28 + i, 8+18*i, 147));
 		}
+	}
+
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer player, int slotnumber)
+	{
+		ItemStack itemstack = null;
+		Slot slot = (Slot)inventorySlots.get(slotnumber);
+
+		if (slot != null && slot.getHasStack())
+		{
+			ItemStack itemstack1 = slot.getStack();
+			itemstack = itemstack1.copy();
+
+			if (slotnumber == 0)
+			{
+				if (!mergeItemStack(itemstack1, 1, 36, true))
+				{
+					return null;
+				}
+
+				slot.onSlotChange(itemstack1, itemstack);
+			}
+			else if (slotnumber >= 1 && slotnumber < 27)
+			{
+				if (!mergeItemStack(itemstack1, 27, 36, false))
+				{
+					return null;
+				}
+			}
+			else if (slotnumber >= 27 && slotnumber < 36 && !mergeItemStack(itemstack1, 1, 27, false))
+			{
+				return null;
+			}
+
+			if (itemstack1.stackSize== 0)
+			{
+				slot.putStack(null);
+			}
+			else
+			{
+				slot.onSlotChanged();
+			}
+
+			if (itemstack1.stackSize == itemstack.stackSize)
+			{
+				return null;
+			}
+
+			slot.onPickupFromSlot(player, itemstack);
+		}
+
+		return itemstack;
 	}
 
 	@Override

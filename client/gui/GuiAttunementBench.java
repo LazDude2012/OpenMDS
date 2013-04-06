@@ -5,11 +5,13 @@ import OpenMDS.common.Colours;
 import OpenMDS.common.gui.ContainerAttunementBench;
 import OpenMDS.item.ItemAttunementCrystal;
 import OpenMDS.tile.TileAttunementBench;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import org.lwjgl.opengl.GL11;
 
 public class GuiAttunementBench extends GuiContainer {
@@ -25,6 +27,7 @@ public class GuiAttunementBench extends GuiContainer {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void initGui()
 	{
 		super.initGui();
@@ -39,7 +42,19 @@ public class GuiAttunementBench extends GuiContainer {
 		buttonList.add(centrecolour);
 		buttonList.add(rightcolour);
 	}
-
+	protected void mouseClicked(int x, int y, int keycode)
+	{
+		super.mouseClicked(x,y,keycode);
+		leftcolour.enabled = (tile.getStackInSlot(1)!= null);
+		centrecolour.enabled = (tile.getStackInSlot(1)!= null);
+		rightcolour.enabled=(tile.getStackInSlot(1)!=null);
+		if(tile.getStackInSlot(1)== null || !(tile.getStackInSlot(1).getItem() instanceof IAttunable)) return;
+		ItemStack stack = tile.getStackInSlot(1);
+		Colours[] tempcolours = ItemAttunementCrystal.attunementToColours(stack.getItemDamage());
+		leftcolour.displayString = "Left: "+ tempcolours[0].name().toLowerCase();
+		centrecolour.displayString = "Centre: "+ tempcolours[1].name().toLowerCase();
+		rightcolour.displayString = "Right: "+ tempcolours[2].name().toLowerCase();
+	}
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
 	{
@@ -54,7 +69,7 @@ public class GuiAttunementBench extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int i, int j)
 	{
-		fontRenderer.drawString("Attune",113,12,0x000000,false);
+		fontRenderer.drawString("Attune",116,12,0x000000,false);
 	}
 
 	@Override
@@ -80,6 +95,8 @@ public class GuiAttunementBench extends GuiContainer {
 				if(right == 15) right = 0;
 				else right++;
 				break;
+			default:
+				break;
 		}
 		tempcolours[0] = Colours.fromInt(left);
 		tempcolours[1] = Colours.fromInt(centre);
@@ -89,5 +106,6 @@ public class GuiAttunementBench extends GuiContainer {
 		centrecolour.displayString = "Centre: "+ tempcolours[1].name().toLowerCase();
 		rightcolour.displayString = "Right: "+ tempcolours[2].name().toLowerCase();
 		tile.setInventorySlotContents(1,stack);
+		PacketDispatcher.sendPacketToServer(tile.GetCustomPacket());
 	}
 }

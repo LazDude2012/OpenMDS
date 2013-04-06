@@ -23,8 +23,8 @@ import net.minecraft.item.ItemStack;
 
 @Mod(modid="OpenMDS",version = "ALPHA 1", name="Open Modular Defence System")
 @NetworkMod(clientSideRequired = true,serverSideRequired = true,
-clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels={"OpenMDS","OpenMDS_TDC"},packetHandler = ClientPacketHandler.class),
-serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels={"OpenMDS","OpenMDS_TDC"},packetHandler = ServerPacketHandler.class))
+clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels={"OpenMDS","OpenMDS_TDC","OpenMDS_TAB"},packetHandler = ClientPacketHandler.class),
+serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels={"OpenMDS","OpenMDS_TDC","OpenMDS_TAB"},packetHandler = ServerPacketHandler.class))
 public class OpenMDS
 {
 	@SidedProxy(clientSide="OpenMDS.client.ClientProxy",serverSide="OpenMDS.common.CommonProxy")

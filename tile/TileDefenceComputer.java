@@ -7,22 +7,16 @@ import OpenMDS.common.OpenMDS;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
-import cpw.mods.fml.common.FMLLog;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -97,6 +91,11 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	@Override
 	public Packet getDescriptionPacket()
 	{
+		return this.GetCustomPacket();
+	}
+
+	public Packet250CustomPayload GetCustomPacket()
+	{
 		try
 		{
 			ByteOutputStream bstream = new ByteOutputStream();
@@ -104,7 +103,6 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 			stream.writeInt(xCoord);
 			stream.writeInt(yCoord);
 			stream.writeInt(zCoord);
-			stream.writeInt(worldObj.getWorldInfo().getDimension());
 			stream.writeInt(isAttached ? 1 : 0);
 			stream.writeInt(currentfacing.ordinal());
 			Packet250CustomPayload pkt = new Packet250CustomPayload();
@@ -121,13 +119,12 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 		}
 	}
 
-	public static void HandleUpdatePacketBytes(byte[] bytes, World world)
+	public static void HandlePacketBytes(byte[] bytes, World world)
 	{
 		ByteArrayDataInput badi = ByteStreams.newDataInput(bytes);
 		int xloc = badi.readInt();
 		int yloc = badi.readInt();
 		int zloc = badi.readInt();
-		int dimension = badi.readInt();
 		boolean attch = (badi.readInt()==1);
 		ForgeDirection facing = ForgeDirection.getOrientation(badi.readInt());
 		TileDefenceComputer tile = (TileDefenceComputer)world.getBlockTileEntity(xloc,yloc,zloc);

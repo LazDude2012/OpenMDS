@@ -22,7 +22,7 @@ public class ClientPacketHandler implements IPacketHandler
 		if(packet.channel == "OpenMDS_TDC")
 		{
 			World world = OpenMDS.proxy.getClientWorld();
-			TileDefenceComputer.HandleUpdatePacketBytes(packet.data,world);
+			TileDefenceComputer.HandlePacketBytes(packet.data,world);
 		}
 	}
 }
