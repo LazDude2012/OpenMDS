@@ -48,11 +48,7 @@ public class GuiAttunementBench extends GuiContainer {
 		leftcolour.enabled = (tile.getStackInSlot(1)!= null);
 		centrecolour.enabled = (tile.getStackInSlot(1)!= null);
 		rightcolour.enabled=(tile.getStackInSlot(1)!=null);
-		if(tile.getStackInSlot(1)== null || !(tile.getStackInSlot(1).getItem() instanceof IAttunable)) return;
-		Colours[] tempcolours = ItemAttunementCrystal.attunementToColours(tile.getStackInSlot(1).getItemDamage());
-		leftcolour.displayString = "Left: "+ tempcolours[0].name().toLowerCase();
-		centrecolour.displayString = "Centre: "+ tempcolours[1].name().toLowerCase();
-		rightcolour.displayString = "Right: "+ tempcolours[2].name().toLowerCase();
+
 	}
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j)

@@ -23,6 +23,15 @@ public class ItemAttunementCrystal extends Item implements IAttunable
 		setMaxStackSize(1);
 		setCreativeTab(OpenMDS.tabMDS);
 		setUnlocalizedName("ItemAttunementCrystal");
+		
+		setHasSubtypes(true);
+		setMaxDamage(0);
+	}
+	
+	@Override
+	public boolean isDamageable()
+	{
+		return false;
 	}
 
 	@Override
