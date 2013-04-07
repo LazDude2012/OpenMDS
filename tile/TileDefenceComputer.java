@@ -166,15 +166,12 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	@Override
 	public ItemStack decrStackSize(int i, int j)
 	{
-		if(inventory.length < i) throw new RuntimeException("The hell?");
-		ItemStack temp = inventory[i];
-		if(temp.stackSize - j <= 0){
-			inventory[i].stackSize = 0;
-			return inventory[i];
-		}else{
-			inventory[i].stackSize -= j;
-			return inventory[i];
-		}
+		ItemStack retStack = inventory[i].splitStack(j);
+		
+		if(inventory[i].stackSize == 0)
+			inventory = null;
+		
+		return retStack;
 	}
 
 	@Override

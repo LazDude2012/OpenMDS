@@ -39,8 +39,12 @@ public class TileAttunementBench extends TileEntity implements IInventory
 	@Override
 	public ItemStack decrStackSize(int i, int j)
 	{
-		--inventory.stackSize;
-		return inventory;
+		ItemStack retStack = inventory.splitStack(j);
+		
+		if(inventory.stackSize == 0)
+			inventory = null;
+		
+		return retStack;
 	}
 
 	@Override
