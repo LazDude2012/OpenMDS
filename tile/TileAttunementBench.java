@@ -1,9 +1,9 @@
 package OpenMDS.tile;
 
-import OpenMDS.api.IAttunable;
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteStreams;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -15,10 +15,10 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.ForgeDirection;
+import OpenMDS.api.IAttunable;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteStreams;
 
 public class TileAttunementBench extends TileEntity implements IInventory
 {
@@ -39,9 +39,12 @@ public class TileAttunementBench extends TileEntity implements IInventory
 	@Override
 	public ItemStack decrStackSize(int i, int j)
 	{
-		if(inventory.stackSize == 0) return null;
-		inventory.stackSize--;
-		return inventory;
+		ItemStack retStack = inventory.splitStack(j);
+		
+		if(inventory.stackSize == 0)
+			inventory = null;
+		
+		return retStack;
 	}
 
 	@Override
@@ -105,7 +108,7 @@ public class TileAttunementBench extends TileEntity implements IInventory
 	{
 		try
 		{
-			ByteOutputStream bstream = new ByteOutputStream();
+			ByteArrayOutputStream bstream = new ByteArrayOutputStream();
 			DataOutputStream stream = new DataOutputStream(bstream);
 			stream.writeInt(x);
 			stream.writeInt(y);
@@ -119,6 +122,7 @@ public class TileAttunementBench extends TileEntity implements IInventory
 			pkt.data = bstream.toByteArray();
 			pkt.length = bstream.size();
 			pkt.isChunkDataPacket = true;
+			stream.close();
 			return pkt;
 		}
 		catch (IOException e)
