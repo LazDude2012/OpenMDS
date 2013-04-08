@@ -1,7 +1,8 @@
-package OpenMDS.common;
+package OpenMDS.util;
 
 import OpenMDS.client.gui.GuiAttunementBench;
 import OpenMDS.client.gui.GuiDefenceComputer;
+import OpenMDS.common.OpenMDS;
 import OpenMDS.common.gui.ContainerAttunementBench;
 import OpenMDS.common.gui.ContainerDefenceComputer;
 import OpenMDS.tile.TileAttunementBench;

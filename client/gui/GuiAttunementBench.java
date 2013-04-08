@@ -1,7 +1,7 @@
 package OpenMDS.client.gui;
 
 import OpenMDS.api.IAttunable;
-import OpenMDS.common.Colours;
+import OpenMDS.util.Colours;
 import OpenMDS.common.gui.ContainerAttunementBench;
 import OpenMDS.item.ItemAttunementCrystal;
 import OpenMDS.tile.TileAttunementBench;
@@ -9,9 +9,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import org.lwjgl.opengl.GL11;
 
 public class GuiAttunementBench extends GuiContainer {
@@ -48,7 +46,6 @@ public class GuiAttunementBench extends GuiContainer {
 		leftcolour.enabled = (tile.getStackInSlot(1)!= null);
 		centrecolour.enabled = (tile.getStackInSlot(1)!= null);
 		rightcolour.enabled=(tile.getStackInSlot(1)!=null);
-
 	}
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j)

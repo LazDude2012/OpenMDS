@@ -40,12 +40,12 @@ public class ContainerDefenceComputer extends Container
 			for(int j = 0; j < 9; j++)
 			{
 				//START OF INVENTORY: 48 x, 146 y; SPACING 18
-				addSlotToContainer(new Slot(playerInv, (9*i)+j+3, 48 + 18*j, 146+18*i));
+				addSlotToContainer(new Slot(playerInv, (9*i)+j+9, 48 + 18*j, 146+18*i));
 			}
 		}
 		for(int i = 0;i<9;i++)
 		{
-			addSlotToContainer(new Slot(playerInv,30 + i, 48+18*i, 204));
+			addSlotToContainer(new Slot(playerInv,i, 48+18*i, 204));
 		}
 	}
 

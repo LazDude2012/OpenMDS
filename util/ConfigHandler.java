@@ -1,5 +1,6 @@
-package OpenMDS.common;
+package OpenMDS.util;
 
+import OpenMDS.common.OpenMDS;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;

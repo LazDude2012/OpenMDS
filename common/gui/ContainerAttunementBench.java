@@ -30,12 +30,12 @@ public class ContainerAttunementBench extends Container
 			for(int j = 0; j < 9; j++)
 			{
 				//START OF INVENTORY: 8 x, 89 y; SPACING 18
-				addSlotToContainer(new Slot(playerInv, (9*i)+j+1, 8 + 18*j, 89+18*i));
+				addSlotToContainer(new Slot(playerInv, (9*i)+j+9, 8 + 18*j, 89+18*i));
 			}
 		}
 		for(int i = 0;i<9;i++)
 		{
-			addSlotToContainer(new Slot(playerInv,28 + i, 8+18*i, 147));
+			addSlotToContainer(new Slot(playerInv,i, 8+18*i, 147));
 		}
 	}
 

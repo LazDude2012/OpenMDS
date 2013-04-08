@@ -1,7 +1,6 @@
 package OpenMDS.item;
 
 import OpenMDS.api.I6WayWrenchable;
-import OpenMDS.common.MDSUtils;
 import OpenMDS.common.OpenMDS;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

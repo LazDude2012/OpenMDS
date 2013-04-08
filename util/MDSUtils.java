@@ -1,5 +1,6 @@
-package OpenMDS.common;
+package OpenMDS.util;
 
+import OpenMDS.common.OpenMDS;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;

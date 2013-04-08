@@ -1,4 +1,4 @@
-package OpenMDS.common;
+package OpenMDS.util;
 
 public enum Colours
 {

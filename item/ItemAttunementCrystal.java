@@ -1,7 +1,7 @@
 package OpenMDS.item;
 
 import OpenMDS.api.IAttunable;
-import OpenMDS.common.Colours;
+import OpenMDS.util.Colours;
 import OpenMDS.common.OpenMDS;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,7 +19,6 @@ public class ItemAttunementCrystal extends Item implements IAttunable
 	public ItemAttunementCrystal(int i)
 	{
 		super(i);
-		setMaxDamage(4096);
 		setMaxStackSize(1);
 		setCreativeTab(OpenMDS.tabMDS);
 		setUnlocalizedName("ItemAttunementCrystal");
