@@ -5,6 +5,7 @@ import OpenMDS.util.Colours;
 import OpenMDS.common.gui.ContainerAttunementBench;
 import OpenMDS.item.ItemAttunementCrystal;
 import OpenMDS.tile.TileAttunementBench;
+import OpenMDS.util.MDSUtils;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -69,7 +70,7 @@ public class GuiAttunementBench extends GuiContainer {
 	{
 		if(! (tile.getStackInSlot(1).getItem() instanceof IAttunable)) return;
 		ItemStack stack = tile.getStackInSlot(1).copy();
-		Colours[] tempcolours = ItemAttunementCrystal.attunementToColours(stack.getItemDamage());
+		Colours[] tempcolours = MDSUtils.attunementToColours(stack.getItemDamage());
 		left=tempcolours[0].ordinal();
 		centre=tempcolours[1].ordinal();
 		right=tempcolours[2].ordinal();
@@ -93,7 +94,7 @@ public class GuiAttunementBench extends GuiContainer {
 		tempcolours[0] = Colours.fromInt(left);
 		tempcolours[1] = Colours.fromInt(centre);
 		tempcolours[2] = Colours.fromInt(right);
-		stack.setItemDamage(ItemAttunementCrystal.attunementFromColours(tempcolours));
+		stack.setItemDamage(MDSUtils.attunementFromColours(tempcolours));
 		leftcolour.displayString = "Left: "+ tempcolours[0].name().toLowerCase();
 		centrecolour.displayString = "Centre: "+ tempcolours[1].name().toLowerCase();
 		rightcolour.displayString = "Right: "+ tempcolours[2].name().toLowerCase();

@@ -17,6 +17,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
+/**
+ * The Block for the Defence Computer.
+ */
 public class BlockDefenceComputer extends BlockContainer
 {
 	public Icon normalicon,poweredsideicon,unpoweredsideicon;

@@ -19,7 +19,7 @@ public class ClientPacketHandler implements IPacketHandler
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 	{
-		if(packet.channel == "OpenMDS_TDC")
+		if(packet.channel.equals("OpenMDS_TDC"))
 		{
 			World world = OpenMDS.proxy.getClientWorld();
 			TileDefenceComputer.HandlePacketBytes(packet.data,world);

@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import OpenMDS.api.IAttunementStorage;
+import OpenMDS.util.MDSUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -14,16 +16,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import OpenMDS.api.I6WayWrenchable;
-import OpenMDS.api.IAttunementReader;
 import OpenMDS.api.IDefenceAttachment;
 import OpenMDS.common.OpenMDS;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
-public class TileDefenceComputer extends TileEntity implements IAttunementReader,IInventory,I6WayWrenchable
+public class TileDefenceComputer extends TileEntity implements IAttunementStorage,IInventory,I6WayWrenchable
 {
-	public int[] attunements = new int[0];
 	public String[] priorities = new String[0];
 	public boolean isAttached = false;
 	public IDefenceAttachment attachedModule;
@@ -35,7 +35,8 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	@Override
 	public int GetAttunementFromPriority(int priority)
 	{
-		return attunements[priority];
+		if(inventory[priority] != null) return inventory[priority].getItemDamage();
+		else return 0;
 	}
 
 	@Override
@@ -54,40 +55,11 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	{
 		attachedModule = par1;
 		priorities = par1.GetPriorityList();
-		attunements = new int[priorities.length];
 		isAttached = true;
 		inventory = new ItemStack[priorities.length];
+		attachedModule.Attach(this);
 	}
 
-	public void CheckForAttachment()
-	{
-		for(int x = xCoord-1;x <= xCoord+1; x++)
-		{
-			for(int y = yCoord-1;y <= yCoord +1; y++)
-			{
-				for(int z = zCoord-1; z <= zCoord +1; z++)
-				{
-					TileEntity te = worldObj.getBlockTileEntity(x,y,z);
-					if(te instanceof IDefenceAttachment)
-					{
-						Attach((IDefenceAttachment)te);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Reads a tile entity from NBT.
-	 */
-	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
-	{
-		super.readFromNBT(par1NBTTagCompound);
-		this.isAttached = par1NBTTagCompound.getBoolean("attached");
-		this.currentfacing = ForgeDirection.getOrientation(par1NBTTagCompound.getInteger("facing"));
-		if(isAttached) this.deferUpdate = true;
-	}
 
 	@Override
 	public Packet getDescriptionPacket()
@@ -137,6 +109,19 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 		tile.RotateTo(facing);
 		world.markBlockForUpdate(xloc,yloc,zloc);
 	}
+
+	/**
+	 * Reads a tile entity from NBT.
+	 */
+	@Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	{
+		super.readFromNBT(par1NBTTagCompound);
+		this.isAttached = par1NBTTagCompound.getBoolean("attached");
+		this.currentfacing = ForgeDirection.getOrientation(par1NBTTagCompound.getInteger("facing"));
+		if(isAttached) this.deferUpdate = true;
+	}
+
 	/**
 	 * Writes a tile entity to NBT.
 	 */
@@ -179,7 +164,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	{
 		if(deferUpdate)
 		{
-			CheckForAttachment();
+			MDSUtils.CheckForAttachment(this);
 			deferUpdate = false;
 		}
 	}
@@ -230,7 +215,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementReader
 	@Override
 	public void openChest()
 	{
-		CheckForAttachment();
+		MDSUtils.CheckForAttachment(this);
 	}
 
 	@Override

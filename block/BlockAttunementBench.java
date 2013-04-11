@@ -16,6 +16,9 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+/**
+ * The Block for the Attunement Bench.
+ */
 public class BlockAttunementBench extends BlockContainer
 {
 	public Icon[] icons;

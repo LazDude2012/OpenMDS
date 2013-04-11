@@ -1,11 +1,13 @@
 package OpenMDS.common;
 
 import OpenMDS.block.BlockAttunementBench;
+import OpenMDS.block.BlockAttunementMonitor;
 import OpenMDS.block.BlockDefenceComputer;
 import OpenMDS.client.ClientPacketHandler;
 import OpenMDS.item.ItemAttunementCrystal;
 import OpenMDS.item.ItemSpanner;
 import OpenMDS.tile.TileAttunementBench;
+import OpenMDS.tile.TileAttunementMonitor;
 import OpenMDS.tile.TileDefenceComputer;
 import OpenMDS.util.ConfigHandler;
 import OpenMDS.util.GuiHandler;
@@ -34,6 +36,7 @@ public class OpenMDS
 	//region  Static fields
 	public static Block blockDefenceComputer;
 	public static Block blockAttunementBench;
+	public static Block blockAttunementMonitor;
 
 	public static Item itemAttunementCrystal;
 	public static Item itemDefenceSpanner;
@@ -70,6 +73,11 @@ public class OpenMDS
 		GameRegistry.registerBlock(blockAttunementBench, "blockAttunementBench");
 		LanguageRegistry.addName(blockAttunementBench, "Attunement Bench");
 		GameRegistry.registerTileEntity(TileAttunementBench.class,"tileAttunementBench");
+
+		blockAttunementMonitor = new BlockAttunementMonitor(ConfigHandler.blockAttunementMonitorID);
+		GameRegistry.registerBlock(blockAttunementMonitor,"blockAttunementMonitor");
+		LanguageRegistry.addName(blockAttunementMonitor, "Attunement Monitor");
+		GameRegistry.registerTileEntity(TileAttunementMonitor.class,"tileAttunementMonitor");
 
 		blockDefenceComputer = new BlockDefenceComputer(ConfigHandler.blockDefenceComputerID);
 		GameRegistry.registerBlock(blockDefenceComputer, "blockDefenceComputer");

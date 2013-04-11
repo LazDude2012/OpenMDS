@@ -2,6 +2,7 @@ package OpenMDS.item;
 
 import OpenMDS.api.I6WayWrenchable;
 import OpenMDS.common.OpenMDS;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -42,6 +43,7 @@ public class ItemSpanner extends Item {
 				return true;
 			}
 		}
+		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 		player.addChatMessage("You can't turn that with your spanner.");
 		return false;
 	}
