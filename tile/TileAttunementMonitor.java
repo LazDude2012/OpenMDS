@@ -2,6 +2,7 @@ package OpenMDS.tile;
 
 import OpenMDS.api.IAttunable;
 import OpenMDS.api.IDefenceAttachment;
+import OpenMDS.common.OpenMDS;
 import OpenMDS.util.MDSUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -86,7 +87,7 @@ public class TileAttunementMonitor extends TileEntity implements IDefenceAttachm
 			}
 		}
 		isEmitting = false;
-		worldObj.markBlockForUpdate(xCoord,yCoord,zCoord);
+		UpdateWorld();
 	}
 
 	@Override
@@ -102,12 +103,12 @@ public class TileAttunementMonitor extends TileEntity implements IDefenceAttachm
 	}
 	public void UpdateWorld()
 	{
-		worldObj.markBlockForUpdate(xCoord-1,yCoord,zCoord);
-		worldObj.markBlockForUpdate(xCoord+1,yCoord,zCoord);
-		worldObj.markBlockForUpdate(xCoord,yCoord-1,zCoord);
-		worldObj.markBlockForUpdate(xCoord,yCoord+1,zCoord);
-		worldObj.markBlockForUpdate(xCoord,yCoord,zCoord-1);
-		worldObj.markBlockForUpdate(xCoord,yCoord,zCoord+1);
 		worldObj.markBlockForUpdate(xCoord,yCoord,zCoord);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord,OpenMDS.blockAttunementMonitor.blockID);
+		worldObj.notifyBlocksOfNeighborChange(xCoord+1,yCoord,zCoord,OpenMDS.blockAttunementMonitor.blockID);
+		worldObj.notifyBlocksOfNeighborChange(xCoord,yCoord-1,zCoord,OpenMDS.blockAttunementMonitor.blockID);
+		worldObj.notifyBlocksOfNeighborChange(xCoord,yCoord+1,zCoord,OpenMDS.blockAttunementMonitor.blockID);
+		worldObj.notifyBlocksOfNeighborChange(xCoord,yCoord,zCoord-1,OpenMDS.blockAttunementMonitor.blockID);
+		worldObj.notifyBlocksOfNeighborChange(xCoord,yCoord,zCoord+1,OpenMDS.blockAttunementMonitor.blockID);
 	}
 }
