@@ -26,6 +26,7 @@ public class GuiDefenceComputer extends GuiContainer {
 		// PARAMS: ID, x, y, width, height, text
 		settings = new GuiButton(1,(this.width - 256) / 2 + 181, (this.height - 228) / 2 + 117, 64, 16, "Settings...");
 		settings.enabled = tile_entity.isAttached;
+		this.buttonList.add(0,settings);
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class GuiDefenceComputer extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton button)
 	{
-		if(button.id == 1){
+		if(button.id == 0){
 			tile_entity.attachedModule.OpenGui(tile_entity.worldObj.getClosestPlayer(tile_entity.xCoord,tile_entity.yCoord,tile_entity.zCoord,4.0));
 		}
 	}

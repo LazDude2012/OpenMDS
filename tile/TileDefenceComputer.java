@@ -6,12 +6,17 @@ import java.io.IOException;
 
 import OpenMDS.api.IAttunementStorage;
 import OpenMDS.util.MDSUtils;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -32,6 +37,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementStorag
 	private ForgeDirection currentfacing;
 	private boolean deferUpdate;
 	public boolean[] slots = new boolean[10];
+	private int ticksSinceUpdate = 0;
 
 	@Override
 	public int GetAttunementFromPriority(int priority)
@@ -79,6 +85,12 @@ public class TileDefenceComputer extends TileEntity implements IAttunementStorag
 			stream.writeInt(zCoord);
 			stream.writeInt(isAttached ? 1 : 0);
 			stream.writeInt(currentfacing.ordinal());
+			stream.writeInt(inventory.length);
+			for(int i = 0; i < inventory.length; i++)
+			{
+				stream.writeInt(inventory[i] != null ? inventory[i].getItem().itemID : 0);
+				stream.writeInt(inventory[i] != null ? inventory[i].getItemDamage() : 0);
+			}
 			Packet250CustomPayload pkt = new Packet250CustomPayload();
 			pkt.channel = "OpenMDS_TDC";
 			pkt.data = bstream.toByteArray();
@@ -102,12 +114,23 @@ public class TileDefenceComputer extends TileEntity implements IAttunementStorag
 		int zloc = badi.readInt();
 		boolean attch = (badi.readInt()==1);
 		ForgeDirection facing = ForgeDirection.getOrientation(badi.readInt());
+		int invsize = badi.readInt();
+		ItemStack[] stacks = new ItemStack[invsize];
+		for(int i = 0;i<invsize;i++)
+		{
+			Item item = Item.itemsList[badi.readInt()];
+			if(item != null)
+			stacks[i]=new ItemStack(item,1,badi.readInt());
+			else
+				stacks[i] = null;
+		}
 		TileDefenceComputer tile = (TileDefenceComputer)world.getBlockTileEntity(xloc,yloc,zloc);
 		tile.xCoord = xloc;
 		tile.yCoord = yloc;
 		tile.zCoord = zloc;
-		tile.isAttached = attch;
+		tile.inventory = stacks;
 		tile.RotateTo(facing);
+		MDSUtils.CheckForAttachment(tile);
 		world.markBlockForUpdate(xloc,yloc,zloc);
 	}
 
@@ -121,6 +144,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementStorag
 		this.isAttached = par1NBTTagCompound.getBoolean("attached");
 		this.currentfacing = ForgeDirection.getOrientation(par1NBTTagCompound.getInteger("facing"));
 		if(isAttached) this.deferUpdate = true;
+		inventory = new ItemStack[par1NBTTagCompound.getInteger("invsize")];
 		NBTTagList tagList = par1NBTTagCompound.getTagList("Inventory");
 
 		for (int i = 0; i < tagList.tagCount(); i++) {
@@ -144,6 +168,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementStorag
 		par1NBTTagCompound.setBoolean("attached",this.isAttached);
 		par1NBTTagCompound.setInteger("facing",this.currentfacing.ordinal());
 		NBTTagList itemList = new NBTTagList();
+		par1NBTTagCompound.setInteger("invsize",this.getSizeInventory());
 		for (int i = 0; i < inventory.length; i++) {
 			ItemStack stack = inventory[i];
 
@@ -161,7 +186,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementStorag
 	@Override
 	public int getSizeInventory()
 	{
-		return priorities.length;
+		return inventory.length;
 	}
 
 	@Override
@@ -170,7 +195,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementStorag
 		if(inventory.length >= i){
 			return inventory[i];
 		}
-		else throw new RuntimeException("The hell?");
+		else throw new RuntimeException();
 	}
 
 	@Override
@@ -192,6 +217,11 @@ public class TileDefenceComputer extends TileEntity implements IAttunementStorag
 			MDSUtils.CheckForAttachment(this);
 			deferUpdate = false;
 		}
+		if(ticksSinceUpdate==20)
+		{
+			ticksSinceUpdate = 0;
+			PacketDispatcher.sendPacketToAllPlayers(getDescriptionPacket());
+		}
 	}
 
 	@Override
@@ -201,7 +231,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementStorag
 		{
 			return inventory[i];
 		}
-		throw new RuntimeException("The hell?");
+		throw new RuntimeException();
 	}
 
 	@Override
@@ -209,7 +239,7 @@ public class TileDefenceComputer extends TileEntity implements IAttunementStorag
 	{
 		if(getSizeInventory() >= i)
 			inventory[i]=itemstack;
-		else throw new RuntimeException("The hell?");
+		else throw new RuntimeException();
 	}
 
 	@Override

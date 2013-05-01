@@ -81,7 +81,7 @@ public class MDSUtils
 					return ForgeDirection.EAST;
 			}
 		}
-		throw new RuntimeException("The hell?");
+		throw new RuntimeException();
 	}
 	public static void CheckForAttachment(TileEntity origin)
 	{

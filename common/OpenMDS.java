@@ -5,6 +5,7 @@ import OpenMDS.block.BlockAttunementMonitor;
 import OpenMDS.block.BlockDefenceComputer;
 import OpenMDS.client.ClientPacketHandler;
 import OpenMDS.item.ItemAttunementCrystal;
+import OpenMDS.item.ItemShimmeringPearl;
 import OpenMDS.item.ItemSpanner;
 import OpenMDS.tile.TileAttunementBench;
 import OpenMDS.tile.TileAttunementMonitor;
@@ -39,6 +40,7 @@ public class OpenMDS
 	public static Block blockAttunementMonitor;
 
 	public static Item itemAttunementCrystal;
+	public static Item itemShimmeringPearl;
 	public static Item itemDefenceSpanner;
 
 	final public static int DEFENCECOMP_GUI = 1;
@@ -64,7 +66,18 @@ public class OpenMDS
 	{
 		RegisterBlocks();
 		RegisterItems();
+		RegisterRecipes();
 		NetworkRegistry.instance().registerGuiHandler(this,guiHandler);
+	}
+
+	private void RegisterRecipes()
+	{
+		GameRegistry.addRecipe(new ItemStack(itemShimmeringPearl, 1)," X ","XPX"," X ",'X',Item.redstone, 'P',Item.enderPearl);
+		GameRegistry.addRecipe(new ItemStack(blockDefenceComputer, 1),"PIP","IGI","PIP",'P',itemShimmeringPearl,'I',Item.ingotIron,'G',Item.ingotGold);
+		GameRegistry.addRecipe(new ItemStack(itemDefenceSpanner, 1),"X X","XPX"," X ",'X',Item.ingotIron, 'P',itemShimmeringPearl);
+		GameRegistry.addRecipe(new ItemStack(itemAttunementCrystal,1),"PIP","IDI",'P',itemShimmeringPearl, 'I',Item.ingotIron,'D',Item.diamond);
+		GameRegistry.addRecipe(new ItemStack(blockAttunementBench, 1),"P P","SIS",'P',itemShimmeringPearl, 'I',Item.ingotIron,'S',Block.stone);
+		GameRegistry.addRecipe(new ItemStack(blockAttunementMonitor, 1),"PEP","SRS",'P',itemShimmeringPearl, 'E',Item.eyeOfEnder,'R',Item.redstone,'S',Block.stone);
 	}
 
 	private void RegisterBlocks()
@@ -93,5 +106,8 @@ public class OpenMDS
 		itemDefenceSpanner = new ItemSpanner(ConfigHandler.itemSpannerID);
 		GameRegistry.registerItem(itemDefenceSpanner,"itemDefenceSpanner");
 		LanguageRegistry.addName(new ItemStack(itemDefenceSpanner,1), "Defence Spanner");
+		itemShimmeringPearl = new ItemShimmeringPearl(ConfigHandler.itemShimmeringPearlID);
+		GameRegistry.registerItem(itemShimmeringPearl,"itemShimmeringPearl");
+		LanguageRegistry.addName(itemShimmeringPearl, "Shimmering Pearl");
 	}
 }

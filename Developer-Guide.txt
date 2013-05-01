@@ -1,5 +1,9 @@
 Welcome to the OpenMDS team!
 
+This repo should be cloned to the /src/minecraft folder of your MCP installation
+"cd <YOURMCPFOLDERHERE>/src/minecraft"
+"git clone https://github.com/LazDude2012/OpenMDS.git"
+
 Here are the basics of how OpenMDS works internally:
 
 Each defensive item you'd like to add can have a list of "priorities". What does this mean? I'll explain in a second.

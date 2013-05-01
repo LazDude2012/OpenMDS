@@ -13,6 +13,7 @@ public class ConfigHandler
 	public static int blockAttunementMonitorID;
 
 	public static int itemAttunementCrystalID;
+	public static int itemShimmeringPearlID;
 	public static int itemSpannerID;
 
 	public static void Load(FMLPreInitializationEvent e)
@@ -33,8 +34,11 @@ public class ConfigHandler
 		Property attunementcrystalproperty = config.getItem("item","AttunementCrystalID",21000,"The ItemID for the Attunement Crystal");
 		itemAttunementCrystalID = attunementcrystalproperty.getInt() - 256;
 
-		Property spannerproperty = config.getItem("item","DefenceSpannerID",21001,"The ItemID for the Attunement Crystal");
-		itemSpannerID = spannerproperty.getInt();
+		Property shimmeringpearlproperty = config.getItem("item","ShimmeringPearlID",21002,"The ItemID for the Shimmering Pearl");
+		itemShimmeringPearlID = shimmeringpearlproperty.getInt();
+
+		Property spannerproperty = config.getItem("item","DefenceSpannerID",21001,"The ItemID for the Defence Spanner");
+		itemSpannerID = spannerproperty.getInt() - 256;
 
 		config.save();
     }
