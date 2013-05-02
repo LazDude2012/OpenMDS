@@ -1,7 +1,7 @@
 package OpenMDS.common;
 
 import OpenMDS.tile.TileAttunementBench;
-import OpenMDS.tile.TileDefenceComputer;
+import OpenMDS.tile.TileAttunementMonitor;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
@@ -22,8 +22,8 @@ public class ServerPacketHandler implements IPacketHandler
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 	{
 		if (packet.channel == "OpenMDS_TAB")
-		{
 			TileAttunementBench.HandlePacketBytes(packet.data);
-		}
+		if(packet.channel == "OpenMDS_TAM")
+			TileAttunementMonitor.HandlePacketBytes(packet.data);
 	}
 }

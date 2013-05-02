@@ -1,7 +1,6 @@
 package OpenMDS.client;
 
 import OpenMDS.common.OpenMDS;
-import OpenMDS.tile.TileDefenceComputer;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
@@ -19,10 +18,6 @@ public class ClientPacketHandler implements IPacketHandler
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 	{
-		if(packet.channel.equals("OpenMDS_TDC"))
-		{
-			World world = OpenMDS.proxy.getClientWorld();
-			TileDefenceComputer.HandlePacketBytes(packet.data,world);
-		}
+
 	}
 }

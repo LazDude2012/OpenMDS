@@ -75,7 +75,7 @@ public class BlockAttunementBench extends BlockContainer
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,int side, float hitX, float hitY, float hitZ)
 	{
 		if(player.getHeldItem() == new ItemStack(OpenMDS.itemDefenceSpanner,1)) return false;
-		player.openGui(OpenMDS.instance,OpenMDS.ATTUNEMENT_GUI,world,x,y,z);
+		player.openGui(OpenMDS.instance,OpenMDS.ATTUNEBENCH_GUI,world,x,y,z);
 		return true;
 	}
 }
