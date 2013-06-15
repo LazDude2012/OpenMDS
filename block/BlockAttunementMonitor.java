@@ -8,7 +8,6 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
@@ -102,12 +101,5 @@ public class BlockAttunementMonitor extends Block implements ITileEntityProvider
 	public boolean isBlockNormalCube(World world, int x, int y, int z)
 	{
 		return false;
-	}
-
-	@Override
-	public boolean onBlockActivated (World world,int x,int y,int z,EntityPlayer player,int side,float hitX,float hitY,float hitZ)
-	{
-		player.openGui(OpenMDS.instance, OpenMDS.ATTUNEMONITOR_GUI, world, x, y, z);
-		return true;
 	}
 }

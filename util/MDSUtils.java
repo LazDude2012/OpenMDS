@@ -1,5 +1,8 @@
 package OpenMDS.util;
 
+import OpenMDS.api.IDefenceAttachment;
+import OpenMDS.common.OpenMDS;
+import OpenMDS.tile.TileDefenceComputer;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -79,5 +82,43 @@ public class MDSUtils
 			}
 		}
 		throw new RuntimeException();
+	}
+	public static void CheckForAttachment(TileEntity origin)
+	{
+		if(origin instanceof TileDefenceComputer)
+		{
+			for(int x = origin.xCoord-1;x <= origin.xCoord+1; x++)
+			{
+				for(int y = origin.yCoord-1;y <= origin.yCoord +1; y++)
+				{
+					for(int z = origin.zCoord-1; z <= origin.zCoord +1; z++)
+					{
+						TileEntity te = origin.worldObj.getBlockTileEntity(x,y,z);
+						if(te instanceof IDefenceAttachment)
+						{
+							((TileDefenceComputer)origin).Attach((IDefenceAttachment)te);
+						}
+					}
+				}
+			}
+		}
+		if(origin instanceof IDefenceAttachment)
+		{
+			for(int x = origin.xCoord-1;x <= origin.xCoord+1; x++)
+			{
+				for(int y = origin.yCoord-1;y <= origin.yCoord +1; y++)
+				{
+					for(int z = origin.zCoord-1; z <= origin.zCoord +1; z++)
+					{
+						if(origin.worldObj.blockHasTileEntity(x,y,z) == false) continue;
+						TileEntity te = origin.worldObj.getBlockTileEntity(x,y,z);
+						if(te instanceof TileDefenceComputer)
+						{
+							((TileDefenceComputer)te).Attach((IDefenceAttachment)origin);
+						}
+					}
+				}
+			}
+		}
 	}
 }

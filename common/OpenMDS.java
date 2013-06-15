@@ -2,12 +2,14 @@ package OpenMDS.common;
 
 import OpenMDS.block.BlockAttunementBench;
 import OpenMDS.block.BlockAttunementMonitor;
+import OpenMDS.block.BlockDefenceComputer;
 import OpenMDS.client.ClientPacketHandler;
 import OpenMDS.item.ItemAttunementCrystal;
 import OpenMDS.item.ItemShimmeringPearl;
 import OpenMDS.item.ItemSpanner;
 import OpenMDS.tile.TileAttunementBench;
 import OpenMDS.tile.TileAttunementMonitor;
+import OpenMDS.tile.TileDefenceComputer;
 import OpenMDS.util.ConfigHandler;
 import OpenMDS.util.GuiHandler;
 import cpw.mods.fml.common.Mod;
@@ -25,14 +27,15 @@ import net.minecraft.item.ItemStack;
 
 @Mod(modid="OpenMDS",version = "ALPHA 1", name="Open Modular Defence System")
 @NetworkMod(clientSideRequired = true,serverSideRequired = true,
-clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels={"OpenMDS","OpenMDS_TAB","OpenMDS_TAM"},packetHandler = ClientPacketHandler.class),
-serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels={"OpenMDS","OpenMDS_TAB","OpenMDS_TAM"},packetHandler = ServerPacketHandler.class))
+clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels={"OpenMDS","OpenMDS_TDC","OpenMDS_TAB"},packetHandler = ClientPacketHandler.class),
+serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels={"OpenMDS","OpenMDS_TDC","OpenMDS_TAB"},packetHandler = ServerPacketHandler.class))
 public class OpenMDS
 {
 	@SidedProxy(clientSide="OpenMDS.client.ClientProxy",serverSide="OpenMDS.common.CommonProxy")
 	public static CommonProxy proxy = new CommonProxy();
 
 	//region  Static fields
+	public static Block blockDefenceComputer;
 	public static Block blockAttunementBench;
 	public static Block blockAttunementMonitor;
 
@@ -40,8 +43,8 @@ public class OpenMDS
 	public static Item itemShimmeringPearl;
 	public static Item itemDefenceSpanner;
 
-	final public static int ATTUNEBENCH_GUI = 1;
-	final public static int ATTUNEMONITOR_GUI = 2;
+	final public static int DEFENCECOMP_GUI = 1;
+	final public static int ATTUNEMENT_GUI = 2;
 
 	public static GuiHandler guiHandler;
 
@@ -70,6 +73,7 @@ public class OpenMDS
 	private void RegisterRecipes()
 	{
 		GameRegistry.addRecipe(new ItemStack(itemShimmeringPearl, 1)," X ","XPX"," X ",'X',Item.redstone, 'P',Item.enderPearl);
+		GameRegistry.addRecipe(new ItemStack(blockDefenceComputer, 1),"PIP","IGI","PIP",'P',itemShimmeringPearl,'I',Item.ingotIron,'G',Item.ingotGold);
 		GameRegistry.addRecipe(new ItemStack(itemDefenceSpanner, 1),"X X","XPX"," X ",'X',Item.ingotIron, 'P',itemShimmeringPearl);
 		GameRegistry.addRecipe(new ItemStack(itemAttunementCrystal,1),"PIP","IDI",'P',itemShimmeringPearl, 'I',Item.ingotIron,'D',Item.diamond);
 		GameRegistry.addRecipe(new ItemStack(blockAttunementBench, 1),"P P","SIS",'P',itemShimmeringPearl, 'I',Item.ingotIron,'S',Block.stone);
@@ -87,6 +91,11 @@ public class OpenMDS
 		GameRegistry.registerBlock(blockAttunementMonitor,"blockAttunementMonitor");
 		LanguageRegistry.addName(blockAttunementMonitor, "Attunement Monitor");
 		GameRegistry.registerTileEntity(TileAttunementMonitor.class,"tileAttunementMonitor");
+
+		blockDefenceComputer = new BlockDefenceComputer(ConfigHandler.blockDefenceComputerID);
+		GameRegistry.registerBlock(blockDefenceComputer, "blockDefenceComputer");
+		LanguageRegistry.addName(blockDefenceComputer, "Defence Computer");
+		GameRegistry.registerTileEntity(TileDefenceComputer.class,"tileDefenceComputer");
 	}
 
 	private void RegisterItems()
